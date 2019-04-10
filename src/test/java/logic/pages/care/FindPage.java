@@ -2,6 +2,7 @@ package logic.pages.care;
 
 import javafx.util.Pair;
 import logic.pages.BasePage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -21,10 +22,11 @@ public class FindPage extends BasePage {
             enterValueByLabel(tblFindDetail, p.getKey(), p.getValue());
         }
         btnFindNow.click();
+        waitForPageLoadComplete(60);
     }
 
     public void openCustomerByIndex(int index) {
-        getCell(tblResult, index + 1, 2).click();
+        getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")).click();
     }
 
 }

@@ -25,19 +25,22 @@ public class BaseTest {
     @BeforeSuite
     public void beforeSuite() {
         Config.loadEnvInfoToQueue();
-        setUpReport();
+        //setUpReport();
     }
 
     @AfterSuite
     public void afterSuite() {
-        extent.flush();
+        //extent.flush();
     }
 
     @BeforeMethod
     public void beforeMethod(Method m) throws MalformedURLException {
-        test.set(extent.createTest(m.getName()));
-//        WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.chrome()));
-//        WdManager.get().get(Config.getProp("careUrl"));
+        //test.set(extent.createTest(m.getName()));
+       //WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.chrome()));
+        WDFactory.getConfig().setDriverVersion("73.0.3683.68");
+        WdManager.set(WDFactory.initBrowser(Config.getProp("browser")));
+        WdManager.get().get(Config.getProp("careUrl"));
+        WdManager.get().manage().window().maximize();
     }
 
     @AfterMethod

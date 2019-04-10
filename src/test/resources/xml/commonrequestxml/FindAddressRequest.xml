@@ -1,0 +1,9 @@
+﻿<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <findAddress maxResults="10" xmlns="http://order.telco.hsntech.com">
+      <buildingIdentifier xmlns="">6</buildingIdentifier>
+      <country xmlns="">United Kingdom</country>
+      <postcode xmlns="">E10AA</postcode>
+    </findAddress>
+  </s:Body>
+</s:Envelope>
