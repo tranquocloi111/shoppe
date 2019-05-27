@@ -1,11 +1,10 @@
 package logic.pages.care;
 
-import framework.wdm.WdManager;
+import framework.config.Config;
 import javafx.util.Pair;
 import logic.pages.BasePage;
-import org.openqa.selenium.By;
-
-import java.util.HashMap;
+import logic.pages.care.find.FindPage;
+import logic.pages.care.main.LoginPage;
 
 public class CareTestBase extends BasePage {
     LoginPage loginPage;
@@ -16,8 +15,8 @@ public class CareTestBase extends BasePage {
     private CareTestBase() {
         loginPage = new LoginPage();
         findPage = new FindPage();
-        //userName = Config.getProp("careUserName");
-        //passWord = Config.getProp("carePassword");
+        userName = Config.getProp("careUserName");
+        passWord = Config.getProp("carePassword");
     }
 
     public static CareTestBase page() {
@@ -26,7 +25,7 @@ public class CareTestBase extends BasePage {
 
     public void loadCustomerInHubNet(String customerId) {
         loginPage.navigateToLoginPage();
-        loginPage.login("admin", "ADMIN1");
+        loginPage.login(userName, passWord);
 
         findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
         findPage.openCustomerByIndex(1);

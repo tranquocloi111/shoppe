@@ -1,5 +1,7 @@
 package logic.utils;
 
+import framework.utils.Log;
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
@@ -20,7 +22,6 @@ public class Parser {
 
     public static void main(String[] args) throws InterruptedException {
         Date newStartDate = TimeStamp.TodayMinus15Days();
-
         System.out.println(parseDateFormate(newStartDate,"ddMMyyyy"));
     }
 }

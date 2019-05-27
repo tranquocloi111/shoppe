@@ -2,9 +2,9 @@ package suite.performance;
 
 import com.aventstack.extentreports.Status;
 import javafx.util.Pair;
-import logic.pages.care.FindPage;
-import logic.pages.care.LoginPage;
-import logic.utils.Timer;
+import logic.pages.care.find.FindPage;
+import logic.pages.care.main.LoginPage;
+import framework.utils.Timer;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 
