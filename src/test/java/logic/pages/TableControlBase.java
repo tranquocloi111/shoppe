@@ -20,6 +20,9 @@ public class TableControlBase extends BasePage {
         return element.findElements(By.xpath(".//tr[contains(@class,'informationBoxRow')]")).size();
     }
 
+    public int getRowsCountWithOutBoxRow() {
+        return element.findElements(By.xpath("//tr[contains(@class,'informationBoxRow')]")).size();
+    }
 
     public WebElement getRecordByIndex(int index) {
         // i = 1: Header
@@ -99,6 +102,16 @@ public class TableControlBase extends BasePage {
         }
     }
 
+    public WebElement getRowByCellValue(String cellValue) {
+        // i = 1: Header
+        try {
+            WebElement row = element.findElement(By.xpath(String.format(".//tr/td[normalize-space()='%s']", cellValue)));
+            return row;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
     public WebElement getElementByCellValue(WebElement innerRow, String columnName) {
         int columnIndex = getColumnIndex(columnName);
@@ -164,9 +177,19 @@ public class TableControlBase extends BasePage {
         return null;
     }
 
+    public WebElement getRowByContainsColumnNameAndCellValue(String columnName, String cellValue) {
+        List<WebElement> body = getBody();
+        int columnIndex = getColumnIndex(columnName);
+        for (WebElement element : body) {
+            if (element.findElements(By.tagName("td")).get(columnIndex).getText().contains(cellValue)) {
+                return element;
+            }
+        }
+        return null;
+    }
 
     private List<WebElement> getBody() {
-        return element.findElements(By.xpath(".//tr[contains(@class,'informationBoxRow')]"));
+        return element.findElements(By.xpath(".//tr"));
     }
 
     private int getColumnIndex(String columnName) {
@@ -211,18 +234,49 @@ public class TableControlBase extends BasePage {
                 for (WebElement el : body) {
                     if (el.findElements(By.tagName("td")).get(columnIndex).getText().equalsIgnoreCase(cellValue)) {
                         flag = true;
+                        isFail = true;
                         elm = el;
                         break;
                     } else {
                         flag = false;
                         isFail = false;
-                        break;
+                        //break;
                     }
                 }
             }
             if (flag && isFail)
                 column.add(elm);
         }
+        return column;
+    }
+
+    public List<WebElement> findRowsByColumns(HashMap<String, String> columns) {
+        int columnIndex = 0;
+        boolean flag = false;
+        boolean isFail = true;
+        WebElement elm = null;
+        List<WebElement> column = new ArrayList<>();
+        List<WebElement> body = getBody();
+        for (Map.Entry mapElement : columns.entrySet()) {
+            String columnName = (String) mapElement.getKey();
+            String cellValue = (String) mapElement.getValue();
+            columnIndex = getColumnIndex(columnName);
+            for (WebElement el : body) {
+                if (el.findElements(By.tagName("td")).get(columnIndex).getText().equalsIgnoreCase(cellValue)) {
+                    flag = true;
+                    isFail = true;
+                    elm = el;
+                    break;
+                } else {
+                    flag = false;
+                    isFail = false;
+                    //break;
+                }
+            }
+        }
+        if (flag && isFail)
+            column.add(elm);
+
         return column;
     }
 
@@ -249,6 +303,28 @@ public class TableControlBase extends BasePage {
             }
         }
         return column;
+    }
+
+
+    public List<WebElement> getRowsByColumnsWithIndex(String [] cellValue) {
+        List<Boolean> listChecked = new ArrayList<>();
+        List<WebElement> list = new ArrayList<>();
+        List<WebElement> body = getBody();
+        for (WebElement element : body) {
+            List<WebElement> td =  element.findElements(By.tagName("td"));
+            for (int i = 0; i < td.size(); i++) {
+                if (element.findElements(By.tagName("td")).get(i).getText().contains(cellValue[i])) {
+                    listChecked.add(true);
+                }else{
+                    listChecked.add(false);
+                }
+            }
+            if (listChecked.stream().filter(x -> x == false).count() < 1) {
+                list.add(element);
+            }
+            listChecked =  new ArrayList<>();
+        }
+        return list;
     }
 
 }

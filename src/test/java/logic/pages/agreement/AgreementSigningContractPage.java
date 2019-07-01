@@ -25,24 +25,33 @@ public class AgreementSigningContractPage extends BasePage {
     @FindBy(id = "ccaform:submit-code")
     WebElement btnSubmitCode;
 
+    @FindBy(id = "ccaform:confirm-continue")
+    WebElement btnNextAgmtPopupDialog;
 
-    public  void signAgreementViaUI(String agreementSigningUrl){
+
+    public  void signAgreementViaUI(String agreementSigningUrl, int numberOfAgreements){
         try {
             getDriver().get(agreementSigningUrl);
-            waitUntilElementVisible(ckAcceptTAndCs);
-            scrollToElement(ckAcceptTAndCs);
+            for (int i = 0; i < numberOfAgreements; i++) {
+                waitUntilElementVisible(ckAcceptTAndCs);
+                scrollToElement(ckAcceptTAndCs);
 
-            click(ckAcceptTAndCs);
-            waitUntilElementVisible(btnContinue);
+                click(ckAcceptTAndCs);
+                waitUntilElementVisible(btnContinue);
 
-            click(btnContinue);
-            waitUntilElementVisible(lbUniqueCodeImage);
+                click(btnContinue);
+                waitUntilElementVisible(lbUniqueCodeImage);
 
-            String signatureCodeNumber = Common.stripNonDigits(Common.splitSignatureCode(lbUniqueCodeImage.getAttribute("src")));
-            enterValueByLabel(txtSignatureCode, signatureCodeNumber);
-            waitUntilElementVisible(btnSubmitCode);
+                String signatureCodeNumber = Common.stripNonDigits(Common.splitSignatureCode(lbUniqueCodeImage.getAttribute("src")));
+                enterValueByLabel(txtSignatureCode, signatureCodeNumber);
+                waitUntilElementVisible(btnSubmitCode);
 
-            click(btnSubmitCode);
+                click(btnSubmitCode);
+
+                if (isElementPresent(btnNextAgmtPopupDialog))
+                    click(btnNextAgmtPopupDialog);
+            }
+
         }catch(Exception ex){
             Log.error(ex.getMessage());
         }

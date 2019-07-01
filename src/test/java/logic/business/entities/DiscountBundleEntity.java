@@ -2,7 +2,7 @@ package logic.business.entities;
 
 import java.sql.Date;
 
-public class DiscountBundle {
+public class DiscountBundleEntity {
     public int inventoryId;
     public String capType;
     public Date startDate;

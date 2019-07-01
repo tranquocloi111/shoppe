@@ -54,7 +54,7 @@
             <orderDetail externalSystemID="COCO" devicePrint="DEVICEPRINT-AA" ipAddress="160.206.234.22" orderRef="12345" salesChannel="Onlines" paymentMethod="CARD" xmlns="">
                 <dateTime>2011-06-10T00:00:00</dateTime>
                 <orderItem dealSKU="DEAL-INHAND" id="1">
-                    <serviceRef reference="Mobile FC"/>
+                    <serviceRef reference="Mobile Ref 1"/>
                     <tariff productCode="FC12-1000-500SO">
                         <deliveryMethod>INHAND</deliveryMethod>
                     </tariff>
@@ -69,7 +69,7 @@
                     </discBundle>
                 </orderItem>
                 <orderItem dealSKU="DEAL-INHAND" id="2">
-                    <serviceRef reference="Mobile FC 2"/>
+                    <serviceRef reference="Mobile Ref 2"/>
                     <tariff productCode="FC12-1000-500SO">
                         <deliveryMethod>INHAND</deliveryMethod>
                     </tariff>

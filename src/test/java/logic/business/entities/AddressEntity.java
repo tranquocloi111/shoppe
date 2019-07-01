@@ -1,6 +1,6 @@
 package logic.business.entities;
 
-public class Address {
+public class AddressEntity {
 
     private String BuildingIdentifier;
     private String AddressLine1 ;

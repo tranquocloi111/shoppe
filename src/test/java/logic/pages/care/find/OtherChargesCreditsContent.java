@@ -10,17 +10,27 @@ import java.util.List;
 
 public class OtherChargesCreditsContent extends BasePage {
 
-    private static OtherChargesCreditsContent instance = new OtherChargesCreditsContent();
+    private static OtherChargesCreditsContent instance;
+    public static OtherChargesCreditsContent getInstance() {
+        if (instance == null)
+            instance =  new OtherChargesCreditsContent();
+        return instance;
+    }
+
     @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Other Charges/Credits')]/../../..//following-sibling::table")
     WebElement otherChargesCreditsContentTable;
     TableControlBase table = new TableControlBase(otherChargesCreditsContentTable);
 
-    public static OtherChargesCreditsContent getInstance() {
-        return instance;
+    public List<WebElement> getChargeCredits(List<HashMap<String, String>> chargeCredit) {
+        return table.findRowsByColumns(chargeCredit);
     }
 
-    public List<WebElement> getCharngeCredits(List<HashMap<String, String>> charngeCredit) {
-        return table.findRowsByColumns(charngeCredit);
+    public List<WebElement> getChargeCredits(HashMap<String, String> chargeCredit) {
+        return table.findRowsByColumns(chargeCredit);
+    }
+
+    public int getNumberOfChargeCredits(HashMap<String, String> chargeCredit) {
+        return getChargeCredits(chargeCredit).size();
     }
 
     public int getRowNumberOfOtherChargesCreditsContentTable() {

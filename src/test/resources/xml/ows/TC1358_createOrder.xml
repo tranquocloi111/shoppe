@@ -1,0 +1,83 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <ord1:createOrder correlationId="" type="NEW" xsi:schemaLocation="http://order.telco.hsntech.com ShopFront.xsd" xmlns:ord1="http://order.telco.hsntech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <account type="BUSINESS">
+        <contact type="BILLING" language="en_GB">
+          <title>Mr</title>
+          <firstName>RAINBOW</firstName>
+          <lastName>Change</lastName>
+          <telephoneNumbers defaultContact="daytime">
+            <daytime>0398403850</daytime>
+            <evening>0208619999</evening>
+            <mobile>02086999990</mobile>
+          </telephoneNumbers>
+          <emailAddress>tesco.testing@hsntech.com</emailAddress>
+          <birthDate>1985-01-01</birthDate>
+        </contact>
+        <billingAddress>
+          <buildingIdentifier>6</buildingIdentifier>
+          <addressLine1>LUKIN STREET</addressLine1>
+          <!--<addressLine2>Address Line 2</addressLine2>:-->
+          <town>LONDON</town>
+          <country>United Kingdom</country>
+          <postcode>E10AA</postcode>
+          <ptc_abs_code>PTCABS3075103</ptc_abs_code>
+          <startDate>1980-08-08</startDate>
+        </billingAddress>
+        <accountDetail>
+          <username>${#TestCase#emailAddress}</username>
+          <!--<username>WinnieAutomation6</username>-->
+          <password>password1</password>
+          <securityQuestion>Mothers maiden name?</securityQuestion>
+          <securityAnswer>smith</securityAnswer>
+        </accountDetail>
+        <businessDetail>
+               <businessName>Hansencx</businessName>
+            </businessDetail>
+        <billingDetail>
+          <billGroupId>2</billGroupId>
+          <preferredNotification>SMS</preferredNotification>
+          <paymentDetail type="CARD">
+            <creditCard>
+              <cardName>CardName</cardName>
+              <cardNumber>5105105105105100</cardNumber>
+              <cardType>MC</cardType>
+               <cardExpiryDate>1230</cardExpiryDate>
+              <cvv>123</cvv>
+            </creditCard>
+          </paymentDetail>
+          <billFormat>SUMMARY</billFormat>
+          <clubcardNumber>634143330730912784</clubcardNumber>
+        </billingDetail>
+      </account>
+      <verification runCreditCheck="false" termsAndConditionsAccepted="false" refundableDepositAccepted="false"/>
+      <orderDetail orderRef="12345" ipAddress="160.206.234.22" salesChannel="Telecomm Centre" agentId="Rhonda" branchId="BRANCH001" externalSystemID="COCO" paymentMethod="TILL">
+        <dateTime>2011-06-10T16:44:31.0Z</dateTime>
+        <!--1 or more repetitions:-->
+        <orderItem id="1" masterSubscription="true" dealSKU="DEALINHAND">
+          <serviceRef reference="Mobile Ref 1">$MPN$</serviceRef>
+          <!--You have a CHOICE of the next 4 items at this level-->
+          <tariff productCode="FC12-1000-500SO">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </tariff>
+          <device productCode="HTC-WILDFIRE-XXX-60">
+            <deliveryMethod>INHAND</deliveryMethod>
+            <imei>137695587771463</imei>
+            <serialNumber>123152436457568486784684</serialNumber>
+          </device>
+          <discBundle productCode="02000-SB-A" bundleGroup="SB-GRP-A" billCapNotifications="false">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+          <discBundle productCode="500MB-DATA-500-FC" bundleGroup="STANDARDDATAFC" billCapNotifications="false">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+        </orderItem>
+        <receipt type="TILL" dateTime="2014-10-13T09:44:31.0Z">
+          <reference>1234123412341</reference>
+          <amount>20</amount>
+        </receipt>
+      </orderDetail>
+    </ord1:createOrder>
+  </soapenv:Body>
+</soapenv:Envelope>

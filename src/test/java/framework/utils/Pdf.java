@@ -14,8 +14,10 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -344,6 +346,20 @@ public class Pdf {
             var3.printStackTrace();
         }
 
+    }
+
+    public void saveToPDF( String saveTo, String value){
+        byte[] decodedBytes = Base64.getDecoder().decode(value);
+        File file = new File(saveTo);;
+        FileOutputStream fop = null;
+        try {
+            fop = new FileOutputStream(file);
+            fop.write(decodedBytes);
+            fop.flush();
+            fop.close();
+        } catch (Throwable e) {
+
+        }
     }
 
     public static void main(String[] args) throws IOException {

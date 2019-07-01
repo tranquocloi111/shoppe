@@ -6,10 +6,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 
 import java.util.*;
 
@@ -89,11 +86,17 @@ public class BasePage {
 
     public void click(WebElement element) {
         element.click();
+        waitForPageLoadComplete(60);
     }
 
     protected void clickByJs(WebElement element) {
         JavascriptExecutor executor = (JavascriptExecutor) getDriver();
         executor.executeScript("arguments[0].click();", element);
+    }
+
+    protected void clickByJs(String js) {
+        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        executor.executeScript(js);
     }
 
     protected void selectByVisibleText(WebElement element, String value) {
@@ -121,11 +124,22 @@ public class BasePage {
         return ele;
     }
 
-    protected void waitForPageLoadComplete(int specifiedTimeout) {
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), specifiedTimeout);
-        wait.until(driver -> String
-                .valueOf(((JavascriptExecutor) driver).executeScript("return document.readyState"))
-                .equals("complete"));
+//    protected void waitForPageLoadComplete(int specifiedTimeout) {
+//        Wait<WebDriver> wait = new WebDriverWait(getDriver(), specifiedTimeout);
+//        wait.until(driver -> String
+//                .valueOf(((JavascriptExecutor) driver).executeScript("return document.readyState"))
+//                .equals("complete"));
+//    }
+
+    public void waitForPageLoadComplete(int specifiedTimeout) {
+        ExpectedCondition<Boolean> pageLoadCondition = new
+                ExpectedCondition<Boolean>() {
+                    public Boolean apply(WebDriver driver) {
+                        return ((JavascriptExecutor)driver).executeScript("return document.readyState").equals("complete");
+                    }
+                };
+        WebDriverWait wait = new WebDriverWait(getDriver(), specifiedTimeout);
+        wait.until(pageLoadCondition);
     }
 
     protected void clickSaveButton() {
@@ -144,7 +158,7 @@ public class BasePage {
 
     protected void clickReturnToCustomer() {
         click(getDriver().findElement(By.xpath(".//input[@value='Return to Customer']")));
-        waitForPageLoadComplete(60);
+        waitForPageLoadComplete(90);
     }
 
     public void navigate(String url){
@@ -161,6 +175,22 @@ public class BasePage {
 
     public String getTextOfElement(WebElement element){
         return element.getText();
+    }
+
+    public boolean isElementPresent(WebElement element) {
+        try {
+            return element.isDisplayed();
+        }
+        catch (Throwable e) {
+            return false;
+        }
+    }
+
+    public String findValueByLabel(WebElement element,  String label){
+        String xpath = xpath = ".//td[normalize-space(text())='%s']";;
+        WebElement td = element.findElement(By.xpath(String.format(xpath, label)));
+        WebElement tr = td.findElement(By.xpath(".//ancestor::tr[1]"));
+        return tr.findElement(By.xpath(".//td[4]")).getText();
     }
 
     //endregion

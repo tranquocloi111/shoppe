@@ -1,10 +1,23 @@
 package logic.pages.care;
 
 import framework.config.Config;
+import framework.utils.Pdf;
+import framework.utils.Xml;
 import javafx.util.Pair;
+import logic.business.db.billing.BillingActions;
+import logic.business.ws.ows.OWSActions;
 import logic.pages.BasePage;
+import logic.pages.care.find.CommonContentPage;
+import logic.pages.care.find.DetailsContentPage;
 import logic.pages.care.find.FindPage;
 import logic.pages.care.main.LoginPage;
+import logic.pages.care.main.ServiceOrdersPage;
+import logic.utils.Parser;
+import logic.utils.TimeStamp;
+import org.testng.Assert;
+
+import java.sql.Date;
+import java.util.List;
 
 public class CareTestBase extends BasePage {
     LoginPage loginPage;
@@ -29,6 +42,55 @@ public class CareTestBase extends BasePage {
 
         findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
         findPage.openCustomerByIndex(1);
+    }
+
+    public void reLoadCustomerInHubNet(String customerId){
+        MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
+        findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
+        findPage.openCustomerByIndex(1);
+    }
+
+    public void verifyCreateOrderResponse(OWSActions owsActions, Xml xml){
+        Assert.assertNotNull(xml.getTextByXpath("//createOrderResponse//@correlationId"));
+        Assert.assertEquals(owsActions.orderRef, xml.getTextByTagName("orderRef"));
+        Assert.assertEquals("1", xml.getTextByXpath("//orderProcessResponse//responseCode"));
+        Assert.assertEquals("Order pending Confirmation required", xml.getTextByXpath("//orderProcessResponse//responseMessage"));
+        Assert.assertTrue(Integer.parseInt(xml.getTextByTagName("orderId")) > 0);
+        Assert.assertEquals("CO_280", xml.getTextByXpath("//orderError//errorCode"));
+        Assert.assertEquals("ERROR", xml.getTextByXpath("//orderError//errorType"));
+        Assert.assertEquals("Confirmation Required – Terms and Conditions must be accepted", xml.getTextByXpath("//orderError//errorDescription"));
+    }
+
+    public  void verifyContractPdfCommonData(List<String> reader, String amount, OWSActions owsActions){
+        Assert.assertEquals("Your contract", reader.get(0));
+        Assert.assertEquals("Order date Order number Order total", reader.get(1));
+        Assert.assertEquals(String.format("%s %s %s", Parser.parseDateFormate(TimeStamp.Today(), "dd MMMM yyyy"), owsActions.orderIdNo, amount), reader.get(2));
+        Assert.assertEquals("Your details", reader.get(3));
+        Assert.assertEquals("Name:" + String.format(" Mr %s", owsActions.fullName), reader.get(4));
+        Assert.assertEquals("Address: 6 LUKIN STREET, LONDON E1 0AA", reader.get(5));
+    }
+
+    public void verifyAcceptOrderResponse(OWSActions owsActions, Xml response) {
+        Assert.assertNotNull(response.getTextByXpath("//createOrderResponse//@correlationId"));
+        Assert.assertEquals(owsActions.customerNo, response.getTextByTagName("accountNumber"));
+        Assert.assertTrue(Integer.parseInt(response.getTextByTagName("orderId")) > 0);
+        Assert.assertEquals(owsActions.orderRef, response.getTextByTagName("orderRef"));
+        Assert.assertEquals("0", response.getTextByXpath("//orderProcessResponse//responseCode"));
+    }
+
+    public void verifyCustomerStartDateAndBillingGroupAreUpdatedSuccessfully(Date newStartDate) {
+        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        Assert.assertEquals(Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT), CommonContentPage.CustomerSummarySectionPage.getInstance().getCustomerSummaryStartDate());
+        Assert.assertEquals(BillingActions.tempBillingGroupHeader.getValue(), DetailsContentPage.BillingInformationSectionPage.getInstance().getBillingGroup());
+    }
+
+    public void checkBundleToolTip(String[] bundles) {
+        for (String bundle : bundles) {
+            int endIndex = bundle.lastIndexOf((" - £"));
+            String bundleSubstr = bundle.substring(0, endIndex);
+            String expectTooltip = String.format("Additional Information\r\n%s\r\nFair Usage Warning =\r\nFair Usage Limit =", bundleSubstr);
+            Assert.assertEquals(expectTooltip, ServiceOrdersPage.ChangeBundle.getInstance().bundleToolTip(bundle));
+        }
     }
 
 

@@ -2,6 +2,7 @@ package logic.pages.care.find;
 
 import javafx.util.Pair;
 import logic.pages.BasePage;
+import logic.pages.care.MenuPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -33,7 +34,14 @@ public class FindPage extends BasePage {
     }
 
     public void openCustomerByIndex(int index) {
-        getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")).click();
+        click(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));
+        waitForPageLoadComplete(60);
+    }
+
+    public void navigateToCustomerDetailPage(int index, String customerNumber){
+        MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
+        findCustomer(new Pair<String, String>("Customer Number", customerNumber));
+        openCustomerByIndex(index);
     }
 
 }

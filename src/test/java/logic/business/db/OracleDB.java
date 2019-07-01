@@ -5,6 +5,7 @@ import framework.utils.Db;
 import framework.utils.Log;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OracleDB extends Db {
@@ -12,7 +13,7 @@ public class OracleDB extends Db {
     private static String url;
     private static String username;
     private static String password;
-    private static OracleDB oracleDB = new OracleDB();
+    private static OracleDB instance;
 
     public static OracleDB SetToNonOEDatabase() {
         url = Config.getProp("dbUrl");
@@ -21,39 +22,35 @@ public class OracleDB extends Db {
         try {
             if (connection != null) {
                 if (connection.getMetaData().getUserName().equalsIgnoreCase(Config.getProp("oeUserName")))
-                    connection = Db.createConnection(url, username, password);
-            } else {
-                connection = Db.createConnection(url, username, password);
+                    getConnection();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        if (oracleDB != null)
-            return oracleDB;
-        return new OracleDB();
+        if (instance == null)
+             instance = new OracleDB();
+        return instance;
     }
 
     public static OracleDB SetToOEDatabase() {
         url = Config.getProp("oeUrl");
-        username =Config.getProp("oeUserName");
+        username = Config.getProp("oeUserName");
         password = Config.getProp("oePassWord");
         try {
             if (connection != null) {
                 if (connection.getMetaData().getUserName().equalsIgnoreCase(Config.getProp("dbUserName")))
-                    connection = Db.createConnection(url, username, password);
-            } else {
-                connection = Db.createConnection(url, username, password);
+                    getConnection();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (oracleDB != null)
-            return oracleDB;
-        return new OracleDB();
+        if (instance == null)
+            instance = new OracleDB();
+        return instance;
     }
 
-    public static Object retriveDataInResultSet(ResultSet resultSet, int index) {
+    public static Object getValueOfResultSet(ResultSet resultSet, int index) {
         Object object = null;
         try {
             if (resultSet.next()) {
@@ -66,7 +63,7 @@ public class OracleDB extends Db {
         return null;
     }
 
-    public static Object retriveDataInResultSet(ResultSet resultSet, String columnName) {
+    public static Object getValueOfResultSet(ResultSet resultSet, String columnName) {
         Object object = null;
         try {
             if (resultSet.next()) {
@@ -81,7 +78,7 @@ public class OracleDB extends Db {
 
     protected void allowUpdating() {
         try {
-            executeQuery(connection, "select pkg_audit.SetInfo('pererae',2) from dual");
+            executeQuery(createConnection(), "select pkg_audit.SetInfo('pererae',2) from dual");
         } catch (Exception ex) {
             Log.error(ex.getMessage());
         }
@@ -89,9 +86,11 @@ public class OracleDB extends Db {
 
     public int executeNonQuery(String sql, HashMap<Integer, Object> formParams) {
         int result = 0;
+        Connection conn = null;
         try {
+            conn = createConnection();
             allowUpdating();
-            PreparedStatement pStmt = connection.prepareStatement(sql);
+            PreparedStatement pStmt = conn.prepareStatement(sql);
             for (Map.Entry mapElement : formParams.entrySet()) {
                 int key = (Integer) mapElement.getKey();
                 String value = (String) mapElement.getValue();
@@ -101,7 +100,7 @@ public class OracleDB extends Db {
         } catch (Exception ex) {
             Log.error(ex.getMessage());
             try {
-                connection.close();
+                conn.close();
             } catch (SQLException e) {
                 Log.error(ex.getMessage());
             }
@@ -111,9 +110,11 @@ public class OracleDB extends Db {
 
     public int executeNonQueryForDate(String sql, HashMap<Integer, Object> formParams) {
         int result = 0;
+        Connection conn =  null;
         try {
             allowUpdating();
-            PreparedStatement pStmt = connection.prepareStatement(sql);
+            conn = createConnection();
+            PreparedStatement pStmt = conn.prepareStatement(sql);
             for (Map.Entry mapElement : formParams.entrySet()) {
                 int key = (Integer) mapElement.getKey();
                 Date value = (Date) mapElement.getValue();
@@ -123,7 +124,7 @@ public class OracleDB extends Db {
         } catch (Exception ex) {
             Log.error(ex.getMessage());
             try {
-                connection.close();
+                conn.close();
             } catch (SQLException e) {
                 Log.error(ex.getMessage());
             }
@@ -132,12 +133,12 @@ public class OracleDB extends Db {
     }
 
     public ResultSet executeQuery(String sql) {
-        return executeQuery(connection, sql);
+        return executeQuery(createConnection(), sql);
     }
 
     public int executeNonQuery(String sql) {
         allowUpdating();
-        return executeNonQuery(connection, sql);
+        return executeNonQuery(createConnection(), sql);
     }
 
     public CallableStatement callableStatement() {
@@ -145,8 +146,31 @@ public class OracleDB extends Db {
         return stmt;
     }
 
-    public Connection getConnection() {
+    public List executeQueryReturnList(String query) {
+        try {
+            return Db.executeQuery(createConnection(), query, 100);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static Connection getConnection() {
+        try {
+            connection = Db.createConnection(url, username, password);
+            Log.info("Connect to " + username + " database successfully!");
+        } catch (Exception ex) {
+            Log.error(ex.getMessage());
+        }
         return connection;
+    }
+
+    public Connection createConnection() {
+        if (connection != null) {
+            return connection;
+        } else {
+            return getConnection();
+        }
     }
 
 }

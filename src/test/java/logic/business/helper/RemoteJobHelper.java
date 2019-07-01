@@ -35,7 +35,7 @@ public class RemoteJobHelper {
     }
 
     private int getMaxRemoteJobId() {
-        return Integer.parseInt(String.valueOf(OracleDB.retriveDataInResultSet(OracleDB.SetToNonOEDatabase().executeQuery("select max(JOBID) as MAXJOBID from REMOTEJOB"), "MAXJOBID")));
+        return Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery("select max(JOBID) as MAXJOBID from REMOTEJOB"), "MAXJOBID")));
     }
 
     private void submitRemoteJobs(String command, int currentMaxJobId) {
@@ -47,7 +47,7 @@ public class RemoteJobHelper {
         MiscHelper.executeFuncntion(5, () ->
         {
             submitRemoteJob(command);
-            return Integer.parseInt(String.valueOf(OracleDB.retriveDataInResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "numberJob"))) > 0;
+            return Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "numberJob"))) > 0;
         }, 5);
     }
 
@@ -104,7 +104,7 @@ public class RemoteJobHelper {
             for (int i = 0; i < 300; i++) {
                 if (remoteJobId > currentMaxJobId)
                     break;
-                remoteJobId = Integer.parseInt(String.valueOf(OracleDB.retriveDataInResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "JOBID")));
+                remoteJobId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "JOBID")));
                 Thread.sleep(3000);
             }
             Log.info(jobDescr + " job id:" + remoteJobId);
@@ -179,7 +179,7 @@ public class RemoteJobHelper {
 
     private void waitAllNewRemoteJobsComplete(int initJobId) {
         String sql = "select count(*) as ALLJOB  from REMOTEJOB where (exitcode is null or cmdstatus<>'N') and jobid > " + initJobId;
-        MiscHelper.executeFuncntion(150, () -> Integer.parseInt(String.valueOf(OracleDB.retriveDataInResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "ALLJOB"))) == 0, 2);
+        MiscHelper.executeFuncntion(150, () -> Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "ALLJOB"))) == 0, 2);
     }
 
     public void submitDraftBillRun() {
@@ -191,7 +191,7 @@ public class RemoteJobHelper {
     public void submitConfirmBillRun() {
         ResultSet resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
         try {
-            for (int i = 0; i < 60; i++) {
+            for (int i = 0; i < 120; i++) {
                 if (resultSet.isBeforeFirst()){
                     break;
                 }else{
@@ -205,7 +205,7 @@ public class RemoteJobHelper {
             e.printStackTrace();
         }
 
-        int billRunInvocationId = Integer.parseInt(String.valueOf(OracleDB.retriveDataInResultSet(resultSet, "brinvocationid")));
+        int billRunInvocationId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(resultSet, "brinvocationid")));
         Log.info("InvocationId:" + billRunInvocationId);
 
         int currentMaxJobId = getMaxRemoteJobId();

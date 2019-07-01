@@ -5,41 +5,44 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class MenuPage  extends BasePage {
+public class MenuPage extends BasePage {
 
-    private static MenuPage instance = new MenuPage();
-    public static MenuPage getInstance() {
-        if (instance == null)
-            return new MenuPage();
-        return instance;
+    public static class HeaderMenuPage extends MenuPage {
+
+        private static HeaderMenuPage instance;
+
+        public static HeaderMenuPage getInstance() {
+            if (instance == null)
+                instance =  new HeaderMenuPage();
+            return instance;
+        }
+
+        public void clickCustomersTab() {
+            clickLinkByText("Customers");
+        }
+
+        public void clickServiceOrdersTab() {
+            clickLinkByText("Service Orders");
+        }
+
+        public void clickTasksTab() {
+            clickLinkByText("Tasks");
+        }
+
+        public void clickAdminTab() {
+            clickLinkByText("Admin");
+        }
     }
-
-    public void clickCustomersTab() {
-        clickLinkByText("Customers");
-    }
-
-    public void clickServiceOrdersTab() {
-        clickLinkByText("Service Orders");
-    }
-
-    public void clickTasksTab() {
-        clickLinkByText("Tasks");
-    }
-
-    public void clickAdminTab() {
-        clickLinkByText("Admin");
-    }
-
 
     public static class LeftMenuPage extends MenuPage {
 
-        private static LeftMenuPage instance = new LeftMenuPage();
+        private static LeftMenuPage instance;
         @FindBy(xpath = ".//td[@class='functions']//table")
         WebElement leftMainDiv;
 
         public static LeftMenuPage getInstance() {
             if (instance == null)
-                return new LeftMenuPage();
+                instance = new LeftMenuPage();
             return instance;
         }
 
@@ -55,15 +58,11 @@ public class MenuPage  extends BasePage {
             clickLinkByName("Subscriptions");
         }
 
-        public void clickOtherChargesCreditsLink() {
-            clickLinkByName("Other Charges/Credits");
-        }
-
         public void clickServiceOrdersLink() {
             clickLinkByName("Service Orders");
         }
 
-        public void clickOtheChargesCreditsItem() {
+        public void clickOtherChargesCreditsItem() {
             clickLinkByName("Other Charges/Credits");
         }
 
@@ -71,12 +70,20 @@ public class MenuPage  extends BasePage {
             clickLinkByName("Invoices");
         }
 
+        public void clickCreditAgreementsItem(){
+            clickLinkByName("Credit Agreements");
+        }
+
+        public void clickLiveBillEstimateItem(){
+            clickLinkByName("Live Bill Estimate");
+        }
+
         private void clickLinkByName(String name) {
             try {
                 WebElement element = leftMainDiv.findElement(By.linkText(name));
                 click(element);
-                waitForPageLoadComplete(60);
-                Thread.sleep(1000);
+                waitForPageLoadComplete(90);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -111,9 +118,43 @@ public class MenuPage  extends BasePage {
             clickLinkByText("Refresh");
         }
 
+        public void clickDeactivateSubscriptionLink() {
+            clickLinkByName("Deactivate Subscription");
+        }
+
+        public void clickApplyFinancialTransactionLink() {
+            clickLinkByName("Apply Financial Transaction");
+        }
+
+        public void clickChangeBundleLink() {
+            clickLinkByName("Change Bundle");
+        }
+
         private void clickLinkByName(String name) {
             WebElement element = rightMainDiv.findElement(By.linkText(name));
             click(element);
+            waitForPageLoadComplete(60);
+        }
+    }
+
+    public static class BreadCrumbPage extends MenuPage {
+        private static BreadCrumbPage instance;
+        @FindBy(xpath = ".//div[@class='breadCrumbsBox ShadowOnGrey']")
+        WebElement breadCrumbDiv;
+
+        public static BreadCrumbPage getInstance() {
+            if (instance == null)
+                instance =  new BreadCrumbPage();
+            return instance;
+        }
+
+        public void clickParentLink() {
+            click(breadCrumbDiv.findElement(By.xpath(".//a[last()]")));
+            waitForPageLoadComplete(60);
+        }
+
+        public void clickItemLink(String text) {
+            click(breadCrumbDiv.findElement(By.partialLinkText(text)));
             waitForPageLoadComplete(60);
         }
     }

@@ -1,5 +1,6 @@
 package logic.business.helper;
 
+import logic.business.db.OracleDB;
 import logic.utils.Common;
 import framework.utils.FileDownloader;
 import framework.utils.Log;
@@ -35,6 +36,32 @@ public class MiscHelper {
             current = LocalDateTime.now().getSecond();
         }
         while (endtime > current);
+    }
+
+    public static void waitForAsyncProcessComplete(String orderId) {
+        Boolean taskFinished = false;
+        try {
+            String sql = String.format("select count(*) as backOfficTaskCount from asynccommandreq areq where areq.processkey = '%s'", orderId);
+            int backOfficTaskCount = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToOEDatabase().executeQuery(sql), "backOfficTaskCount")));
+            sql = String.format("select count(*) as successfullbackOfficTaskCount from asynccommandreq areq where areq.processkey = '%s' and areq.STATUS = 'COMPLETED_EXC_SUCCESS'", orderId);
+            for (int i = 0; i < 300; i++) {
+                int successfullbackOfficTaskCount = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToOEDatabase().executeQuery(sql), "successfullbackOfficTaskCount")));
+                Thread.sleep(2000);
+                if (backOfficTaskCount == successfullbackOfficTaskCount) {
+                    taskFinished = true;
+                    break;
+                } else {
+                    taskFinished = false;
+                }
+                Thread.sleep(1000);
+            }
+        } catch (Exception ex) {
+            Log.error(ex.getMessage());
+        }
+        if (!taskFinished) {
+            Log.error("The task can't finish in 5 minutes");
+        }
+
     }
 
     public static void saveFileFromWebRequest(WebElement element, String url, String pdfFile){

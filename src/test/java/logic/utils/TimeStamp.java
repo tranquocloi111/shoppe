@@ -7,6 +7,7 @@ public class TimeStamp {
 
     public final static String DATE_FORMAT = "dd MMM yyyy";
     public final static String DATE_FORMAT2 = "yyyyMMdd";
+    public final static String DATE_FORMAT3 = "dd-MMM-yy";
     public final static String DATE_FORMAT_IN_PDF = "dd/MM/yyyy";
     public final static String DATE_FORMAT_IN_PDF2 = "dd-MMM-yyyy";
     public final static String DATE_FORMAT_IN_PDF3 = "MM/yyyy";
@@ -119,6 +120,14 @@ public class TimeStamp {
 
     public static Date TodayMinus35Days() {
         return Date.valueOf(LocalDate.now().minusDays(35));
+    }
+
+    public static Date TodayPlus1YearMinus1Day(){
+        return Date.valueOf(LocalDate.now().plusYears(1).minusDays(1));
+    }
+
+    public static Date TodayPlus1MonthMinusToday(){
+        return Date.valueOf(LocalDate.now().plusMonths(1).minusDays(LocalDate.now().getMonthValue()));
     }
 
 }

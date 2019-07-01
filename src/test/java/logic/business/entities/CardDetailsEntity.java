@@ -1,6 +1,6 @@
 package logic.business.entities;
 
-public class CardDetails {
+public class CardDetailsEntity {
 
     public String cardType;
     public String cardNumber;

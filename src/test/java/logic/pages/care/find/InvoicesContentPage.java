@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InvoicesContentPage extends BasePage {
+
     private static final String invoiceNumber = "Invoice Number";
     private static final String status = "Status";
     private static final String amountOutstanding = "Amount Outstanding";
@@ -22,16 +23,16 @@ public class InvoicesContentPage extends BasePage {
     private static final String amount = "Amount";
     String pdfFile;
 
-    private static InvoicesContentPage instance = new InvoicesContentPage();
-    @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Invoices')]/../../..//following-sibling::div//table")
-
-    WebElement invoicesGridTable;
-    TableControlBase table = new TableControlBase(invoicesGridTable);
+    private static InvoicesContentPage instance;
     public static InvoicesContentPage getInstance() {
         if (instance == null)
-            return new InvoicesContentPage();
+            instance =  new InvoicesContentPage();
         return instance;
     }
+
+    @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Invoices')]/../../..//following-sibling::div//table")
+    WebElement invoicesGridTable;
+    TableControlBase table = new TableControlBase(invoicesGridTable);
 
     public List<WebElement> getInvoices(List<HashMap<String, String>> invoice) {
         return table.findRowsByColumns(invoice);
@@ -46,15 +47,15 @@ public class InvoicesContentPage extends BasePage {
     }
 
     public void clickInvoiceNumberByIndex(int index) {
-        table.getElementByColumnNameAndRowIndex(index, invoiceNumber).findElement(By.tagName("a")).click();
+        table.getElementByColumnNameAndRowIndex(index + 1, invoiceNumber).findElement(By.tagName("a")).click();
     }
 
     public static class InvoiceDetailsContentPage extends InvoicesContentPage{
 
-        private static InvoiceDetailsContentPage instance = new InvoiceDetailsContentPage();
+        private static InvoiceDetailsContentPage instance;
         public static InvoiceDetailsContentPage getInstance() {
             if (instance == null)
-                return new InvoiceDetailsContentPage();
+                instance =  new InvoiceDetailsContentPage();
             return instance;
         }
 
