@@ -223,8 +223,13 @@ public class OWSActions extends BaseWs {
         Log.info("Account number:" + customerNo);
         setOrderIdNo();
         Log.info("OrderId number:" + orderIdNo);
+        setUsername();
+        setPassword();
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 
+    public String getOrderMpnByReference(int index){
+        return response.getTextByXpath("//orderItem//serviceRef", index - 1);
+    }
 
 }

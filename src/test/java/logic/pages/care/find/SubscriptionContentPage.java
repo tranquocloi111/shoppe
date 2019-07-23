@@ -14,11 +14,9 @@ public class SubscriptionContentPage extends BasePage {
 
         public static class GeneralSectionPage extends SubscriptionDetailsPage {
 
-            private static GeneralSectionPage instance;
+            private static GeneralSectionPage instance = new GeneralSectionPage();
             public static GeneralSectionPage getInstance() {
-                if (instance == null)
-                    instance = new GeneralSectionPage();
-                return instance;
+                return new GeneralSectionPage();
             }
 
 
@@ -136,11 +134,9 @@ public class SubscriptionContentPage extends BasePage {
             private static final String endDate = "End Date";
             private static final String charge = "Charge";
 
-            private static OtherProductsGridSectionPage instance;
+            private static OtherProductsGridSectionPage instance = new OtherProductsGridSectionPage();
             public static OtherProductsGridSectionPage getInstance() {
-                if (instance == null)
-                    instance =  new OtherProductsGridSectionPage();
-                return instance;
+                return new OtherProductsGridSectionPage();
             }
 
             @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Other Products')]/../../..//following-sibling::div[1]//table")
@@ -155,7 +151,7 @@ public class SubscriptionContentPage extends BasePage {
                 return table.findRowsByColumns(otherProduct);
             }
 
-            public List<WebElement> getOtherProducts(HashMap<String, String> otherProduct) {
+            public List<WebElement> getOtherProduct(HashMap<String, String> otherProduct) {
                 return table.findRowsByColumns(otherProduct);
             }
 
@@ -163,7 +159,7 @@ public class SubscriptionContentPage extends BasePage {
                 return table.findRowsByColumns(otherProduct).size();
             }
 
-            public int getNumberOfOtherProducts(HashMap<String, String> otherProduct) {
+            public int getNumberOfOtherProduct(HashMap<String, String> otherProduct) {
                 return table.findRowsByColumns(otherProduct).size();
             }
 
@@ -175,11 +171,9 @@ public class SubscriptionContentPage extends BasePage {
         }
 
         public static class SubscriptionFeatureSectionPage extends SubscriptionDetailsPage{
-            private static SubscriptionFeatureSectionPage instance;
+            private static SubscriptionFeatureSectionPage instance = new SubscriptionFeatureSectionPage();
             public static SubscriptionFeatureSectionPage getInstance() {
-                if (instance == null)
-                    instance = new SubscriptionFeatureSectionPage();
-                return instance;
+                return new SubscriptionFeatureSectionPage();
             }
 
             @FindBy(xpath = "//td[contains(text(),'Service Feature:')]//following-sibling::td[1]")
@@ -191,11 +185,9 @@ public class SubscriptionContentPage extends BasePage {
         }
 
         public static class TariffComponentsGridPage extends SubscriptionContentPage{
-            private static TariffComponentsGridPage instance;
+            private static TariffComponentsGridPage instance = new TariffComponentsGridPage();
             public static TariffComponentsGridPage getInstance() {
-                if (instance == null)
-                    instance = new TariffComponentsGridPage();
-                return instance;
+                return new TariffComponentsGridPage();
             }
 
             @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Tariff Components')]")

@@ -8,11 +8,9 @@ import org.openqa.selenium.support.FindBy;
 public class DetailsContentPage extends BasePage {
 
     public static class BillingInformationSectionPage extends DetailsContentPage{
-        private static BillingInformationSectionPage instance;
+        private static BillingInformationSectionPage instance = new BillingInformationSectionPage();
         public static BillingInformationSectionPage getInstance(){
-            if (instance == null)
-                instance = new BillingInformationSectionPage();
-            return instance;
+            return new BillingInformationSectionPage();
         }
 
         @FindBy(xpath = "//td[contains(text(),'Billing Information')]/ancestor::table[1]/following-sibling::div[1]")
@@ -24,11 +22,9 @@ public class DetailsContentPage extends BasePage {
     }
 
     public static class PaymentInformationPage extends DetailsContentPage{
-        private static PaymentInformationPage instance;
+        private static PaymentInformationPage instance = new PaymentInformationPage();
         public static PaymentInformationPage getInstance(){
-            if (instance == null)
-                instance = new PaymentInformationPage();
-            return instance;
+            return new PaymentInformationPage();
         }
 
         @FindBy(xpath = "//td[contains(text(),'Payment Information')]/ancestor::table[1]/following-sibling::div[1]")

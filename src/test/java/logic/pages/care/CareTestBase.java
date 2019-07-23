@@ -10,6 +10,7 @@ import logic.pages.BasePage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.DetailsContentPage;
 import logic.pages.care.find.FindPage;
+import logic.pages.care.find.InvoicesContentPage;
 import logic.pages.care.main.LoginPage;
 import logic.pages.care.main.ServiceOrdersPage;
 import logic.utils.Parser;
@@ -85,13 +86,41 @@ public class CareTestBase extends BasePage {
     }
 
     public void checkBundleToolTip(String[] bundles) {
+        String expectTooltip;
+        String actualTooltip;
         for (String bundle : bundles) {
             int endIndex = bundle.lastIndexOf((" - £"));
             String bundleSubstr = bundle.substring(0, endIndex);
-            String expectTooltip = String.format("Additional Information\r\n%s\r\nFair Usage Warning =\r\nFair Usage Limit =", bundleSubstr);
-            Assert.assertEquals(expectTooltip, ServiceOrdersPage.ChangeBundle.getInstance().bundleToolTip(bundle));
+            expectTooltip = String.format("Additional Information\n%s\nFair Usage Warning =\nFair Usage Limit =", bundleSubstr);
+            actualTooltip = ServiceOrdersPage.ChangeBundle.getInstance().bundleToolTip(bundle);
+            Assert.assertEquals(expectTooltip, actualTooltip);
         }
+
     }
 
+    public String verifyServiceOrderCompleteScreenHasProvisionWaitMessage(){
+        String provisionWaitStatusMessage = String.format("*** Service Order has been set to Status of Provision Wait, and is due to be processed on %s ***", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy"));
+        Assert.assertEquals(provisionWaitStatusMessage, ServiceOrdersPage.ServiceOrderComplete.getInstance().getMessage());
+
+        return provisionWaitStatusMessage;
+    }
+
+    public void clickNextButton() {
+        clickNextBtn();
+    }
+
+    public void openInvoiceDetailsScreen(){
+        MenuPage.LeftMenuPage.getInstance().clickSummaryLink();
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
+        InvoicesContentPage.getInstance().clickInvoiceNumberByIndex(1);
+    }
+
+    public  void verifyInvoiceDetailsAreCorrect(String issued, String end, String dueDate, String status){
+        Assert.assertEquals(issued, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getIssued());
+        Assert.assertEquals(end, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getEnd());
+        Assert.assertEquals(dueDate, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getDueDate());
+        Assert.assertEquals(status, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getStatus(1));
+    }
 
 }

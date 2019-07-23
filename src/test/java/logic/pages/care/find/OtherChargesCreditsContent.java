@@ -10,11 +10,9 @@ import java.util.List;
 
 public class OtherChargesCreditsContent extends BasePage {
 
-    private static OtherChargesCreditsContent instance;
+    private static OtherChargesCreditsContent instance = new OtherChargesCreditsContent();
     public static OtherChargesCreditsContent getInstance() {
-        if (instance == null)
-            instance =  new OtherChargesCreditsContent();
-        return instance;
+        return new OtherChargesCreditsContent();
     }
 
     @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Other Charges/Credits')]/../../..//following-sibling::table")

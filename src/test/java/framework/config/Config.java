@@ -48,7 +48,6 @@ public class Config {
 
     public static void returnProp() {
         if (propTL != null) {
-            System.out.println("return " + propTL.get().getProperty("careUrl"));
             envQueue.offer(propTL.get());
             propTL.remove();
         }

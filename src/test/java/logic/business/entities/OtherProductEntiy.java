@@ -164,4 +164,59 @@ public class OtherProductEntiy {
         return otherProduct1;
     }
 
+    public static HashMap<String, String> dataBundlerForOtherProduct(String productCode, String type, String description, String endDate, String charge) {
+        HashMap<String, String> otherProduct1 = new HashMap<String, String>();
+        otherProduct1.put("Product Code", productCode);
+        otherProduct1.put("Type", type);
+        otherProduct1.put("Description", description);
+        otherProduct1.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), "dd MMM yyyy"));
+        otherProduct1.put("End Date", "");
+        otherProduct1.put("Charge",charge);
+        return otherProduct1;
+    }
+
+    public static List<HashMap<String, String>> dataForOtherProduct(Date newStartDate) {
+        List<HashMap<String, String>> listOtherProduct = new ArrayList<>();
+
+        HashMap<String, String> otherProduct1 = new HashMap<String, String>();
+        otherProduct1.put("Product Code", "NK-2720");
+        otherProduct1.put("Type", "Device");
+        otherProduct1.put("Description", "Nokia 2720");
+        otherProduct1.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
+        otherProduct1.put("End Date", "");
+        otherProduct1.put("Charge", "£0.00");
+
+        HashMap<String, String> otherProduct2 = new HashMap<String, String>();
+        otherProduct2.put("Product Code", "FLEXCAP - [02000-SB-A]");
+        otherProduct2.put("Type", "Bundle");
+        otherProduct2.put("Description", "Flexible Cap - £20 - [£20 safety buffer]");
+        otherProduct2.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        otherProduct2.put("End Date", "");
+        otherProduct2.put("Charge", "£0.00");
+
+        HashMap<String, String> otherProduct3 = new HashMap<String, String>();
+        otherProduct3.put("Product Code", "BUNDLER - [150-FMIN-0-FC]");
+        otherProduct3.put("Type", "Bundle");
+        otherProduct3.put("Description", "Discount Bundle Recurring - [Family perk - 150 Mins per month]");
+        otherProduct1.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
+        otherProduct3.put("End Date", Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT));
+        otherProduct3.put("Charge", "£0.00");
+
+        HashMap<String, String> otherProduct4 = new HashMap<String, String>();
+        otherProduct4.put("Product Code", "BUNDLER - [250MB-FDATA-0-FC]");
+        otherProduct4.put("Type", "Bundle");
+        otherProduct4.put("Description", "Discount Bundle Recurring - [Family perk - 250MB per month]");
+        otherProduct4.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        otherProduct4.put("End Date", "");
+        otherProduct4.put("Charge", "£0.00");
+
+        listOtherProduct.add(otherProduct1);
+        listOtherProduct.add(otherProduct2);
+        listOtherProduct.add(otherProduct3);
+        listOtherProduct.add(otherProduct4);
+
+        return listOtherProduct;
+    }
+
+
 }

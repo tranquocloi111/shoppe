@@ -10,19 +10,21 @@ import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import framework.config.Config;
 import framework.utils.Log;
+import framework.utils.Pdf;
 import framework.wdm.WDFactory;
 import framework.wdm.WdManager;
+import io.github.bonigarcia.wdm.Architecture;
 import logic.business.db.OracleDB;
 import logic.business.db.billing.BillingActions;
 import logic.business.entities.DiscountBundleEntity;
+import logic.pages.care.find.InvoicesContentPage;
+import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.*;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.sql.CallableStatement;
@@ -51,10 +53,9 @@ public class BaseTest {
     public void beforeMethod(Method m) throws MalformedURLException {
         test.set(extent.createTest(m.getName()));
        //WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.chrome()));
-        WDFactory.getConfig().setDriverVersion("74");
+        WDFactory.getConfig().setDriverVersion("75");
         WdManager.set(WDFactory.initBrowser(Config.getProp("browser")));
         WdManager.get().get(Config.getProp("careUrl"));
-        WdManager.get().manage().window().maximize();
     }
 
     @AfterMethod
@@ -138,7 +139,6 @@ public class BaseTest {
 
     protected static List<Integer> verifyNCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef){
         List<Integer> listResult = new ArrayList<Integer>();
-
         int result1 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", startDate, TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "ACTIVE");
         listResult.add(result1);
         int result2 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "ACTIVE");
@@ -147,6 +147,28 @@ public class BaseTest {
         listResult.add(result3);
 
         return listResult;
+    }
+
+    protected static void updateThePDateAndBillDateForChangeBundleForSo(String serviceOrderId){
+        BillingActions.getInstance().updateThePDateAndBillDateForChangeBundle(serviceOrderId);
+    }
+
+    protected static List<Integer> VerifyNewNCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, String partitionIdRef, String bundleCode){
+        List<Integer> listResult = new ArrayList<Integer>();
+        int result1 = BillingActions.getInstance().findNewDiscountBundlesByCondition(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, bundleCode, "ACTIVE");
+        listResult.add(result1);
+        int result2 = BillingActions.getInstance().findNewDiscountBundlesByCondition(allDiscountBundles, "NC", TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), partitionIdRef, bundleCode, "ACTIVE");
+        listResult.add(result2);
+
+        return listResult;
+    }
+
+    public static Date paymentCollectionDateEscapeNonWorkDay(int numberOfdate){
+        return BillingActions.getInstance().getInvoiceDueDateByPaymentCollectionDate(numberOfdate);
+    }
+
+    public static void downloadInvoicePDFFile(String customerNumber){
+        InvoicesContentPage.InvoiceDetailsContentPage.getInstance().saveFileFromWebRequest(customerNumber);
     }
 
     //end region

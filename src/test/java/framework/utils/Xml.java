@@ -21,6 +21,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -118,6 +119,11 @@ public class Xml {
         return nodes.item(0).getTextContent();
     }
 
+    public String getTextByXpath(String tagName, int index) {
+        NodeList nodes = getElementsByXpath(tagName);
+        return nodes.item(index).getTextContent();
+    }
+
     public void setAttributeTextByXpath(String tagName, String attiButeName, String value){
         NodeList nodes = getElementsByXpath(tagName);
         Node node = nodes.item(0);
@@ -149,6 +155,5 @@ public class Xml {
         }
         return null;
     }
-
 
 }

@@ -1,8 +1,25 @@
 package logic.utils;
 
-import java.io.File;
-import java.io.IOException;
+import com.sun.org.apache.xml.internal.security.c14n.CanonicalizationException;
+import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer;
+import com.sun.org.apache.xml.internal.security.c14n.InvalidCanonicalizerException;
+import framework.utils.Log;
+import org.apache.commons.io.FileUtils;
+import org.w3c.dom.Element;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.*;
+import java.util.LinkedList;
 import java.util.List;
+
+import static org.testng.Assert.assertEquals;
 
 public class Common {
     public static String splitSignatureCode(String imgUrl) {
@@ -45,7 +62,70 @@ public class Common {
         return list.stream().filter(x -> x.contains(value)).findAny().get();
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static LinkedList<DiffMatchPatch.Diff> compareFile(String file1, String file2){
+        LinkedList<DiffMatchPatch.Diff> d = new LinkedList<DiffMatchPatch.Diff>();
+        try {
+            DiffMatchPatch dmp = new DiffMatchPatch();
+            dmp.Diff_Timeout = 0;
+
+            long start_time = System.nanoTime();
+            d = dmp.diff_main(readFile(file1), readFile(file2), false);
+            long end_time = System.nanoTime();
+            System.out.printf("Elapsed time: %f\n", ((end_time - start_time) / 1000000000.0));
+
+            dmp.diff_cleanupSemantic(d);
+            dmp.diff_prettyHtml(d);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return d;
+    }
+
+    public static String readFile(String filename) {
+        try {
+            // Read a file from disk and return the text contents.
+            StringBuilder sb = new StringBuilder();
+            FileReader input = new FileReader(filename);
+            BufferedReader bufRead = new BufferedReader(input);
+            try {
+                String line = bufRead.readLine();
+                while (line != null) {
+                    sb.append(line).append('\n');
+                    line = bufRead.readLine();
+                }
+            } finally {
+                bufRead.close();
+                input.close();
+            }
+            return sb.toString();
+        }catch (Exception ex){
+            Log.error(ex.getMessage());
+        }
+        return null;
+    }
+
+    public static String saveXmlFile(String fileName, String xmlValue){
+        String path =  System.getProperty("user.home")+"\\Desktop\\QA_Project\\";
+        if(!new File(path).exists())
+            Common.createUserDir(path);
+        try {
+            File newTextFile = new File(path + fileName);
+            FileWriter fw = new FileWriter(newTextFile);
+            fw.write(xmlValue);
+            fw.close();
+
+        } catch (Exception iox) {
+           Log.error(iox.getMessage());
+        }
+
+        return (path + fileName);
+    }
+
+
+
+
+    public static void main(String[] args) throws InterruptedException, IOException {
 
     }
 }

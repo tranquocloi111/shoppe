@@ -20,10 +20,12 @@ public class LoginPage extends BasePage {
 
 
     public void login(String username, String password) {
-        txtUsername.sendKeys(username);
-        txtPassword.sendKeys(password);
-        btnOk.click();
-        waitUntilElementVisible(btnFindNow);
+        if(isElementPresent(txtUsername)) {
+            txtUsername.sendKeys(username);
+            txtPassword.sendKeys(password);
+            btnOk.click();
+            waitUntilElementVisible(btnFindNow);
+        }
     }
 
     public void navigateToLoginPage(){

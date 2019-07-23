@@ -12,11 +12,11 @@ import java.util.List;
 public class TasksContentPage extends BasePage {
 
     public static class TaskSummarySectionPage extends TasksContentPage {
-        private static TaskSummarySectionPage instance;
+        private static TaskSummarySectionPage instance = new TaskSummarySectionPage();
         public static TaskSummarySectionPage getInstance() {
             if (instance == null)
                 instance = new TaskSummarySectionPage();
-            return instance;
+            return  new TaskSummarySectionPage();
         }
 
         @FindBy(xpath = "//td[contains(text(),'Description:')]/following-sibling::td[1]")
@@ -42,11 +42,11 @@ public class TasksContentPage extends BasePage {
 
     public static class TaskPage extends TasksContentPage {
         public static class EventsGridSectionPage extends TaskPage {
-            private static EventsGridSectionPage instance;
+            private static EventsGridSectionPage instance = new EventsGridSectionPage();
             public static EventsGridSectionPage getInstance() {
                 if (instance == null)
                     instance = new EventsGridSectionPage();
-                return instance;
+                return new EventsGridSectionPage();
             }
 
             @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Events')]/../../..//following-sibling::div[1]//td[@class='informationBox']//table")
@@ -65,11 +65,11 @@ public class TasksContentPage extends BasePage {
                 return table.findRowsByColumns(events).size();
             }
 
-            public List<WebElement> getServiceOrder(List<HashMap<String, String>> events) {
+            public List<WebElement> getEvents(List<HashMap<String, String>> events) {
                 return table.findRowsByColumns(events);
             }
 
-            public int getNumberOfServiceOrder(List<HashMap<String, String>> events) {
+            public int getNumberOfEvents(List<HashMap<String, String>> events) {
                 return table.findRowsByColumns(events).size();
             }
 
@@ -80,11 +80,11 @@ public class TasksContentPage extends BasePage {
 
         public static class DetailsPage extends TaskPage {
 
-            private static DetailsPage instance;
+            private static DetailsPage instance = new DetailsPage();
             public static DetailsPage getInstance() {
                 if (instance == null)
                     instance = new DetailsPage();
-                return instance;
+                return new DetailsPage();
             }
 
             @FindBy(xpath = "//td[contains(text(),'Notification of low balance:')]/following-sibling::td[1]")
@@ -122,6 +122,15 @@ public class TasksContentPage extends BasePage {
 
             @FindBy(xpath = "//td[contains(text(),'Sales Channel:')]/following-sibling::td[1]")
             WebElement lblSalesChannel;
+
+            @FindBy(xpath = "//td[contains(text(),'End of Wizard Message:')]/following-sibling::td[1]")
+            WebElement lblEndOfWizardMessage;
+
+            @FindBy(xpath = "//td[contains(text(),'Temporary change flag:')]/following-sibling::td[1]")
+            WebElement lblTemporaryChangeFlag;
+
+            @FindBy(xpath = "//td[contains(text(),'EU Data Consent Flag:')]/following-sibling::td[1]")
+            WebElement lblEUDataConsentFlag;
 
             public String getNotificationOfLowBalance() {
                 return getTextOfElement(lblNotificationOfLowBalance);
@@ -170,6 +179,18 @@ public class TasksContentPage extends BasePage {
 
             public String getSalesChannel(){
                 return getTextOfElement(lblSalesChannel);
+            }
+
+            public String getEndOfWizardMessage(){
+                return getTextOfElement(lblEndOfWizardMessage);
+            }
+
+            public String getTemporaryChangeFlag(){
+                return getTextOfElement(lblTemporaryChangeFlag);
+            }
+
+            public String getEUDataConsentFlag(){
+                return getTextOfElement(lblEUDataConsentFlag);
             }
         }
     }

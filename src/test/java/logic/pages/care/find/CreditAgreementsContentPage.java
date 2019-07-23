@@ -21,11 +21,9 @@ public class CreditAgreementsContentPage extends BasePage {
         private static final String balance = "Balance";
         private static final String status = "Status";
 
-        private static CreditAgreementsGridPage instance;
+        private static CreditAgreementsGridPage instance = new CreditAgreementsGridPage();
         public static CreditAgreementsGridPage getInstance(){
-            if (instance == null)
-                instance = new CreditAgreementsGridPage();
-            return instance;
+            return new CreditAgreementsGridPage();
         }
 
         @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Credit Agreements')]/../../..//following-sibling::div[1]//table[.//div[contains(@class,'GroupPanel')]]")
@@ -96,18 +94,14 @@ public class CreditAgreementsContentPage extends BasePage {
 
 
     public static  class CreditAgreementPaymentsGrid extends CreditAgreementsContentPage{
-
         private static final String date = "Date";
         private static final String details = "Details";
         private static final String subscription = "Subscription";
         private static final String Amount = "Amount";
 
-
-        private static CreditAgreementPaymentsGrid instance;
+        private static CreditAgreementPaymentsGrid instance = new CreditAgreementPaymentsGrid();
         public static CreditAgreementPaymentsGrid getInstance(){
-            if (instance == null)
-                instance = new CreditAgreementPaymentsGrid();
-            return instance;
+            return  new CreditAgreementPaymentsGrid();
         }
 
         @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Credit Agreement Payments')]/../../..//following-sibling::div[1]//table")

@@ -43,8 +43,7 @@ public class OrderConfirmationPage  extends BasePage {
         TableControlBase tableControlBase = new TableControlBase(orderDetailsTable);
 
 
-        public List<String> getDetailItemsByFirstRow(String firstRowText)
-        {
+        public List<String> getDetailItemsByFirstRow(String firstRowText){
             List<WebElement> tds = orderDetailsTable.findElements(By.tagName("td"));
             WebElement td = null;
             List<String> list = new ArrayList<>();

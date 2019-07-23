@@ -3,17 +3,16 @@ package logic.pages.care;
 import logic.pages.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 
 public class MenuPage extends BasePage {
 
     public static class HeaderMenuPage extends MenuPage {
 
-        private static HeaderMenuPage instance;
+        private static HeaderMenuPage instance = new HeaderMenuPage();
 
         public static HeaderMenuPage getInstance() {
-            if (instance == null)
-                instance =  new HeaderMenuPage();
             return instance;
         }
 
@@ -36,14 +35,12 @@ public class MenuPage extends BasePage {
 
     public static class LeftMenuPage extends MenuPage {
 
-        private static LeftMenuPage instance;
+        private static LeftMenuPage instance = new LeftMenuPage();
         @FindBy(xpath = ".//td[@class='functions']//table")
         WebElement leftMainDiv;
 
         public static LeftMenuPage getInstance() {
-            if (instance == null)
-                instance = new LeftMenuPage();
-            return instance;
+            return new LeftMenuPage() ;
         }
 
         public void clickSummaryLink() {
@@ -83,7 +80,7 @@ public class MenuPage extends BasePage {
                 WebElement element = leftMainDiv.findElement(By.linkText(name));
                 click(element);
                 waitForPageLoadComplete(90);
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -97,9 +94,7 @@ public class MenuPage extends BasePage {
         WebElement rightMainDiv;
 
         public static RightMenuPage getInstance() {
-            if (instance == null)
-                return new RightMenuPage();
-            return instance;
+            return new RightMenuPage();
         }
 
         public void clickDeactivateAccountLink() {
@@ -138,14 +133,12 @@ public class MenuPage extends BasePage {
     }
 
     public static class BreadCrumbPage extends MenuPage {
-        private static BreadCrumbPage instance;
+        private static BreadCrumbPage instance = new BreadCrumbPage();
         @FindBy(xpath = ".//div[@class='breadCrumbsBox ShadowOnGrey']")
         WebElement breadCrumbDiv;
 
         public static BreadCrumbPage getInstance() {
-            if (instance == null)
-                instance =  new BreadCrumbPage();
-            return instance;
+            return new BreadCrumbPage();
         }
 
         public void clickParentLink() {

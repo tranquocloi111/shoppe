@@ -19,19 +19,21 @@ public class ServiceOrdersContentPage extends BasePage {
     private static final String subscription = "Subscription";
     private static final String parentId = "Parent Id";
 
-    private static ServiceOrdersContentPage instance;
+    private static ServiceOrdersContentPage instance = new ServiceOrdersContentPage();
     public static ServiceOrdersContentPage getInstance() {
-        if (instance == null)
-            instance = new ServiceOrdersContentPage();
-        return instance;
+        return new ServiceOrdersContentPage();
     }
 
     @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Services Orders')]/../../..//following-sibling::div[1]//table")
     WebElement serviceOrdertable;
     TableControlBase tableControlBase = new TableControlBase(serviceOrdertable);
 
-    public String getServiceOrderId(List<WebElement> serviceOrder) {
+    public String getServiceOrderIdByElementServiceOrders(List<WebElement> serviceOrder) {
         return serviceOrder.get(0).getText().split(" ")[0];
+    }
+
+    public String getServiceOrderIdByOrderServices(List<HashMap<String,String>> orderServices) {
+        return tableControlBase.findRowsByColumns(orderServices).get(0).getText().split(" ")[0];
     }
 
     public String getSubscriptionNumber(List<WebElement> serviceOrder) {

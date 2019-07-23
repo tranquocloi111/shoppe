@@ -327,4 +327,26 @@ public class TableControlBase extends BasePage {
         return list;
     }
 
+    private WebElement findLabelCell(String text, int index){
+        int currentIndex = 0;
+        for(WebElement label :  AllLabels()){
+            if (label.getText().trim().equalsIgnoreCase(text)){
+                currentIndex++;
+                if (currentIndex == index){
+                    return label;
+                }
+            }
+        }
+        return null;
+    }
+
+    private List<WebElement> AllLabels(){
+        return element.findElements(By.xpath(".//td[(@class!='fieldValue' and @class!='fieldvalue') or not(@class)]"));
+    }
+
+    public WebElement findControlCellByLabel(String label, int index){
+        WebElement labelCell = findLabelCell(label, index);
+        return labelCell.findElement(By.xpath(".//following-sibling::td[1]"));
+    }
+
 }

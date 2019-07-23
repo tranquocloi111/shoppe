@@ -56,6 +56,26 @@ public class EventEntity {
         return listEventChangeBundle;
     }
 
+    public static List<HashMap<String, String>> dataForEventChangeBundleProvisionWait() {
+        List<HashMap<String, String>> listEventChangeBundle = new ArrayList<>();
+        HashMap<String, String> event = new HashMap<String, String>();
+        event.put("Description", "Service Order set to Provision Wait");
+        event.put("Status", "Provision Wait");
+        listEventChangeBundle.add(event);
+
+        return listEventChangeBundle;
+    }
+
+    public static List<HashMap<String, String>> dataForEventChangeBundle(String description, String status) {
+        List<HashMap<String, String>> listEventChangeBundle = new ArrayList<>();
+        HashMap<String, String> event = new HashMap<String, String>();
+        event.put("Description", description);
+        event.put("Status", status);
+        listEventChangeBundle.add(event);
+
+        return listEventChangeBundle;
+    }
+
     public static Pair<String,String> setEvents(String description, String status){
         return new Pair<String,String>(description,status);
     }

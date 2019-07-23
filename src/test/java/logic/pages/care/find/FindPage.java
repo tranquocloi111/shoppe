@@ -20,9 +20,7 @@ public class FindPage extends BasePage {
 
     private static FindPage instance = new FindPage();
     public static FindPage getInstance(){
-        if (instance == null)
-            return new FindPage();
-        return instance;
+        return  new FindPage();
     }
 
     public void findCustomer(Pair<String, String>... pairs) {

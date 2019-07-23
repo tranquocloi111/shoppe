@@ -122,5 +122,70 @@ public class ServiceOrderEntity {
         return so;
     }
 
+    public static List<HashMap<String, String>> dataFCServiceOrderProvisionWait(String serviceSubscription) {
+        List<HashMap<String, String>> listOrderServer = new ArrayList<>();
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        so.put("Subscription", serviceSubscription);
+        so.put("Type", "Change Bundle");
+        so.put("Status","Provision Wait");
+        listOrderServer.add(so);
 
+        return listOrderServer;
+    }
+
+    public static List<HashMap<String, String>> dataNCServiceOrderProvisionWait(String serviceSubscription) {
+        List<HashMap<String, String>> listOrderServer = new ArrayList<>();
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        so.put("Subscription", serviceSubscription);
+        so.put("Type", "Change Bundle");
+        so.put("Status","Provision Wait");
+        listOrderServer.add(so);
+
+        return listOrderServer;
+    }
+
+    public static List<HashMap<String, String>> dataServiceOrderProvisionWait(String serviceSubscription) {
+        List<HashMap<String, String>> listOrderServer = new ArrayList<>();
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        so.put("Subscription", serviceSubscription);
+        so.put("Type", "Change Bundle");
+        so.put("Status","Completed Task");
+        listOrderServer.add(so);
+
+        return listOrderServer;
+    }
+
+    public static List<HashMap<String, String>> dataServiceOrder(String serviceSubscription, String type, String status) {
+        List<HashMap<String, String>> listOrderServer = new ArrayList<>();
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        so.put("Subscription", serviceSubscription);
+        so.put("Type", type);
+        so.put("Status", status);
+        listOrderServer.add(so);
+
+        return listOrderServer;
+    }
+
+    public static List<HashMap<String, String>> dataServiceOrderBySub(String serviceSubscription) {
+        List<HashMap<String, String>> listOrderServer = new ArrayList<>();
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Subscription", serviceSubscription);
+        listOrderServer.add(so);
+
+        return listOrderServer;
+    }
+
+    public static List<HashMap<String, String>> dataServiceOrderBySubAndType(String serviceSubscription, String type) {
+        List<HashMap<String, String>> listOrderServer = new ArrayList<>();
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Subscription", serviceSubscription);
+        so.put("Type", type);
+        listOrderServer.add(so);
+
+        return listOrderServer;
+    }
 }

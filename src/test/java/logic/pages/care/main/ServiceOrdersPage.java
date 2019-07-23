@@ -9,6 +9,7 @@ import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
@@ -24,7 +25,7 @@ public class ServiceOrdersPage extends BasePage {
     WebElement btnDelete;
 
     public static class DeactivateSubscriptionPage extends ServiceOrdersPage {
-        private static DeactivateSubscriptionPage instance;
+        private static DeactivateSubscriptionPage instance = new DeactivateSubscriptionPage();
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Next Bill Date:')]/following-sibling::td//input")
         WebElement nextBillDate;
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Customers email address:')]/following-sibling::td//input")
@@ -43,7 +44,7 @@ public class ServiceOrdersPage extends BasePage {
         public static DeactivateSubscriptionPage getInstance() {
             if (instance == null)
                 return new DeactivateSubscriptionPage();
-            return instance;
+            return new DeactivateSubscriptionPage();
         }
 
         public void deactivateAccountWithADelayReturnAndImmediateRefund() {
@@ -51,7 +52,7 @@ public class ServiceOrdersPage extends BasePage {
             click(btnNext);
 
             DeactivateSubscriptionRefundDetailsPage deactivateSubscriptionRefundDetailsPage = new DeactivateSubscriptionRefundDetailsPage();
-            String currentWindow = getDriver().getWindowHandle();
+            String currentWindow = getDriver().getTitle();
             deactivateSubscriptionRefundDetailsPage.clickNewCardDetailsButton();
             switchWindow("Update Card Details", false);
 
@@ -63,7 +64,8 @@ public class ServiceOrdersPage extends BasePage {
             cardDetails.setCardExpiryMonth("12");
             cardDetails.setCardExpiryYear("2020");
             new UpdateCardDetailsPage().inputCardDetail(cardDetails);
-            switchWindow(currentWindow, true);
+
+            switchWindow(currentWindow, false);
 
             deactivateSubscriptionRefundDetailsPage.clickDeactivateSubscriptionNextButton();
             deactivateSubscriptionRefundDetailsPage.clickDeactivateSubscriptionNextButton();
@@ -73,26 +75,26 @@ public class ServiceOrdersPage extends BasePage {
 
             enterValueByLabel(returnsAndEtcPage.dateReturnedCtl, Parser.parseDateFormate(TimeStamp.TodayMinus3Days(), TimeStamp.DATE_FORMAT_IN_PDF));
             selectByVisibleText(returnsAndEtcPage.assessmentGradeCtl, "Grade 1 - full credit. Phone works or has confirmed manufacture fault. No visible damage. All components included. Box reasonable wear.");
-            clickNextButton();
+            clickNextBtn();
 
-            clickNextButton();
+            clickNextBtn();
             clickReturnToCustomer();
         }
 
         public void deactivateSubscription() {
             click(ckSubscription);
             enterValueByLabel(deactivationNotes, "Regression Automation");
-            clickNextButton();
-            clickNextButton();
-            clickNextButton();
+            clickNextBtn();
+            clickNextBtn();
+            clickNextBtn();
 
             ReturnsAndEtcPage returnsAndEtcPage = new ReturnsAndEtcPage();
             enterValueByLabel(returnsAndEtcPage.dateReturnedCtl, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT_IN_PDF));
             selectByVisibleText(returnsAndEtcPage.assessmentGradeCtl, "Grade 1 - full credit. Phone works or has confirmed manufacture fault. No visible damage. All components included. Box reasonable wear.");
             enterValueByLabel(returnsAndEtcPage.returnReferenceNoCtl, "1234567890");
-            clickNextButton();
+            clickNextBtn();
 
-            clickNextButton();
+            clickNextBtn();
             clickReturnToCustomer();
         }
 
@@ -100,7 +102,7 @@ public class ServiceOrdersPage extends BasePage {
     }
 
     public static class UpdateCardDetailsPage extends ServiceOrdersPage {
-        private static UpdateCardDetailsPage instance;
+        private static UpdateCardDetailsPage instance = new UpdateCardDetailsPage();
         @FindBy(id = "PropFld_CDTP")
         WebElement cardTypeCtl;
         @FindBy(id = "PropFld_CDNO")
@@ -125,7 +127,7 @@ public class ServiceOrdersPage extends BasePage {
         public static UpdateCardDetailsPage getInstance() {
             if (instance == null)
                 return new UpdateCardDetailsPage();
-            return instance;
+            return new UpdateCardDetailsPage();
         }
 
         public void inputCardDetail(CardDetailsEntity cardDetails) {
@@ -135,14 +137,14 @@ public class ServiceOrdersPage extends BasePage {
             enterValueByLabel(cardSecurityCodeCtl, cardDetails.getCardSecurityCode());
             selectByVisibleText(cardExpiryMonthCtl, cardDetails.getCardExpiryMonth());
             selectByVisibleText(cardExpiryYearCtl, cardDetails.getCardExpiryYear());
-            click(btnApply);
+            clickByJs(btnApply);
         }
 
     }
 
     public static class DeactivateSubscriptionRefundDetailsPage extends ServiceOrdersPage {
 
-        private static DeactivateSubscriptionRefundDetailsPage instance;
+        private static DeactivateSubscriptionRefundDetailsPage instance = new DeactivateSubscriptionRefundDetailsPage();
         @FindBy(xpath = "//input[@value='New Card Details']")
         WebElement btnNewCardDetails;
         @FindBy(xpath = "//input[@name='PostCmdBtn_NEXT']")
@@ -151,11 +153,11 @@ public class ServiceOrdersPage extends BasePage {
         public static DeactivateSubscriptionRefundDetailsPage getInstance() {
             if (instance == null)
                 return new DeactivateSubscriptionRefundDetailsPage();
-            return instance;
+            return new DeactivateSubscriptionRefundDetailsPage();
         }
 
         public void clickNewCardDetailsButton() {
-            click(btnNewCardDetails);
+            clickByJs(btnNewCardDetails);
         }
 
         public void clickDeactivateSubscriptionNextButton() {
@@ -165,7 +167,7 @@ public class ServiceOrdersPage extends BasePage {
 
     public static class ReturnsAndEtcPage extends ServiceOrdersPage {
 
-        private static ReturnsAndEtcPage instance;
+        private static ReturnsAndEtcPage instance = new ReturnsAndEtcPage();
         @FindBy(xpath = "//td[@class='pagedesc']")
         WebElement MPN;
         @FindBy(xpath = "//td[@class='instuctionalTextHighLight']")
@@ -188,7 +190,7 @@ public class ServiceOrdersPage extends BasePage {
         public static ReturnsAndEtcPage getInstance() {
             if (instance == null)
                 return new ReturnsAndEtcPage();
-            return instance;
+            return new ReturnsAndEtcPage();
         }
 
         public String getMPN() {
@@ -222,14 +224,14 @@ public class ServiceOrdersPage extends BasePage {
     }
 
     public static class AccountSummaryAndSelectAction extends ServiceOrdersPage {
-        private static AccountSummaryAndSelectAction instance;
+        private static AccountSummaryAndSelectAction instance = new AccountSummaryAndSelectAction();
         @FindBy(xpath = "//select[@name='PropFld_FINTXNTYP']")
         WebElement ddChooseAction;
 
         public static AccountSummaryAndSelectAction getInstance() {
             if (instance == null)
                 return new AccountSummaryAndSelectAction();
-            return instance;
+            return new AccountSummaryAndSelectAction();
         }
 
         public void selectChooseAction() {
@@ -239,7 +241,7 @@ public class ServiceOrdersPage extends BasePage {
     }
 
     public static class InputPaymentDetails extends ServiceOrdersPage {
-        private static InputPaymentDetails instance;
+        private static InputPaymentDetails instance = new InputPaymentDetails();
         @FindBy(xpath = "//input[@name='PropFld_DBAMT']")
         WebElement txtPaymentAmount;
         @FindBy(xpath = "//textarea[@name='PropFld_NOTES']")
@@ -248,7 +250,7 @@ public class ServiceOrdersPage extends BasePage {
         public static InputPaymentDetails getInstance() {
             if (instance == null)
                 return new InputPaymentDetails();
-            return instance;
+            return new InputPaymentDetails();
         }
 
         public void inputPaymentDetail(String paymentAmount, String notes) {
@@ -259,14 +261,14 @@ public class ServiceOrdersPage extends BasePage {
     }
 
     public static class TransferExistingFunds extends ServiceOrdersPage {
-        private static TransferExistingFunds instance;
+        private static TransferExistingFunds instance = new TransferExistingFunds();
         @FindBy(xpath = "//td[contains(text(),'Enter the required amount against each MPN')]/..//following-sibling::tr//input")
         WebElement txtAmountAgainstSubscription;
 
         public static TransferExistingFunds getInstance() {
             if (instance == null)
                 return new TransferExistingFunds();
-            return instance;
+            return new TransferExistingFunds();
         }
 
         public void inputAmountAgainstSubscription(String amount) {
@@ -277,7 +279,7 @@ public class ServiceOrdersPage extends BasePage {
     }
 
     public static class ConfirmFundsTransfer extends ServiceOrdersPage {
-        private static ConfirmFundsTransfer instance;
+        private static ConfirmFundsTransfer instance = new ConfirmFundsTransfer();
         @FindBy(xpath = "//td[contains(text(),'Payment Amount:')]//following-sibling::td//span")
         WebElement paymentAmount;
         @FindBy(xpath = "//td[contains(text(),'Notes:')]//following-sibling::td//span")
@@ -302,7 +304,7 @@ public class ServiceOrdersPage extends BasePage {
         public static ConfirmFundsTransfer getInstance() {
             if (instance == null)
                 return new ConfirmFundsTransfer();
-            return instance;
+            return  new ConfirmFundsTransfer();
         }
 
         public HashMap<String, String> getConfirmFundsTransfer() {
@@ -325,7 +327,7 @@ public class ServiceOrdersPage extends BasePage {
     }
 
     public static class FundsTransferResults extends ServiceOrdersPage {
-        private static FundsTransferResults instance;
+        private static FundsTransferResults instance = new FundsTransferResults();
         @FindBy(xpath = "//td[contains(text(),'Payment Amount:')]//following-sibling::td//span")
         WebElement paymentAmount;
         @FindBy(xpath = "//td[contains(text(),'Notes:')]//following-sibling::td//span")
@@ -354,7 +356,7 @@ public class ServiceOrdersPage extends BasePage {
         public static FundsTransferResults getInstance() {
             if (instance == null)
                 return new FundsTransferResults();
-            return instance;
+            return new FundsTransferResults();
         }
 
         public HashMap<String, String> getFundsTransferResults() {
@@ -389,7 +391,7 @@ public class ServiceOrdersPage extends BasePage {
     }
 
     public static class SelectSubscription extends ServiceOrdersPage {
-        private static SelectSubscription instance;
+        private static SelectSubscription instance = new SelectSubscription();
         @FindBy(name = "PropFld_SNO1")
         WebElement ddSubscriptionNumber;
         @FindBy(name = "PropFld_BDACT")
@@ -398,29 +400,29 @@ public class ServiceOrdersPage extends BasePage {
         public static SelectSubscription getInstance() {
             if (instance == null)
                 return new SelectSubscription();
-            return instance;
+            return new SelectSubscription();
         }
 
         public void selectSubscription(String subNo, String action) {
             selectByVisibleText(ddSubscriptionNumber, subNo);
             selectByVisibleText(ddAction, action);
-            clickNextButton();
+            clickNextBtn();
         }
     }
 
     public static class ChangeBundle extends ServiceOrdersPage {
-        private static ChangeBundle instance;
+        private static ChangeBundle instance = new ChangeBundle();
         @FindBy(xpath = "//td[normalize-space(text())='Available Bundle(s)']//ancestor::form[1]")
         WebElement form;
-        @FindBy(xpath = "//td[contains(text(),'Subscription Number:')]/following-sibling::td")
+        @FindBy(xpath = "//td[contains(text(),'Subscription Number:')]/following-sibling::td//span")
         WebElement lblSubNumber;
-        @FindBy(xpath = "//td[contains(text(),'Next Bill Date for this Account:')]/following-sibling::td")
+        @FindBy(xpath = "//td[contains(text(),'Next Bill Date for this Account:')]/following-sibling::td//span")
         WebElement lblNextBillDateForThisAccount;
-        @FindBy(xpath = "//td[contains(text(),'Current Tariff:')]/following-sibling::td")
+        @FindBy(xpath = "//td[contains(text(),'Current Tariff:')]/following-sibling::td//span")
         WebElement lblCurrentTariff;
-        @FindBy(xpath = "//td[contains(text(),'Current Tariff:')]/following-sibling::td")
+        @FindBy(xpath = "//td[contains(text(),'Packaged Bundle:')]/following-sibling::td//span")
         WebElement lblPackagedBundle;
-        @FindBy(xpath = "//td[contains(text(),'Info:')]/following-sibling::td")
+        @FindBy(xpath = "//td[contains(text(),'Info:')]/following-sibling::td//span")
         WebElement lblInfo;
         @FindBy(xpath = "//td[contains(text(),'When to apply change?:')]/following-sibling::td//span")
         WebElement lblWhenToApplyChangeText;
@@ -428,7 +430,7 @@ public class ServiceOrdersPage extends BasePage {
         public static ChangeBundle getInstance() {
             if (instance == null)
                 return new ChangeBundle();
-            return instance;
+            return  new ChangeBundle();
         }
 
         public String getSubscriptionNumber() {
@@ -448,7 +450,7 @@ public class ServiceOrdersPage extends BasePage {
         }
 
         public String getWhenToApplyChangeText() {
-            return getTextOfElement(lblNextBillDateForThisAccount);
+            return getTextOfElement(lblWhenToApplyChangeText);
         }
 
         public String getInfo() {
@@ -460,8 +462,10 @@ public class ServiceOrdersPage extends BasePage {
             for (String bundle : bundles) {
                 List<WebElement> tdCells = form.findElements(By.xpath(".//td"));
                 for (WebElement cell : tdCells) {
-                    if (cell.getText().trim() == bundle)
+                    if (cell.getText().equalsIgnoreCase(bundle))
+                        System.out.println("cell.getText().trim() : " + cell.getText().trim());
                         matchCount++;
+                        break;
                 }
             }
             if (bundles.length == matchCount)
@@ -474,10 +478,11 @@ public class ServiceOrdersPage extends BasePage {
             List<WebElement> tds = form.findElements((By.xpath(".//td")));
             try {
                 for (WebElement td : tds) {
-                    if (td.getText() == bundle) {
+                    if (td.getText().equalsIgnoreCase(bundle)) {
                         WebElement image = td.findElement(By.tagName("img"));
                         String js = image.getAttribute("onmouseover");
-                        clickByJs(js);
+                        Actions a = new Actions(getDriver());
+                        a.moveToElement(image).build().perform();
                         Thread.sleep(1000);
                         WebElement div = getDriver().findElement(By.xpath(".//body/div[last()]"));
                         return div.getText();
@@ -490,18 +495,117 @@ public class ServiceOrdersPage extends BasePage {
         }
 
         public void clickNextButton(){
-            clickNextButton();
+            clickNextBtn();
         }
 
-        public void selectBundlesByName(String[] names){
+        public void selectBundlesByName(String[] names, String value){
             for (String name : names){
-                WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='{0}']", name)));
+                WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", name)));
                 WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
-                if (checkbox.getAttribute("checked") != "true"){
-                    click(checkbox);
+                if (name.equalsIgnoreCase(value)) {
+                    if (checkbox.getAttribute("checked") != "true") {
+                        click(checkbox);
+                    }
                 }
             }
         }
     }
 
+
+    public static class ConfirmChangeBundle extends ServiceOrdersPage {
+        private static ConfirmChangeBundle instance = new ConfirmChangeBundle();
+        public static ConfirmChangeBundle getInstance(){
+            if (instance == null)
+                return new ConfirmChangeBundle();
+            return new ConfirmChangeBundle();
+        }
+
+
+        @FindBy(xpath = "//td[contains(text(),'Subscription Number:')]/following-sibling::td//span")
+        WebElement subscriptionNumber;
+
+        @FindBy(xpath = "//td[contains(text(),'Next Bill Date for this Account:')]/following-sibling::td//span")
+        WebElement nextBillDateForThisAccount;
+
+        @FindBy(xpath = "//td[contains(text(),'Current Tariff:')]/following-sibling::td//span")
+        WebElement currentTariff;
+
+        @FindBy(xpath = "//td[contains(text(),'Packaged Bundle:')]/following-sibling::td//span")
+        WebElement packagedBundle;
+
+        @FindBy(xpath = "//td[contains(text(),'Info:')]/following-sibling::td//span")
+        WebElement infoBefore;
+
+        @FindBy(xpath = "//td[contains(text(),'Total Recurring Bundle Charge:')]/following-sibling::td//span")
+        WebElement totalRecurringBundleChargeBefore;
+
+        @FindBy(xpath = "//td[contains(text(),'Total Recurring Bundle Charge:')]/following-sibling::td//span")
+        WebElement totalRecurringBundleChargeAfter;
+
+        @FindBy(xpath = "//td[contains(text(),'Total Recurring Bundle Charge:')]/following-sibling::td//span")
+        List<WebElement> totalRecurringBundleCharge;
+
+        @FindBy(xpath = "//td[contains(text(),'Recurring Bundles Charge Difference:')]/following-sibling::td//span")
+        WebElement recurringBundlesChargeDifference;
+
+        @FindBy(xpath = "//td[contains(text(),'Effective:')]/following-sibling::td//span")
+        WebElement effective;
+
+        public String getSubscriptionNumber() {
+            return getTextOfElement(subscriptionNumber);
+        }
+
+        public String getNextBillDateForThisAccount() {
+            return getTextOfElement(nextBillDateForThisAccount);
+        }
+
+        public String getCurrentTariff() {
+            return getTextOfElement(currentTariff);
+        }
+
+        public String getPackagedBundle() {
+            return getTextOfElement(packagedBundle);
+        }
+
+        public String getInfoBefore() {
+            return getTextOfElement(infoBefore);
+        }
+
+        public String getTotalRecurringBundleChargeBefore() {
+            return getTextOfElement(totalRecurringBundleCharge.get(0));
+        }
+
+        public String getTotalRecurringBundleChargeAfter() {
+            return getTextOfElement(totalRecurringBundleCharge.get(1));
+        }
+
+        public String getRecurringBundlesChargeDifference() {
+            return getTextOfElement(recurringBundlesChargeDifference);
+        }
+
+        public String getEffective() {
+            return getTextOfElement(effective);
+        }
+
+        public String getBundleInfo(String name){
+            return getTextOfElement(getDriver().findElement(By.xpath("//td[contains(text(),'"+name+"')]/following-sibling::td//span")));
+        }
+
+    }
+
+    public static class ServiceOrderComplete extends ServiceOrdersPage{
+        private static ServiceOrderComplete instance = new ServiceOrderComplete();
+        public static ServiceOrderComplete getInstance(){
+            return new ServiceOrderComplete();
+        }
+
+
+        @FindBy(xpath = ".//td[@class='instuctionalTextHighLight']")
+        WebElement message;
+
+        public String getMessage() {
+            return getTextOfElement(message);
+        }
+
+    }
 }

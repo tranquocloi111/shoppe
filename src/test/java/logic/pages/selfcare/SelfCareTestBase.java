@@ -2,6 +2,12 @@ package logic.pages.selfcare;
 
 import framework.config.Config;
 import logic.pages.BasePage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelfCareTestBase extends BasePage {
     LoginPage loginPage;
@@ -22,5 +28,33 @@ public class SelfCareTestBase extends BasePage {
         waitForPageLoadComplete(120);
     }
 
+
+    public List<String> successfulMessageStack() {
+        List<String> list = new ArrayList<>();
+        for (WebElement li : getDriver().findElements(By.xpath(".//li[@class='messageStackSuccess']"))) {
+            list.add(li.getText().trim());
+        }
+        return list;
+    }
+
+    public List<String> errorMessageStack() {
+        List<String> list = new ArrayList<>();
+        for (WebElement li : getDriver().findElements(By.xpath(".//li[@class='messageStackError']"))) {
+            list.add(li.getText().trim());
+        }
+        return list;
+    }
+
+    public void navigateSelfCarePage(){
+        loginPage.navigateToSelfCarePage();
+    }
+
+    public void verifyMyTariffDetailsPageIsDisplayed(){
+        Assert.assertEquals("My tariff and credit agreement documents", MyPersonalInformationPage.getInstance().getHeader());
+    }
+
+    public void verifyMyPersonalInformationPageIsDisplayed(){
+        Assert.assertEquals("My personal information", MyPersonalInformationPage.getInstance().getHeader());
+    }
 
 }

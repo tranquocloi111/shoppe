@@ -19,16 +19,17 @@ public class BasePage {
     //region Useful actions
     public  boolean switchWindow(String title, boolean isParent) {
         if (!isParent) {
-            String currentWindow = getDriver().getWindowHandle();
-            Set<String> availableWindows = getDriver().getWindowHandles();
-            if (!availableWindows.isEmpty()) {
-                for (String windowId : availableWindows) {
-                    if (getDriver().switchTo().window(windowId).getTitle().equals(title)) {
-                        return true;
-                    } else {
-                        getDriver().switchTo().window(currentWindow);
+            try {
+                Set<String> availableWindows = getDriver().getWindowHandles();
+                if (!availableWindows.isEmpty()) {
+                    for (String windowId : availableWindows) {
+                        if (getDriver().switchTo().window(windowId).getTitle().equals(title)) {
+                            return true;
+                        }
                     }
                 }
+            }catch (Throwable ex){
+                getDriver().switchTo().window(title);
             }
         } else {
             getDriver().switchTo().window(title);
@@ -81,12 +82,12 @@ public class BasePage {
 
     public void clickLinkByText(String text) {
         click(getDriver().findElement(By.linkText(text)));
-        waitForPageLoadComplete(60);
+        waitForPageLoadComplete(90);
     }
 
     public void click(WebElement element) {
         element.click();
-        waitForPageLoadComplete(60);
+        waitForPageLoadComplete(90);
     }
 
     protected void clickByJs(WebElement element) {
@@ -94,9 +95,9 @@ public class BasePage {
         executor.executeScript("arguments[0].click();", element);
     }
 
-    protected void clickByJs(String js) {
+    protected void clickByJs(String js, WebElement element) {
         JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript(js);
+        executor.executeScript(js, element);
     }
 
     protected void selectByVisibleText(WebElement element, String value) {
@@ -147,7 +148,7 @@ public class BasePage {
         waitForPageLoadComplete(60);
     }
 
-    protected void clickNextButton() {
+    protected void clickNextBtn() {
         click(getDriver().findElement(By.xpath(".//input[@value='Next >']")));
         waitForPageLoadComplete(60);
     }
@@ -156,7 +157,7 @@ public class BasePage {
         click(getDriver().findElement(By.xpath(".//input[@value='Delete']")));
     }
 
-    protected void clickReturnToCustomer() {
+    public void clickReturnToCustomer() {
         click(getDriver().findElement(By.xpath(".//input[@value='Return to Customer']")));
         waitForPageLoadComplete(90);
     }
@@ -177,6 +178,10 @@ public class BasePage {
         return element.getText();
     }
 
+    public String getValueOfElement(WebElement element){
+        return element.getAttribute("value");
+    }
+
     public boolean isElementPresent(WebElement element) {
         try {
             return element.isDisplayed();
@@ -191,6 +196,26 @@ public class BasePage {
         WebElement td = element.findElement(By.xpath(String.format(xpath, label)));
         WebElement tr = td.findElement(By.xpath(".//ancestor::tr[1]"));
         return tr.findElement(By.xpath(".//td[4]")).getText();
+    }
+
+    public WebElement findLabelCell(WebElement element, String text) {
+        List<WebElement> allLabels = element.findElements(By.xpath(".//td[@class='fieldKey']"));
+        for (WebElement label : allLabels){
+            if (label.getText().trim().equalsIgnoreCase(text)){
+                return label;
+            }
+        }
+        return null;
+    }
+
+    public WebElement findCheckBox(WebElement container, String name){
+        List<WebElement> labels = container.findElements(By.tagName("label"));
+        for (WebElement label : labels){
+            if (label.getText().trim().equalsIgnoreCase(name)){
+                return label.findElement(By.tagName("input"));
+            }
+        }
+       return null;
     }
 
     //endregion

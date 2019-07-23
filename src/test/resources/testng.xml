@@ -3,7 +3,7 @@
 <suite name="RegressionSuite" verbose="1">
     <test name="test1" parallel="methods" thread-count="3">
         <classes>
-            <class name="suite.performance.CareScreenTest"></class>
+            <class name="suite.shakeout.ShakeOutTest"></class>
         </classes>
     </test>
 </suite>

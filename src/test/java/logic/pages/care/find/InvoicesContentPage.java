@@ -23,11 +23,9 @@ public class InvoicesContentPage extends BasePage {
     private static final String amount = "Amount";
     String pdfFile;
 
-    private static InvoicesContentPage instance;
+    private static InvoicesContentPage instance = new InvoicesContentPage();
     public static InvoicesContentPage getInstance() {
-        if (instance == null)
-            instance =  new InvoicesContentPage();
-        return instance;
+        return new InvoicesContentPage();
     }
 
     @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Invoices')]/../../..//following-sibling::div//table")
@@ -54,13 +52,23 @@ public class InvoicesContentPage extends BasePage {
 
         private static InvoiceDetailsContentPage instance;
         public static InvoiceDetailsContentPage getInstance() {
-            if (instance == null)
-                instance =  new InvoiceDetailsContentPage();
-            return instance;
+            return new InvoiceDetailsContentPage();
         }
 
         @FindBy(xpath = "//td[contains(text(),'Invoice Details')]/following-sibling::td[1]//a")
         WebElement btnViewPdf;
+
+        @FindBy(xpath = "//td[contains(text(),'Issued:')]/following-sibling::td[1]")
+        WebElement issued;
+
+        @FindBy(xpath = "//td[contains(text(),'Due Date:')]/following-sibling::td[1]")
+        WebElement dueDate;
+
+        @FindBy(xpath = "//td[contains(text(),'Status:')]/following-sibling::td[1]")
+        List<WebElement> status;
+
+        @FindBy(xpath = "//td[contains(text(),'End:')]/following-sibling::td[1]")
+        WebElement end;
 
         public void saveFileFromWebRequest(String customerNumber){
             String [] param = btnViewPdf.getAttribute("href").split(",");
@@ -69,8 +77,28 @@ public class InvoicesContentPage extends BasePage {
             MiscHelper.saveFileFromWebRequest(btnViewPdf, fileToDownloadLocation, pdfFile);
         }
 
-        public List<String> getListInvoiceContent(){
-            return Pdf.getInstance().getText(System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFile, 3);
+        public List<String> getListInvoiceContent(int startPage){
+            return Pdf.getInstance().getText(System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFile, startPage);
+        }
+
+        public String getPathOfPdfFile(){
+            return System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFile;
+        }
+
+        public String getIssued() {
+            return getTextOfElement(issued);
+        }
+
+        public String getDueDate() {
+            return getTextOfElement(dueDate);
+        }
+
+        public String getStatus(int index) {
+            return getTextOfElement(status.get(1));
+        }
+
+        public String getEnd() {
+            return getTextOfElement(end);
         }
     }
 

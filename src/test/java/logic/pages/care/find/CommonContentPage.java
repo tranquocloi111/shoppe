@@ -25,8 +25,8 @@ public class CommonContentPage extends BasePage {
         private static SubscriptionsGirdSectionPage instance;
         public static SubscriptionsGirdSectionPage getInstance(){
             if (instance == null)
-                 instance = new SubscriptionsGirdSectionPage();
-            return instance;
+                return new SubscriptionsGirdSectionPage();;
+            return new SubscriptionsGirdSectionPage();
         }
 
         @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Subscriptions')]/../../..//following-sibling::div[1]//table")
@@ -72,11 +72,9 @@ public class CommonContentPage extends BasePage {
     }
 
     public static class CustomerSummarySectionPage extends CommonContentPage{
-        private static CustomerSummarySectionPage instance ;
+        private static CustomerSummarySectionPage instance = new CustomerSummarySectionPage();
         public static CustomerSummarySectionPage getInstance(){
-            if (instance == null)
-                instance = new CustomerSummarySectionPage();
-            return instance;
+            return new CustomerSummarySectionPage();
         }
 
         @FindBy(xpath = "//td[contains(text(),'Customer Summary')]/ancestor::table[1]/following-sibling::table[1]")

@@ -53,8 +53,13 @@ public class WDFactory {
             case IE:
                 WebDriverManager.iedriver().setup();
                 webDriver = options instanceof InternetExplorerOptions ? new InternetExplorerDriver((InternetExplorerOptions) options) : new InternetExplorerDriver();
+                webDriver.manage().window().maximize();
                 break;
             case CHROME:
+                WebDriverManager.chromedriver().setup();
+                webDriver = options instanceof ChromeOptions ? new ChromeDriver((ChromeOptions) options) : new ChromeDriver();
+                webDriver.manage().window().maximize();
+                break;
             default:
                 WebDriverManager.chromedriver().setup();
                 webDriver = options instanceof ChromeOptions ? new ChromeDriver((ChromeOptions) options) : new ChromeDriver();
