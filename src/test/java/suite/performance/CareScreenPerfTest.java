@@ -8,7 +8,7 @@ import framework.utils.Timer;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 
-public class CareScreenTest extends BaseTest {
+public class CareScreenPerfTest extends BaseTest {
 
 
     private void testLoginScreen() {

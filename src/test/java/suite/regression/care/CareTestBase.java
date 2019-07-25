@@ -1,12 +1,12 @@
-package logic.pages.care;
+package suite.regression.care;
 
 import framework.config.Config;
-import framework.utils.Pdf;
 import framework.utils.Xml;
 import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.BasePage;
+import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.DetailsContentPage;
 import logic.pages.care.find.FindPage;

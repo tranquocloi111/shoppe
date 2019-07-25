@@ -97,8 +97,6 @@ public class ServiceOrdersPage extends BasePage {
             clickNextBtn();
             clickReturnToCustomer();
         }
-
-
     }
 
     public static class UpdateCardDetailsPage extends ServiceOrdersPage {
@@ -202,7 +200,7 @@ public class ServiceOrdersPage extends BasePage {
         }
 
 
-        public String GetInitialPurchasePriceByProduct(String product) {
+        public String getInitialPurchasePriceByProduct(String product) {
             List<WebElement> rows = productTable.findElements(By.tagName("tr"));
             for (WebElement row : rows) {
                 List<WebElement> tds = row.findElements(By.tagName("td"));
@@ -212,7 +210,7 @@ public class ServiceOrdersPage extends BasePage {
             return null;
         }
 
-        public String GetNonReturnChargeByProduct(String product) {
+        public String getNonReturnChargeByProduct(String product) {
             List<WebElement> rows = productTable.findElements(By.tagName("tr"));
             for (WebElement row : rows) {
                 List<WebElement> tds = row.findElements(By.tagName("td"));
@@ -519,7 +517,6 @@ public class ServiceOrdersPage extends BasePage {
                 return new ConfirmChangeBundle();
             return new ConfirmChangeBundle();
         }
-
 
         @FindBy(xpath = "//td[contains(text(),'Subscription Number:')]/following-sibling::td//span")
         WebElement subscriptionNumber;

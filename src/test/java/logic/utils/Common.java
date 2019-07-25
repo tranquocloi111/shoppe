@@ -18,6 +18,7 @@ import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import static org.testng.Assert.assertEquals;
 
@@ -105,6 +106,27 @@ public class Common {
         return null;
     }
 
+    public static void writeFile(String value, String filename){
+        BufferedWriter writer = null;
+        try{
+            writer = new BufferedWriter( new FileWriter( filename));
+            writer.write( value);
+
+        }
+        catch ( IOException e){
+            Log.error(e.getMessage());
+        }
+        finally{
+            try{
+                if ( writer != null)
+                    writer.close( );
+            }
+            catch ( IOException e){
+                Log.error(e.getMessage());
+            }
+        }
+    }
+
     public static String saveXmlFile(String fileName, String xmlValue){
         String path =  System.getProperty("user.home")+"\\Desktop\\QA_Project\\";
         if(!new File(path).exists())
@@ -122,7 +144,19 @@ public class Common {
         return (path + fileName);
     }
 
+    //Function to get random number
+    private static Random getrandom = new Random();
+    public static int getRandomNumber(int min, int max) {
+        return getrandom.nextInt(max - min) + min;
+    }
 
+    public static String getFolderLogFilePath(){
+        String path =  System.getProperty("user.home")+"\\Desktop\\QA_Project\\";
+        if(!new File(path).exists())
+            Common.createUserDir(path);
+
+        return path +"\\";
+    }
 
 
     public static void main(String[] args) throws InterruptedException, IOException {

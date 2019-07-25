@@ -216,6 +216,7 @@ public class OWSActions extends BaseWs {
     public void createGeneralCustomerOrder(String path){
         request = new Xml(new File(path));
         request.setTextByTagName(commonModMap);
+        request.setTextByTagName("billGroupId", "2");
 
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());
@@ -231,5 +232,8 @@ public class OWSActions extends BaseWs {
     public String getOrderMpnByReference(int index){
         return response.getTextByXpath("//orderItem//serviceRef", index - 1);
     }
+
+
+
 
 }

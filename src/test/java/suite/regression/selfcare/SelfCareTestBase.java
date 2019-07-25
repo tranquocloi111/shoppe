@@ -1,7 +1,8 @@
-package logic.pages.selfcare;
+package suite.regression.selfcare;
 
-import framework.config.Config;
 import logic.pages.BasePage;
+import logic.pages.selfcare.LoginPage;
+import logic.pages.selfcare.MyPersonalInformationPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;

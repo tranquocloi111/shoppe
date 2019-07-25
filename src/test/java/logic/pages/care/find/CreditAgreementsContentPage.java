@@ -88,10 +88,7 @@ public class CreditAgreementsContentPage extends BasePage {
             public String device(){return findValueByLabel(detailTable, "Device");}
 
         }
-
-
     }
-
 
     public static  class CreditAgreementPaymentsGrid extends CreditAgreementsContentPage{
         private static final String date = "Date";

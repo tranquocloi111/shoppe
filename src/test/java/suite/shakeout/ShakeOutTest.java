@@ -17,7 +17,7 @@ import logic.pages.care.main.TasksContentPage;
 import logic.pages.selfcare.AddOrChangeAFamilyPerkPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.pages.selfcare.OrderConfirmationPage;
-import logic.pages.selfcare.SelfCareTestBase;
+import suite.regression.selfcare.SelfCareTestBase;
 import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
@@ -27,6 +27,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import suite.BaseTest;
+import suite.regression.care.CareTestBase;
+
 import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;

@@ -19,7 +19,6 @@ public class SubscriptionContentPage extends BasePage {
                 return new GeneralSectionPage();
             }
 
-
             @FindBy(xpath = "//td[contains(text(),'Subscription Number:')]//following-sibling::td")
             WebElement lblSubscriptionNumber;
 

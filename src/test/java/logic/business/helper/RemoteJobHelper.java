@@ -34,7 +34,7 @@ public class RemoteJobHelper {
         return instance;
     }
 
-    private int getMaxRemoteJobId() {
+    public int getMaxRemoteJobId() {
         return Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery("select max(JOBID) as MAXJOBID from REMOTEJOB"), "MAXJOBID")));
     }
 
@@ -212,7 +212,5 @@ public class RemoteJobHelper {
         submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT2)), currentMaxJobId);
 
         waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
-
     }
-
 }

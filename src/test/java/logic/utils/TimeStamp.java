@@ -1,9 +1,9 @@
 package logic.utils;
 
-import logic.business.db.billing.BillingActions;
-
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class TimeStamp {
@@ -132,6 +132,10 @@ public class TimeStamp {
     public static long TodayPlus1MonthMinusToday(){
         long elapsedDays = ChronoUnit.DAYS.between(LocalDate.now().plusMonths(1), LocalDate.now());
         return Math.abs(elapsedDays);
+    }
+
+    public static Date TodayMinus1Hour(){
+        return Date.valueOf(String.valueOf(LocalDateTime.now().minusHours(1).toLocalDate()));
     }
 
 }

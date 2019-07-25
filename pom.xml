@@ -130,6 +130,12 @@
             <version>1.46</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.6</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,4 +1,4 @@
-package suite.regression;
+package suite.regression.care;
 
 import suite.BaseTest;
 

@@ -4,21 +4,17 @@ import framework.report.elasticsearch.ExecutionListener;
 import framework.wdm.Browser;
 import framework.wdm.WDFactory;
 import framework.wdm.WdManager;
-import io.github.bonigarcia.wdm.Architecture;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
 import java.awt.*;
 import java.awt.event.InputEvent;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 
 @Listeners(ExecutionListener.class)
 public class KibanaTest {
