@@ -1,5 +1,6 @@
 package logic.pages.care.find;
 
+import javafx.util.Pair;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
@@ -68,6 +69,13 @@ public class CommonContentPage extends BasePage {
 
         public void clickSubscriptionNumberLinkByCellValue(String cellValue){
             clickByJs(table.getRowByCellValue(cellValue).findElement(By.tagName("a")));
+        }
+
+        public int getNumberOfSubscription(Pair<String, String> subscriptions){
+            return table.findRowsByColumns(subscriptions).size();
+        }
+        public int getNumberOfSubscription(List<HashMap<String, String>> subscriptions){
+            return table.findRowsByColumns(subscriptions).size();
         }
     }
 
