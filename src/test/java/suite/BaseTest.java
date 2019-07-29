@@ -9,28 +9,20 @@ import com.aventstack.extentreports.reporter.KlovReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import framework.config.Config;
-import framework.utils.Log;
-import framework.utils.Pdf;
 import framework.wdm.WDFactory;
 import framework.wdm.WdManager;
-import io.github.bonigarcia.wdm.Architecture;
-import logic.business.db.OracleDB;
 import logic.business.db.billing.BillingActions;
 import logic.business.entities.DiscountBundleEntity;
+import logic.business.helper.RemoteJobHelper;
 import logic.pages.care.find.InvoicesContentPage;
-import logic.utils.Common;
-import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,6 +161,26 @@ public class BaseTest {
 
     public static void downloadInvoicePDFFile(String customerNumber){
         InvoicesContentPage.InvoiceDetailsContentPage.getInstance().saveFileFromWebRequest(customerNumber);
+    }
+
+    protected static void submitDoRefillBCJob(){
+        RemoteJobHelper.getInstance().submitDoRefillBcJob(TimeStamp.Today());
+    }
+
+    protected static void submitDoRefillNCJob(){
+        RemoteJobHelper.getInstance().submitDoRefillNcJob(TimeStamp.Today());
+    }
+
+    protected static void submitDoBundleRenewJob(){
+        RemoteJobHelper.getInstance().submitDoBundleRenewJob(TimeStamp.Today());
+    }
+
+    protected static void submitDraftBillRun(){
+        RemoteJobHelper.getInstance().submitDraftBillRun();
+    }
+
+    protected static void submitConfirmBillRun(){
+        RemoteJobHelper.getInstance().submitConfirmBillRun();
     }
 
     //end region

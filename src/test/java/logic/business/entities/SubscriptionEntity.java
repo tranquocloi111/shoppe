@@ -120,4 +120,27 @@ public class SubscriptionEntity {
         return listSummarySubscription;
     }
 
+
+    public static List<HashMap<String, String>> dataForInactiveSubscriptions(String subscriptionNumber,Date startDate, Date endDate) {
+        List<HashMap<String, String>> listInactiveSubscription = new ArrayList<>();
+        HashMap<String, String> summarySubscriptions = new HashMap<String, String>();
+        summarySubscriptions.put("subscriptionNumber", subscriptionNumber);
+        summarySubscriptions.put("Start Date", Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT));
+        summarySubscriptions.put("End Date", Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT));
+        summarySubscriptions.put("Status", "Inactive");
+
+        listInactiveSubscription.add(summarySubscriptions);
+        return listInactiveSubscription;
+    }
+    public static List<HashMap<String, String>> dataForActiveSubscriptions(String subscriptionNumber, Date startDate) {
+        List<HashMap<String, String>> listActiveSubscription = new ArrayList<>();
+        HashMap<String, String> summarySubscriptions = new HashMap<String, String>();
+        summarySubscriptions.put("subscriptionNumber", subscriptionNumber);
+        summarySubscriptions.put("Start Date", Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT));
+        summarySubscriptions.put("Status", "Active");
+
+        listActiveSubscription.add(summarySubscriptions);
+        return listActiveSubscription;
+    }
+
 }

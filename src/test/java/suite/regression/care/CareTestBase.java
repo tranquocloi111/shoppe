@@ -4,6 +4,7 @@ import framework.config.Config;
 import framework.utils.Xml;
 import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
+import logic.business.helper.MiscHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
@@ -13,6 +14,7 @@ import logic.pages.care.find.FindPage;
 import logic.pages.care.find.InvoicesContentPage;
 import logic.pages.care.main.LoginPage;
 import logic.pages.care.main.ServiceOrdersPage;
+import logic.pages.care.options.ChangeSubscriptionNumberPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.testng.Assert;
@@ -121,6 +123,34 @@ public class CareTestBase extends BasePage {
         Assert.assertEquals(end, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getEnd());
         Assert.assertEquals(dueDate, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getDueDate());
         Assert.assertEquals(status, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getStatus(1));
+    }
+
+    public void openChangeSubscriptionNumberPage(){
+        MenuPage.RightMenuPage.getInstance().clickChangeSubscriptionNumberLink();
+    }
+    public String updateTheSubscriptionNumberAndClickNextButton(){
+        ChangeSubscriptionNumberPage.ChangeSubscriptionNumber content = ChangeSubscriptionNumberPage.ChangeSubscriptionNumber.getInstance();
+        String newSubscriptionNumber = newSubscriptionNumber();
+        content.setNewSubscriptionNumber(newSubscriptionNumber);
+        content.setNotes("Change MPN");
+        clickNextButton();
+        return newSubscriptionNumber;
+    }
+    private String newSubscriptionNumber(){
+        return "0" + MiscHelper.RandomStringF9()+"0";
+    }
+    public void verifyConfirmChangingSubscriptionNumberMessageIsCorrect(String subscriptionNumber, String newSubscriptionNumber){
+        ChangeSubscriptionNumberPage.ConfirmChangingSubscriptionNumber content = ChangeSubscriptionNumberPage.ConfirmChangingSubscriptionNumber.getInstance();
+        String expectedMessage = "Subscription number "+subscriptionNumber+" will be changed to "+newSubscriptionNumber+" and this cannot be undone. Are you sure? Select 'Next' to confirm.";
+        Assert.assertEquals(expectedMessage, content.getConfirmMessage());
+        clickNextButton();
+    }
+
+    public void verifyServiceOrderCompletePageAndClickReturnToCustomerButton(){
+        String message = ServiceOrdersPage.ServiceOrderComplete.getInstance().getMessage();
+        Assert.assertEquals("*** The Change of Subscription has been completed ***", message);
+
+        clickReturnToCustomer();
     }
 
 }

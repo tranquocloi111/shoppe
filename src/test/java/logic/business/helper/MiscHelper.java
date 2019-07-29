@@ -1,5 +1,6 @@
 package logic.business.helper;
 
+import framework.utils.RandomCharacter;
 import logic.business.db.OracleDB;
 import logic.utils.Common;
 import framework.utils.FileDownloader;
@@ -7,6 +8,7 @@ import framework.utils.Log;
 import org.openqa.selenium.WebElement;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 public class MiscHelper {
@@ -75,4 +77,7 @@ public class MiscHelper {
         }
     }
 
+    public static String RandomStringF9(){
+        return RandomCharacter.getRandomNumericString(9);
+    }
 }

@@ -32,6 +32,7 @@ public class OWSActions extends BaseWs {
     public static final String GET_ORDER  = "src\\test\\resources\\xml\\commonrequest\\GetOrder.xml";
     public static final String TC1358_CREATE_ORDER  = "src\\test\\resources\\xml\\ows\\TC1358_createOrder.xml";
     public static final String GET_CONTRACT  = "src\\test\\resources\\xml\\commonrequest\\GetContractRequest.xml";
+    public static final String Online_CC_CUSTOMER_WITH_FC_2_BUNDLES_AND_NK2720 = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_2_bundles_and_NK2720.xml";
     //endregion
 
 
@@ -105,7 +106,6 @@ public class OWSActions extends BaseWs {
         Log.info("OrderId number:" + orderIdNo);
         checkAsyncProcessIsCompleted(orderIdNo);
     }
-
 
     public void createCustomerWithFCAndDevice(){
         request = new Xml(new File(TC30432_CREATE_ORDER));
@@ -233,7 +233,16 @@ public class OWSActions extends BaseWs {
         return response.getTextByXpath("//orderItem//serviceRef", index - 1);
     }
 
+    public void createAnOnlinesCCCustomerWithFC2BundlesAndNK2720(){
+        request = new Xml(new File(Online_CC_CUSTOMER_WITH_FC_2_BUNDLES_AND_NK2720));
+        request.setTextByTagName(commonModMap);
 
-
-
+        Log.info("Request:  " + request.toString());
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        setCustomerNo();
+        Log.info("Account number:" + customerNo);
+        setOrderIdNo();
+        Log.info("OrderId number:" + orderIdNo);
+        checkAsyncProcessIsCompleted(orderIdNo);
+    }
 }
