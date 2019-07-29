@@ -28,8 +28,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
-
-import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1295,10 +1293,7 @@ public class ShakeOutTest extends BaseTest {
     }
 
     public void verifyContractPDFFile(OWSActions owsActions, String value){
-        String path =  System.getProperty("user.home")+"\\Desktop\\QA_Project\\";
-        if(!new File(path).exists())
-            Common.createUserDir(path);
-        String locationFileName = path + String.format("TC1358Contract_%s.pdf", TimeStamp.Today());
+        String locationFileName = Common.getFolderLogFilePath() + String.format("TC1358Contract_%s.pdf", TimeStamp.Today());
         Pdf.getInstance().saveToPDF(locationFileName, value);
 
         List<String>  pdfList = Pdf.getInstance().getText(locationFileName);
