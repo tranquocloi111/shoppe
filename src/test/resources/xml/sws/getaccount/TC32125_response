@@ -1,0 +1,44 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <getAccountSummaryResponse xmlns="http://selfcare.telco.hsntech.com" xmlns:ns2="http://wsdl.hsntech.com">
+            <accountSummary>
+                <accountDetail>
+                    <accountNumber>12930</accountNumber>
+                    <accountName>Mr first150756343 last351631304</accountName>
+                    <startDate>2019-07-21+08:00</startDate>
+                    <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                    <clubcardNumber>634143330730912784</clubcardNumber>
+                    <nextBillDate>2019-08-15+08:00</nextBillDate>
+                </accountDetail>
+                <subscriptions>
+                    <subscription>
+                        <subscriptionDetail>
+                            <subscriptionNumber>07077715350</subscriptionNumber>
+                            <subscriptionDescription>Mobile NC</subscriptionDescription>
+                            <masterSubscriptionFlag>true</masterSubscriptionFlag>
+                            <status>ACTIVE</status>
+                            <startDate>2019-07-21+08:00</startDate>
+                            <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                        </subscriptionDetail>
+                        <tariff capType="FLEXIBLECAP" code="FC12-1000-500SO" descr="£10 Tariff 12 Month Contract" startDate="2019-07-21+08:00" charge="10.0">
+                            <flexibleCapAmt flexibleCapType="SAFETYBUFFER">20.0</flexibleCapAmt>
+                        </tariff>
+                    </subscription>
+                    <subscription>
+                        <subscriptionDetail>
+                            <subscriptionNumber>07960513510</subscriptionNumber>
+                            <subscriptionDescription>Mobile FC</subscriptionDescription>
+                            <masterSubscriptionFlag>false</masterSubscriptionFlag>
+                            <status>ACTIVE</status>
+                            <startDate>2019-07-21+08:00</startDate>
+                            <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+                        </subscriptionDetail>
+                        <tariff capType="FLEXIBLECAP" code="FC12-1000-500SO" descr="£10 Tariff 12 Month Contract" startDate="2019-07-21+08:00" charge="10.0">
+                            <flexibleCapAmt flexibleCapType="SAFETYBUFFER">20.0</flexibleCapAmt>
+                        </tariff>
+                    </subscription>
+                </subscriptions>
+            </accountSummary>
+        </getAccountSummaryResponse>
+    </S:Body>
+</S:Envelope>

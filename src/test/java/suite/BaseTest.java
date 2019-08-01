@@ -182,7 +182,9 @@ public class BaseTest {
     protected static void submitConfirmBillRun(){
         RemoteJobHelper.getInstance().submitConfirmBillRun();
     }
-
+    protected static void createNewBillingGroupStartFromTodayMinus15Days(){
+        BillingActions.getInstance().createNewBillingGroup(15, true, -1);
+    }
     //end region
 
 }

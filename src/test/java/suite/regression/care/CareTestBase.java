@@ -152,5 +152,4 @@ public class CareTestBase extends BasePage {
 
         clickReturnToCustomer();
     }
-
 }

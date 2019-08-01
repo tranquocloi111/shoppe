@@ -124,10 +124,17 @@ public class Xml {
         return nodes.item(index).getTextContent();
     }
 
-    public void setAttributeTextByXpath(String tagName, String attiButeName, String value){
+    public void setAttributeTextAllNodesByXpath(String tagName, String attributeName, String value){
+        NodeList nodes = getElementsByTagName(tagName);
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node node = nodes.item(i);
+            ((Element)node).setAttribute(attributeName, value);
+        }
+    }
+    public void setAttributeTextByXpath(String tagName, String attributeName, String value){
         NodeList nodes = getElementsByXpath(tagName);
         Node node = nodes.item(0);
-        ((Element)node).setAttribute(attiButeName, value);
+        ((Element)node).setAttribute(attributeName, value);
     }
 
     public String toString() {
@@ -152,6 +159,16 @@ public class Xml {
             return MessageFactory.newInstance().createMessage(null, new ByteArrayInputStream(outputStream.toByteArray()));
         } catch (TransformerException | SOAPException | IOException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Element getChildNodeByTagName(Element parent, String tagName){
+
+        for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()){
+            if (child instanceof Element && tagName.equals(child.getNodeName())) {
+                return (Element) child;
+            }
         }
         return null;
     }

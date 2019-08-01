@@ -36,5 +36,19 @@ public class DetailsContentPage extends BasePage {
 
     }
 
+    public static class AddressInformationPage extends DetailsContentPage{
+        private static AddressInformationPage instance = new AddressInformationPage();
+        public static AddressInformationPage getInstance(){
+            return new AddressInformationPage();
+        }
+
+        @FindBy(xpath = "//td[contains(text(),'Address Information')]/ancestor::table[1]/following-sibling::div[1]")
+        WebElement parent;
+
+        public String getAddressee(){
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Addressee:')]/following-sibling::td[1]")));
+        }
+    }
+
 
 }

@@ -14,7 +14,7 @@ public class TimeStamp {
     public final static String DATE_FORMAT_IN_PDF = "dd/MM/yyyy";
     public final static String DATE_FORMAT_IN_PDF2 = "dd-MMM-yyyy";
     public final static String DATE_FORMAT_IN_PDF3 = "MM/yyyy";
-
+    public final static String DATE_FORMAT_XML = "yyyy-MM-dd";
 
 
     public static Date Today() {
@@ -136,6 +136,10 @@ public class TimeStamp {
 
     public static Date TodayMinus1Hour(){
         return Date.valueOf(String.valueOf(LocalDateTime.now().minusHours(1).toLocalDate()));
+    }
+
+    public static Date TodayPlus1MonthMinus15Days(){
+        return Date.valueOf(LocalDate.now().plusMonths(1).minusDays(16));
     }
 
 }
