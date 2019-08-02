@@ -1,39 +1,35 @@
 package suite.regression.SelfCareWS;
 
-import framework.utils.Log;
 import framework.utils.Xml;
 import logic.business.db.billing.CommonActions;
 import logic.business.ws.ows.OWSActions;
 import logic.business.ws.sws.SWSActions;
 import logic.business.ws.sws.SelfCareWSTestBase;
-import logic.pages.care.find.CommonContentPage;
+import logic.pages.care.MenuPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.testng.annotations.Test;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 
 import java.io.File;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: Nhi Dinh
- * Date: 29/07/2019
+ * Date: 2/08/2019
  */
-public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
+public class TC32131_Basic_Path_Active_Account_with_Clubcard extends BaseTest {
     private String customerNumber;
     private Date newStartDate = TimeStamp.TodayMinus10Days();
-    private List<String> subscriptionNumberList = new ArrayList<>();
+    private String latestSubscriptionNumber;
+    private String clubCardNumber;
 
     @Test
-    public void TC32125_Self_Care_WS_Get_Account_Summary(){
+    public void TC32131_Basic_Path_Active_Account_with_Clubcard(){
         test.get().info("Step 1 : Create a CC Customer with 2 subscriptions order");
         OWSActions owsActions = new OWSActions();
-        owsActions.createAnOnlinesCCCustomerWithFC2BundlesAndNK2720();
+        owsActions.createAnOnlinesCCCustomerWithFC1BundleAndNK2720();
         customerNumber = owsActions.customerNo;
 
         test.get().info("Create new billing group start from today minus 15 days");
@@ -52,14 +48,13 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         test.get().info("Login to HUBNet then search Customer by customer number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("Get All Subscriptions Number");
-        getAllSubscription();
+        test.get().info("Record latest subsciption number for customer");
+        latestSubscriptionNumber = CareTestBase.page().recordLatestSubscriptionNumberForCustomer();
 
-        test.get().info("Verify Customer Start Date and Billing Group are updated successfully");
-        CareTestBase.page().verifyCustomerStartDateAndBillingGroupAreUpdatedSuccessfully(newStartDate);
-        //==============================================================================
-
-        test.get().info("Submit Get Account Summary Request to SelfCare WS");
+        test.get().info("Record account name and club card number");
+        recordAccountNameAndClubCardNumber();
+        //=============================================================================
+        test.get().info("Submit Get Account Summary Request To SelfCare WebService");
         SWSActions swsActions = new SWSActions();
         Xml response = swsActions.submitGetAccountSummaryRequestToSelfCareWS(customerNumber);
 
@@ -70,35 +65,15 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         swsActions.verifyGetAccountSummaryResponse(expectedResponse, response);
     }
 
-    private void getAllSubscription(){
-        for(int i = 1; i<=2; i++){
-            String subscriptionNumber = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
-            subscriptionNumberList.add(subscriptionNumber);
-        }
+    private void recordAccountNameAndClubCardNumber(){
+        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
+        clubCardNumber = selfCareWSTestBase.getClubCardNumber().split(" ")[0];
     }
 
-    private String getMobileFCSubscriptionNumber(){
-        String number = "";
-        for(String subNo:subscriptionNumberList ){
-            if (subNo.contains("Mobile FC")){
-                number = subNo.split(" ")[0];
-            }
-        }
-        return number;
-    }
-
-    private String getMobileNCSubscriptionNumber(){
-        String number = "";
-        for(String subNo:subscriptionNumberList ){
-            if (subNo.contains("Mobile NC")){
-                number = subNo.split(" ")[0];
-            }
-        }
-        return number;
-    }
 
     private Xml buildAccountSummaryResponseData(Date startDate){
-        Xml response = new Xml(new File("src\\test\\resources\\xml\\sws\\getaccount\\TC32125_response"));
+        Xml response = new Xml(new File("src\\test\\resources\\xml\\sws\\getaccount\\TC32131_response.xml"));
 
         String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT_XML)+"+08:00";
         String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1MonthMinus15Days(), TimeStamp.DATE_FORMAT_XML)+"+08:00";
@@ -111,23 +86,11 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         response.setTextByTagName("startDate",sStartDate);
         response.setTextByTagName("nextBillDate", SNextBillDate);
         response.setTextByTagName("endDate", "");
+        response.setTextByTagName("subscriptionNumber", latestSubscriptionNumber);
 
-        NodeList nodes = response.getElementsByTagName("subscriptionDetail");
-        Log.info(nodes.toString());
-        for (int i = 0; i < nodes.getLength(); i++) {
-                Element parentNode = (Element)nodes.item(i);;
-                Element child = response.getChildNodeByTagName(parentNode, "subscriptionDescription");
-                if (child.getTextContent().equals("Mobile FC")) {
-                    Element subNumber = response.getChildNodeByTagName(parentNode, "subscriptionNumber");
-                    subNumber.setTextContent(getMobileFCSubscriptionNumber());
-                } else {
-                    Element subNumber = response.getChildNodeByTagName(parentNode, "subscriptionNumber");
-                    subNumber.setTextContent(getMobileNCSubscriptionNumber());
-                }
-
-        }
         response.setAttributeTextAllNodesByXpath("tariff", "startDate", sStartDate);
 
         return response;
     }
+
 }

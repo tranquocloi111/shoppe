@@ -8,10 +8,7 @@ import logic.business.helper.MiscHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
-import logic.pages.care.find.CommonContentPage;
-import logic.pages.care.find.DetailsContentPage;
-import logic.pages.care.find.FindPage;
-import logic.pages.care.find.InvoicesContentPage;
+import logic.pages.care.find.*;
 import logic.pages.care.main.LoginPage;
 import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.options.ChangeSubscriptionNumberPage;
@@ -152,4 +149,14 @@ public class CareTestBase extends BasePage {
 
         clickReturnToCustomer();
     }
+
+    public String recordLatestSubscriptionNumberForCustomer(){
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
+
+        return SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
+    }
+
+
+
 }

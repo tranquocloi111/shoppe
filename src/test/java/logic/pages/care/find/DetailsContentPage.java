@@ -50,5 +50,19 @@ public class DetailsContentPage extends BasePage {
         }
     }
 
+    public static class CreditInformationPage extends DetailsContentPage{
+        private static CreditInformationPage instance = new CreditInformationPage();
+        public static CreditInformationPage getInstance(){
+            return new CreditInformationPage();
+        }
+
+        @FindBy(xpath = "//td[contains(text(),'Credit Information')]/ancestor::table[1]/following-sibling::div[1]")
+        WebElement parent;
+
+        public String getClubCardNumber(){
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Club Card Number:')]/following-sibling::td[1]")));
+        }
+    }
+
 
 }

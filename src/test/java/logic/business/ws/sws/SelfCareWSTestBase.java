@@ -16,4 +16,8 @@ public class SelfCareWSTestBase extends BaseWs {
     public String getCustomerName(){
         return DetailsContentPage.AddressInformationPage.getInstance().getAddressee();
     }
+
+    public String getClubCardNumber(){
+        return DetailsContentPage.CreditInformationPage.getInstance().getClubCardNumber();
+    }
 }
