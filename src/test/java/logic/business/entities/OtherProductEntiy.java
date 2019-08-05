@@ -91,12 +91,12 @@ public class OtherProductEntiy {
         otherProduct1.put("Charge", "£0.00");
 
         HashMap<String, String> otherProduct2 = new HashMap<String, String>();
-        otherProduct2.put("Product Code", "BUNDLER - [500MB-FDATA-0-FC-4G]");
-        otherProduct2.put("Type", "Bundle");
-        otherProduct2.put("Description", "Discount Bundle Recurring - [Family perk - 500MB per month - 4G]");
-        otherProduct2.put("Start Date", Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT));
-        otherProduct2.put("End Date", "");
-        otherProduct2.put("Charge", "£0.00");
+        otherProduct1.put("Product Code", "BUNDLER - [500MB-FDATA-0-FC-4G]");
+        otherProduct1.put("Type", "Bundle");
+        otherProduct1.put("Description", "Discount Bundle Recurring - [Family perk - 500MB per month - 4G]");
+        otherProduct1.put("Start Date", Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT));
+        otherProduct1.put("End Date", "");
+        otherProduct1.put("Charge", "£0.00");
 
         listOtherProduct.add(otherProduct1);
         listOtherProduct.add(otherProduct2);
@@ -116,20 +116,20 @@ public class OtherProductEntiy {
         otherProduct1.put("Charge", "£60.00");
 
         HashMap<String, String> otherProduct2 = new HashMap<String, String>();
-        otherProduct2.put("Product Code", "FLEXCAP - [02000-SB-A]");
-        otherProduct2.put("Type", "Bundle");
-        otherProduct2.put("Description", "Flexible Cap - £20 - [£20 safety buffer]");
-        otherProduct2.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
-        otherProduct2.put("End Date", "");
-        otherProduct2.put("Charge", "£0.00");
+        otherProduct1.put("Product Code", "FLEXCAP - [02000-SB-A]");
+        otherProduct1.put("Type", "Bundle");
+        otherProduct1.put("Description", "Flexible Cap - £20 - [£20 safety buffer]");
+        otherProduct1.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        otherProduct1.put("End Date", "");
+        otherProduct1.put("Charge", "£0.00");
 
         HashMap<String, String> otherProduct3 = new HashMap<String, String>();
-        otherProduct3.put("Product Code", "BUNDLER - [500MB-DATA-500-FC]");
-        otherProduct3.put("Type", "Bundle");
-        otherProduct3.put("Description", "Discount Bundle Recurring - [Monthly 500MB data allowance]");
-        otherProduct3.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
-        otherProduct3.put("End Date", "");
-        otherProduct3.put("Charge", "£5.00");
+        otherProduct1.put("Product Code", "BUNDLER - [500MB-DATA-500-FC]");
+        otherProduct1.put("Type", "Bundle");
+        otherProduct1.put("Description", "Discount Bundle Recurring - [Monthly 500MB data allowance]");
+        otherProduct1.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        otherProduct1.put("End Date", "");
+        otherProduct1.put("Charge", "£5.00");
 
         listOtherProduct.add(otherProduct1);
         listOtherProduct.add(otherProduct2);
@@ -146,6 +146,8 @@ public class OtherProductEntiy {
         otherProduct1.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
         otherProduct1.put("End Date", "");
         otherProduct1.put("Charge", "£0.00");
+
+
         return otherProduct1;
     }
 
@@ -157,6 +159,8 @@ public class OtherProductEntiy {
         otherProduct1.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
         otherProduct1.put("End Date", "");
         otherProduct1.put("Charge", "£0.00");
+
+
         return otherProduct1;
     }
 
@@ -194,7 +198,7 @@ public class OtherProductEntiy {
         otherProduct3.put("Product Code", "BUNDLER - [150-FMIN-0-FC]");
         otherProduct3.put("Type", "Bundle");
         otherProduct3.put("Description", "Discount Bundle Recurring - [Family perk - 150 Mins per month]");
-        otherProduct3.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
+        otherProduct1.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
         otherProduct3.put("End Date", Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT));
         otherProduct3.put("Charge", "£0.00");
 

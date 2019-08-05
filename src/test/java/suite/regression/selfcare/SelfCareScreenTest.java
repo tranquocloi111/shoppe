@@ -1,4 +1,4 @@
-package suite.regression.selfcare;
+package suite.regression;
 
 import framework.utils.Log;
 import logic.business.db.billing.CommonActions;
