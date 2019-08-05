@@ -6,7 +6,6 @@ import framework.utils.RandomCharacter;
 import javafx.util.Pair;
 import logic.business.db.OracleDB;
 import logic.business.entities.DiscountBundleEntity;
-import org.joda.time.DateTime;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -91,12 +90,12 @@ public class BillingActions extends OracleDB {
 
     public void updateBillGroupPaymentCollectionDate(Date collectionDate, int billingGroupId)
     {
-        DateTime localDate = null;
-        DateTime date =  DateTime.now().plusDays(10);
-        if (date.getDayOfMonth() > 28){
-            date = localDate.plusDays(28 - date.getDayOfMonth());
+        LocalDate localDate = LocalDate.now().plusDays(10);
+        Date date =  Date.valueOf(localDate);;
+        if (date.getDate() > 28){
+            date = Date.valueOf(localDate.plusDays(28 - date.getDate()));
         }
-        String sql = String.format("update BGPROPERTY set propvalnumber= %d where propertykey='BGPCDAY' and billinggroupid= %d ", date.getDayOfMonth(), billingGroupId);
+        String sql = String.format("update BGPROPERTY set propvalnumber= %d where propertykey='BGPCDAY' and billinggroupid= %d ", date.getDate(), billingGroupId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
