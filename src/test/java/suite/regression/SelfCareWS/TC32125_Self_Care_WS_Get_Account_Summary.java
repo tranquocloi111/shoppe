@@ -1,4 +1,4 @@
-package suite.regression.SelfCareWS;
+package suite.regression.selfcarews;
 
 import framework.utils.Log;
 import framework.utils.Xml;
@@ -33,7 +33,7 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
     public void TC32125_Self_Care_WS_Get_Account_Summary(){
         test.get().info("Step 1 : Create a CC Customer with 2 subscriptions order");
         OWSActions owsActions = new OWSActions();
-        owsActions.createAnOnlinesCCCustomerWithFC2BundlesAndNK2720();
+        owsActions.createACCCustomerWith2SubscriptionOrder();
         customerNumber = owsActions.customerNo;
 
         test.get().info("Create new billing group start from today minus 15 days");
@@ -67,7 +67,8 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         Xml expectedResponse = buildAccountSummaryResponseData(newStartDate);
 
         test.get().info("Verify Get Account Summary Response");
-        swsActions.verifyGetAccountSummaryResponse(expectedResponse, response);
+        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
+        selfCareWSTestBase.verifyGetAccountSummaryResponse(customerNumber, expectedResponse, response);
     }
 
     private void getAllSubscription(){
@@ -100,8 +101,8 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
     private Xml buildAccountSummaryResponseData(Date startDate){
         Xml response = new Xml(new File("src\\test\\resources\\xml\\sws\\getaccount\\TC32125_response"));
 
-        String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT_XML)+"+08:00";
-        String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1MonthMinus15Days(), TimeStamp.DATE_FORMAT_XML)+"+08:00";
+        String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
+        String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
 
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         String accountName = "Mr " + selfCareWSTestBase.getCustomerName();
@@ -115,15 +116,15 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         NodeList nodes = response.getElementsByTagName("subscriptionDetail");
         Log.info(nodes.toString());
         for (int i = 0; i < nodes.getLength(); i++) {
-                Element parentNode = (Element)nodes.item(i);;
-                Element child = response.getChildNodeByTagName(parentNode, "subscriptionDescription");
-                if (child.getTextContent().equals("Mobile FC")) {
-                    Element subNumber = response.getChildNodeByTagName(parentNode, "subscriptionNumber");
-                    subNumber.setTextContent(getMobileFCSubscriptionNumber());
-                } else {
-                    Element subNumber = response.getChildNodeByTagName(parentNode, "subscriptionNumber");
-                    subNumber.setTextContent(getMobileNCSubscriptionNumber());
-                }
+            Element parentNode = (Element)nodes.item(i);;
+            Element child = response.getChildNodeByTagName(parentNode, "subscriptionDescription");
+            if (child.getTextContent().equals("Mobile FC")) {
+                Element subNumber = response.getChildNodeByTagName(parentNode, "subscriptionNumber");
+                subNumber.setTextContent(getMobileFCSubscriptionNumber());
+            } else {
+                Element subNumber = response.getChildNodeByTagName(parentNode, "subscriptionNumber");
+                subNumber.setTextContent(getMobileNCSubscriptionNumber());
+            }
 
         }
         response.setAttributeTextAllNodesByXpath("tariff", "startDate", sStartDate);

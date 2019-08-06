@@ -1,18 +1,15 @@
-package suite.regression.SelfCareWS;
+package suite.regression.selfcarews;
 
 import framework.utils.Xml;
 import logic.business.db.billing.CommonActions;
 import logic.business.ws.ows.OWSActions;
 import logic.business.ws.sws.SWSActions;
 import logic.business.ws.sws.SelfCareWSTestBase;
-import logic.pages.care.MenuPage;
-import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 
-import java.io.File;
 import java.sql.Date;
 
 /**
@@ -27,7 +24,7 @@ public class TC32131_Basic_Path_Active_Account_with_Clubcard extends BaseTest {
 
     @Test
     public void TC32131_Basic_Path_Active_Account_with_Clubcard(){
-        test.get().info("Step 1 : Create a CC Customer with 2 subscriptions order");
+        test.get().info("Step 1 : Create a CC Customer with FC 1 bundle and NK2720");
         OWSActions owsActions = new OWSActions();
         owsActions.createAnOnlinesCCCustomerWithFC1BundleAndNK2720();
         customerNumber = owsActions.customerNo;
@@ -52,45 +49,19 @@ public class TC32131_Basic_Path_Active_Account_with_Clubcard extends BaseTest {
         latestSubscriptionNumber = CareTestBase.page().recordLatestSubscriptionNumberForCustomer();
 
         test.get().info("Record account name and club card number");
-        recordAccountNameAndClubCardNumber();
+        clubCardNumber = CareTestBase.page().recordAccountNameAndClubCardNumber();
         //=============================================================================
         test.get().info("Submit Get Account Summary Request To SelfCare WebService");
         SWSActions swsActions = new SWSActions();
         Xml response = swsActions.submitGetAccountSummaryRequestToSelfCareWS(customerNumber);
 
         test.get().info("Build Expected Account Summary Response Data");
-        Xml expectedResponse = buildAccountSummaryResponseData(newStartDate);
+        String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getaccount\\TC32131_response.xml";
+        Xml expectedResponse = swsActions.buildSimpleAccountSummaryResponseData(sampleResponseFile, newStartDate, customerNumber, latestSubscriptionNumber);
 
         test.get().info("Verify Get Account Summary Response");
-        swsActions.verifyGetAccountSummaryResponse(expectedResponse, response);
-    }
-
-    private void recordAccountNameAndClubCardNumber(){
-        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        clubCardNumber = selfCareWSTestBase.getClubCardNumber().split(" ")[0];
-    }
-
-
-    private Xml buildAccountSummaryResponseData(Date startDate){
-        Xml response = new Xml(new File("src\\test\\resources\\xml\\sws\\getaccount\\TC32131_response.xml"));
-
-        String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT_XML)+"+08:00";
-        String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1MonthMinus15Days(), TimeStamp.DATE_FORMAT_XML)+"+08:00";
-
-        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        String accountName = "Mr " + selfCareWSTestBase.getCustomerName();
-
-        response.setTextByTagName("accountNumber", customerNumber);
-        response.setTextByTagName("accountName",accountName);
-        response.setTextByTagName("startDate",sStartDate);
-        response.setTextByTagName("nextBillDate", SNextBillDate);
-        response.setTextByTagName("endDate", "");
-        response.setTextByTagName("subscriptionNumber", latestSubscriptionNumber);
-
-        response.setAttributeTextAllNodesByXpath("tariff", "startDate", sStartDate);
-
-        return response;
+        selfCareWSTestBase.verifyGetAccountSummaryResponse(customerNumber, expectedResponse, response);
     }
 
 }

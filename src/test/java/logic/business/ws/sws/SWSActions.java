@@ -72,7 +72,7 @@ public class SWSActions extends BaseWs {
         Xml response = new Xml(new File(file));
 
         String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
-        String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1MonthMinus15Days(), TimeStamp.DateFormatXml());
+        String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
 
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         String accountName = "Mr " + selfCareWSTestBase.getCustomerName();
