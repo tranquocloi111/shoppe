@@ -54,7 +54,7 @@ public class XmlUtils {
         return null;
     }
 
-    public static void assertXMLEqual(String expected, String actual) throws ParserConfigurationException, IOException, SAXException, CanonicalizationException, InvalidCanonicalizerException, TransformerException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+    public static void assertXMLEqual(String expected, String actual){
         String canonicalExpected = prettyFormat(toCanonicalXml(expected));
         String canonicalActual = prettyFormat(toCanonicalXml(actual));
         assertEquals(canonicalExpected, canonicalActual);

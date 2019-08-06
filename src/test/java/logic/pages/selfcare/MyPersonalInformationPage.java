@@ -14,66 +14,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyPersonalInformationPage extends BasePage {
-    private static MyPersonalInformationPage instance;
+    //private static MyPersonalInformationPage instance;
+    public static MyPersonalInformationPage getInstance() {
+        return new MyPersonalInformationPage();
+    }
+
     @FindBy(id = "header")
     WebElement header;
-
-    public static MyPersonalInformationPage getInstance() {
-        if (instance == null)
-            return new MyPersonalInformationPage();
-        return instance;
-    }
 
     public String getHeader() {
         waitUntilElementVisible(header);
         return getTextOfElement(header);
     }
 
-
     public static class MyPreviousOrdersPage extends MyPersonalInformationPage {
-        private static MyPreviousOrdersPage instance;
-        @FindBy(xpath = "//b[contains(text(),'My previous orders and contract')]/ancestor::table[1]/following-sibling::div//table")
-        WebElement myPreviousOrdersContracttable;
-        TableControlBase tableControlBase = new TableControlBase(myPreviousOrdersContracttable);
-
+        //private static MyPreviousOrdersPage instance;
         public static MyPreviousOrdersPage getInstance() {
-            if (instance == null)
-                return new MyPreviousOrdersPage();
-            return instance;
+            return new MyPreviousOrdersPage();
         }
 
+        @FindBy(xpath = "//b[contains(text(),'My previous orders and contract')]/ancestor::table[1]/following-sibling::div//table")
+        WebElement myPreviousOrdersContracttable;
+
+        TableControlBase tableControlBase = new TableControlBase(myPreviousOrdersContracttable);
         public void clickViewByIndex(int index) {
             click(myPreviousOrdersContracttable.findElement(By.xpath(".//tr[" + index + "]")).findElement(By.linkText("View")));
         }
     }
 
     public static class MyTariffPage extends MyPersonalInformationPage {
-        private static MyTariffPage instance;
-        @FindBy(xpath = "//a[@href='/orderentry/ShowAllSubscriptions.do']")
-        WebElement myTariffDetails;
-
         public static MyTariffPage getInstance() {
-            if (instance == null)
-                return new MyTariffPage();
-            return instance;
+            return new MyTariffPage();
         }
 
+        @FindBy(xpath = "//a[@href='/orderentry/ShowAllSubscriptions.do']")
+        WebElement myTariffDetails;
         public void clickViewOrChangeMyTariffDetailsLink() {
             click(myTariffDetails);
         }
 
         public static class MyTariffDetailsPage extends MyTariffPage {
-
             static String serviceRefName;
-            private static MyTariffDetailsPage instance;
-            TableControlBase tableControlBase = new TableControlBase(myTariffTable());
-
             public static MyTariffDetailsPage getInstance(String name) {
                 serviceRefName = name;
-                if (instance == null)
-                    return new MyTariffDetailsPage();
-                return instance;
+                return new MyTariffDetailsPage();
             }
+
+            TableControlBase tableControlBase = new TableControlBase(myTariffTable());
 
             private WebElement myTariffTable() {
                 return getDriver().findElement(By.xpath("//form//input[@value='" + serviceRefName + "']//ancestor::table[1]"));
@@ -135,6 +122,14 @@ public class MyPersonalInformationPage extends BasePage {
 
             public void clickAddOrChangeAFamilyPerkBtn() {
                 click(addOrChangeAFamilyPerkBtn());
+            }
+
+            private WebElement addOrChangeABundleButton() {
+                return findLinkButtonText(myTariffTable(), "Add or change a bundle");
+            }
+
+            public void clickAddOrChangeABundleButton() {
+                click(addOrChangeABundleButton());
             }
 
             private WebElement findLinkButtonText(WebElement controlCell, String text) {
