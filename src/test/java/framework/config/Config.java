@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class Config {
 
     private static final String CONFIG_FOLDER = ".\\src\\test\\resources\\env";
-    private static final String CONFIG_FILE_EXT = "env3.properties";
+    private static final String CONFIG_FILE_EXT = "env1.properties";
 
     public static Queue<Properties> envQueue;
     private static ThreadLocal<Properties> propTL = new ThreadLocal<>();

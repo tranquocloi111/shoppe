@@ -162,4 +162,44 @@ public class MyPersonalInformationPage extends BasePage {
         }
 
     }
+
+    public static class myAlertSection extends MyPersonalInformationPage {
+        private static myAlertSection instance;
+        @FindBy(xpath = "//b[contains(text(),'My alerts')]/ancestor::p/following-sibling::div[1]/table")
+        WebElement myAlertSection;
+
+        public static myAlertSection getInstance() {
+            if (instance == null)
+                return new myAlertSection();
+            return instance;
+        }
+        TableControlBase tableControlBase = new TableControlBase(myAlertSection);
+        public String getAlertMessageByText(String text){
+            return (getTextOfElement(tableControlBase.getLinkByText(text)));
+        }
+        public void clickAlertMessageByText(String text){
+            click(tableControlBase.getLinkByText(text));
+        }
+
+
+    }
+    public static class myAccountSection extends MyPersonalInformationPage {
+        private static myAccountSection instance;
+        @FindBy(xpath = "//b[contains(text(),'My account')]/ancestor::p/following-sibling::div[1]/table")
+        WebElement myAccountTable;
+
+        public static myAccountSection getInstance() {
+            if (instance == null)
+                return new myAccountSection();
+            return instance;
+        }
+        TableControlBase tableControlBase = new TableControlBase(myAccountTable);
+
+
+        public void clickViewOrChangeMyAccountDetails(){
+            tableControlBase.clickLinkByText("View or change my account details");
+        }
+
+
+    }
 }

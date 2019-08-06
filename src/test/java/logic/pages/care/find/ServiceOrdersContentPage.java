@@ -56,8 +56,11 @@ public class ServiceOrdersContentPage extends BasePage {
         return tableControlBase.findRowsByColumns(orderService).size();
     }
 
+    public int getNumberOfServiceOrdersByOrderService(HashMap<String, String> orderService) {
+        return tableControlBase.getRowsByColumn(orderService).size();
+    }
     public int getNumberOfServiceOrders(HashMap<String, String> orderService) {
-        return tableControlBase.findRowsByColumns(orderService).size();
+        return tableControlBase.getRowsByColumn(orderService).size();
     }
 
     public void clickServiceOrderIdLink(String serviceOrderId) {

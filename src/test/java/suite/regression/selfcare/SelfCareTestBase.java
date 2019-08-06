@@ -1,6 +1,7 @@
 package suite.regression.selfcare;
 
 import logic.pages.BasePage;
+import logic.pages.selfcare.AddOrChangeAFamilyPerkPage;
 import logic.pages.selfcare.LoginPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import org.openqa.selenium.By;
@@ -45,6 +46,10 @@ public class SelfCareTestBase extends BasePage {
         }
         return list;
     }
+    public void viewOrChangeMyAccountDetails()
+    {
+       MyPersonalInformationPage.myAccountSection.getInstance().clickViewOrChangeMyAccountDetails();
+    }
 
     public void navigateSelfCarePage(){
         loginPage.navigateToSelfCarePage();
@@ -52,6 +57,9 @@ public class SelfCareTestBase extends BasePage {
 
     public void verifyMyTariffDetailsPageIsDisplayed(){
         Assert.assertEquals("My tariff and credit agreement documents", MyPersonalInformationPage.getInstance().getHeader());
+    }
+    public void verifyAddOrChangeAFamilyPerkIsDisplayed(){
+        Assert.assertEquals("Add or change a Family Perk", MyPersonalInformationPage.getInstance().getHeader());
     }
 
     public void verifyMyPersonalInformationPageIsDisplayed(){
