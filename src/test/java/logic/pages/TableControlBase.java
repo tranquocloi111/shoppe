@@ -29,6 +29,16 @@ public class TableControlBase extends BasePage {
         return getRowByIndex(index);
     }
 
+    public WebElement getLinkByText(String text) {
+        // i = 1: Header
+        try {
+            WebElement row = element.findElement(By.xpath(String.format(".//tr/td//a[contains(text(),'%s')]", text)));
+            return row;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public String getCellValueByColumnNameAndRowIndex(int index, String columnName) {
         // i = 1: Header
         try {
@@ -36,6 +46,18 @@ public class TableControlBase extends BasePage {
             int columnIndex = getColumnIndex(columnName);
             String xpath = String.format(".//td[%d]", columnIndex + 1);
             return row.findElement(By.xpath(xpath)).getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getCellAttributeValueByColumnNameAndRowIndex(int index, String columnName) {
+        // i = 1: Header
+        try {
+            WebElement row = getRowByIndex(index);
+            int columnIndex = getColumnIndex(columnName);
+            String xpath = String.format(".//td[%d]//input", columnIndex + 2);
+            return row.findElement(By.xpath(xpath)).getAttribute("value");
         } catch (Exception e) {
             return null;
         }
@@ -218,6 +240,32 @@ public class TableControlBase extends BasePage {
         }
     }
 
+    public List<WebElement> getRowsByColumn(HashMap<String, String> columns) {
+        int columnIndex = 0;
+        WebElement elm = null;
+        List<WebElement> column = new ArrayList<>();
+        List<WebElement> body = getBody();
+        for (int i = 0; i < body.size(); i++) {
+            boolean Flag = true;
+            for (Map.Entry mapElement : columns.entrySet()) {
+                String columnName = (String) mapElement.getKey();
+                String cellValue = (String) mapElement.getValue();
+                columnIndex = getColumnIndex(columnName);
+                String ExR = body.get(i).findElements(By.tagName("td")).get(columnIndex).getText();
+                if (!body.get(i).findElements(By.tagName("td")).get(columnIndex).getText().equalsIgnoreCase(cellValue)) {
+                    elm = body.get(i);
+                    Flag = false;
+                    break;
+                }
+
+            }
+            if (Flag)
+                column.add(elm);
+        }
+        return column;
+    }
+
+
     public List<WebElement> findRowsByColumns(List<HashMap<String, String>> columns) {
         int columnIndex = 0;
         boolean flag = false;
@@ -306,33 +354,33 @@ public class TableControlBase extends BasePage {
     }
 
 
-    public List<WebElement> getRowsByColumnsWithIndex(String [] cellValue) {
+    public List<WebElement> getRowsByColumnsWithIndex(String[] cellValue) {
         List<Boolean> listChecked = new ArrayList<>();
         List<WebElement> list = new ArrayList<>();
         List<WebElement> body = getBody();
         for (WebElement element : body) {
-            List<WebElement> td =  element.findElements(By.tagName("td"));
+            List<WebElement> td = element.findElements(By.tagName("td"));
             for (int i = 0; i < td.size(); i++) {
                 if (element.findElements(By.tagName("td")).get(i).getText().contains(cellValue[i])) {
                     listChecked.add(true);
-                }else{
+                } else {
                     listChecked.add(false);
                 }
             }
             if (listChecked.stream().filter(x -> x == false).count() < 1) {
                 list.add(element);
             }
-            listChecked =  new ArrayList<>();
+            listChecked = new ArrayList<>();
         }
         return list;
     }
 
-    private WebElement findLabelCell(String text, int index){
+    private WebElement findLabelCell(String text, int index) {
         int currentIndex = 0;
-        for(WebElement label :  AllLabels()){
-            if (label.getText().trim().equalsIgnoreCase(text)){
+        for (WebElement label : AllLabels()) {
+            if (label.getText().trim().equalsIgnoreCase(text)) {
                 currentIndex++;
-                if (currentIndex == index){
+                if (currentIndex == index) {
                     return label;
                 }
             }
@@ -340,11 +388,11 @@ public class TableControlBase extends BasePage {
         return null;
     }
 
-    private List<WebElement> AllLabels(){
+    private List<WebElement> AllLabels() {
         return element.findElements(By.xpath(".//td[(@class!='fieldValue' and @class!='fieldvalue') or not(@class)]"));
     }
 
-    public WebElement findControlCellByLabel(String label, int index){
+    public WebElement findControlCellByLabel(String label, int index) {
         WebElement labelCell = findLabelCell(label, index);
         return labelCell.findElement(By.xpath(".//following-sibling::td[1]"));
     }

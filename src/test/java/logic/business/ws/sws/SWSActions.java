@@ -4,11 +4,16 @@ import framework.utils.Log;
 import framework.utils.Soap;
 import framework.utils.Xml;
 import logic.business.ws.BaseWs;
+import logic.pages.care.MenuPage;
+import logic.pages.care.find.InvoicesContentPage;
 import logic.utils.Common;
+import logic.utils.Parser;
+import logic.utils.TimeStamp;
 import logic.utils.XmlUtils;
 import org.testng.Assert;
 
 import java.io.File;
+import java.sql.Date;
 
 public class SWSActions extends BaseWs {
     //region XML files
@@ -63,10 +68,31 @@ public class SWSActions extends BaseWs {
         return response;
     }
 
-    public void verifyGetAccountSummaryResponse(Xml expectedResponse, Xml response) {
-        String expectedFile = Common.saveXmlFile("ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(expectedResponse.toString())));
-        String actualFile = Common.saveXmlFile("ActualResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(response.toString())));
+    public Xml buildSimpleAccountSummaryResponseData(String file, Date startDate, String customerNumber, String subscriptionNumber){
+        Xml response = new Xml(new File(file));
 
-        Assert.assertEquals(1, Common.compareFile(expectedFile, actualFile).size());
+        String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
+        String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1MonthMinus15Days(), TimeStamp.DateFormatXml());
+
+        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
+        String accountName = "Mr " + selfCareWSTestBase.getCustomerName();
+
+        response.setTextByTagName("accountNumber", customerNumber);
+        response.setTextByTagName("accountName",accountName);
+        response.setTextByTagName("startDate",sStartDate);
+        response.setTextByTagName("nextBillDate", SNextBillDate);
+        response.setTextByTagName("endDate", "");
+        response.setTextByTagName("subscriptionNumber", subscriptionNumber);
+
+        response.setAttributeTextAllNodesByXpath("tariff", "startDate", sStartDate);
+
+        return response;
     }
+
+    public void verifyCustomerHas1DraftInvoiceGenerated(){
+        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
+        Assert.assertEquals(1, InvoicesContentPage.getInstance().getRowNumberOfInvoiceTable());
+        Assert.assertEquals("Draft", InvoicesContentPage.getInstance().getStatusByIndex(1));
+    }
+
 }

@@ -35,6 +35,19 @@ public class DetailsContentPage extends BasePage {
         }
 
     }
+    public static class AddressInformationSection extends DetailsContentPage {
+        public static AddressInformationSection getInstance() {
+            return new AddressInformationSection();
+        }
+
+        @FindBy(xpath = "//td[contains(text(),'AddressInformation Information')]/ancestor::table[1]/following-sibling::div[1]")
+        WebElement parent;
+        @FindBy(xpath = "//input[@value='Apply']")
+        WebElement applyBtn;
+
+        public void clickApplyBtn() {
+            click((applyBtn));
+        }
 
     public static class AddressInformationPage extends DetailsContentPage{
         private static AddressInformationPage instance = new AddressInformationPage();
@@ -64,5 +77,14 @@ public class DetailsContentPage extends BasePage {
         }
     }
 
+        public void clickEditBtn() {
+            getDriver().findElements(By.xpath("//a[contains(text(),'Edit')]")).get(1).click();
+
+        }
+
+        public void changeEmail(String email) {
+            enterValueByLabel(getDriver().findElement(By.xpath(".//td[contains(text(),'Email Address:')]/following-sibling::td[1]//input")), email);
+        }
+    }
 
 }

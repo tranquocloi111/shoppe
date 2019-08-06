@@ -18,7 +18,7 @@ import logic.pages.care.find.InvoicesContentPage;
 import logic.utils.TimeStamp;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
-
+import framework.utils.RandomCharacter;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.sql.Date;
@@ -104,6 +104,9 @@ public class BaseTest {
     protected static void createNewBillingGroup() {
         BillingActions.getInstance().createNewBillingGroup(0, true, -1);
     }
+    protected static void createNewBillingGroupToMinus15days() {
+        BillingActions.getInstance().createNewBillingGroup(-15, true, -1);
+    }
 
     public static void updateBillGroupPaymentCollectionDateTo10DaysLater() {
         Date paymentCollectionDate = Date.valueOf(LocalDate.now().plusDays(10));
@@ -161,6 +164,11 @@ public class BaseTest {
 
     public static void downloadInvoicePDFFile(String customerNumber){
         InvoicesContentPage.InvoiceDetailsContentPage.getInstance().saveFileFromWebRequest(customerNumber);
+    }
+
+    public String randomNumberAndString()
+    {
+        return RandomCharacter.getRandomAlphaNumericString(7);
     }
 
     protected static void submitDoRefillBCJob(){

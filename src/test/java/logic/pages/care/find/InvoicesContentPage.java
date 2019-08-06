@@ -48,6 +48,10 @@ public class InvoicesContentPage extends BasePage {
         table.getElementByColumnNameAndRowIndex(index + 1, invoiceNumber).findElement(By.tagName("a")).click();
     }
 
+    public String getStatusByIndex(int index){
+        return table.getElementByColumnNameAndRowIndex(index+1, "Status").getText();
+    }
+
     public static class InvoiceDetailsContentPage extends InvoicesContentPage{
 
         private static InvoiceDetailsContentPage instance;
