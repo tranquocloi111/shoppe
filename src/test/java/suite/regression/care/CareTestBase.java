@@ -56,9 +56,9 @@ public class CareTestBase extends BasePage {
     public void clickApplyBtn() {
         DetailsContentPage.AddressInformationSection.getInstance().clickApplyBtn();
     }
-    public void clickEditBtn()
+    public void clickEditBtn(int index)
     {
-        DetailsContentPage.AddressInformationSection.getInstance().clickEditBtn();
+        clickEditBtnByIndex(index);
     }
     public void verifyCreateOrderResponse(OWSActions owsActions, Xml xml){
         Assert.assertNotNull(xml.getTextByXpath("//createOrderResponse//@correlationId"));

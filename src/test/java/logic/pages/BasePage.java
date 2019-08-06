@@ -218,5 +218,10 @@ public class BasePage {
        return null;
     }
 
+    public void clickEditBtnByIndex(int index) {
+        getDriver().findElements(By.xpath("//a[contains(text(),'Edit')]")).get(index).click();
+
+    }
+
     //endregion
 }
