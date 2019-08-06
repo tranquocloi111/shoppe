@@ -130,7 +130,7 @@ public class TimeStamp {
     }
 
     public static long TodayPlus1MonthMinusToday(){
-        long elapsedDays = ChronoUnit.git mer.between(LocalDate.now().plusMonths(1), LocalDate.now());
+        long elapsedDays = ChronoUnit.DAYS.between(LocalDate.now().plusMonths(1), LocalDate.now());
         return Math.abs(elapsedDays);
     }
 
