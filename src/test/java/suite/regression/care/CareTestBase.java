@@ -53,6 +53,13 @@ public class CareTestBase extends BasePage {
         findPage.openCustomerByIndex(1);
     }
 
+    public void clickApplyBtn() {
+        DetailsContentPage.AddressInformationSection.getInstance().clickApplyBtn();
+    }
+    public void clickEditBtn()
+    {
+        DetailsContentPage.AddressInformationSection.getInstance().clickEditBtn();
+    }
     public void verifyCreateOrderResponse(OWSActions owsActions, Xml xml){
         Assert.assertNotNull(xml.getTextByXpath("//createOrderResponse//@correlationId"));
         Assert.assertEquals(owsActions.orderRef, xml.getTextByTagName("orderRef"));

@@ -117,6 +117,27 @@ public class TimeStamp {
         return Date.valueOf(LocalDate.now().minusDays(10));
     }
 
+
+    public static Date TodayMinus15DaysAdd1Month() {
+        return Date.valueOf(LocalDate.now().minusDays(15).plusMonths(1));
+    }
+
+    public static Date TodayMinus16DaysAdd2Months() {
+        return Date.valueOf(LocalDate.now().minusDays(16).plusMonths(2));
+    }
+
+    public static Date TodayMinus16DaysAdd1Month() {
+        return Date.valueOf(LocalDate.now().minusDays(16).plusMonths(1));
+    }
+
+    public static Date TodayMinus15DaysAdd2Months() {
+        return Date.valueOf(LocalDate.now().minusDays(15).plusMonths(2));
+    }
+
+    public static Date TodayMinus16DaysAdd3Months() {
+        return Date.valueOf(LocalDate.now().minusDays(16).plusMonths(3));
+    }
+
     public static Date TodayMinus30Days() {
         return Date.valueOf(LocalDate.now().minusDays(30));
     }

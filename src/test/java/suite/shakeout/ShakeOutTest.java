@@ -857,8 +857,8 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle()));
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundleProvisionWait()));
 
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed","Completed Task")));
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle("Service Order Completed","Completed Task")));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed","Completed Task")));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order Completed","Completed Task")));
 
 
         test.get().info("Step 38 : Back to customer");
@@ -882,8 +882,8 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle()));
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundleProvisionWait()));
 
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed","Completed Task")));
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle("Service Order Completed","Completed Task")));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed","Completed Task")));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order Completed","Completed Task")));
 
         test.get().info("Step 40 : Back to customer");
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
@@ -1084,7 +1084,7 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("Family perk - 150 Mins per month;", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesRemoved());
 
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle("Service Order set to Provision Wait","Provision Wait")));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order set to Provision Wait","Provision Wait")));
         String serviceOrderId = TasksContentPage.TaskPage.TaskSummarySectionPage.getInstance().getSoID();
 
         test.get().info("Step 26 : Update provision date of change bundle service order");
@@ -1112,9 +1112,9 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("Family perk - 150 Mins per month;", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesRemoved());
 
         Assert.assertEquals(3,  TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle("Service Order set to Provision Wait","Provision Wait")));
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed","Completed Task")));
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle("Service Order Completed","Completed Task")));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order set to Provision Wait","Provision Wait")));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed","Completed Task")));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order Completed","Completed Task")));
 
         test.get().info("Step 32 : Login to self care without Pin");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
