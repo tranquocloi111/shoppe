@@ -4,6 +4,7 @@ import framework.config.Config;
 import framework.utils.Xml;
 import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
+import logic.business.entities.ServiceOrderEntity;
 import logic.business.helper.MiscHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.business.ws.sws.SelfCareWSTestBase;
@@ -169,9 +170,29 @@ public class CareTestBase extends BasePage {
     public String recordAccountNameAndClubCardNumber(){
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        return selfCareWSTestBase.getClubCardNumber().split(" ")[0];
+        return getClubCardNumber().split(" ")[0];
     }
 
+    public static String getCustomerName(){
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details"))
+        {
+            MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        }
+        return DetailsContentPage.AddressInformationPage.getInstance().getAddressee();
+    }
+
+    public static String getClubCardNumber(){
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details"))
+        {
+            MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        }
+        return DetailsContentPage.CreditInformationPage.getInstance().getClubCardNumber();
+    }
+
+    public static String recordDiscountBundleMonthlyRefillSOId(String subscriptionNumber){
+        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+        return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Discount Bundle Monthly Refill"));
+    }
 
 
 

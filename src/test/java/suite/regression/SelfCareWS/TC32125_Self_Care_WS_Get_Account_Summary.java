@@ -68,7 +68,7 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
 
         test.get().info("Verify Get Account Summary Response");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        selfCareWSTestBase.verifyGetAccountSummaryResponse(customerNumber, expectedResponse, response);
+        selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponse, response);
     }
 
     private void getAllSubscription(){
@@ -104,8 +104,7 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
         String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
 
-        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        String accountName = "Mr " + selfCareWSTestBase.getCustomerName();
+        String accountName = "Mr " + CareTestBase.getCustomerName();
 
         response.setTextByTagName("accountNumber", customerNumber);
         response.setTextByTagName("accountName",accountName);

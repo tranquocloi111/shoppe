@@ -61,6 +61,6 @@ public class TC32131_Basic_Path_Active_Account_with_Clubcard extends BaseTest {
 
         test.get().info("Verify Get Account Summary Response");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        selfCareWSTestBase.verifyGetAccountSummaryResponse(customerNumber, expectedResponse, response);
+        selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponse, response);
     }
 }

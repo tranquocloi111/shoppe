@@ -5,7 +5,10 @@ import logic.business.db.billing.CommonActions;
 import logic.business.ws.ows.OWSActions;
 import logic.business.ws.sws.SWSActions;
 import logic.business.ws.sws.SelfCareWSTestBase;
+import logic.pages.care.MenuPage;
+import logic.pages.care.find.InvoicesContentPage;
 import logic.utils.TimeStamp;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
@@ -64,10 +67,10 @@ public class TC32132_Basic_Path_Active_Account_with_Current_Draft_Invoice extend
         clubCardNumber = CareTestBase.page().recordAccountNameAndClubCardNumber();
         //=============================================================================
         test.get().info("Verify Customer has 1 draft invoice generated");
-        SWSActions swsActions = new SWSActions();
-        swsActions.verifyCustomerHas1DraftInvoiceGenerated();
+        verifyCustomerHas1DraftInvoiceGenerated();
         //=============================================================================
         test.get().info("Submit Get Account Summary Request To SelfCare WebService");
+        SWSActions swsActions = new SWSActions();
         Xml response = swsActions.submitGetAccountSummaryRequestToSelfCareWS(customerNumber);
 
         test.get().info("Build Expected Account Summary Response Data");
@@ -76,7 +79,15 @@ public class TC32132_Basic_Path_Active_Account_with_Current_Draft_Invoice extend
 
         test.get().info("Verify Get Account Summary Response");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        selfCareWSTestBase.verifyGetAccountSummaryResponse(customerNumber, expectedResponse, response);
+        selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponse, response);
     }
+
+
+    public void verifyCustomerHas1DraftInvoiceGenerated(){
+        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
+        Assert.assertEquals(1, InvoicesContentPage.getInstance().getRowNumberOfInvoiceTable());
+        Assert.assertEquals("Draft", InvoicesContentPage.getInstance().getStatusByIndex(1));
+    }
+
 }
 

@@ -4,11 +4,9 @@ import framework.utils.Log;
 import framework.utils.Soap;
 import framework.utils.Xml;
 import logic.business.ws.BaseWs;
-import logic.pages.care.MenuPage;
-import logic.pages.care.find.InvoicesContentPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
-import org.testng.Assert;
+import suite.regression.care.CareTestBase;
 
 import java.io.File;
 import java.sql.Date;
@@ -72,8 +70,7 @@ public class SWSActions extends BaseWs {
         String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
         String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DateFormatXml());
 
-        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        String accountName = "Mr " + selfCareWSTestBase.getCustomerName();
+        String accountName = "Mr " + CareTestBase.getCustomerName();
 
         response.setTextByTagName("accountNumber", customerNumber);
         response.setTextByTagName("accountName",accountName);
@@ -87,10 +84,5 @@ public class SWSActions extends BaseWs {
         return response;
     }
 
-    public void verifyCustomerHas1DraftInvoiceGenerated(){
-        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
-        Assert.assertEquals(1, InvoicesContentPage.getInstance().getRowNumberOfInvoiceTable());
-        Assert.assertEquals("Draft", InvoicesContentPage.getInstance().getStatusByIndex(1));
-    }
 
 }
