@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 
@@ -17,7 +18,7 @@ public class BasePage {
     }
 
     //region Useful actions
-    public  boolean switchWindow(String title, boolean isParent) {
+    public boolean switchWindow(String title, boolean isParent) {
         if (!isParent) {
             try {
                 Set<String> availableWindows = getDriver().getWindowHandles();
@@ -28,7 +29,7 @@ public class BasePage {
                         }
                     }
                 }
-            }catch (Throwable ex){
+            } catch (Throwable ex) {
                 getDriver().switchTo().window(title);
             }
         } else {
@@ -136,7 +137,7 @@ public class BasePage {
         ExpectedCondition<Boolean> pageLoadCondition = new
                 ExpectedCondition<Boolean>() {
                     public Boolean apply(WebDriver driver) {
-                        return ((JavascriptExecutor)driver).executeScript("return document.readyState").equals("complete");
+                        return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
                     }
                 };
         WebDriverWait wait = new WebDriverWait(getDriver(), specifiedTimeout);
@@ -162,37 +163,37 @@ public class BasePage {
         waitForPageLoadComplete(90);
     }
 
-    public void navigate(String url){
+    public void navigate(String url) {
         getDriver().get(url);
     }
 
-    protected WebDriver getDriver(){
+    protected WebDriver getDriver() {
         return WdManager.get();
     }
 
-    public WebElement findTdByLabelAndIndex(String lbl, int index){
-        return getDriver().findElement(By.xpath("//tr/td[contains(@class, 'label') and contains(text(),'" + lbl + "')]/following-sibling::td["+index+"]"));
+    public WebElement findTdByLabelAndIndex(String lbl, int index) {
+        return getDriver().findElement(By.xpath("//tr/td[contains(@class, 'label') and contains(text(),'" + lbl + "')]/following-sibling::td[" + index + "]"));
     }
 
-    public String getTextOfElement(WebElement element){
+    public String getTextOfElement(WebElement element) {
         return element.getText();
     }
 
-    public String getValueOfElement(WebElement element){
+    public String getValueOfElement(WebElement element) {
         return element.getAttribute("value");
     }
 
     public boolean isElementPresent(WebElement element) {
         try {
             return element.isDisplayed();
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             return false;
         }
     }
 
-    public String findValueByLabel(WebElement element,  String label){
-        String xpath = xpath = ".//td[normalize-space(text())='%s']";;
+    public String findValueByLabel(WebElement element, String label) {
+        String xpath = xpath = ".//td[normalize-space(text())='%s']";
+        ;
         WebElement td = element.findElement(By.xpath(String.format(xpath, label)));
         WebElement tr = td.findElement(By.xpath(".//ancestor::tr[1]"));
         return tr.findElement(By.xpath(".//td[4]")).getText();
@@ -200,28 +201,53 @@ public class BasePage {
 
     public WebElement findLabelCell(WebElement element, String text) {
         List<WebElement> allLabels = element.findElements(By.xpath(".//td[@class='fieldKey']"));
-        for (WebElement label : allLabels){
-            if (label.getText().trim().equalsIgnoreCase(text)){
+        for (WebElement label : allLabels) {
+            if (label.getText().trim().equalsIgnoreCase(text)) {
                 return label;
             }
         }
         return null;
     }
 
-    public WebElement findCheckBox(WebElement container, String name){
+    public WebElement findCheckBox(WebElement container, String name) {
         List<WebElement> labels = container.findElements(By.tagName("label"));
-        for (WebElement label : labels){
-            if (label.getText().trim().equalsIgnoreCase(name)){
+        for (WebElement label : labels) {
+            if (label.getText().trim().equalsIgnoreCase(name)) {
                 return label.findElement(By.tagName("input"));
             }
         }
-       return null;
+        return null;
     }
 
     public void clickEditBtnByIndex(int index) {
         getDriver().findElements(By.xpath("//a[contains(text(),'Edit')]")).get(index).click();
 
     }
+
+    public void clickEditBtnBySection(String sectionName) {
+        String xpath = String.format("//td[contains(text(),'%s') and @class='informationBoxHeader' ]/ancestor::table[1]//a[@class='informationBoxHeader' and contains(text(),'Edit')]", sectionName);
+        getDriver().findElement(By.xpath(xpath)).click();
+    }
+
+    @FindBy(xpath = "//input[@value='Apply']")
+    WebElement applyBtn;
+
+    public void clickApplyBtn() {
+        click((applyBtn));
+    }
+
+    public void selectDropBoxByVisibelText(WebElement element, String text) {
+        Select el = new Select(element.findElement(By.tagName("Select")));
+        el.selectByVisibleText(text);
+    }
+
+    public void acceptComfirmDialog() { getDriver().switchTo().alert().accept(); }
+
+    public void dismissComfirmDialog() {
+        getDriver().switchTo().alert().dismiss();
+    }
+
+    public void getTextComfirmDialog() { getDriver().switchTo().alert().getText(); }
 
     //endregion
 }

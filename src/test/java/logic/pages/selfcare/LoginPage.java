@@ -46,12 +46,6 @@ public class LoginPage  extends BasePage {
             txtUsername.sendKeys(username);
             txtPassword.sendKeys(password);
             click(btnOk);
-//            if (isElementPresent(pinDiapog)) {
-//                String pinCode = CommonActions.getPinCode(customerId);
-//                Log.info("Pin Code : " + pinCode);
-//                enterValueByLabel(txtPinText, pinCode);
-//                click(btnDialogLogin);
-//            }
             waitForPageLoadComplete(10);
         }
     }
