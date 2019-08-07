@@ -1,12 +1,12 @@
 package logic.pages.care.find;
 
 import framework.config.Config;
+import framework.utils.Pdf;
+import framework.utils.RandomCharacter;
 import logic.business.helper.MiscHelper;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
 import logic.utils.Common;
-import framework.utils.Pdf;
-import framework.utils.RandomCharacter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,11 +41,16 @@ public class InvoicesContentPage extends BasePage {
     }
 
     public String getInvoiceNumber() {
-        return table.getElementByColumnNameAndRowIndex(2, "Invoice Number").getText().split(" ")[0];
+        return table.getElementByColumnNameAndRowIndex(2, invoiceNumber).getText().split(" ")[0];
     }
 
     public void clickInvoiceNumberByIndex(int index) {
         table.getElementByColumnNameAndRowIndex(index + 1, invoiceNumber).findElement(By.tagName("a")).click();
+    }
+
+    public String getStatusByIndex(int index){
+        WebElement element = table.getElementByColumnNameAndRowIndex(index+1, status);
+        return getTextOfElement(element);
     }
 
     public static class InvoiceDetailsContentPage extends InvoicesContentPage{

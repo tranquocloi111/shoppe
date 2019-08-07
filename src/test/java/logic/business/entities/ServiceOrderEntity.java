@@ -168,6 +168,15 @@ public class ServiceOrderEntity {
         return so;
     }
 
+    public static HashMap<String, String> dataServiceOrderForChangePassword( String type, String status) {
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        so.put("Type", type);
+        so.put("Status", status);
+
+        return so;
+    }
+
     public static List<HashMap<String, String>> dataServiceOrderBySub(String serviceSubscription) {
         List<HashMap<String, String>> listOrderServer = new ArrayList<>();
         HashMap<String, String> so = new HashMap<String, String>();

@@ -1,6 +1,7 @@
 package logic.business.entities;
 
 import javafx.util.Pair;
+import logic.pages.care.find.ServiceOrdersContentPage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,7 +75,15 @@ public class EventEntity {
 
         return event;
     }
+    public static HashMap<String, String> dataForEventChangePassword(String description, String status, String username) {
 
+        HashMap<String, String> event = new HashMap<String, String>();
+        event.put("Description", description);
+        event.put("Status", status);
+        event.put("Username",username);
+
+        return event;
+    }
     public static Pair<String,String> setEvents(String description, String status){
         return new Pair<String,String>(description,status);
     }

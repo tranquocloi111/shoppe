@@ -4,14 +4,13 @@ import framework.config.Config;
 import framework.utils.Xml;
 import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
+import logic.business.entities.ServiceOrderEntity;
 import logic.business.helper.MiscHelper;
 import logic.business.ws.ows.OWSActions;
+import logic.business.ws.sws.SelfCareWSTestBase;
 import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
-import logic.pages.care.find.CommonContentPage;
-import logic.pages.care.find.DetailsContentPage;
-import logic.pages.care.find.FindPage;
-import logic.pages.care.find.InvoicesContentPage;
+import logic.pages.care.find.*;
 import logic.pages.care.main.LoginPage;
 import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.options.ChangeSubscriptionNumberPage;
@@ -159,5 +158,42 @@ public class CareTestBase extends BasePage {
 
         clickReturnToCustomer();
     }
+
+    public String recordLatestSubscriptionNumberForCustomer(){
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
+        String subscriptionNumber = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
+
+        return subscriptionNumber;
+    }
+
+    public String recordAccountNameAndClubCardNumber(){
+        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
+        return getClubCardNumber().split(" ")[0];
+    }
+
+    public static String getCustomerName(){
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details"))
+        {
+            MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        }
+        return DetailsContentPage.AddressInformationPage.getInstance().getAddressee();
+    }
+
+    public static String getClubCardNumber(){
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details"))
+        {
+            MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        }
+        return DetailsContentPage.CreditInformationPage.getInstance().getClubCardNumber();
+    }
+
+    public static String recordDiscountBundleMonthlyRefillSOId(String subscriptionNumber){
+        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+        return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Discount Bundle Monthly Refill"));
+    }
+
+
 
 }

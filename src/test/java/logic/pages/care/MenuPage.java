@@ -55,9 +55,7 @@ public class MenuPage extends BasePage {
             clickLinkByName("Subscriptions");
         }
 
-        public void clickServiceOrdersLink() {
-            clickLinkByName("Service Orders");
-        }
+        public void clickServiceOrdersLink() { clickLinkByName("Service Orders"); }
 
         public void clickOtherChargesCreditsItem() {
             clickLinkByName("Other Charges/Credits");
@@ -84,6 +82,17 @@ public class MenuPage extends BasePage {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+        public boolean verifyLinkIsNotSelected(String linkName){
+            Boolean result = false;
+            try {
+                WebElement element = leftMainDiv.findElement(By.linkText(linkName));
+                result = isElementPresent(element);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
         }
     }
 

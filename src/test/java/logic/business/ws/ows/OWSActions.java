@@ -1,11 +1,11 @@
 package logic.business.ws.ows;
 
-import logic.business.ws.BaseWs;
-import logic.pages.agreement.AgreementSigningContractPage;
 import framework.utils.Log;
 import framework.utils.RandomCharacter;
 import framework.utils.Soap;
 import framework.utils.Xml;
+import logic.business.ws.BaseWs;
+import logic.pages.agreement.AgreementSigningContractPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 
@@ -33,6 +33,9 @@ public class OWSActions extends BaseWs {
     public static final String TC1358_CREATE_ORDER  = "src\\test\\resources\\xml\\ows\\TC1358_createOrder.xml";
     public static final String GET_CONTRACT  = "src\\test\\resources\\xml\\commonrequest\\GetContractRequest.xml";
     public static final String Online_CC_CUSTOMER_WITH_FC_2_BUNDLES_AND_NK2720 = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_2_bundles_and_NK2720.xml";
+    public static final String CUSTOMER_WITH_2_SUBSCRIPTIONS = "src\\test\\resources\\xml\\sws\\getaccount\\TC32125_createOrder.xml";
+    public static final String ONLINES_CC_CUSTOMER_WITH_FC_1_BUNDLE_AND_NK2720 = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_1_bundle_and_NK2720.xml";
+    public static final String CUSTOMER_WITH_FC_1_BUNDLE_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\customer_with_FC_1_bundle_and_simonly.xml";
     //endregion
 
 
@@ -234,15 +237,16 @@ public class OWSActions extends BaseWs {
     }
 
     public void createAnOnlinesCCCustomerWithFC2BundlesAndNK2720(){
-        request = new Xml(new File(Online_CC_CUSTOMER_WITH_FC_2_BUNDLES_AND_NK2720));
-        request.setTextByTagName(commonModMap);
+        createGeneralCustomerOrder(Online_CC_CUSTOMER_WITH_FC_2_BUNDLES_AND_NK2720);
+    }
 
-        Log.info("Request:  " + request.toString());
-        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
-        setCustomerNo();
-        Log.info("Account number:" + customerNo);
-        setOrderIdNo();
-        Log.info("OrderId number:" + orderIdNo);
-        checkAsyncProcessIsCompleted(orderIdNo);
+    public void createACCCustomerWith2SubscriptionOrder(){
+        createGeneralCustomerOrder(CUSTOMER_WITH_2_SUBSCRIPTIONS);
+    }
+    public void createAnOnlinesCCCustomerWithFC1BundleAndNK2720(){
+        createGeneralCustomerOrder(ONLINES_CC_CUSTOMER_WITH_FC_1_BUNDLE_AND_NK2720);
+    }
+    public void createAnOnlinesCCCustomerWithFC1BundleAndSimOnly(){
+        createGeneralCustomerOrder(CUSTOMER_WITH_FC_1_BUNDLE_AND_SIMONLY);
     }
 }

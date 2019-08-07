@@ -1,5 +1,7 @@
 package logic.utils;
 
+import framework.config.Config;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -14,7 +16,6 @@ public class TimeStamp {
     public final static String DATE_FORMAT_IN_PDF = "dd/MM/yyyy";
     public final static String DATE_FORMAT_IN_PDF2 = "dd-MMM-yyyy";
     public final static String DATE_FORMAT_IN_PDF3 = "MM/yyyy";
-
 
 
     public static Date Today() {
@@ -159,4 +160,8 @@ public class TimeStamp {
         return Date.valueOf(String.valueOf(LocalDateTime.now().minusHours(1).toLocalDate()));
     }
 
+    public static String DateFormatXml(){
+        String timeZone = Config.getProp("timeZone");
+        return "yyyy-MM-dd" + timeZone;
+    }
 }
