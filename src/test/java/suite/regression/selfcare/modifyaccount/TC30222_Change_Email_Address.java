@@ -1,4 +1,4 @@
-package suite.regression.selfcare;
+package suite.regression.selfcare.modifyaccount;
 
 
 import logic.business.ws.ows.OWSActions;
@@ -10,6 +10,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
+import suite.regression.selfcare.SelfCareTestBase;
 
 public class TC30222_Change_Email_Address extends BaseTest {
 
@@ -31,7 +32,7 @@ public class TC30222_Change_Email_Address extends BaseTest {
 
         test.get().info("Step 4: Change Email");
         String email = String.format("newMail%s@hsntech.com", randomNumberAndString());
-        CareTestBase.page().clickEditBtn();
+        CareTestBase.page().clickEditBtnByIndex(1);
         DetailsContentPage.AddressInformationSection.getInstance().changeEmail(email);
         CareTestBase.page().clickApplyBtn();
 
