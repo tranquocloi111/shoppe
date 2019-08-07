@@ -76,6 +76,16 @@ public class TableControlBase extends BasePage {
         }
     }
 
+    public WebElement getPasswordTextBoxByText(String text) {
+        // index = 1: Header
+        try {
+
+            String xpath = String.format("//td[contains(text(),'%s')]//following-sibling::td/input[@type='password']",text);
+            return element.findElement(By.xpath(xpath));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public WebElement getElementByColumnIndexAndRowIndex(int rowIndex, int columnIndex) {
         // rowIndex = 1: Header

@@ -55,9 +55,7 @@ public class MenuPage extends BasePage {
             clickLinkByName("Subscriptions");
         }
 
-        public void clickServiceOrdersLink() {
-            clickLinkByName("Service Orders");
-        }
+        public void clickServiceOrdersLink() { clickLinkByName("Service Orders"); }
 
         public void clickOtherChargesCreditsItem() {
             clickLinkByName("Other Charges/Credits");

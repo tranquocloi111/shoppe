@@ -38,7 +38,15 @@ public class LoginPage  extends BasePage {
                 enterValueByLabel(txtPinText, pinCode);
                 click(btnDialogLogin);
             }
-            waitForPageLoadComplete(120);
+            waitForPageLoadComplete(10);
+        }
+    }
+    public void relogin(String username, String password, String customerId) {
+        if (isElementPresent(txtUsername)) {
+            txtUsername.sendKeys(username);
+            txtPassword.sendKeys(password);
+            click(btnOk);
+            waitForPageLoadComplete(10);
         }
     }
 
