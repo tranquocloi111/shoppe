@@ -231,6 +231,21 @@ public class OWSActions extends BaseWs {
         setPassword();
         checkAsyncProcessIsCompleted(orderIdNo);
     }
+    public void createGeneralCustomerOrderForChangePassword(String path){
+        request = new Xml(new File(path));
+        request.setTextByTagName(commonModMap);
+        request.setTextByTagName("emailAddress", "tmnotification@163.com");
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+        setCustomerNo();
+        Log.info("Account number:" + customerNo);
+        setOrderIdNo();
+        Log.info("OrderId number:" + orderIdNo);
+        setUsername();
+        setPassword();
+        checkAsyncProcessIsCompleted(orderIdNo);
+    }
 
     public String getOrderMpnByReference(int index){
         return response.getTextByXpath("//orderItem//serviceRef", index - 1);
