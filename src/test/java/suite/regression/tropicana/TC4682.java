@@ -23,7 +23,7 @@ public class TC4682 extends BaseTest {
     public void TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundle(){
         test.get().info("Step 1 : Create a customer with NC and device");
         OWSActions owsActions = new OWSActions();
-        owsActions.createOrderAndSignAgreementByUI();
+        owsActions.createAnOnlinesCCCustomerWithFC2BundlesAndNK2720();
 
         test.get().info("Step 2 : Create New Billing Group");
         BaseTest.createNewBillingGroup();
@@ -54,7 +54,7 @@ public class TC4682 extends BaseTest {
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
         test.get().info("Step 9 : Click add or change bundle button for monthly bundle");
-        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobile1Tariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("FC Mobile 1");
+        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobile1Tariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1");
         mobile1Tariff.clickAddOrChangeABundleButton();
     }
 
