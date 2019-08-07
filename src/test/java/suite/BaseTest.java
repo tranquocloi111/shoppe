@@ -190,7 +190,6 @@ public class BaseTest {
     protected static void submitConfirmBillRun(){
         RemoteJobHelper.getInstance().submitConfirmBillRun();
     }
-
     //end region
 
 }

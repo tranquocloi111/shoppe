@@ -83,6 +83,17 @@ public class MenuPage extends BasePage {
                 e.printStackTrace();
             }
         }
+
+        public boolean verifyLinkIsNotSelected(String linkName){
+            Boolean result = false;
+            try {
+                WebElement element = leftMainDiv.findElement(By.linkText(linkName));
+                result = isElementPresent(element);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
     }
 
     public static class RightMenuPage extends MenuPage {

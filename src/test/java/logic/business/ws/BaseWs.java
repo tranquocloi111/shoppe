@@ -26,6 +26,5 @@ public abstract class BaseWs {
         MiscHelper.waitForAsyncProcessComplete(orderId);
     }
 
-
 }
 

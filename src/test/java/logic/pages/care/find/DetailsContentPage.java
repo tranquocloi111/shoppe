@@ -35,6 +35,7 @@ public class DetailsContentPage extends BasePage {
         }
 
     }
+
     public static class AddressInformationSection extends DetailsContentPage {
         public static AddressInformationSection getInstance() {
             return new AddressInformationSection();
@@ -56,6 +57,34 @@ public class DetailsContentPage extends BasePage {
 
         public void changeEmail(String email) {
             enterValueByLabel(getDriver().findElement(By.xpath(".//td[contains(text(),'Email Address:')]/following-sibling::td[1]//input")), email);
+        }
+    }
+
+    public static class AddressInformationPage extends DetailsContentPage{
+        private static AddressInformationPage instance = new AddressInformationPage();
+        public static AddressInformationPage getInstance(){
+            return new AddressInformationPage();
+        }
+
+        @FindBy(xpath = "//td[contains(text(),'Address Information')]/ancestor::table[1]/following-sibling::div[1]")
+        WebElement parent;
+
+        public String getAddressee(){
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Addressee:')]/following-sibling::td[1]")));
+        }
+    }
+
+    public static class CreditInformationPage extends DetailsContentPage{
+        private static CreditInformationPage instance = new CreditInformationPage();
+        public static CreditInformationPage getInstance(){
+            return new CreditInformationPage();
+        }
+
+        @FindBy(xpath = "//td[contains(text(),'Credit Information')]/ancestor::table[1]/following-sibling::div[1]")
+        WebElement parent;
+
+        public String getClubCardNumber(){
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Club Card Number:')]/following-sibling::td[1]")));
         }
     }
 
