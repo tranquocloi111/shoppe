@@ -3,6 +3,7 @@ package logic.business.ws.sws;
 import framework.utils.Xml;
 import logic.business.entities.NormalMaintainBundleEntity;
 import logic.business.ws.BaseWs;
+import logic.pages.care.MenuPage;
 import logic.pages.care.find.DetailsContentPage;
 import logic.utils.Common;
 import logic.utils.XmlUtils;
@@ -24,10 +25,18 @@ public class SelfCareWSTestBase extends BaseWs {
 
 
     public String getCustomerName(){
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details"))
+        {
+            MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        }
         return DetailsContentPage.AddressInformationPage.getInstance().getAddressee();
     }
 
     public String getClubCardNumber(){
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details"))
+        {
+            MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        }
         return DetailsContentPage.CreditInformationPage.getInstance().getClubCardNumber();
     }
 }

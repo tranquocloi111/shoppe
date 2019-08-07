@@ -37,7 +37,7 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         customerNumber = owsActions.customerNo;
 
         test.get().info("Create new billing group start from today minus 15 days");
-        createNewBillingGroupStartFromTodayMinus15Days();
+        createNewBillingGroupToMinus15days();
 
         test.get().info("Update bill group payment collection date to 10 days later");
         updateBillGroupPaymentCollectionDateTo10DaysLater();

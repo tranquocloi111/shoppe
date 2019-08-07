@@ -6,6 +6,7 @@ import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
 import logic.business.helper.MiscHelper;
 import logic.business.ws.ows.OWSActions;
+import logic.business.ws.sws.SelfCareWSTestBase;
 import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.*;
@@ -160,9 +161,17 @@ public class CareTestBase extends BasePage {
     public String recordLatestSubscriptionNumberForCustomer(){
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
+        String subscriptionNumber = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
 
-        return SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
+        return subscriptionNumber;
     }
+
+    public String recordAccountNameAndClubCardNumber(){
+        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
+        return selfCareWSTestBase.getClubCardNumber().split(" ")[0];
+    }
+
 
 
 

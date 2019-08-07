@@ -6,10 +6,8 @@ import framework.utils.Xml;
 import logic.business.ws.BaseWs;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.InvoicesContentPage;
-import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
-import logic.utils.XmlUtils;
 import org.testng.Assert;
 
 import java.io.File;
@@ -72,7 +70,7 @@ public class SWSActions extends BaseWs {
         Xml response = new Xml(new File(file));
 
         String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
-        String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
+        String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DateFormatXml());
 
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         String accountName = "Mr " + selfCareWSTestBase.getCustomerName();

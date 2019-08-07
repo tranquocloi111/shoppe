@@ -29,8 +29,8 @@ public class TC32131_Basic_Path_Active_Account_with_Clubcard extends BaseTest {
         owsActions.createAnOnlinesCCCustomerWithFC1BundleAndNK2720();
         customerNumber = owsActions.customerNo;
 
-        test.get().info("Create new billing group start from today minus 15 days");
-        createNewBillingGroupStartFromTodayMinus15Days();
+        test.get().info("Create new billing group");
+        createNewBillingGroup();
 
         test.get().info("Update bill group payment collection date to 10 days later");
         updateBillGroupPaymentCollectionDateTo10DaysLater();
@@ -63,5 +63,4 @@ public class TC32131_Basic_Path_Active_Account_with_Clubcard extends BaseTest {
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         selfCareWSTestBase.verifyGetAccountSummaryResponse(customerNumber, expectedResponse, response);
     }
-
 }

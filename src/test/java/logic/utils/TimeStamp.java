@@ -164,5 +164,4 @@ public class TimeStamp {
         String timeZone = Config.getProp("timeZone");
         return "yyyy-MM-dd" + timeZone;
     }
-
 }

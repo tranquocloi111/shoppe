@@ -52,7 +52,6 @@ public class TC32132_Basic_Path_Active_Account_with_Current_Draft_Invoice extend
 
         test.get().info("Submit draft bill run");
         submitDraftBillRun();
-
         //=============================================================================
 
         test.get().info("Login to HUBNet then search Customer by customer number");
@@ -80,3 +79,4 @@ public class TC32132_Basic_Path_Active_Account_with_Current_Draft_Invoice extend
         selfCareWSTestBase.verifyGetAccountSummaryResponse(customerNumber, expectedResponse, response);
     }
 }
+
