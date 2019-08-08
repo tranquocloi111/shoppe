@@ -40,10 +40,7 @@ public class TC33317_Self_Care_Change_Password extends BaseTest {
 
         test.get().info("Step 4: Input the new pass and click continue button");
         String newPasswd = "NewPsw" + RandomCharacter.getRandomAlphaNumericString(9);
-        MyPasswordPage.getInstance().enterValueForCurrentPasswordTextBox("password1");
-        MyPasswordPage.getInstance().enterValueForNewPasswordTextBox(newPasswd);
-        MyPasswordPage.getInstance().enterValueForConfirmationOfNewPasswordTextBox(newPasswd);
-        MyPasswordPage.getInstance().clickContinueBtn();
+        MyPasswordPage.getInstance().updateNewPassword(owsActions.password,newPasswd);
 
         test.get().info("Step 5: Click save button");
         String message = "Your password has been successfully changed.";
@@ -73,6 +70,7 @@ public class TC33317_Self_Care_Change_Password extends BaseTest {
 
         test.get().info("Step 11: Verify change passwordsuccessfully mail sent to customer");
     }
+
 
     @DataProvider(name = "browsername")
     public Object[][] dataProviderMethod() {

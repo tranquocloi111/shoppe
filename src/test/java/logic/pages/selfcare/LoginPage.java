@@ -43,12 +43,13 @@ public class LoginPage  extends BasePage {
     }
     public void relogin(String username, String password, String customerId) {
         if (isElementPresent(txtUsername)) {
-            txtUsername.sendKeys(username);
-            txtPassword.sendKeys(password);
+            enterValueByLabel(txtUsername,username);
+            enterValueByLabel(txtPassword,password);
             click(btnOk);
             waitForPageLoadComplete(10);
         }
     }
+
 
     public void navigateToSelfCarePage(){
         navigate(Config.getProp("selfCareUrl"));

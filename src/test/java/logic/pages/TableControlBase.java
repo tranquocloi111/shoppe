@@ -144,6 +144,16 @@ public class TableControlBase extends BasePage {
         }
     }
 
+    public WebElement getCellByLabel(String label) {
+        // i = 1: Header
+        try {
+            String xpath=String.format(".//td[@class='label' and contains(text(),'%s')]//following-sibling::td", label);
+            WebElement row = element.findElement(By.xpath(xpath));
+            return row;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public WebElement getElementByCellValue(WebElement innerRow, String columnName) {
         int columnIndex = getColumnIndex(columnName);
