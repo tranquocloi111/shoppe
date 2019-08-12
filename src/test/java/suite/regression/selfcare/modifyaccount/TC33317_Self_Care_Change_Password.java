@@ -68,7 +68,7 @@ public class TC33317_Self_Care_Change_Password extends BaseTest {
         HashMap<String,String> expectedEvent = EventEntity.dataForEventChangePassword(description,"Created","Batch");
         Assert.assertEquals(TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(expectedEvent),1);
 
-        test.get().info("Step 11: Verify change passwordsuccessfully mail sent to customer");
+        test.get().info("Step 11: Verify change password successfully mail sent to customer");
     }
 
 
