@@ -54,10 +54,10 @@ public class MyPasswordPage extends BasePage {
     }
 
     public void updateNewPassword(String currentPass, String newPass) {
-        MyPasswordPage.getInstance().enterValueForCurrentPasswordTextBox(currentPass);
-        MyPasswordPage.getInstance().enterValueForNewPasswordTextBox(newPass);
-        MyPasswordPage.getInstance().enterValueForConfirmationOfNewPasswordTextBox(newPass);
-        MyPasswordPage.getInstance().clickContinueBtn();
+       enterValueForCurrentPasswordTextBox(currentPass);
+       enterValueForNewPasswordTextBox(newPass);
+       enterValueForConfirmationOfNewPasswordTextBox(newPass);
+       clickContinueBtn();
     }
 }
 
