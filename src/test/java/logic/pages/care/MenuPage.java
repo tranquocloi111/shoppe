@@ -40,7 +40,7 @@ public class MenuPage extends BasePage {
         WebElement leftMainDiv;
 
         public static LeftMenuPage getInstance() {
-            return new LeftMenuPage() ;
+            return new LeftMenuPage();
         }
 
         public void clickSummaryLink() {
@@ -55,7 +55,9 @@ public class MenuPage extends BasePage {
             clickLinkByName("Subscriptions");
         }
 
-        public void clickServiceOrdersLink() { clickLinkByName("Service Orders"); }
+        public void clickServiceOrdersLink() {
+            clickLinkByName("Service Orders");
+        }
 
         public void clickOtherChargesCreditsItem() {
             clickLinkByName("Other Charges/Credits");
@@ -65,12 +67,16 @@ public class MenuPage extends BasePage {
             clickLinkByName("Invoices");
         }
 
-        public void clickCreditAgreementsItem(){
+        public void clickCreditAgreementsItem() {
             clickLinkByName("Credit Agreements");
         }
 
-        public void clickLiveBillEstimateItem(){
+        public void clickLiveBillEstimateItem() {
             clickLinkByName("Live Bill Estimate");
+        }
+
+        public void clickSelfCareSetting() {
+            clickLinkByName("Self Care Settings");
         }
 
         private void clickLinkByName(String name) {
@@ -84,7 +90,7 @@ public class MenuPage extends BasePage {
             }
         }
 
-        public boolean verifyLinkIsNotSelected(String linkName){
+        public boolean verifyLinkIsNotSelected(String linkName) {
             Boolean result = false;
             try {
                 WebElement element = leftMainDiv.findElement(By.linkText(linkName));
@@ -160,4 +166,5 @@ public class MenuPage extends BasePage {
             waitForPageLoadComplete(60);
         }
     }
+
 }

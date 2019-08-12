@@ -52,5 +52,12 @@ public class MyPasswordPage extends BasePage {
     public void clickContinueBtn() {
         clickLinkByText("Continue");
     }
+
+    public void updateNewPassword(String currentPass, String newPass) {
+       enterValueForCurrentPasswordTextBox(currentPass);
+       enterValueForNewPasswordTextBox(newPass);
+       enterValueForConfirmationOfNewPasswordTextBox(newPass);
+       clickContinueBtn();
+    }
 }
 
