@@ -54,8 +54,12 @@ public class RemoteJobHelper {
     private void submitRemoteJob(String command) {
         SSHManager sshManager = new SSHManager(unixUsernName, unixPassword, unixServer, "");
         sshManager.connect();
-        String[] commands = {envIndex, "cd $HUB_BIN", command};
-        sshManager.sendCommandWithShell(commands);
+        try {
+
+            String[] commands = {envIndex, "cd $HUB_BIN", command};
+            sshManager.sendCommandWithShell(commands);
+        }catch (Exception ex)
+        {}
     }
 
     private boolean delay(int delayTime) {
@@ -212,5 +216,12 @@ public class RemoteJobHelper {
         submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT2)), currentMaxJobId);
 
         waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
+    }
+
+    public void runSMSRequestJob()
+    {
+        int currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJob("DoSMSRequest.sh -e $HUB_SID -P -J");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "SMS Request");
     }
 }

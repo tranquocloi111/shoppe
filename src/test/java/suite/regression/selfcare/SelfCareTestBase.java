@@ -32,6 +32,13 @@ public class SelfCareTestBase extends BasePage {
         loginPage.login(userName, passWord, customerId);
         waitForPageLoadComplete(10);
     }
+
+    public void LoginIntoSelfCarePageByChangePasswordLink(String userName, String passWord, String customerId,String link) {
+        loginPage.navigate(link);
+        loginPage.login(userName, passWord, customerId);
+        waitForPageLoadComplete(10);
+    }
+
     public void LoginIntoSelfCarePageFail(String userName, String passWord, String customerId) {
         loginPage.relogin(userName, passWord, customerId);
         waitForPageLoadComplete(10);
@@ -90,6 +97,9 @@ public class SelfCareTestBase extends BasePage {
     }
     public void verifyForgotenPasswordPageDisplayed() {
         Assert.assertEquals("Forgotten password", MyPersonalInformationPage.getInstance().getHeader());
+    }
+    public void verifyMyAccountDetailPageIsDisplayed() {
+        Assert.assertEquals("My account details", MyPersonalInformationPage.getInstance().getHeader());
     }
 
 
