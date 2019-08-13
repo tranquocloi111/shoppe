@@ -1,7 +1,10 @@
 package suite.regression.selfcare;
 
+import ch.ethz.ssh2.Session;
 import logic.pages.BasePage;
-import logic.pages.selfcare.AddOrChangeAFamilyPerkPage;
+
+import java.util.Properties;
+
 import logic.pages.selfcare.LoginPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import org.openqa.selenium.By;
@@ -29,6 +32,11 @@ public class SelfCareTestBase extends BasePage {
         loginPage.login(userName, passWord, customerId);
         waitForPageLoadComplete(10);
     }
+    public void LoginIntoSelfCarePageFail(String userName, String passWord, String customerId) {
+        loginPage.relogin(userName, passWord, customerId);
+        waitForPageLoadComplete(10);
+    }
+
 
     public void reLoginIntoSelfCarePage(String userName, String passWord, String customerId) {
         SelfCareTestBase.page().clickLogOffLink();
@@ -79,6 +87,9 @@ public class SelfCareTestBase extends BasePage {
 
     public void clickLogOffLink() {
         super.clickLinkByText("Log off");
+    }
+    public void verifyForgotenPasswordPageDisplayed() {
+        Assert.assertEquals("Forgotten password", MyPersonalInformationPage.getInstance().getHeader());
     }
 
 

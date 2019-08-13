@@ -45,6 +45,14 @@ public class AddOrChangeAFamilyPerkPage extends BasePage {
             return getTextOfElement(findLabelCell(infoTable, "Monthly bundles").findElement(By.xpath(".//following-sibling::td[1]")));
         }
 
+        public String getMonthlySafetyBuffer() {
+            return getTextOfElement(findLabelCell(infoTable, "Monthly safety buffer").findElement(By.xpath(".//following-sibling::td[1]")));
+        }
+
+        public String getThisMonthAllowanceExpiryDate() {
+            return getTextOfElement(findLabelCell(infoTable, "This month’s allowance expiry date").findElement(By.xpath(".//following-sibling::td[1]")));
+        }
+
     }
 
     public static class BundleAllowancePage extends AddOrChangeAFamilyPerkPage {
