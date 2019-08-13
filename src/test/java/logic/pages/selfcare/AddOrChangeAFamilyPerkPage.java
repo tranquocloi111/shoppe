@@ -46,7 +46,7 @@ public class AddOrChangeAFamilyPerkPage extends BasePage {
         }
 
         public String getMonthlySafetyBuffer() {
-            return getTextOfElement(findLabelCell(infoTable, "Monthly safety buffergit ").findElement(By.xpath(".//following-sibling::td[1]")));
+            return getTextOfElement(findLabelCell(infoTable, "Monthly safety buffer").findElement(By.xpath(".//following-sibling::td[1]")));
         }
 
         public String getThisMonthAllowanceExpiryDate() {
