@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
     <S:Body>
-        <getBundleResponse
-                xmlns="http://selfcare.telco.hsntech.com"
-                xmlns:ns2="http://wsdl.hsntech.com">
+        <getBundleResponse xmlns="http://selfcare.telco.hsntech.com" xmlns:ns2="http://wsdl.hsntech.com">
             <bundleResponseDetail>
                 <accountNumber>$accountNumber$</accountNumber>
                 <subscriptionNumber>$subscriptionNumber$</subscriptionNumber>
@@ -88,9 +86,7 @@
                                 </allowance>
                             </allowances>
                         </bundle>
-                        <bundle charge="0.0" code="500MB-FDATA-0-FC-4G"
-                                descr="Family perk - 500MB per month - 4G"
-                                group="FAMILYPERK" selected="false">
+                        <bundle selected="false" group="FAMILYPERK" charge="0.0" descr="Family perk - 500MB per month - 4G" code="500MB-FDATA-0-FC-4G">
                             <serviceFeatures>
                                 <serviceFeature type="4G Service">ON</serviceFeature>
                             </serviceFeatures>
@@ -101,9 +97,7 @@
                                 </allowance>
                             </allowances>
                         </bundle>
-                        <bundle charge="0.0" code="250MB-FDATA-0-FC-4G"
-                                descr="Family perk - 250MB per month - 4G"
-                                group="FAMILYPERK" selected="false">
+                        <bundle selected="false" group="FAMILYPERK" charge="0.0" descr="Family perk - 250MB per month - 4G" code="250MB-FDATA-0-FC-4G">
                             <serviceFeatures>
                                 <serviceFeature type="4G Service">ON</serviceFeature>
                             </serviceFeatures>
@@ -255,6 +249,10 @@
                     <message type="WARN">
                         <code>UBW_001</code>
                         <description>Pending service order warning Discount Bundle Monthly Refill : id $SOId$</description>
+                    </message>
+                    <message type="WARN">
+                        <code>UBW_003</code>
+                        <description>Pending Deactivate Account service order</description>
                     </message>
                 </messages>
             </bundleResponseDetail>

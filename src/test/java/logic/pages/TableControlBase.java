@@ -63,7 +63,6 @@ public class TableControlBase extends BasePage {
         }
     }
 
-
     public WebElement getElementByColumnNameAndRowIndex(int index, String columnName) {
         // index = 1: Header
         try {
@@ -273,18 +272,15 @@ public class TableControlBase extends BasePage {
                 columnIndex = getColumnIndex(columnName);
                 String ExR = body.get(i).findElements(By.tagName("td")).get(columnIndex).getText();
                 if (!body.get(i).findElements(By.tagName("td")).get(columnIndex).getText().equalsIgnoreCase(cellValue)) {
-                    elm = body.get(i);
                     Flag = false;
                     break;
                 }
-
             }
             if (Flag)
                 column.add(elm);
         }
         return column;
     }
-
 
     public List<WebElement> findRowsByColumns(List<HashMap<String, String>> columns) {
         int columnIndex = 0;
@@ -300,7 +296,9 @@ public class TableControlBase extends BasePage {
                 String cellValue = (String) mapElement.getValue();
                 columnIndex = getColumnIndex(columnName);
                 for (WebElement el : body) {
-                    if (el.findElements(By.tagName("td")).get(columnIndex).getText().equalsIgnoreCase(cellValue)) {
+                    List<WebElement> listElement = el.findElements(By.tagName("td"));
+                    String elementText = listElement.get(columnIndex).getText();
+                    if (elementText.equalsIgnoreCase(cellValue)) {
                         flag = true;
                         isFail = true;
                         elm = el;
@@ -311,9 +309,9 @@ public class TableControlBase extends BasePage {
                         //break;
                     }
                 }
+                if (flag && isFail)
+                    column.add(elm);
             }
-            if (flag && isFail)
-                column.add(elm);
         }
         return column;
     }
@@ -373,7 +371,6 @@ public class TableControlBase extends BasePage {
         return column;
     }
 
-
     public List<WebElement> getRowsByColumnsWithIndex(String[] cellValue) {
         List<Boolean> listChecked = new ArrayList<>();
         List<WebElement> list = new ArrayList<>();
@@ -415,6 +412,44 @@ public class TableControlBase extends BasePage {
     public WebElement findControlCellByLabel(String label, int index) {
         WebElement labelCell = findLabelCell(label, index);
         return labelCell.findElement(By.xpath(".//following-sibling::td[1]"));
+    }
+
+
+
+    ///////INDEBUGGING - PENDING DUE TO ENVIRONMENT SETUP [13/8/2019] - Nhi Dinh.
+    public List<WebElement> findRowsByColumns_____INDEBUGGING(List<HashMap<String, String>> columns) {
+        int columnIndex;
+        boolean flag = false;
+        boolean isIgnored = false;
+        WebElement elm;
+        List<WebElement> column = new ArrayList<>();
+        List<WebElement> body = getBody();
+
+        for(WebElement el : body){
+            for (int i = 0; i < columns.size(); i++) {
+            for (Map.Entry mapElement : columns.get(i).entrySet()) {
+                String columnName = (String) mapElement.getKey();
+                String cellValue = (String) mapElement.getValue();
+                columnIndex = getColumnIndex(columnName);
+                List<WebElement> listElement = el.findElements(By.tagName("td"));
+                String elementText = listElement.get(columnIndex).getText();
+                if (elementText.equals(cellValue) && !isIgnored) {
+                    flag = true;
+                    break;
+                }else {
+                    flag = false;
+                    isIgnored=true;
+                    break;
+                }
+            }
+                if(flag && !isIgnored){
+                    elm = el;
+                    String text = elm.getText();
+                    column.add(elm);
+                }
+            }
+        }
+        return column;
     }
 
 }

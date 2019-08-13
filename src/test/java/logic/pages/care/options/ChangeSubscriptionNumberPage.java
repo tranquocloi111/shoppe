@@ -1,6 +1,6 @@
 package logic.pages.care.options;
 
-import logic.pages.BasePage;
+import logic.pages.care.main.ServiceOrdersPage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
  * User: Nhi Dinh
  * Date: 24/07/2019
  */
-public class ChangeSubscriptionNumberPage extends BasePage {
+public class ChangeSubscriptionNumberPage extends ServiceOrdersPage {
     public static class ChangeSubscriptionNumber extends ChangeSubscriptionNumberPage {
         private static ChangeSubscriptionNumber instance = new ChangeSubscriptionNumber();
         public static ChangeSubscriptionNumber getInstance() {
@@ -47,14 +47,6 @@ public class ChangeSubscriptionNumberPage extends BasePage {
 
         public String getChangeDate() {
             return getValueOfElement(ctlChangeDate);
-        }
-
-        public String getChangeTime() {
-            return getValueOfElement(ctlChangeTime);
-        }
-
-        public void setChangeTime(String text) {
-            ctlChangeTime.sendKeys(text);
         }
 
         public String getNotes() {

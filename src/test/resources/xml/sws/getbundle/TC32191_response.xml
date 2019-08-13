@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
     <S:Body>
-        <getBundleResponse
-                xmlns="http://selfcare.telco.hsntech.com"
-                xmlns:ns2="http://wsdl.hsntech.com">
+        <getBundleResponse xmlns="http://selfcare.telco.hsntech.com" xmlns:ns2="http://wsdl.hsntech.com">
             <bundleResponseDetail>
                 <accountNumber>$accountNumber$</accountNumber>
                 <subscriptionNumber>$subscriptionNumber$</subscriptionNumber>
@@ -88,19 +86,6 @@
                                 </allowance>
                             </allowances>
                         </bundle>
-                        <bundle charge="0.0" code="500MB-FDATA-0-FC-4G"
-                                descr="Family perk - 500MB per month - 4G"
-                                group="FAMILYPERK" selected="false">
-                            <serviceFeatures>
-                                <serviceFeature type="4G Service">ON</serviceFeature>
-                            </serviceFeatures>
-                            <allowances>
-                                <allowance>
-                                    <allowanceType>MB</allowanceType>
-                                    <totalAllowance>500.0</totalAllowance>
-                                </allowance>
-                            </allowances>
-                        </bundle>
                         <bundle charge="0.0" code="250MB-FDATA-0-FC-4G"
                                 descr="Family perk - 250MB per month - 4G"
                                 group="FAMILYPERK" selected="false">
@@ -111,6 +96,19 @@
                                 <allowance>
                                     <allowanceType>MB</allowanceType>
                                     <totalAllowance>250.0</totalAllowance>
+                                </allowance>
+                            </allowances>
+                        </bundle>
+                        <bundle charge="0.0" code="500MB-FDATA-0-FC-4G"
+                                descr="Family perk - 500MB per month - 4G"
+                                group="FAMILYPERK" selected="false">
+                            <serviceFeatures>
+                                <serviceFeature type="4G Service">ON</serviceFeature>
+                            </serviceFeatures>
+                            <allowances>
+                                <allowance>
+                                    <allowanceType>MB</allowanceType>
+                                    <totalAllowance>500.0</totalAllowance>
                                 </allowance>
                             </allowances>
                         </bundle>
@@ -157,6 +155,7 @@
                         <descr>Safety Buffers A</descr>
                         <minQuantity>1</minQuantity>
                         <maxQuantity>1</maxQuantity>
+
                         <bundle selected="true" group="FLEXCAP" charge="0.0" descr="£2.50 safety buffer" code="00250-SB-A" billCapNotifications="Y">
                             <serviceFeatures />
                             <allowances>
@@ -165,6 +164,15 @@
                                     <totalAllowance>2.5</totalAllowance>
                                     <startDate>$startDate$</startDate>
                                     <nextScheduledRefill>$nextScheduledRefill$</nextScheduledRefill>
+                                </allowance>
+                            </allowances>
+                        </bundle>
+                        <bundle selected="false" group="FLEXCAP" charge="0.0" descr="No safety buffer" code="10000-HU-A">
+                            <serviceFeatures />
+                            <allowances>
+                                <allowance>
+                                    <allowanceType>HIGHUSAGELIMIT</allowanceType>
+                                    <totalAllowance>100.0</totalAllowance>
                                 </allowance>
                             </allowances>
                         </bundle>
@@ -240,15 +248,7 @@
                                 </allowance>
                             </allowances>
                         </bundle>
-                        <bundle selected="false" group="FLEXCAP" charge="0.0" descr="No safety buffer" code="10000-HU-A">
-                            <serviceFeatures />
-                            <allowances>
-                                <allowance>
-                                    <allowanceType>HIGHUSAGELIMIT</allowanceType>
-                                    <totalAllowance>100.0</totalAllowance>
-                                </allowance>
-                            </allowances>
-                        </bundle>
+
                     </bundleGroup>
                 </bundleGroups>
                 <messages>

@@ -27,6 +27,9 @@ public class CareTestBase extends BasePage {
     String userName;
     String passWord;
 
+    private static final String DETAILS = "Details";
+    private static final String SERVICE_ORDERS = "Service Orders";
+
     private CareTestBase() {
         loginPage = new LoginPage();
         findPage = new FindPage();
@@ -174,7 +177,7 @@ public class CareTestBase extends BasePage {
     }
 
     public static String getCustomerName(){
-        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details"))
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(DETAILS))
         {
             MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         }
@@ -182,7 +185,7 @@ public class CareTestBase extends BasePage {
     }
 
     public static String getClubCardNumber(){
-        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details"))
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(DETAILS))
         {
             MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         }
@@ -190,10 +193,18 @@ public class CareTestBase extends BasePage {
     }
 
     public static String recordDiscountBundleMonthlyRefillSOId(String subscriptionNumber){
-        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SERVICE_ORDERS)){
+            MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+        }
         return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Discount Bundle Monthly Refill"));
     }
 
+    public static String recordDeactivateAccountSOId(String subscriptionNumber){
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SERVICE_ORDERS)){
+            MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+        }
+        return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Deactivate Account"));
+    }
 
 
 }
