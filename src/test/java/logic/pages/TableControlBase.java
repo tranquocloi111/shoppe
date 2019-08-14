@@ -79,7 +79,7 @@ public class TableControlBase extends BasePage {
         // index = 1: Header
         try {
 
-            String xpath = String.format("//td[contains(text(),'%s')]//following-sibling::td/input[@type='password']",text);
+            String xpath = String.format("//td[contains(text(),'%s')]//following-sibling::td/input[@type='password']", text);
             return element.findElement(By.xpath(xpath));
         } catch (Exception e) {
             return null;
@@ -146,7 +146,18 @@ public class TableControlBase extends BasePage {
     public WebElement getCellByLabel(String label) {
         // i = 1: Header
         try {
-            String xpath=String.format(".//td[@class='label' and contains(text(),'%s')]//following-sibling::td", label);
+            String xpath = String.format(".//td[@class='label' and contains(text(),'%s')]//following-sibling::td", label);
+            WebElement row = element.findElement(By.xpath(xpath));
+            return row;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public WebElement getCellByFieldKey(String label) {
+        // i = 1: Header
+        try {
+            String xpath = String.format(".//td[@class='fieldKey' and contains(text(),'%s')]//following-sibling::td/input", label);
             WebElement row = element.findElement(By.xpath(xpath));
             return row;
         } catch (Exception e) {
@@ -405,15 +416,12 @@ public class TableControlBase extends BasePage {
         return null;
     }
 
-    private List<WebElement> AllLabels() {
-        return element.findElements(By.xpath(".//td[(@class!='fieldValue' and @class!='fieldvalue') or not(@class)]"));
-    }
+    private List<WebElement> AllLabels() { return element.findElements(By.xpath(".//td[(@class!='fieldValue' and @class!='fieldvalue') or not(@class)]")); }
 
     public WebElement findControlCellByLabel(String label, int index) {
         WebElement labelCell = findLabelCell(label, index);
         return labelCell.findElement(By.xpath(".//following-sibling::td[1]"));
     }
-
 
 
     ///////INDEBUGGING - PENDING DUE TO ENVIRONMENT SETUP [13/8/2019] - Nhi Dinh.
@@ -425,24 +433,24 @@ public class TableControlBase extends BasePage {
         List<WebElement> column = new ArrayList<>();
         List<WebElement> body = getBody();
 
-        for(WebElement el : body){
+        for (WebElement el : body) {
             for (int i = 0; i < columns.size(); i++) {
-            for (Map.Entry mapElement : columns.get(i).entrySet()) {
-                String columnName = (String) mapElement.getKey();
-                String cellValue = (String) mapElement.getValue();
-                columnIndex = getColumnIndex(columnName);
-                List<WebElement> listElement = el.findElements(By.tagName("td"));
-                String elementText = listElement.get(columnIndex).getText();
-                if (elementText.equals(cellValue) && !isIgnored) {
-                    flag = true;
-                    break;
-                }else {
-                    flag = false;
-                    isIgnored=true;
-                    break;
+                for (Map.Entry mapElement : columns.get(i).entrySet()) {
+                    String columnName = (String) mapElement.getKey();
+                    String cellValue = (String) mapElement.getValue();
+                    columnIndex = getColumnIndex(columnName);
+                    List<WebElement> listElement = el.findElements(By.tagName("td"));
+                    String elementText = listElement.get(columnIndex).getText();
+                    if (elementText.equals(cellValue) && !isIgnored) {
+                        flag = true;
+                        break;
+                    } else {
+                        flag = false;
+                        isIgnored = true;
+                        break;
+                    }
                 }
-            }
-                if(flag && !isIgnored){
+                if (flag && !isIgnored) {
                     elm = el;
                     String text = elm.getText();
                     column.add(elm);

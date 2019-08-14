@@ -21,8 +21,8 @@ public class SelfCareSettingContentPage extends BasePage {
         WebElement selfCareSettingGridCotent;
         TableControlBase table = new TableControlBase(selfCareSettingGridCotent);
 
-        public void clickUserByUserName(String username) {
-            String xpath = String.format("//tr//a[contains(text(),'%s') and @class='informationBoxRow1']", username);
+        public void clickFirstRow() {
+            String xpath = String.format("//tr//a[@class='informationBoxRow1']");
             selfCareSettingGridCotent.findElement(By.xpath(xpath)).click();
         }
 
@@ -36,6 +36,11 @@ public class SelfCareSettingContentPage extends BasePage {
 
         public String getUserStatusByUserName(String text) {
             String xpath = String.format("//a[contains(text(),'%s')]/ancestor::td[@class='desc']//following-sibling::td[2]", text);
+            return getTextOfElement(selfCareSettingGridCotent.findElement(By.xpath(xpath)));
+
+        }
+        public String getUserName() {
+            String xpath = String.format("//a[@class='informationBoxRow1']");
             return getTextOfElement(selfCareSettingGridCotent.findElement(By.xpath(xpath)));
 
         }

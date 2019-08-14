@@ -16,9 +16,12 @@ import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.options.ChangeSubscriptionNumberPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CareTestBase extends BasePage {
@@ -49,20 +52,21 @@ public class CareTestBase extends BasePage {
         findPage.openCustomerByIndex(1);
     }
 
-    public void reLoadCustomerInHubNet(String customerId){
+    public void reLoadCustomerInHubNet(String customerId) {
         MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
         findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
         findPage.openCustomerByIndex(1);
     }
 
     public void clickApplyBtn() {
-        DetailsContentPage.AddressInformationSection.getInstance().clickApplyBtn();
+        DetailsContentPage.AddressInformationPage.getInstance().clickApplyBtn();
     }
-    public void clickEditBtn(int index)
-    {
+
+    public void clickEditBtn(int index) {
         clickEditBtnByIndex(index);
     }
-    public void verifyCreateOrderResponse(OWSActions owsActions, Xml xml){
+
+    public void verifyCreateOrderResponse(OWSActions owsActions, Xml xml) {
         Assert.assertNotNull(xml.getTextByXpath("//createOrderResponse//@correlationId"));
         Assert.assertEquals(owsActions.orderRef, xml.getTextByTagName("orderRef"));
         Assert.assertEquals("1", xml.getTextByXpath("//orderProcessResponse//responseCode"));
@@ -73,7 +77,7 @@ public class CareTestBase extends BasePage {
         Assert.assertEquals("Confirmation Required – Terms and Conditions must be accepted", xml.getTextByXpath("//orderError//errorDescription"));
     }
 
-    public  void verifyContractPdfCommonData(List<String> reader, String amount, OWSActions owsActions){
+    public void verifyContractPdfCommonData(List<String> reader, String amount, OWSActions owsActions) {
         Assert.assertEquals("Your contract", reader.get(0));
         Assert.assertEquals("Order date Order number Order total", reader.get(1));
         Assert.assertEquals(String.format("%s %s %s", Parser.parseDateFormate(TimeStamp.Today(), "dd MMMM yyyy"), owsActions.orderIdNo, amount), reader.get(2));
@@ -109,8 +113,8 @@ public class CareTestBase extends BasePage {
 
     }
 
-    public String verifyServiceOrderCompleteScreenHasProvisionWaitMessage(){
-        String provisionWaitStatusMessage = String.format("*** Service Order has been set to Status of Provision Wait, and is due to be processed on %s ***", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy"));
+    public String verifyServiceOrderCompleteScreenHasProvisionWaitMessage() {
+        String provisionWaitStatusMessage = String.format("*** Service Order has been set to Status of Provision Wait, and is due to be processed on %s ***", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), "dd/MM/yyyy"));
         Assert.assertEquals(provisionWaitStatusMessage, ServiceOrdersPage.ServiceOrderComplete.getInstance().getMessage());
 
         return provisionWaitStatusMessage;
@@ -120,24 +124,25 @@ public class CareTestBase extends BasePage {
         clickNextBtn();
     }
 
-    public void openInvoiceDetailsScreen(){
+    public void openInvoiceDetailsScreen() {
         MenuPage.LeftMenuPage.getInstance().clickSummaryLink();
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
         InvoicesContentPage.getInstance().clickInvoiceNumberByIndex(1);
     }
 
-    public  void verifyInvoiceDetailsAreCorrect(String issued, String end, String dueDate, String status){
+    public void verifyInvoiceDetailsAreCorrect(String issued, String end, String dueDate, String status) {
         Assert.assertEquals(issued, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getIssued());
         Assert.assertEquals(end, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getEnd());
         Assert.assertEquals(dueDate, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getDueDate());
         Assert.assertEquals(status, InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getStatus(1));
     }
 
-    public void openChangeSubscriptionNumberPage(){
+    public void openChangeSubscriptionNumberPage() {
         MenuPage.RightMenuPage.getInstance().clickChangeSubscriptionNumberLink();
     }
-    public String updateTheSubscriptionNumberAndClickNextButton(){
+
+    public String updateTheSubscriptionNumberAndClickNextButton() {
         ChangeSubscriptionNumberPage.ChangeSubscriptionNumber content = ChangeSubscriptionNumberPage.ChangeSubscriptionNumber.getInstance();
         String newSubscriptionNumber = newSubscriptionNumber();
         content.setNewSubscriptionNumber(newSubscriptionNumber);
@@ -145,24 +150,26 @@ public class CareTestBase extends BasePage {
         clickNextButton();
         return newSubscriptionNumber;
     }
-    private String newSubscriptionNumber(){
-        return "0" + MiscHelper.RandomStringF9()+"0";
+
+    private String newSubscriptionNumber() {
+        return "0" + MiscHelper.RandomStringF9() + "0";
     }
-    public void verifyConfirmChangingSubscriptionNumberMessageIsCorrect(String subscriptionNumber, String newSubscriptionNumber){
+
+    public void verifyConfirmChangingSubscriptionNumberMessageIsCorrect(String subscriptionNumber, String newSubscriptionNumber) {
         ChangeSubscriptionNumberPage.ConfirmChangingSubscriptionNumber content = ChangeSubscriptionNumberPage.ConfirmChangingSubscriptionNumber.getInstance();
-        String expectedMessage = "Subscription number "+subscriptionNumber+" will be changed to "+newSubscriptionNumber+" and this cannot be undone. Are you sure? Select 'Next' to confirm.";
+        String expectedMessage = "Subscription number " + subscriptionNumber + " will be changed to " + newSubscriptionNumber + " and this cannot be undone. Are you sure? Select 'Next' to confirm.";
         Assert.assertEquals(expectedMessage, content.getConfirmMessage());
         clickNextButton();
     }
 
-    public void verifyServiceOrderCompletePageAndClickReturnToCustomerButton(){
+    public void verifyServiceOrderCompletePageAndClickReturnToCustomerButton() {
         String message = ServiceOrdersPage.ServiceOrderComplete.getInstance().getMessage();
         Assert.assertEquals("*** The Change of Subscription has been completed ***", message);
 
         clickReturnToCustomer();
     }
 
-    public String recordLatestSubscriptionNumberForCustomer(){
+    public String recordLatestSubscriptionNumberForCustomer() {
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         String subscriptionNumber = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
@@ -170,23 +177,21 @@ public class CareTestBase extends BasePage {
         return subscriptionNumber;
     }
 
-    public String recordAccountNameAndClubCardNumber(){
+    public String recordAccountNameAndClubCardNumber() {
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         return getClubCardNumber().split(" ")[0];
     }
 
-    public static String getCustomerName(){
-        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(DETAILS))
-        {
+    public static String getCustomerName() {
+        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(DETAILS)) {
             MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         }
         return DetailsContentPage.AddressInformationPage.getInstance().getAddressee();
     }
 
-    public static String getClubCardNumber(){
-        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(DETAILS))
-        {
+    public static String getClubCardNumber() {
+        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(DETAILS)) {
             MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         }
         return DetailsContentPage.CreditInformationPage.getInstance().getClubCardNumber();
@@ -199,11 +204,24 @@ public class CareTestBase extends BasePage {
         return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Discount Bundle Monthly Refill"));
     }
 
-    public static String recordDeactivateAccountSOId(String subscriptionNumber){
-        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SERVICE_ORDERS)){
+
+    public static String recordDeactivateAccountSOId(String subscriptionNumber) {
+        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SERVICE_ORDERS)) {
             MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
         }
         return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Deactivate Account"));
+    }
+
+    public List<String> errorMessageList() {
+        List<String> list = new ArrayList<>();
+        for (WebElement li : getDriver().findElements(By.xpath(".//td[@class='descError']"))) {
+            list.add(li.getText().trim());
+        }
+        return list;
+    }
+
+    public String getEmail() {
+        return DetailsContentPage.AddressInformationPage.getInstance().getEmail();
     }
 
 

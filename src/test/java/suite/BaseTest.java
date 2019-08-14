@@ -14,6 +14,8 @@ import framework.wdm.WdManager;
 import logic.business.db.billing.BillingActions;
 import logic.business.entities.DiscountBundleEntity;
 import logic.business.helper.RemoteJobHelper;
+import logic.pages.care.MenuPage;
+import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.InvoicesContentPage;
 import logic.utils.TimeStamp;
 import org.testng.ITestResult;
@@ -189,6 +191,12 @@ public class BaseTest {
 
     protected static void submitConfirmBillRun(){
         RemoteJobHelper.getInstance().submitConfirmBillRun();
+    }
+
+    protected static String getSubscriptionNumberBySubscriptionNumber(String Subscription)
+    {
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        return CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue(Subscription);
     }
     //end region
 
