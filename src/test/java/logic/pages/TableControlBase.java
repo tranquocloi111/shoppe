@@ -416,9 +416,7 @@ public class TableControlBase extends BasePage {
         return null;
     }
 
-    private List<WebElement> AllLabels() {
-        return element.findElements(By.xpath(".//td[(@class!='fieldValue' and @class!='fieldvalue') or not(@class)]"));
-    }
+    private List<WebElement> AllLabels() { return element.findElements(By.xpath(".//td[(@class!='fieldValue' and @class!='fieldvalue') or not(@class)]")); }
 
     public WebElement findControlCellByLabel(String label, int index) {
         WebElement labelCell = findLabelCell(label, index);
