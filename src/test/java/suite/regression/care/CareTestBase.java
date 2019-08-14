@@ -30,6 +30,9 @@ public class CareTestBase extends BasePage {
     String userName;
     String passWord;
 
+    private static final String DETAILS = "Details";
+    private static final String SERVICE_ORDERS = "Service Orders";
+
     private CareTestBase() {
         loginPage = new LoginPage();
         findPage = new FindPage();
