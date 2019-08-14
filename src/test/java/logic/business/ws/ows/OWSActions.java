@@ -233,7 +233,6 @@ public class OWSActions extends BaseWs {
         Log.info("OrderId number:" + orderIdNo);
         setUsername();
         setPassword();
-        setOrderRef();
         checkAsyncProcessIsCompleted(orderIdNo);
     }
     public void createGeneralCustomerOrderForChangePassword(String path){

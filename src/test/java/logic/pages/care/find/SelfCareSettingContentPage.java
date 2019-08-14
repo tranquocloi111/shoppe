@@ -39,7 +39,7 @@ public class SelfCareSettingContentPage extends BasePage {
             return getTextOfElement(selfCareSettingGridCotent.findElement(By.xpath(xpath)));
 
         }
-        public String getUserUserName() {
+        public String getUserName() {
             String xpath = String.format("//a[@class='informationBoxRow1']");
             return getTextOfElement(selfCareSettingGridCotent.findElement(By.xpath(xpath)));
 

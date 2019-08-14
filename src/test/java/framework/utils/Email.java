@@ -258,7 +258,7 @@ public class Email {
         return null;
     }
 
-    public  void deleteMailBySubject(String folderName, String subject, String username, String password) throws MessagingException {
+    public  void deleteMailBySubject(String folderName, String subject) throws MessagingException {
         IMAPFolder folder = null;
         Store store = null;
         try{
