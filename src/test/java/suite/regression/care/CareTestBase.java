@@ -197,8 +197,10 @@ public class CareTestBase extends BasePage {
         return DetailsContentPage.CreditInformationPage.getInstance().getClubCardNumber();
     }
 
-    public static String recordDiscountBundleMonthlyRefillSOId(String subscriptionNumber) {
-        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+    public static String recordDiscountBundleMonthlyRefillSOId(String subscriptionNumber){
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SERVICE_ORDERS)){
+            MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+        }
         return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Discount Bundle Monthly Refill"));
     }
 
