@@ -54,6 +54,9 @@ public class MyAccountDetailsPage extends BasePage {
         public void changeEmailAddress(String email) {
             enterValueByLabel(table.getCellByFieldKey("Email address"),email);
         }
+        public void clickUseEmailAsUserNameCheckBox() {
+            click(myContactDetailTable.findElement(By.xpath("//input[@type='checkbox' and @name='useEmailAsUserName']")));
+        }
 
     }
 

@@ -1,12 +1,18 @@
 package suite.regression.selfcare;
 
 import ch.ethz.ssh2.Session;
+import framework.config.Config;
+import framework.utils.Log;
+import logic.business.db.OracleDB;
+import logic.business.helper.FTPHelper;
 import logic.pages.BasePage;
 
+import java.io.File;
 import java.util.Properties;
 
 import logic.pages.selfcare.LoginPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
+import logic.utils.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -43,7 +49,10 @@ public class SelfCareTestBase extends BasePage {
         loginPage.relogin(userName, passWord, customerId);
         waitForPageLoadComplete(10);
     }
-
+    public void openSelfCareLoginPageThenClickForgotPasswordLink() {
+        loginPage.navigateToSelfCarePage();
+        clickLinkByText("Forgotten your password? Click here.");
+    }
 
     public void reLoginIntoSelfCarePage(String userName, String passWord, String customerId) {
         SelfCareTestBase.page().clickLogOffLink();
@@ -100,6 +109,30 @@ public class SelfCareTestBase extends BasePage {
     }
     public void verifyMyAccountDetailPageIsDisplayed() {
         Assert.assertEquals("My account details", MyPersonalInformationPage.getInstance().getHeader());
+    }
+    public static String downloadGRGSMSFile() {
+        String sql = "SELECT h.OrigTransactionIdent" +
+                " FROM HITransactionDefinition d, HITransaction h" +
+                " WHERE  d.TransactionKeyRef LIKE 'SMS%REQUEST' " +
+                " AND    d.HITransactionDefinitionID = h.HITransactionDefinitionID" +
+                " ORDER BY h.transactionDate DESC";
+        List<String> GRGSMSFileName = OracleDB.SetToNonOEDatabase().executeQueryReturnListString(sql);
+        String firstResult = GRGSMSFileName.get(0);
+        String value = firstResult.substring(firstResult.indexOf("=") + 1).replace("}", "");
+        String ftpFilePath = Config.getProp("cdrFolder");
+        ftpFilePath = ftpFilePath.replace("Feed/a2aInterface/fileinbox", "ftp/tesgrg/fileoutbox");
+        String localPath = Common.getFolderLogFilePath();
+        FTPHelper.getInstance().downLoadFromDisk(ftpFilePath, value, localPath);
+        Log.info("TM_HUB_SMSRQST file:" + localPath);
+        return localPath + value;
+    }
+    public static void verifyGRGTemporaryPasswordIsNotRecorded(String fileName) {
+        File file = new File("fileName");
+        String expectedResult = fileName.split("_")[4];
+        expectedResult=String.format("|HUB|GRG|%s|", expectedResult);
+        String fileResult = Common.readFile(fileName);
+        Assert.assertTrue(fileResult.contains(expectedResult));
+        Assert.assertFalse(fileResult.contains("password1"));
     }
 
 
