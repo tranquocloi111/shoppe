@@ -228,30 +228,7 @@ public class Common {
 
     }
 
-    public static String downloadGRGSMSFile() {
-        String sql = "SELECT h.OrigTransactionIdent" +
-                " FROM HITransactionDefinition d, HITransaction h" +
-                " WHERE  d.TransactionKeyRef LIKE 'SMS%REQUEST' " +
-                " AND    d.HITransactionDefinitionID = h.HITransactionDefinitionID" +
-                " ORDER BY h.transactionDate DESC";
-        List<String> GRGSMSFileName = OracleDB.SetToNonOEDatabase().executeQueryReturnListString(sql);
-        String firstResult = GRGSMSFileName.get(0);
-        String value = firstResult.substring(firstResult.indexOf("=") + 1).replace("}", "");
-        String ftpFilePath = Config.getProp("cdrFolder");
-        ftpFilePath = ftpFilePath.replace("Feed/a2aInterface/fileinbox", "ftp/tesgrg/fileoutbox");
-        String localPath = Common.getFolderLogFilePath();
-        FTPHelper.getInstance().downLoadFromDisk(ftpFilePath, value, localPath);
-        Log.info("TM_HUB_SMSRQST file:" + localPath);
-        return localPath + value;
-    }
-    public static void verifyGRGTemporaryPasswordIsNotRecorded(String fileName) {
-        File file = new File("fileName");
-        String expectedResult = fileName.split("_")[4];
-        expectedResult=String.format("|HUB|GRG|%s|", expectedResult);
-        String fileResult = Common.readFile(fileName);
-        Assert.assertTrue(fileResult.contains(expectedResult));
-        Assert.assertFalse(fileResult.contains("password1"));
-    }
+
 
     public static void main(String[] args) throws InterruptedException, IOException {
 
