@@ -1,0 +1,20 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <sel:maintainBundleRequest>
+      <sel:maintainBundleAction effective="IMMEDIATE" acceptWarning="false">
+        <sel:externalSystemId>NETCALL</sel:externalSystemId>
+        <sel:accountNumber>$accountNumber$</sel:accountNumber>
+        <sel:subscriptionNumber>$subscriptionNumber$</sel:subscriptionNumber>
+        <sel:bundleActions>
+          <!--1 or more repetitions:-->
+          <sel:bundleAction actionType="ADD">
+            <sel:group>FLEXCAP</sel:group>
+            <sel:groupCode>SB-GRP-A</sel:groupCode>
+            <sel:bundleCode>00500-SB-A</sel:bundleCode>
+          </sel:bundleAction>
+        </sel:bundleActions>
+      </sel:maintainBundleAction>
+    </sel:maintainBundleRequest>
+  </soapenv:Body>
+</soapenv:Envelope>
