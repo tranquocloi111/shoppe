@@ -207,9 +207,7 @@ public class CareTestBase extends BasePage {
         return list;
     }
 
-    public String getEmail() {
-        return DetailsContentPage.AddressInformationPage.getInstance().getEmail();
-    }
+    public String getEmail() { return DetailsContentPage.AddressInformationPage.getInstance().getEmail(); }
 
 
 }
