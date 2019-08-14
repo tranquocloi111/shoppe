@@ -71,7 +71,7 @@ Author: Tran Quoc Loi
 
         test.get().info("Step 11 : go to detail page and verify the email is changed correctly");
         MenuPage.LeftMenuPage.getInstance().clickSelfCareSetting();
-        userName = SelfCareSettingContentPage.SelfCareSettingSection.getInstance().getUserUserName();
+        userName = SelfCareSettingContentPage.SelfCareSettingSection.getInstance().getUserName();
         Assert.assertEquals(userName, newUserName);
 
 

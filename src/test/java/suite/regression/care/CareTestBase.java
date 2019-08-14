@@ -210,11 +210,6 @@ public class CareTestBase extends BasePage {
     public String getEmail() {
         return DetailsContentPage.AddressInformationPage.getInstance().getEmail();
     }
-    public String getUserName() {
-
-        return DetailsContentPage.AddressInformationPage.getInstance().getEmail();
-    }
-
 
 
 }
