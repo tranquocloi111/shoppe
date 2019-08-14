@@ -36,6 +36,7 @@ public class OWSActions extends BaseWs {
     public static final String CUSTOMER_WITH_2_SUBSCRIPTIONS = "src\\test\\resources\\xml\\sws\\getaccount\\TC32125_createOrder.xml";
     public static final String ONLINES_CC_CUSTOMER_WITH_FC_1_BUNDLE_AND_NK2720 = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_1_bundle_and_NK2720.xml";
     public static final String CUSTOMER_WITH_FC_1_BUNDLE_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\customer_with_FC_1_bundle_and_simonly.xml";
+    public static final String ONLINES_CC_customer_with_2_FC_family_perk_NK2720  = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_2_FC_family_perk_NK2720.xml";
     //endregion
 
 
@@ -263,5 +264,9 @@ public class OWSActions extends BaseWs {
     }
     public void createAnOnlinesCCCustomerWithFC1BundleAndSimOnly(){
         createGeneralCustomerOrder(CUSTOMER_WITH_FC_1_BUNDLE_AND_SIMONLY);
+    }
+
+    public void createAnOnlinesCCCustomerWith2FCFamilyPerkAndNK2720(){
+        createGeneralCustomerOrder(ONLINES_CC_customer_with_2_FC_family_perk_NK2720);
     }
 }
