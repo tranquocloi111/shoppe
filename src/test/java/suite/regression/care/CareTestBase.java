@@ -184,14 +184,14 @@ public class CareTestBase extends BasePage {
     }
 
     public static String getCustomerName() {
-        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details")) {
+        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(DETAILS)) {
             MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         }
         return DetailsContentPage.AddressInformationPage.getInstance().getAddressee();
     }
 
     public static String getClubCardNumber() {
-        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected("Details")) {
+        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(DETAILS)) {
             MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         }
         return DetailsContentPage.CreditInformationPage.getInstance().getClubCardNumber();
@@ -202,6 +202,14 @@ public class CareTestBase extends BasePage {
         return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Discount Bundle Monthly Refill"));
     }
 
+
+    public static String recordDeactivateAccountSOId(String subscriptionNumber) {
+        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SERVICE_ORDERS)) {
+            MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+        }
+        return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Deactivate Account"));
+    }
+
     public List<String> errorMessageList() {
         List<String> list = new ArrayList<>();
         for (WebElement li : getDriver().findElements(By.xpath(".//td[@class='descError']"))) {
@@ -210,7 +218,9 @@ public class CareTestBase extends BasePage {
         return list;
     }
 
-    public String getEmail() { return DetailsContentPage.AddressInformationPage.getInstance().getEmail(); }
+    public String getEmail() {
+        return DetailsContentPage.AddressInformationPage.getInstance().getEmail();
+    }
 
 
 }
