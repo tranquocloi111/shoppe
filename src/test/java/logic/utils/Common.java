@@ -3,8 +3,12 @@ package logic.utils;
 import com.sun.org.apache.xml.internal.security.c14n.CanonicalizationException;
 import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer;
 import com.sun.org.apache.xml.internal.security.c14n.InvalidCanonicalizerException;
+import framework.config.Config;
 import framework.utils.Log;
+import logic.business.db.OracleDB;
+import logic.business.helper.FTPHelper;
 import org.apache.commons.io.FileUtils;
+import org.testng.Assert;
 import org.w3c.dom.Element;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -16,6 +20,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -55,15 +60,15 @@ public class Common {
         return list.stream().anyMatch(x -> x.endsWith(value));
     }
 
-    public static int steamFilterCondition(List<Integer>  list, int value) {
+    public static int steamFilterCondition(List<Integer> list, int value) {
         return Integer.parseInt(String.valueOf(list.stream().filter(x -> x == value).count()));
     }
 
-    public static String findValueOfStream(List<String> list, String value){
+    public static String findValueOfStream(List<String> list, String value) {
         return list.stream().filter(x -> x.contains(value)).findAny().get();
     }
 
-    public static LinkedList<DiffMatchPatch.Diff> compareFile(String file1, String file2){
+    public static LinkedList<DiffMatchPatch.Diff> compareFile(String file1, String file2) {
         LinkedList<DiffMatchPatch.Diff> d = new LinkedList<DiffMatchPatch.Diff>();
         try {
             DiffMatchPatch dmp = new DiffMatchPatch();
@@ -81,6 +86,29 @@ public class Common {
             e.printStackTrace();
         }
         return d;
+    }
+    public static   List<String>  compareFiles(String fileExpected, String fileActual, String removeString) {
+        BufferedReader br1 = null;
+        BufferedReader br2 = null;
+        String sCurrentLine;
+        List<String> list1 = new ArrayList<>();
+        List<String> list2 = new ArrayList<String>();
+        try {
+            br1 = new BufferedReader(new FileReader(fileExpected));
+            br2 = new BufferedReader(new FileReader(fileActual));
+            while ((sCurrentLine = br1.readLine()) != null) {
+               if(!sCurrentLine.contains(removeString)){
+                list1.add(sCurrentLine);}
+            }
+            while ((sCurrentLine = br2.readLine()) != null) {
+                if(!sCurrentLine.contains(removeString)){
+                list2.add(sCurrentLine);}
+            }
+        }catch (Exception ex)
+        {}
+        List<String> tmpList = new ArrayList<String>(list1);
+        tmpList.removeAll(list2);
+        return tmpList;
     }
 
     public static String readFile(String filename) {
@@ -100,36 +128,34 @@ public class Common {
                 input.close();
             }
             return sb.toString();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.error(ex.getMessage());
         }
         return null;
     }
 
-    public static void writeFile(String value, String filename){
+    public static void writeFile(String value, String filename) {
         BufferedWriter writer = null;
-        try{
-            writer = new BufferedWriter( new FileWriter( filename));
-            writer.write( value);
+        try {
+            writer = new BufferedWriter(new FileWriter(filename));
+            writer.write(value);
 
-        }
-        catch ( IOException e){
+        } catch (IOException e) {
             Log.error(e.getMessage());
-        }
-        finally{
-            try{
-                if ( writer != null)
-                    writer.close( );
-            }
-            catch ( IOException e){
+        } finally {
+            try {
+                if (writer != null)
+                    writer.close();
+            } catch (IOException e) {
                 Log.error(e.getMessage());
             }
         }
     }
 
-    public static String saveXmlFile(String fileName, String xmlValue){
-        String path =  System.getProperty("user.home")+"\\Desktop\\QA_Project\\";
-        if(!new File(path).exists())
+
+    public static String saveXmlFile(String fileName, String xmlValue) {
+        String path = System.getProperty("user.home") + "\\Desktop\\QA_Project\\";
+        if (!new File(path).exists())
             Common.createUserDir(path);
         try {
             File newTextFile = new File(path + fileName);
@@ -138,7 +164,7 @@ public class Common {
             fw.close();
 
         } catch (Exception iox) {
-           Log.error(iox.getMessage());
+            Log.error(iox.getMessage());
         }
 
         return (path + fileName);
@@ -146,17 +172,62 @@ public class Common {
 
     //Function to get random number
     private static Random getrandom = new Random();
+
     public static int getRandomNumber(int min, int max) {
         return getrandom.nextInt(max - min) + min;
     }
 
-    public static String getFolderLogFilePath(){
-        String path =  System.getProperty("user.home")+"\\Desktop\\QA_Project\\";
-        if(!new File(path).exists())
+    public static String getFolderLogFilePath() {
+        String path = System.getProperty("user.home") + "\\Desktop\\QA_Project\\";
+        if (!new File(path).exists())
             Common.createUserDir(path);
 
-        return path +"\\";
+        return path + "\\";
     }
+
+    public static void deleteFile(String fileName) {
+        File newTextFile = new File(fileName);
+        try {
+            if (newTextFile.exists()) {
+                newTextFile.delete();
+            }
+
+        } catch (Exception ex) {
+            Log.error(ex.getMessage());
+        }
+    }
+
+    public static void waitForFileExist(int timeOut, String fileName) {
+        try {
+            Thread.sleep(5000);
+            File file = new File(fileName);
+            for (int i = 0; i <= timeOut; i++) {
+                if (file.exists()) {
+                    break;
+                } else {
+                    System.out.println("Waiting for file : " + i);
+                    Thread.sleep(1000);
+                }
+            }
+        } catch (Exception ex) {
+        }
+    }
+    public static void waitForFileDelete(int timeOut, String fileName) {
+        try {
+             File file = new File(fileName);
+            for (int i = 0; i <= timeOut; i++) {
+                if (!file.exists()) {
+                    break;
+                } else {
+                    System.out.println("Waiting for delete file : " + i);
+                    Thread.sleep(1000);
+                }
+            }
+        } catch (Exception ex) {
+        }
+
+    }
+
 
 
     public static void main(String[] args) throws InterruptedException, IOException {

@@ -1,13 +1,20 @@
 package logic.business.db.billing;
 
+import framework.config.Config;
+import framework.utils.FTP;
 import framework.utils.Log;
 import logic.business.db.OracleDB;
+import logic.business.helper.FTPHelper;
 import logic.business.helper.MiscHelper;
 import logic.utils.Parser;
+import org.testng.Assert;
 
+import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommonActions extends OracleDB {
 
@@ -62,15 +69,33 @@ public class CommonActions extends OracleDB {
                     return pinCode;
                 }
             }
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return pinCode;
     }
 
-    public static void updateProvisionDateOfChangeBundleServiceOrder(String serviceOrderId){
+    public static void updateProvisionDateOfChangeBundleServiceOrder(String serviceOrderId) {
         Log.info("Service order id : " + serviceOrderId);
         String sql = String.format("update hitransactionproperty set propvaldate = trunc(sysdate) where hitransactionid = %s and propertykey in ('PDATE','BILLDATE')", serviceOrderId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
+
+    public static List<String> getNumberSMSCreatedInHitransactionEventTable(String subNo1) {
+        subNo1 = '%' + subNo1 + '%';
+        String sql = String.format("select e.contextinfo from Hitransactionevent e  where e.hieventtype = 'SMS' and descr like '%s'", subNo1);
+        List sms = new ArrayList<>();
+        sms = OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+        List<String> result = new ArrayList<>();
+        if (!sms.isEmpty()) {
+            for (int y = 0; y < sms.size(); y++) {
+                result.add(sms.get(y).toString());
+            }
+        }
+        return result;
+    }
+
+
+
+
 }

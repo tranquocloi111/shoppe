@@ -3,7 +3,9 @@ package logic.business.db;
 import framework.config.Config;
 import framework.utils.Db;
 import framework.utils.Log;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +31,7 @@ public class OracleDB extends Db {
         }
 
         if (instance == null)
-             instance = new OracleDB();
+            instance = new OracleDB();
         return instance;
     }
 
@@ -110,7 +112,7 @@ public class OracleDB extends Db {
 
     public int executeNonQueryForDate(String sql, HashMap<Integer, Object> formParams) {
         int result = 0;
-        Connection conn =  null;
+        Connection conn = null;
         try {
             allowUpdating();
             conn = createConnection();
@@ -171,6 +173,18 @@ public class OracleDB extends Db {
         } else {
             return getConnection();
         }
+    }
+
+    public List<String> executeQueryReturnListString(String query) {
+        List sms = new ArrayList<>();
+        sms = OracleDB.SetToNonOEDatabase().executeQueryReturnList(query);
+        List<String> result = new ArrayList<>();
+        if (!sms.isEmpty()) {
+            for (int y = 0; y < sms.size(); y++) {
+                result.add(sms.get(y).toString());
+            }
+        }
+        return result;
     }
 
 }

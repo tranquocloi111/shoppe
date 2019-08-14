@@ -2,9 +2,11 @@ package logic.business.helper;
 
 import framework.config.Config;
 import framework.utils.FTP;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
+
+import java.io.*;
 
 public class FTPHelper {
     FTP ftp;
@@ -27,8 +29,9 @@ public class FTPHelper {
         }
     }
 
-    public  void downLoadFromDisk(){
-        boolean flag = ftp.downLoadFile( "/home/hubadm/FTP/fileinbox", "testFile.txt","TXT");
+    public  void downLoadFromDisk(String remotePath, String fileName, String localPath){
+        boolean flag = ftp.downLoadFile( remotePath, fileName,localPath);
         System.out.println(flag);
     }
+
 }

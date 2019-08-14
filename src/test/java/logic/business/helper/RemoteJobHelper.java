@@ -119,7 +119,7 @@ public class RemoteJobHelper {
                         String cmdstatus = rs.getString("cmdstatus");
                         if (exitcode == null) {
                             jobComplete = false;
-                        }else{
+                        } else {
                             if (!cmdstatus.equalsIgnoreCase("N")) {
                                 jobComplete = false;
                             }
@@ -192,9 +192,9 @@ public class RemoteJobHelper {
         ResultSet resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
         try {
             for (int i = 0; i < 120; i++) {
-                if (resultSet.isBeforeFirst()){
+                if (resultSet.isBeforeFirst()) {
                     break;
-                }else{
+                } else {
                     resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
                 }
                 Thread.sleep(2000);
@@ -212,5 +212,11 @@ public class RemoteJobHelper {
         submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT2)), currentMaxJobId);
 
         waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
+    }
+
+    public void runSMSRequestJob() {
+        int currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJob("DoSMSRequest.sh -e $HUB_SID -P -J");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "SMS Request");
     }
 }

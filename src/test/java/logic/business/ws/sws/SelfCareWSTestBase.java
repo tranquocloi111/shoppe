@@ -3,6 +3,8 @@ package logic.business.ws.sws;
 import framework.utils.Xml;
 import logic.business.entities.NormalMaintainBundleEntity;
 import logic.business.ws.BaseWs;
+import logic.pages.care.MenuPage;
+import logic.pages.care.options.DeactivateSubscriptionPage;
 import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
@@ -10,6 +12,7 @@ import logic.utils.XmlUtils;
 import org.testng.Assert;
 
 import java.sql.Date;
+import java.util.List;
 
 public class SelfCareWSTestBase extends BaseWs {
     public  void verifyNormalMaintainBundleResponse(Xml response){
@@ -39,6 +42,11 @@ public class SelfCareWSTestBase extends BaseWs {
         String expectedResponseFile = Common.saveXmlFile(customerId +"_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
         int size = Common.compareFile(actualFile, expectedResponseFile).size();
         Assert.assertEquals(1, size);
+    }
+
+    public void deactivateAccountInFutureAndReturnToCustomer(){
+        MenuPage.RightMenuPage.getInstance().clickDeactivateAccountLink();
+        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().deactivateLastActiveSubscription();
     }
 
 }

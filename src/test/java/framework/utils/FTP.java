@@ -30,7 +30,7 @@ public class FTP {
     public FTPClient setUpConnection() {
         FTPClient ftp = new FTPClient();
         try {
-            ftp.connect(url, port);//connect to FTP server
+            ftp.connect(url);//connect to FTP server
             ftp.login(username, password);
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,7 +83,6 @@ public class FTP {
             for(FTPFile ff:fs){
                 if(ff.getName().equals(fileName)){
                     File localFile = new File(localPath+"/"+ff.getName());
-
                     OutputStream is = new FileOutputStream(localFile);
                     ftp.retrieveFile(ff.getName(), is);
                     is.close();

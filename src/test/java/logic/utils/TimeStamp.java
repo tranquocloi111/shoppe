@@ -13,6 +13,7 @@ public class TimeStamp {
     public final static String DATE_FORMAT = "dd MMM yyyy";
     public final static String DATE_FORMAT2 = "yyyyMMdd";
     public final static String DATE_FORMAT3 = "dd-MMM-yy";
+    public final static String DATE_FORMAT4 = "dd/MM/yyyy";
     public final static String DATE_FORMAT_IN_PDF = "dd/MM/yyyy";
     public final static String DATE_FORMAT_IN_PDF2 = "dd-MMM-yyyy";
     public final static String DATE_FORMAT_IN_PDF3 = "MM/yyyy";

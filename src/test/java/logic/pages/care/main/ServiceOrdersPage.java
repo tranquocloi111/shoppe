@@ -19,10 +19,10 @@ import java.util.List;
 public class ServiceOrdersPage extends BasePage {
 
     @FindBy(xpath = "//input[@name='PostCmdBtn_NEXT']")
-    WebElement btnNext;
+    protected WebElement btnNext;
 
     @FindBy(xpath = "//input[@name='PostCmdBtn_CANCEL']")
-    WebElement btnDelete;
+    protected WebElement btnDelete;
 
     public static class DeactivateSubscriptionPage extends ServiceOrdersPage {
         private static DeactivateSubscriptionPage instance = new DeactivateSubscriptionPage();
@@ -509,7 +509,6 @@ public class ServiceOrdersPage extends BasePage {
         }
     }
 
-
     public static class ConfirmChangeBundle extends ServiceOrdersPage {
         private static ConfirmChangeBundle instance = new ConfirmChangeBundle();
         public static ConfirmChangeBundle getInstance(){
@@ -595,8 +594,6 @@ public class ServiceOrdersPage extends BasePage {
         public static ServiceOrderComplete getInstance(){
             return new ServiceOrderComplete();
         }
-
-
         @FindBy(xpath = ".//td[@class='instuctionalTextHighLight']")
         WebElement message;
 
@@ -605,4 +602,9 @@ public class ServiceOrdersPage extends BasePage {
         }
 
     }
+
+    public void clickNextButton(){
+        clickNextBtn();
+    }
+
 }
