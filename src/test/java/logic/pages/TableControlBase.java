@@ -460,4 +460,22 @@ public class TableControlBase extends BasePage {
         return column;
     }
 
+    public WebElement findRowByLabel(String label) {
+        boolean foundTr = false;
+        WebElement row = null;
+        List<WebElement> trs = element.findElements(By.tagName("tr"));
+        for (int i = 0; i < trs.size(); i++) {
+            if (trs.get(i).findElement(By.tagName("label")).getText().trim().equalsIgnoreCase(label)) {
+                foundTr = true;
+                row = trs.get(i);
+                break;
+            }
+        }
+        if (foundTr)
+            return row;
+        else
+            return null;
+    }
+
+
 }

@@ -84,5 +84,13 @@ public class SWSActions extends BaseWs {
         return response;
     }
 
+    public Xml submitMaintainBundleRequest(String path, String customerNumber, String subscriptionNumber){
+        request = new Xml(new File(path));
+        request.setTextByTagName("sel:accountNumber", customerNumber);
+        request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);
 
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response : " + response.toString());
+        return response;
+    }
 }

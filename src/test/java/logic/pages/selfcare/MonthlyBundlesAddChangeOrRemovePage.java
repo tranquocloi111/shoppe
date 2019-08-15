@@ -1,30 +1,35 @@
 package logic.pages.selfcare;
 
 import logic.pages.BasePage;
+import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import suite.regression.selfcare.SelfCareTestBase;
+
 import java.util.List;
 
 public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
-
     public static MonthlyBundlesAddChangeOrRemovePage getInstance() {
         return new MonthlyBundlesAddChangeOrRemovePage();
     }
+
+    TableControlBase table;
+    @FindBy(xpath = "//a[@title='Back']")
+    WebElement btnBack;
+
+    @FindBy(xpath = ".//div[@class='msg-box']/table[.//td[contains(.,'Current bundles')]]")
+    WebElement currentBundlesTable;
+
+    @FindBy(xpath = ".//b[.='Monthly bundles']//../following-sibling::div[.//table[.//div[@id='BundleGrp0_ErrorPanel']]]")
+    WebElement msgBoxDivMonthlyBundles;
 
     private List<WebElement> msgBoxList() {
         return getDriver().findElements(By.xpath(".//div[@class='msg-box']"));
     }
 
-    private WebElement infoDiv() {
-        return msgBoxList().get(0);
-    }
-
-    private WebElement firstBundleTable() {
-        return msgBoxList().get(1);
-    }
-
     private WebElement totalLabel() {
-        for (WebElement label : firstBundleTable().findElements(By.tagName("label"))) {
+        for (WebElement label : msgBoxDivMonthlyBundles.findElements(By.tagName("label"))) {
             if (label.getText().trim().equalsIgnoreCase("Total:")) {
                 return label;
             }
@@ -42,40 +47,36 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
     }
 
     private WebElement noteSavingMessageTr() {
-
         return messageTable().findElement(By.xpath(".//tr[2]"));
-
     }
 
     private WebElement fairUsagePolicyMessageTr() {
-
         return messageTable().findElement(By.xpath(".//tr[3]"));
-
     }
 
     private WebElement readOurFairUsagePolicyLink() {
         return fairUsagePolicyMessageTr().findElement(By.linkText("Read our fair usage policy"));
-
     }
 
-    private WebElement underneathLink(){
-
-            return getDriver().findElement(By.tagName("body")).findElement(By.cssSelector("a[id='addBundleLink']"));
-
+    private WebElement underneathLink() {
+        return getDriver().findElement(By.tagName("body")).findElement(By.cssSelector("a[id='addBundleLink']"));
     }
 
     public String monthly500DataAllowancePrice() {
-        WebElement row = findRowByLabel("Monthly 500MB data allowance");
+        table = new TableControlBase(msgBoxDivMonthlyBundles);
+        WebElement row = table.findRowByLabel("Monthly 500MB data allowance");
         return row.findElement(By.xpath(".//td[3]")).getText().trim();
     }
 
     public String monthly1GBDataAllowancePrice() {
-        WebElement row = findRowByLabel("Monthly 1GB data allowance");
+        table = new TableControlBase(msgBoxDivMonthlyBundles);
+        WebElement row = table.findRowByLabel("Monthly 1GB data allowance");
         return row.findElement(By.xpath(".//td[3]")).getText().trim();
     }
 
     public String getMonthlyDataBundleByValue(String value) {
-        WebElement row = findRowByLabel(value);
+        table = new TableControlBase(msgBoxDivMonthlyBundles);
+        WebElement row = table.findRowByLabel(value);
         return row.findElement(By.xpath(".//td[3]")).getText().trim();
     }
 
@@ -99,54 +100,52 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
     }
 
     public String fairUsagePolicyMessage() {
-
         return fairUsagePolicyMessageTr().getText();
-
     }
 
-    public String underneathLinkText(){
-
-            return underneathLink().getText().trim();
-
+    public String underneathLinkText() {
+        return underneathLink().getText().trim();
     }
 
-    public boolean underneathLinkDisplayed(){
+    public boolean underneathLinkDisplayed() {
         String href = underneathLink().getAttribute("href");
-            return !href.isEmpty();
+        return !href.isEmpty();
     }
 
-    public String bundleAvailableDateMessage(){
-
-            return messageTable().findElement(By.xpath(".//tr[1]")).getText().trim();
+    public String bundleAvailableDateMessage() {
+        return messageTable().findElement(By.xpath(".//tr[1]")).getText().trim();
     }
 
-    public String tariffCharge(){
-
-            return getDriver().findElement(By.tagName("body")).findElement(By.id("TariffCharges")).getText().trim();
-
+    public String tariffCharge() {
+        return getDriver().findElement(By.tagName("body")).findElement(By.id("TariffCharges")).getText().trim();
     }
 
-    public String totalMonthlyCharge(){
-
-            return getDriver().findElement(By.tagName("body")).findElement(By.id("MonthlyCharge")).getText().trim();
-
+    public String totalMonthlyCharge() {
+        return getDriver().findElement(By.tagName("body")).findElement(By.id("MonthlyCharge")).getText().trim();
     }
 
-    private WebElement findRowByLabel(String label) {
-        boolean foundTr = false;
-        WebElement row = null;
-        List<WebElement> trs = firstBundleTable().findElements(By.tagName("tr"));
-        for (int i = 0; i < trs.size(); i++) {
-            if (trs.get(i).findElement(By.tagName("label")).getText().trim().equalsIgnoreCase(label)) {
-                foundTr = true;
-                row = trs.get(i);
-                break;
-            }
-        }
-        if (foundTr)
-            return row;
-        else
-            return null;
+    public String getOffers() {
+        table = new TableControlBase(currentBundlesTable);
+        WebElement row = table.getCellByLabel("Offers");
+        return getTextOfElement(row.findElement(By.xpath(".//following-sibling::td[1]")));
+    }
+
+    public String getAllowance() {
+        table = new TableControlBase(currentBundlesTable);
+        WebElement row = table.getCellByLabel("Offers");
+        return getTextOfElement(row.findElement(By.xpath(".//following-sibling::td[2]")));
+    }
+
+    public void selectBundlesByName(String... value) {
+        SelfCareTestBase.page().selectBundlesByName(msgBoxDivMonthlyBundles, value);
+    }
+
+    public void unSelectBundlesByName(String... value) {
+        SelfCareTestBase.page().unSelectBundlesByName(msgBoxDivMonthlyBundles, value);
+    }
+
+    public void clickBackButton() {
+        click(btnBack);
     }
 
 }

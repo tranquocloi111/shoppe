@@ -192,8 +192,7 @@ public class BasePage {
     }
 
     public String findValueByLabel(WebElement element, String label) {
-        String xpath = xpath = ".//td[normalize-space(text())='%s']";
-        ;
+        String xpath = ".//td[normalize-space(text())='%s']";
         WebElement td = element.findElement(By.xpath(String.format(xpath, label)));
         WebElement tr = td.findElement(By.xpath(".//ancestor::tr[1]"));
         return tr.findElement(By.xpath(".//td[4]")).getText();
