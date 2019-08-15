@@ -21,7 +21,7 @@ public class TC32191_Self_Care_WS_Subscription_is_Active_Permitted_Bundle extend
     private Date newStartDate = TimeStamp.TodayMinus20Days();
     private String subscriptionNumber;
 
-    @Test
+    @Test(enabled = true, description = "TC32191 Self Care WS Subscription is Active Permitted Bundle", groups = "SelfCareWS")
     public void TC32191_Self_Care_WS_Subscription_is_Active_Permitted_Bundle(){
         test.get().info("Step 1 : Create a Customer with permitted bundle subscription active");
         OWSActions owsActions = new OWSActions();

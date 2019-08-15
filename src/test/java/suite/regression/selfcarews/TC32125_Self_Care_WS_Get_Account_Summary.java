@@ -29,7 +29,7 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
     private Date newStartDate = TimeStamp.TodayMinus10Days();
     private List<String> subscriptionNumberList = new ArrayList<>();
 
-    @Test
+    @Test(enabled = true, description = "TC32125 Self Care WS Get Account Summary", groups = "SelfCareWS")
     public void TC32125_Self_Care_WS_Get_Account_Summary(){
         test.get().info("Step 1 : Create a CC Customer with 2 subscriptions order");
         OWSActions owsActions = new OWSActions();
@@ -53,7 +53,8 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Get All Subscriptions Number");
-        getAllSubscription();
+        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
+        subscriptionNumberList = selfCareWSTestBase.getAllSubscription(2);
 
         test.get().info("Verify Customer Start Date and Billing Group are updated successfully");
         CareTestBase.page().verifyCustomerStartDateAndBillingGroupAreUpdatedSuccessfully(newStartDate);
@@ -67,15 +68,7 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         Xml expectedResponse = buildAccountSummaryResponseData(newStartDate);
 
         test.get().info("Verify Get Account Summary Response");
-        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponse, response);
-    }
-
-    private void getAllSubscription(){
-        for(int i = 1; i<=2; i++){
-            String subscriptionNumber = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
-            subscriptionNumberList.add(subscriptionNumber);
-        }
     }
 
     private String getMobileFCSubscriptionNumber(){

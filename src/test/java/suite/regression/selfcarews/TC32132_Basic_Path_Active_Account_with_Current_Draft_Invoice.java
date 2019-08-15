@@ -25,7 +25,7 @@ public class TC32132_Basic_Path_Active_Account_with_Current_Draft_Invoice extend
     private String latestSubscriptionNumber;
     private String clubCardNumber;
 
-    @Test
+    @Test(enabled = true, description = "TC32132 Basic Path Active Account with Current Draft Invoice", groups = "SelfCareWS")
     public void TC32132_Basic_Path_Active_Account_with_Current_Draft_Invoice() {
         test.get().info("Step 1 : Create a CC Customer with FC 1 bundle and NK2720");
         OWSActions owsActions = new OWSActions();

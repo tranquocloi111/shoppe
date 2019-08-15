@@ -33,10 +33,7 @@ public class ServiceOrdersContentPage extends BasePage {
     }
 
     public String getServiceOrderIdByOrderServices(List<HashMap<String,String>> orderServices) {
-        List<WebElement> listElement = tableControlBase.findRowsByColumns(orderServices);
-//        List<WebElement> listElement = tableControlBase.findRowsByColumns_____INDEBUGGING(orderServices);
-        String elementText = listElement.get(0).getText();
-        return elementText.split(" ")[0];
+        return tableControlBase.findRowsByColumns(orderServices).get(0).getText().split(" ")[0];
     }
 
     public String getSubscriptionNumber(List<WebElement> serviceOrder) {
@@ -60,10 +57,10 @@ public class ServiceOrdersContentPage extends BasePage {
     }
 
     public int getNumberOfServiceOrdersByOrderService(HashMap<String, String> orderService) {
-        return tableControlBase.getRowsByColumn(orderService).size();
+        return tableControlBase.findRowsByColumns(orderService).size();
     }
     public int getNumberOfServiceOrders(HashMap<String, String> orderService) {
-        return tableControlBase.getRowsByColumn(orderService).size();
+        return tableControlBase.findRowsByColumns(orderService).size();
     }
 
     public void clickServiceOrderIdLink(String serviceOrderId) {

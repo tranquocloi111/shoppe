@@ -22,7 +22,7 @@ public class TC32131_Basic_Path_Active_Account_with_Clubcard extends BaseTest {
     private String latestSubscriptionNumber;
     private String clubCardNumber;
 
-    @Test
+    @Test(enabled = true, description = "TC32131 Basic Path Active Account with Clubcard", groups = "SelfCareWS")
     public void TC32131_Basic_Path_Active_Account_with_Clubcard(){
         test.get().info("Step 1 : Create a CC Customer with FC 1 bundle and NK2720");
         OWSActions owsActions = new OWSActions();
