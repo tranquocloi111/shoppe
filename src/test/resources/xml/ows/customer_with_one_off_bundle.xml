@@ -61,10 +61,10 @@
                     <device productCode="SIM-ONLY">
                         <deliveryMethod>DELIVER</deliveryMethod>
                     </device>
-                    <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
+                    <discBundle productCode="1GB-TUDATA-0750-FC" bundleGroup="ONEOFFDATA-FC">
                         <deliveryMethod>INHAND</deliveryMethod>
                     </discBundle>
-                    <discBundle productCode="1GB-TUDATA-0750-FC" bundleGroup="ONEOFFDATA-FC">
+                    <discBundle productCode="02000-SB-A" bundleGroup="SB-GRP-A">
                         <deliveryMethod>INHAND</deliveryMethod>
                     </discBundle>
                 </orderItem>

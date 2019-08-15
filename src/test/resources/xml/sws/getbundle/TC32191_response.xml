@@ -119,12 +119,14 @@
                         <descr>Standard Data Bundles</descr>
                         <minQuantity>0</minQuantity>
                         <maxQuantity>2</maxQuantity>
-                        <bundle selected="false" group="ADDITIONAL" charge="5.0" descr="Monthly 500MB data allowance" code="500MB-DATA-500-FC">
+                        <bundle selected="true" group="ADDITIONAL" charge="5.0" descr="Monthly 500MB data allowance" code="500MB-DATA-500-FC">
                             <serviceFeatures />
                             <allowances>
                                 <allowance>
                                     <allowanceType>MB</allowanceType>
                                     <totalAllowance>500.0</totalAllowance>
+                                    <startDate>$startDate$</startDate>
+                                    <nextScheduledRefill>$nextScheduledRefill$</nextScheduledRefill>
                                 </allowance>
                             </allowances>
                         </bundle>

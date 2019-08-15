@@ -73,7 +73,7 @@ public class TasksContentPage extends BasePage {
                 return table.findRowsByColumns(events).size();
             }
             public int getNumberOfEventsByEvent(HashMap<String, String> event) {
-                return table.getRowsByColumn(event).size();
+                return table.findRowsByColumns(event).size();
             }
 
             public int getRowNumberOfEventGird(){

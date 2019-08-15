@@ -14,19 +14,18 @@ import java.sql.Date;
 
 /**
  * User: Nhi Dinh
- * Date: 7/08/2019
+ * Date: 13/08/2019
  */
-public class TC32189_Self_Care_WS_Subscription_is_Active_Flexible_Cap_Bundle extends BaseTest {
+public class TC32196_Self_Care_WS_Subscription_is_Pending_Deactivation_one_off_Bundle extends BaseTest {
     private String customerNumber;
     private Date newStartDate = TimeStamp.TodayMinus20Days();
     private String subscriptionNumber;
-    private String clubCardNumber;
 
-    @Test(enabled = true, description = "TC32189 Self Care WS Subscription is Active Flexible Cap Bundle", groups = "SelfCareWS")
-    public void TC32189_Self_Care_WS_Subscription_is_Active_Flexible_Cap_Bundle(){
-        test.get().info("Step 1 : Create a Customer with flexible cab bundle subscription active");
+    @Test(enabled = true, description = "TC32196 Self Care WS Subscription is Pending Deactivation one off Bundle", groups = "SelfCareWS")
+    public void TC32196_Self_Care_WS_Subscription_is_Pending_Deactivation_one_off_Bundle(){
+        test.get().info("Step 1 : Create a Customer with one off bundle subscription active");
         OWSActions owsActions = new OWSActions();
-        owsActions.createAnOnlinesCCCustomerWithFC1BundleAndSimOnly();
+        owsActions.createACustomerWithOneOffBundle();
         customerNumber = owsActions.customerNo;
 
         owsActions.getOrder(owsActions.orderIdNo);
@@ -47,17 +46,19 @@ public class TC32189_Self_Care_WS_Subscription_is_Active_Flexible_Cap_Bundle ext
         test.get().info("Login to HUBNet then search Customer by customer number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("Record discount bundle monthly refill SO id");
-        String orderId = CareTestBase.recordDiscountBundleMonthlyRefillSOId(subscriptionNumber);
+        test.get().info("Deactivate account in future and return to Customer");
+        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
+        selfCareWSTestBase.deactivateAccountInFutureAndReturnToCustomer();
+
+        test.get().info("Record discount bundle monthly refill SO id and deactivate account SO id");
+        String bundleMonthlyRefillSOId = CareTestBase.recordDiscountBundleMonthlyRefillSOId(subscriptionNumber);
 
         test.get().info("Submit get bundle request to selfcare WS");
         SWSActions swsActions = new SWSActions();
         Xml response = swsActions.submitGetBundleRequest(customerNumber, subscriptionNumber);
 
         test.get().info("Verify get bundle response are correct");
-        String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getbundle\\TC32189_response.xml";
-        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        selfCareWSTestBase.verifyGetBundleResponseAreCorrect(sampleResponseFile, response, customerNumber, subscriptionNumber, orderId, newStartDate);
-
+        String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getbundle\\TC32196_response.xml";
+        selfCareWSTestBase.verifyGetBundleResponseAreCorrect(sampleResponseFile, response, customerNumber, subscriptionNumber, bundleMonthlyRefillSOId, newStartDate);
     }
 }

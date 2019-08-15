@@ -21,7 +21,7 @@ public class TC32190_Self_Care_WS_Subscription_is_Active_one_off_Bundle extends 
     private Date newStartDate = TimeStamp.TodayMinus20Days();
     private String subscriptionNumber;
 
-    @Test
+    @Test(enabled = true, description = "TC32190 Self Care WS Subscription is Active one off Bundle", groups = "SelfCareWS")
     public void TC32190_Self_Care_WS_Subscription_is_Active_one_off_Bundle(){
         test.get().info("Step 1 : Create a Customer with one off bundle subscription active");
         OWSActions owsActions = new OWSActions();

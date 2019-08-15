@@ -11,8 +11,6 @@ import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: Nhi Dinh
@@ -23,7 +21,7 @@ public class TC32195_Self_Care_WS_Subscription_is_Pending_Deactivation_Flexible_
     private Date newStartDate = TimeStamp.TodayMinus20Days();
     private String subscriptionNumber;
 
-    @Test
+    @Test(enabled = true, description = "TC32195 Self Care WS Subscription is Pending Deactivation Flexible Cap Bundle", groups = "SelfCareWS")
     public void TC32195_Self_Care_WS_Subscription_is_Pending_Deactivation_Flexible_Cap_Bundle(){
         test.get().info("Step 1 : Create a Customer with flexible cab bundle subscription active");
         OWSActions owsActions = new OWSActions();
@@ -48,14 +46,14 @@ public class TC32195_Self_Care_WS_Subscription_is_Pending_Deactivation_Flexible_
         test.get().info("Login to HUBNet then search Customer by customer number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("Deactive account in future and return to Customer");
+        test.get().info("Deactivate account in future and return to Customer");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         selfCareWSTestBase.deactivateAccountInFutureAndReturnToCustomer();
 
         test.get().info("Record discount bundle monthly refill SO id and deactivate account SO id");
         String bundleMonthlyRefillSOId = CareTestBase.recordDiscountBundleMonthlyRefillSOId(subscriptionNumber);
 
-        test.get().info("Submit get bundle request to selfcare WS");
+        test.get().info("Submit get bundle request to Self Care WS");
         SWSActions swsActions = new SWSActions();
         Xml response = swsActions.submitGetBundleRequest(customerNumber, subscriptionNumber);
 
