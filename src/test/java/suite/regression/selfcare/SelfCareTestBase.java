@@ -135,6 +135,25 @@ public class SelfCareTestBase extends BasePage {
         Assert.assertFalse(fileResult.contains("password1"));
     }
 
+    public void selectBundlesByName(WebElement element, String... names) {
+        for (String name : names) {
+            WebElement checkbox = findCheckBox(element, name);
+            if (findCheckBox(element, name).getAttribute("checked") == null) {
+                click(checkbox);
+            }
+        }
+    }
+
+    public void unSelectBundlesByName(WebElement element, String... names) {
+        for(String name : names)
+        {
+            WebElement checkbox = findCheckBox(element, name);
+            if (checkbox.getAttribute("checked").equalsIgnoreCase("true")) {
+                click(checkbox);
+            }
+        }
+    }
+
 
 }
 
