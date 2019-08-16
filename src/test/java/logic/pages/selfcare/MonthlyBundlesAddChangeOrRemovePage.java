@@ -21,7 +21,7 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
     @FindBy(xpath = ".//div[@class='msg-box']/table[.//td[contains(.,'Current bundles')]]")
     WebElement currentBundlesTable;
 
-    @FindBy(xpath = ".//b[.='Monthly bundles']//../following-sibling::div[.//table[.//div[@id='BundleGrp0_ErrorPanel']]]")
+    @FindBy(xpath = "//p[//b[.='Monthly bundles']]/following-sibling::div[.//table[.//div[@id='BundleGrp0_ErrorPanel']]]")
     WebElement msgBoxDivMonthlyBundles;
 
     private List<WebElement> msgBoxList() {
