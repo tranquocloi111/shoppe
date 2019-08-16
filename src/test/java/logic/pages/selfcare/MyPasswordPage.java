@@ -2,6 +2,7 @@ package logic.pages.selfcare;
 
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -51,13 +52,23 @@ public class MyPasswordPage extends BasePage {
 
     public void clickContinueBtn() {
         clickLinkByText("Continue");
+        waitForPageLoadComplete(10);
     }
 
     public void updateNewPassword(String currentPass, String newPass) {
-       enterValueForCurrentPasswordTextBox(currentPass);
-       enterValueForNewPasswordTextBox(newPass);
-       enterValueForConfirmationOfNewPasswordTextBox(newPass);
-       clickContinueBtn();
+        enterValueForCurrentPasswordTextBox(currentPass);
+        enterValueForNewPasswordTextBox(newPass);
+        enterValueForConfirmationOfNewPasswordTextBox(newPass);
+        clickContinueBtn();
+    }
+
+    public void inputUsername(String username) {
+        waitUntilElementVisible(getDriver().findElement(By.xpath("//input[@type='text' and @name ='emailAddr']")));
+        enterValueByLabel(getDriver().findElement(By.xpath("//input[@type='text' and @name ='emailAddr']")), username);
+    }
+
+    public void inputSecurityAnswer(String answer) {
+        enterValueByLabel(getDriver().findElement(By.xpath("//input[@type='text' and @name ='answer']")), answer);
     }
 }
 

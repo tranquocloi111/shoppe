@@ -1,9 +1,7 @@
 package suite.regression.selfcare.modifyaccount;
 
 
-import framework.config.Config;
 import framework.utils.RandomCharacter;
-import logic.business.helper.RemoteJobHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.SelfCareSettingContentPage;
@@ -33,22 +31,22 @@ Author: Tran Quoc Loi
         CareTestBase.page().loadCustomerInHubNet(owsActions.customerNo);
 
 
-        test.get().info("Step 4: Access detail screen");
+        test.get().info("Step 3: Access detail screen");
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
 
-        test.get().info("Step 5: Get username and email");
+        test.get().info("Step 4: Get username and email");
         String userName = owsActions.username;
         String email = CareTestBase.page().getEmail();
 
-        test.get().info("Step 6: Login to the self care screen ");
+        test.get().info("Step 5: Login to the self care screen ");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, owsActions.customerNo);
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
-        test.get().info("Step 7: Access my account detail ");
+        test.get().info("Step 6: Access my account detail ");
         MyPersonalInformationPage.myAccountSection.getInstance().clickViewOrChangeMyAccountDetails();
         SelfCareTestBase.page().verifyMyAccountDetailPageIsDisplayed();
 
-        test.get().info("Step 8: Change email and username");
+        test.get().info("Step 7: Change email and username");
 
         String newEmailAddress = "tc" + RandomCharacter.getRandomAlphaNumericString(9) + "@hsntech.com";
         String newUserName = "test" + RandomCharacter.getRandomAlphaNumericString(9) + "@hsntech.com";
@@ -59,17 +57,17 @@ Author: Tran Quoc Loi
         Assert.assertEquals(SelfCareTestBase.page().successfulMessageStack().get(0), expectedMssg);
 
 
-        test.get().info("Step 9 : load user in the hub net");
-        CareTestBase.page().loadCustomerInHubNetWithOutLogin(owsActions.customerNo);
+        test.get().info("Step 8 : load user in the hub net");
+        CareTestBase.page().loadCustomerInHubNet(owsActions.customerNo);
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
 
 
-        test.get().info("Step 10 : go to detail page and verify the email is changed correctly");
+        test.get().info("Step 9 : go to detail page and verify the email is changed correctly");
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         email = CareTestBase.page().getEmail();
         Assert.assertEquals(email, newEmailAddress);
 
-        test.get().info("Step 11 : go to detail page and verify the email is changed correctly");
+        test.get().info("Step 10 : go to detail page and verify the email is changed correctly");
         MenuPage.LeftMenuPage.getInstance().clickSelfCareSetting();
         userName = SelfCareSettingContentPage.SelfCareSettingSection.getInstance().getUserName();
         Assert.assertEquals(userName, newUserName);
