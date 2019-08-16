@@ -10,16 +10,17 @@ import java.io.*;
 
 public class FTPHelper {
     FTP ftp;
-    public static FTPHelper getInstance(){
+
+    public static FTPHelper getInstance() {
         return new FTPHelper();
     }
 
-    public FTPHelper(){
-        ftp = new FTP(Config.getProp("unixServer"),22, Config.getProp("unixUsername"),Config.getProp("unixPassword"));
+    public FTPHelper() {
+        ftp = new FTP(Config.getProp("unixServer"), 22, Config.getProp("unixUsername"), Config.getProp("unixPassword"));
         ftp.setUpConnection();
     }
 
-    public  void upLoadFromDisk(String localPathFile, String ftpFileName){
+    public void upLoadFromDisk(String localPathFile, String ftpFileName) {
         try {
             FileInputStream in = new FileInputStream(new File(localPathFile));
             boolean flag = ftp.uploadFile(Config.getProp("cdrFolder"), ftpFileName, in);
@@ -29,9 +30,14 @@ public class FTPHelper {
         }
     }
 
-    public  void downLoadFromDisk(String remotePath, String fileName, String localPath){
-        boolean flag = ftp.downLoadFile( remotePath, fileName,localPath);
-        System.out.println(flag);
+    public void downLoadFromDisk(String remotePath, String fileName, String localPath) {
+        try {
+            boolean flag = ftp.downLoadFile(remotePath, fileName, localPath);
+            System.out.println(flag);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
     }
 
 }

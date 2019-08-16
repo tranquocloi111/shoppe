@@ -1,10 +1,7 @@
 package logic.pages.care.main;
 
-import framework.wdm.Browser;
-import framework.wdm.WdManager;
 import logic.business.entities.CardDetailsEntity;
 import logic.pages.BasePage;
-import logic.pages.TableControlBase;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.By;
