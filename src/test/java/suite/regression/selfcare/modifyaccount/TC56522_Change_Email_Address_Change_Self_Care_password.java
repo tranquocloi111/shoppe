@@ -4,14 +4,15 @@ package suite.regression.selfcare.modifyaccount;
 import framework.config.Config;
 import logic.business.db.billing.CommonActions;
 import logic.business.entities.EventEntity;
+import logic.business.helper.EmailHelper;
 import logic.business.helper.RemoteJobHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.DetailsContentPage;
 import logic.pages.care.find.SelfCareSettingContentPage;
-import logic.business.helper.EmailHelper;
 import logic.pages.care.find.ServiceOrdersContentPage;
 import logic.pages.care.main.TasksContentPage;
+import logic.pages.selfcare.MyAccountDetailsPage;
 import logic.pages.selfcare.MyPasswordPage;
 import logic.utils.Common;
 import org.testng.Assert;
@@ -23,15 +24,15 @@ import suite.regression.selfcare.SelfCareTestBase;
 
 import java.util.List;
 
-public class TC30223_Change_Self_Care_Password extends BaseTest {
+public class TC56522_Change_Email_Address_Change_Self_Care_password extends BaseTest {
 /*
 add email information in properties file
 Change expected email URL base on environment
 Note: Mel environment can not run FTP.
  */
 
-    @Test(enabled = true, description = "TC30223 Change password by selfcare", groups = "SelfCare")
-    public void TC30223_Change_Self_Care_Password() {
+    @Test(enabled = true, description = "TC56522 Change email address  selfcare password", groups = "SelfCare")
+    public void TC56522_Change_Email_Address_Change_Self_Care_password() {
 
         test.get().info("Step 1 : delete all old data");
         String expectedFile = "src\\test\\resources\\txt\\TC30223_expectedEmail.txt";
@@ -71,54 +72,57 @@ Note: Mel environment can not run FTP.
         SelfCareSettingContentPage.SelfCareSettingSection.getInstance().clickResetPasswordBtn();
         SelfCareSettingContentPage.SelfCareSettingSection.getInstance().acceptComfirmDialog();
 
-        test.get().info("Step 8 : get temporary password ");
+        test.get().info("Step 8: Verify email address is not reversed to the original email");
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        Assert.assertEquals(DetailsContentPage.AddressInformationPage.getInstance().getEmail(),email);
+
+        test.get().info("Step 9 : get temporary password ");
         EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset", 120);
         String temporaryPassEmail = EmailHelper.getInstance().extractPasswordEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset");
         String link = EmailHelper.getInstance().extractLinkEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset");
 
-        test.get().info("Step 9: login selfcare via the link and password in email");
+        test.get().info("Step 10: login selfcare via the link and password in email");
         SelfCareTestBase.page().LoginIntoSelfCarePageByChangePasswordLink(owsActions.username, temporaryPassEmail, owsActions.customerNo, link);
 
-        test.get().info("Step 10: verify no sms is created in the hitransactioneven table");
+        test.get().info("Step 11: verify no sms is created in the hitransactioneven table");
         List<String> smsList = CommonActions.getNumberSMSCreatedInHitransactionEventTable(subscriptionNo1);
         Assert.assertEquals(smsList.size(), 0);
 
-        test.get().info("Step 11 : delete all email 'Have you logged in to My Account?' in folder TescoMobilePayMonthly");
+        test.get().info("Step 12 : delete all email 'Have you logged in to My Account? in folder TescoMobilePayMonthly");
         EmailHelper.getInstance().deleteAllEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Have you logged in to ");
-        EmailHelper.getInstance().deleteAllEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Change of your Pay Monthly Price Plans");
 
-        test.get().info("Step 12 : set up the new password for user");
+        test.get().info("Step 13 : set up the new password for user");
         MyPasswordPage.getInstance().updateNewPassword(temporaryPassEmail, "password1");
-        SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
-        test.get().info("Step 13 : Verify the second email format ");
-        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Change of your Pay Monthly Price ", 120);
+        test.get().info("Step 14 : my personal infomation page displayed and verify the sucessfull message");
+        SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
+        String successfullMssg="Your password has been successfully changed.";
+        Assert.assertEquals(SelfCareTestBase.page().successfulMessageStack().get(0),successfullMssg);
+
+        test.get().info("Step 15 : Verify the second email format ");
+        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Change of your Pay Monthly Price Plans", 120);
         verifySecondEmail(expectedFile, actualFile);
 
-        test.get().info("Step 14 : load user in hub net and go to service order ");
-        CareTestBase.page().loadCustomerInHubNet(owsActions.customerNo);
-        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+        test.get().info("Step 16: Access the personal information");
+        SelfCareTestBase.page().viewOrChangeMyAccountDetails();
 
-        test.get().info("Step 15: Verify expected SO is generated for customer");
-        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
-        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
-        ServiceOrdersContentPage.getInstance().clickServiceOrderByType("Ad-hoc SMS Messages");
-        String description = String.format("Password Change (%s)", subscriptionNo1);
-        int event = TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangePassword(description, "Created", "Batch"));
-        Assert.assertEquals(event, 1);
+        test.get().info("Step 17: Verify the email is changed");
+        String actualemail = MyAccountDetailsPage.ContactDetailSecton.getInstance().getEmailAddress();
+        Assert.assertEquals(email, actualemail);
 
-        test.get().info("Step 16: verify  sms is created in the hitransactioneven table");
+        test.get().info("Step 18: verify  sms is created in the hitransactioneven table");
         smsList = CommonActions.getNumberSMSCreatedInHitransactionEventTable(subscriptionNo1);
         Assert.assertEquals(smsList.size(), 1);
         Assert.assertTrue(smsList.get(0).contains("Tesco Mobile: Your password for your Pay monthly online account has been changed successfully"));
 
-        test.get().info("Step 17: Run request job");
+        test.get().info("Step 19: Run request job");
         RemoteJobHelper.getInstance().runSMSRequestJob();
 
-        test.get().info("Step 18:Download GRG SMS file");
+        test.get().info("Step 20:Download GRG SMS file");
         String pathFile = SelfCareTestBase.downloadGRGSMSFile();
 
-        test.get().info("Step 19: Verify GRG temporary_password_is_not_recorded");
+        test.get().info("Step 21: Verify GRG temporary_password_is_not_recorded");
         SelfCareTestBase.verifyGRGTemporaryPasswordIsNotRecorded(pathFile);
     }
 

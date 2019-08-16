@@ -24,7 +24,6 @@ import java.util.List;
 public class TC33327_Change_email_address_and_username extends BaseTest {
 /*
 Author: Tran Quoc Loi
-Login Page
  */
 
 

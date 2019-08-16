@@ -23,10 +23,6 @@ import java.util.List;
 public class TC33323_Self_Care_Forgotten_Password_for_an_active_Account extends BaseTest {
 /*
 Author: Tran Quoc Loi
-owsaction
-mypasswordpage
-ftphelper
-selfcaretestbase
  */
 
     @Test(enabled = true, description = "TC33323 Self Care Forgotten Password for an active Account ", groups = "SelfCare")
@@ -105,8 +101,7 @@ selfcaretestbase
         Assert.assertFalse(Text.contains("password1"));
 
         test.get().info("Step 17 : Verify the second email format ");
-        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset", 120);
-        String secondEmailBody = EmailHelper.getInstance().extractPasswordEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset");
+        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Change of your Pay Monthly Price Plans", 120);
         verifySecondEmail(expectedFile, actualFile);
 
         test.get().info("Step 18:Download GRG SMS file");

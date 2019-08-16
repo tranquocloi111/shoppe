@@ -15,8 +15,7 @@ import suite.regression.selfcare.SelfCareTestBase;
 
 public class TC33339_Self_Care_Attempt_to_change_Self_Care_Username_to_an_existing_Username extends BaseTest {
 /*
-
-MyAccountDetailsPage
+Author: Tran Quoc Loi
 */
 
     @Test(enabled = true, description = "TC33339 self care attempt to change selfcare usename to an existing username", groups = "SelfCare")
