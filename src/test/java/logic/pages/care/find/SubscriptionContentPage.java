@@ -158,11 +158,11 @@ public class SubscriptionContentPage extends BasePage {
                 return table.findRowsByColumns(otherProduct).size();
             }
             public int getNumberOfOtherProductsByProduct(HashMap<String, String>otherProduct) {
-                return table.getRowsByColumn(otherProduct).size();
+                return table.findRowsByColumns(otherProduct).size();
             }
 
             public int getNumberOfOtherProduct(HashMap<String, String> otherProduct) {
-                return table.getRowsByColumn(otherProduct).size();
+                return table.findRowsByColumns(otherProduct).size();
             }
 
             public void clickProductCode(String productCode){

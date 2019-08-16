@@ -1,5 +1,6 @@
 package logic.business.ws.ows;
 
+import framework.config.Config;
 import framework.utils.Log;
 import framework.utils.RandomCharacter;
 import framework.utils.Soap;
@@ -16,6 +17,7 @@ public class OWSActions extends BaseWs {
     public String orderIdNo;
     public String fullName;
     public String username;
+    public String serviceRef;
     public String password;
     public String orderRef;
     public Xml requestForNextStep;
@@ -74,6 +76,9 @@ public class OWSActions extends BaseWs {
         fullName = request.getTextByTagName("firstName") + " " + request.getTextByTagName("lastName");
     }
 
+    private void setserviceRef(String reference){
+        serviceRef = response.getTextByXpath(String.format("//orderItem/serviceRef[@reference='%s']",reference));
+    }
     private void setOrderRef(){
         orderRef = request.getTextByXpath("//orderDetail//@orderRef");
     }
@@ -219,6 +224,15 @@ public class OWSActions extends BaseWs {
 
         return  response;
     }
+    public Xml getSubscription(String orderIdNo, String reference){
+        request = new Xml(new File(GET_ORDER));
+        request.setTextByTagName("orderId", orderIdNo);
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        setserviceRef(reference);
+        Log.info("Response: " + response.toString());
+
+        return  response;
+    }
 
     public void createGeneralCustomerOrder(String path){
         request = new Xml(new File(path));
@@ -236,9 +250,12 @@ public class OWSActions extends BaseWs {
         checkAsyncProcessIsCompleted(orderIdNo);
     }
     public void createGeneralCustomerOrderForChangePassword(String path){
+        String email = Config.getProp("emailUsername");
         request = new Xml(new File(path));
         request.setTextByTagName(commonModMap);
-        request.setTextByTagName("emailAddress", "tmnotification@163.com");
+        request.setTextByTagName("emailAddress", email);
+        request.setTextByTagName("password", "password1");
+
 
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());

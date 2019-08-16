@@ -84,5 +84,8 @@ public class MyAccountDetailsPage extends BasePage {
         public void changeUsername(String username) {
             enterValueByLabel(table.getCellByFieldKey("Username"), username);
         }
+        public String getUsername() {
+           return getValueOfElement(table.getCellByFieldKey("Username"));
+        }
     }
 }

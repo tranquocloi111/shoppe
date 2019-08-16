@@ -29,7 +29,6 @@ public class TC30222_Change_Email_Address extends BaseTest {
         test.get().info("Step 3: Access detail screen");
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
 
-
         test.get().info("Step 4: Change Email");
         String email = String.format("newMail%s@hsntech.com", randomNumberAndString());
         CareTestBase.page().clickEditBtnByIndex(1);

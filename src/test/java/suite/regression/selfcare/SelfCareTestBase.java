@@ -39,8 +39,12 @@ public class SelfCareTestBase extends BasePage {
         waitForPageLoadComplete(10);
     }
 
-    public void LoginIntoSelfCarePageByChangePasswordLink(String userName, String passWord, String customerId,String link) {
-        loginPage.navigate(link);
+    public void LoginIntoSelfCarePageByChangePasswordLink(String userName, String passWord, String customerId, String link) {
+        if (!link.isEmpty()) {
+            loginPage.navigate(link);
+        } else {
+            loginPage.navigateToSelfCarePage();
+        }
         loginPage.login(userName, passWord, customerId);
         waitForPageLoadComplete(10);
     }

@@ -1,10 +1,7 @@
 package logic.pages.care.main;
 
-import framework.wdm.Browser;
-import framework.wdm.WdManager;
 import logic.business.entities.CardDetailsEntity;
 import logic.pages.BasePage;
-import logic.pages.TableControlBase;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.By;
@@ -12,7 +9,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
-
+import framework.wdm.Browser;
+import framework.wdm.WdManager;
+import logic.pages.TableControlBase;
 import java.util.HashMap;
 import java.util.List;
 
