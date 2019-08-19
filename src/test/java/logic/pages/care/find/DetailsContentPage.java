@@ -25,6 +25,9 @@ public class DetailsContentPage extends BasePage {
         public void changeBillNotification(String text) {
             selectDropBoxByVisibelText(parent.findElement(By.xpath(".//td[contains(text(),'Bill Notification:')]/following-sibling::td[1]")), text);
         }
+        public String getMasterMPN() {
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Master MPN:')]/following-sibling::td[1]"))).split(" ")[0];
+        }
     }
 
     public static class PaymentInformationPage extends DetailsContentPage {
@@ -67,6 +70,10 @@ public class DetailsContentPage extends BasePage {
 
         public String getEmail() {
             return getTextOfElement(tableControlBase.getCellByLabel("Email Address"));
+        }
+
+        public String getMobileNumber() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Mobile Number"));
         }
 
         public void changeEmail(String email) {

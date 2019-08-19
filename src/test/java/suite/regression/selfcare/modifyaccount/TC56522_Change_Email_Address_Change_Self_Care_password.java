@@ -101,7 +101,7 @@ Note: Mel environment can not run FTP.
         Assert.assertEquals(SelfCareTestBase.page().successfulMessageStack().get(0),successfullMssg);
 
         test.get().info("Step 15 : Verify the second email format ");
-        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Change of your Pay Monthly Price Plans", 120);
+        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Change of your Pay Monthly Price Plans ", 120);
         verifySecondEmail(expectedFile, actualFile);
 
         test.get().info("Step 16: Access the personal information");

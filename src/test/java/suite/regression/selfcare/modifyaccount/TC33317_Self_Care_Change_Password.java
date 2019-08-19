@@ -4,6 +4,7 @@ package suite.regression.selfcare.modifyaccount;
 import framework.utils.RandomCharacter;
 import logic.business.entities.EventEntity;
 import logic.business.entities.ServiceOrderEntity;
+import logic.business.helper.EmailHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
@@ -29,7 +30,7 @@ public class TC33317_Self_Care_Change_Password extends BaseTest {
         String path = "src\\test\\resources\\xml\\SelfCare\\viewaccount\\TC30222_CreateOrder";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrderForChangePassword(path);
-
+        EmailHelper.getInstance().deleteAllEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly","");
 
         test.get().info("Step 2: Login to Self Care  ");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password,owsActions.customerNo);
@@ -69,7 +70,8 @@ public class TC33317_Self_Care_Change_Password extends BaseTest {
         Assert.assertEquals(TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(expectedEvent),1);
 
         test.get().info("Step 11: Verify change password successfully mail sent to customer");
-        //Do manually
+        Assert.assertTrue(EmailHelper.getInstance().findStringInEmail("TescoMobilePayMonthly", " Tesco Mobile password", "Thank you for your request.  Your password has now been changed."));
+
     }
 
 

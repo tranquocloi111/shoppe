@@ -95,7 +95,33 @@ public class CommonActions extends OracleDB {
         return result;
     }
 
+    public static List<String> getSMSIsSent(String serviceOrder, String description) {
+        description = '%' + description + '%';
+        String sql = String.format("select posttransactionid from hitransactionevent where hitransactionid=%s and DESCR like '%s'", serviceOrder, description);
+        List sms = new ArrayList<>();
+        sms = OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+        List<String> result = new ArrayList<>();
+        if (!sms.isEmpty()) {
+            for (int y = 0; y < sms.size(); y++) {
+                result.add(sms.get(y).toString());
+            }
+        }
+        return result;
+    }
 
+    public static List<String> getContextInfoOfSMSServiceOrderIsCorrectInDb(String serviceOrder, String description) {
+        description = '%' + description + '%';
+        String sql = String.format("select contextinfo from hitransactionevent where hitransactionid=%s and DESCR like '%s'", serviceOrder, description);
+        List sms = new ArrayList<>();
+        sms = OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+        List<String> result = new ArrayList<>();
+        if (!sms.isEmpty()) {
+            for (int y = 0; y < sms.size(); y++) {
+                result.add(sms.get(y).toString());
+            }
+        }
+        return result;
+    }
 
 
 }
