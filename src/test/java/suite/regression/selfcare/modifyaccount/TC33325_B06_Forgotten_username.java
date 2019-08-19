@@ -96,7 +96,7 @@ DateTime helper
         test.get().info("Step 11: Verify context info of SMS service order is correct in db");
         String description = "User Name Request (" + subscriptionNo1 + ")";
         String bodyContent = String.format("<SMSREQUEST><MPN>%s</MPN><BODY>Tesco Mobile: Your username for your Pay monthly online account is %s</BODY></SMSREQUEST>", subscriptionNo1, owsActions.username);
-        List<String> smsList = CommonActions.verifyContextInfoOfSMSServiceOrderIsCorrectInDb(numberServiceOrder, description);
+        List<String> smsList = CommonActions.getContextInfoOfSMSServiceOrderIsCorrectInDb(numberServiceOrder, description);
         String firstResult = smsList.get(0).replace("\n", "");
         firstResult = firstResult.substring(firstResult.indexOf("=") + 1).replace("}", "");
         Assert.assertEquals(firstResult, bodyContent);
