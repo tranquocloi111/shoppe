@@ -11,7 +11,7 @@ public class DateTimeHelper {
 
 
     public Date parseStringToDate(String value, String format) {
-        SimpleDateFormat f = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat f = new SimpleDateFormat(format);
         Date date = null;
         try {
             date = f.parse(value);
