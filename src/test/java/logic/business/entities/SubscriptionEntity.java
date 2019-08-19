@@ -130,11 +130,11 @@ public class SubscriptionEntity {
         listInactiveSubscription.add(summarySubscriptions);
         return listInactiveSubscription;
     }
-    public static List<HashMap<String, String>> dataForActiveSubscriptions(String subscriptionNumber, Date startDate) {
+    public static List<HashMap<String, String>> dataForActiveSubscriptions(String subscriptionNumber) {
         List<HashMap<String, String>> listActiveSubscription = new ArrayList<>();
         HashMap<String, String> summarySubscriptions = new HashMap<String, String>();
         summarySubscriptions.put("subscriptionNumber", subscriptionNumber);
-        summarySubscriptions.put("Start Date", Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT));
+        summarySubscriptions.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
         summarySubscriptions.put("End Date", "");
         summarySubscriptions.put("Status", "Active");
         summarySubscriptions.put("Barring", "Barring");
