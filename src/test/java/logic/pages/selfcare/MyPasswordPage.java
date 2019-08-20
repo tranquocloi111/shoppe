@@ -70,5 +70,14 @@ public class MyPasswordPage extends BasePage {
     public void inputSecurityAnswer(String answer) {
         enterValueByLabel(getDriver().findElement(By.xpath("//input[@type='text' and @name ='answer']")), answer);
     }
+    public void inputAccountHolderMobileNumber(String answer) {
+        enterValueByLabel(getDriver().findElement(By.xpath("//input[@type='text' and @name ='MPN']")), answer);
+    }
+    public void inputPostCode(String answer) {
+        enterValueByLabel(getDriver().findElement(By.xpath("//input[@type='text' and @name ='postcode']")), answer);
+    }
+    public void inputBirthDate(String answer) {
+        enterValueByLabel(getDriver().findElement(By.xpath("//input[@type='text' and @name ='DOB']")), answer);
+    }
 }
 

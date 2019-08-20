@@ -57,6 +57,10 @@ public class SelfCareTestBase extends BasePage {
         loginPage.navigateToSelfCarePage();
         clickLinkByText("Forgotten your password? Click here.");
     }
+    public void openSelfCareLoginPageThenClickForgotUsernameLink() {
+        loginPage.navigateToSelfCarePage();
+        clickLinkByText("Forgotten your username? Click here.");
+    }
 
     public void reLoginIntoSelfCarePage(String userName, String passWord, String customerId) {
         SelfCareTestBase.page().clickLogOffLink();

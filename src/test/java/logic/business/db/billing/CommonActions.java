@@ -1,22 +1,14 @@
 package logic.business.db.billing;
 
-import framework.config.Config;
-import framework.utils.FTP;
 import framework.utils.Log;
 import logic.business.db.OracleDB;
-import logic.business.entities.DiscountBundleEntity;
-import logic.business.helper.FTPHelper;
-import logic.business.helper.MiscHelper;
 import logic.utils.Parser;
-import org.testng.Assert;
-
-import javax.xml.transform.Result;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class CommonActions extends OracleDB {
 
@@ -114,7 +106,7 @@ public class CommonActions extends OracleDB {
     }
 
 
-    public static List getAllBundlesGroupByTariff(String tariff){
+    public static List getAllBundlesGroupByTariff(String tariff) {
         String sql = "select vwx.GroupCode,\n" +
                 "     vwx.GroupDescr,\n" +
                 "     vwx.GroupType,\n" +
@@ -128,17 +120,44 @@ public class CommonActions extends OracleDB {
                 "     vw_bundlegrpmap vwx,\n" +
                 "     product p\n" +
                 " where  pmp.productid = p.productid\n" +
-                " and p.productcode = '"+tariff+"'\n" +
+                " and p.productcode = '" + tariff + "'\n" +
                 " and    pmp.propertykey = 'BUNDLEGRP' \n" +
                 " and    pmp.propvalnumber = vwx.GroupPlanId\n" +
-                " and p.productcode = '"+tariff+"'";
+                " and p.productcode = '" + tariff + "'";
         try {
             ArrayList<HashMap<String, String>> list = (ArrayList<HashMap<String, String>>) OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
-            return  list;
-        }catch (Exception ex){
+            return list;
+        } catch (Exception ex) {
             Log.error(ex.getMessage());
         }
         return null;
+    }
+    public static List<String> getSMSIsSent(String serviceOrder, String description) {
+        description = '%' + description + '%';
+        String sql = String.format("select posttransactionid from hitransactionevent where hitransactionid=%s and DESCR like '%s'", serviceOrder, description);
+        List sms = new ArrayList<>();
+        sms = OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+        List<String> result = new ArrayList<>();
+        if (!sms.isEmpty()) {
+            for (int y = 0; y < sms.size(); y++) {
+                result.add(sms.get(y).toString());
+            }
+        }
+        return result;
+    }
+
+    public static List<String> getContextInfoOfSMSServiceOrderIsCorrectInDb(String serviceOrder, String description) {
+        description = '%' + description + '%';
+        String sql = String.format("select contextinfo from hitransactionevent where hitransactionid=%s and DESCR like '%s'", serviceOrder, description);
+        List sms = new ArrayList<>();
+        sms = OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+        List<String> result = new ArrayList<>();
+        if (!sms.isEmpty()) {
+            for (int y = 0; y < sms.size(); y++) {
+                result.add(sms.get(y).toString());
+            }
+        }
+        return result;
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
