@@ -6,14 +6,15 @@ import framework.utils.RandomCharacter;
 import javafx.util.Pair;
 import logic.business.db.OracleDB;
 import logic.business.entities.DiscountBundleEntity;
+import logic.utils.Parser;
 
-import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class BillingActions extends OracleDB {
@@ -88,12 +89,10 @@ public class BillingActions extends OracleDB {
         return tempBillingGroupHeader;
     }
 
-    public void updateBillGroupPaymentCollectionDate(Date collectionDate, int billingGroupId)
-    {
-        LocalDate localDate = LocalDate.now().plusDays(10);
-        Date date =  Date.valueOf(localDate);;
+    public static void updateBillGroupPaymentCollectionDate(Date collectionDate, int billingGroupId){
+        Date date =  collectionDate;
         if (date.getDate() > 28){
-            date = Date.valueOf(localDate.plusDays(28 - date.getDate()));
+            date = Date.valueOf(date.toLocalDate().minusDays(date.getDate() - 28));
         }
         String sql = String.format("update BGPROPERTY set propvalnumber= %d where propertykey='BGPCDAY' and billinggroupid= %d ", date.getDate(), billingGroupId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
@@ -204,11 +203,27 @@ public class BillingActions extends OracleDB {
     }
 
     public static Date getInvoiceDueDateByPaymentCollectionDate(int numberOfDate){
+        LocalDate today;
         LocalDate date =  LocalDate.now().plusDays(numberOfDate);
-        while ((date.getDayOfWeek() == DayOfWeek.SATURDAY) || (date.getDayOfWeek() == DayOfWeek.SUNDAY)){
-            date = date.plusDays(1);
+        for (int i = 0; i < numberOfDate; i++){
+            today = LocalDate.now().plusDays(i);
+            if ((today.getDayOfWeek() == DayOfWeek.SATURDAY) || (today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+                date = date.minusDays(1);
+            }
         }
+        return Date.valueOf(date);
+    }
 
+    public static Date getInvoiceDueDateByPaymentCollectionDate(Date paymentCollectionDate){
+        LocalDate today = LocalDate.now();
+        LocalDate date = Parser.convertToLocalDateViaMilisecond(paymentCollectionDate);
+        long days = ChronoUnit.DAYS.between(date, today);
+        for (int i = 0; i < Math.abs(days); i++){
+            today = LocalDate.now().plusDays(i);
+            if ((today.getDayOfWeek() == DayOfWeek.SATURDAY) || (today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+                date = date.minusDays(1);
+            }
+        }
         return Date.valueOf(date);
     }
 
@@ -217,5 +232,4 @@ public class BillingActions extends OracleDB {
         String sql = String.format("update hitransactionproperty set propvaldate = trunc(sysdate) where hitransactionid = %s and propertykey in ('PDATE','BILLDATE')", serviceOrderId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
-
 }

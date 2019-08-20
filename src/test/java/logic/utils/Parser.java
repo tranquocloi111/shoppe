@@ -4,6 +4,9 @@ import framework.utils.Log;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 
 public class Parser {
@@ -19,6 +22,11 @@ public class Parser {
         return null;
     }
 
+    public static LocalDate convertToLocalDateViaMilisecond(Date dateToConvert) {
+        return Instant.ofEpochMilli(dateToConvert.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
 
     public static void main(String[] args) throws InterruptedException {
         Date newStartDate = TimeStamp.TodayMinus15Days();
