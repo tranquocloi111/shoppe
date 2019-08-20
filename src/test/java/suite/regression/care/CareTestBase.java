@@ -32,6 +32,8 @@ public class CareTestBase extends BasePage {
 
     private static final String DETAILS = "Details";
     private static final String SERVICE_ORDERS = "Service Orders";
+    private static final String SUBSCRIPTIONS = "Subscriptions";
+
 
     private CareTestBase() {
         loginPage = new LoginPage();
@@ -224,5 +226,16 @@ public class CareTestBase extends BasePage {
         return DetailsContentPage.AddressInformationPage.getInstance().getEmail();
     }
 
+    public static List<String> getAllSubscription(int numberSubscriptions){
+        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SUBSCRIPTIONS)){
+            MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        }
 
+        ArrayList<String> subscriptionNumberList = new ArrayList<String>();
+        for(int i = 1; i<=numberSubscriptions; i++){
+            String subscriptionNumber = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
+            subscriptionNumberList.add(subscriptionNumber);
+        }
+        return subscriptionNumberList;
+    }
 }

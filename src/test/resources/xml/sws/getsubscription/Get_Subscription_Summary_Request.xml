@@ -1,0 +1,14 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <sel:getSubscriptionSummaryRequest>
+      <sel:externalSystemID>MOBILEAWARE</sel:externalSystemID>
+      <sel:accountCriteria>
+        <!--You have a CHOICE of the next 2 items at this level-->
+        <!--Optional:-->
+        <sel:accountNumber>$accountNumber$</sel:accountNumber>
+        <!--Optional:-->
+      </sel:accountCriteria>
+    </sel:getSubscriptionSummaryRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

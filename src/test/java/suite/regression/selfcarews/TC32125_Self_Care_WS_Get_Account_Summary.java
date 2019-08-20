@@ -53,8 +53,7 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Get All Subscriptions Number");
-        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        subscriptionNumberList = selfCareWSTestBase.getAllSubscription(2);
+        subscriptionNumberList = CareTestBase.getAllSubscription(2);
 
         test.get().info("Verify Customer Start Date and Billing Group are updated successfully");
         CareTestBase.page().verifyCustomerStartDateAndBillingGroupAreUpdatedSuccessfully(newStartDate);
@@ -68,6 +67,7 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         Xml expectedResponse = buildAccountSummaryResponseData(newStartDate);
 
         test.get().info("Verify Get Account Summary Response");
+        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponse, response);
     }
 
