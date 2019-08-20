@@ -4,12 +4,14 @@ import framework.config.Config;
 import framework.utils.FTP;
 import framework.utils.Log;
 import logic.business.db.OracleDB;
+import logic.business.entities.DiscountBundleEntity;
 import logic.business.helper.FTPHelper;
 import logic.business.helper.MiscHelper;
 import logic.utils.Parser;
 import org.testng.Assert;
 
 import javax.xml.transform.Result;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,7 +97,52 @@ public class CommonActions extends OracleDB {
         return result;
     }
 
+    public static boolean isBonusBundleExisting(){
+     String sql = "SELECT bg.*\n" +
+             "FROM   (SELECT dp.discountplanid\n" +
+             "           ,dpp.propvalchar || ' - ' || dp.Descr descr\n" +
+             "           ,dp.rowversion\n" +
+             "     FROM   discountplan         dp\n" +
+             "           ,discountplanproperty dpp\n" +
+             "     WHERE dp.discountmethod IN ('BONUSBUNDGRP')\n" +
+             "     AND    dp.discountplanid = dpp.discountplanid\n" +
+             "     AND    dpp.propertykey = 'DBUNDGRPCODE') bg -- VW_BUNDLEGRP in dev\n" +
+             "    -- WHERE bg.discountplanid = iCode";
+
+        List list = OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+        return list.size() > 0;
+    }
 
 
+    public static List getAllBundlesGroupByTariff(String tariff){
+        String sql = "select vwx.GroupCode,\n" +
+                "     vwx.GroupDescr,\n" +
+                "     vwx.GroupType,\n" +
+                "     vwx.GroupPlanId, \n" +
+                "    (select dpp.propvalnumber from discountplanproperty dpp where dpp.discountplanid = vwx.GroupPlanId and dpp.propertykey = 'QMIN') MinOccurs,\n" +
+                "    (select dpp.propvalnumber from discountplanproperty dpp where dpp.discountplanid = vwx.GroupPlanId and dpp.propertykey = 'QMAX') MaxOccurs,\n" +
+                "     vwx.ChildBundCode,\n" +
+                "     vwx.ChildDescr,\n" +
+                "     p.productcode\n" +
+                " from   productmetaproperty pmp,\n" +
+                "     vw_bundlegrpmap vwx,\n" +
+                "     product p\n" +
+                " where  pmp.productid = p.productid\n" +
+                " and p.productcode = '"+tariff+"'\n" +
+                " and    pmp.propertykey = 'BUNDLEGRP' \n" +
+                " and    pmp.propvalnumber = vwx.GroupPlanId\n" +
+                " and p.productcode = '"+tariff+"'";
+        try {
+            ArrayList<HashMap<String, String>> list = (ArrayList<HashMap<String, String>>) OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+            return  list;
+        }catch (Exception ex){
+            Log.error(ex.getMessage());
+        }
+        return null;
+    }
+
+    public static void main(String[] args) throws InterruptedException, IOException {
+
+    }
 
 }

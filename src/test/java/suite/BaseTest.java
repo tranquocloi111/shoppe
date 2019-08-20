@@ -13,6 +13,7 @@ import framework.wdm.WDFactory;
 import framework.wdm.WdManager;
 import logic.business.db.billing.BillingActions;
 import logic.business.entities.DiscountBundleEntity;
+import logic.business.helper.FTPHelper;
 import logic.business.helper.RemoteJobHelper;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
@@ -197,6 +198,10 @@ public class BaseTest {
     {
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         return CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue(Subscription);
+    }
+
+    protected static void downLoadFile(String remotePath, String fileName, String localPath){
+        FTPHelper.getInstance().downLoadFromDisk(remotePath, fileName, localPath);
     }
     //end region
 

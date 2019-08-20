@@ -5,6 +5,7 @@ import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer;
 import com.sun.org.apache.xml.internal.security.c14n.InvalidCanonicalizerException;
 import framework.config.Config;
 import framework.utils.Log;
+import framework.utils.Xml;
 import logic.business.db.OracleDB;
 import logic.business.helper.FTPHelper;
 import org.apache.commons.io.FileUtils;
@@ -230,7 +231,8 @@ public class Common {
 
     }
 
-    public static void unzip(String zipFilePath, String destDir) {
+    public static String unzip(String zipFilePath, String destDir) {
+        String zippedFile = "";
         File dir = new File(destDir);
         // create output directory if it doesn't exist
         if(!dir.exists()) dir.mkdirs();
@@ -245,6 +247,7 @@ public class Common {
                 String fileName = ze.getName();
                 File newFile = new File(destDir + File.separator + fileName);
                 System.out.println("Unzipping to "+newFile.getAbsolutePath());
+                zippedFile = newFile.getAbsolutePath();
                 //create directories for sub directories in zip
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
@@ -264,7 +267,7 @@ public class Common {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return  zippedFile;
     }
 
 
@@ -274,5 +277,11 @@ public class Common {
         String destDir = "/Users/pankaj/output";
 
         unzip(zipFilePath, getFolderLogFilePath());
+
+        String file = getFolderLogFilePath() + "\\TM_HUB_DEAL_Onlines_20190816_232112.XML";
+        Xml xml = new Xml(new File(file));
+
+        System.out.println(xml.toString().contains("productCode=\"NC24-4500-3000-IP-S\""));
+
     }
 }

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 public class RemoteJobHelper {
 
-    static int remoteJobId = 0;
+    public static int remoteJobId = 0;
     private static RemoteJobHelper instance = new RemoteJobHelper();
     private String envIndex = "9";
     private String unixUsernName;
