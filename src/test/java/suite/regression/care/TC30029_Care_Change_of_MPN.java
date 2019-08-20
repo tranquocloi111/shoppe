@@ -1,6 +1,5 @@
 package suite.regression.care;
 
-import framework.utils.Pdf;
 import logic.business.db.billing.BillingActions;
 import logic.business.db.billing.CommonActions;
 import logic.business.entities.DiscountBundleEntity;
@@ -56,6 +55,9 @@ public class TC30029_Care_Change_of_MPN extends BaseTest {
 
         test.get().info("Step 7: Refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+
+        test.get().info("Get subscription number");
+        subscriptionNumber = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberByIndex(1);
 
         test.get().info("Step 8: Verify Customer Start Date and Billing Group are updated successfully");
         CareTestBase.page().verifyCustomerStartDateAndBillingGroupAreUpdatedSuccessfully(newStartDate);
@@ -116,7 +118,10 @@ public class TC30029_Care_Change_of_MPN extends BaseTest {
         CareTestBase.page().openInvoiceDetailsScreen();
 
         test.get().info("Verify invoice details are correct");
-        CareTestBase.page().verifyInvoiceDetailsAreCorrect(Parser.parseDateFormate(Today(), "dd MMM yyyy"), Parser.parseDateFormate(TimeStamp.TodayMinus1Day(), "dd MMM yyyy"), Parser.parseDateFormate(BaseTest.paymentCollectionDateEscapeNonWorkDay(10), "dd MMM yyyy"),"Confirmed");
+        String issuedDate = Parser.parseDateFormate(Today(), DATE_FORMAT);
+        String endDate = Parser.parseDateFormate(TimeStamp.TodayMinus1Day(), DATE_FORMAT);
+        String dueDate = Parser.parseDateFormate(BaseTest.paymentCollectionDateEscapeNonWorkDay(10), DATE_FORMAT);
+        CareTestBase.page().verifyInvoiceDetailsAreCorrect(issuedDate, endDate, dueDate,"Confirmed");
 
         //===================================================================================
         test.get().info("Verify PDF File");
@@ -128,7 +133,6 @@ public class TC30029_Care_Change_of_MPN extends BaseTest {
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         discountGroupCodeOfMobileRef1 = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
-        subscriptionNumber = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
         List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCodeOfMobileRef1);
 
 //        Assert.assertEquals(11, discountBundles.size());
@@ -149,11 +153,11 @@ public class TC30029_Care_Change_of_MPN extends BaseTest {
 
     private void verifyTheOldSubscriptionIsInactive(){
         Date EndDate = TimeStamp.TodayPlus1MonthMinus1Day();
-        Assert.assertEquals(1, CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getNumberOfSubscription(SubscriptionEntity.dataForInactiveSubscriptions((subscriptionNumber + "  Mobile Ref 1"),newStartDate, EndDate)));
+        Assert.assertEquals(1, CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getNumberOfSubscription(SubscriptionEntity.dataForInactiveSubscriptions((subscriptionNumber + " Mobile Ref 1"),newStartDate, EndDate)));
     }
 
     private void verifyTheNewSubscriptionIsActive(){
-        Assert.assertEquals(1, CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getNumberOfSubscription(SubscriptionEntity.dataForActiveSubscriptions((newSubscriptionNumber + "  Mobile Ref 1"), newStartDate)));
+        Assert.assertEquals(1, CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getNumberOfSubscription(SubscriptionEntity.dataForActiveSubscriptions((newSubscriptionNumber + " Mobile Ref 1"))));
     }
 
     private void verifyNewDiscountBundleEntriesHaveBeenCreated(){
@@ -175,17 +179,23 @@ public class TC30029_Care_Change_of_MPN extends BaseTest {
     }
 
     private void verifyPDFFile(){
-        BaseTest.downloadInvoicePDFFile(customerNumber);
-        List<String>  pdfList = Pdf.getInstance().getText(InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getPathOfPdfFile(), 1, 1);
-        String expectFirstBill = "Your first bill £15.00";
-        Assert.assertTrue(pdfList.contains(expectFirstBill));
+        String downloadedPDFFile = BaseTest.getDownloadInvoicePDFFile(customerNumber);
+        String failedAssertMessage = "Failed to assert value: ";
+
+        List<String> pdfList_Page1 = InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getListInvoiceContent(downloadedPDFFile,1, 1);
+
+        String expectFirstBill = "Your first bill   £15.00 Clubcard";
+        Assert.assertTrue(pdfList_Page1.contains(expectFirstBill), failedAssertMessage + expectFirstBill);
 
         String amountExpected = "Amount due 15.00";
-        Assert.assertTrue(pdfList.contains(amountExpected));
+        Assert.assertTrue(pdfList_Page1.contains(amountExpected), failedAssertMessage + amountExpected);
 
-        pdfList = Pdf.getInstance().getText(InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getPathOfPdfFile(), 3);
+        List<String> pdfList = InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getListInvoiceContent(downloadedPDFFile,3, 3);
         String summaryOfUserCharges = "Summary of charges";
-        String userCharges = String.format("User charges for %s  Mobile Ref 1 (£10 Tariff 12 Month Contract)", subscriptionNumber);
+        String userCharges = String.format("User charges for %s  Mobile Ref 1 (£10 Tariff 12 Month Contract)",subscriptionNumber);
+
+        Assert.assertTrue(pdfList.contains(summaryOfUserCharges), failedAssertMessage + summaryOfUserCharges);
+        Assert.assertTrue(pdfList.contains(userCharges), failedAssertMessage + userCharges);
 
         String sNewStartDate = Parser.parseDateFormate(newStartDate, DATE_FORMAT_IN_PDF);
         String sToday = Parser.parseDateFormate(Today(), DATE_FORMAT_IN_PDF);
@@ -194,6 +204,8 @@ public class TC30029_Care_Change_of_MPN extends BaseTest {
 
         String monthlySubscription1 = String.format("Monthly subscription %s %s 10.00", sNewStartDate, sToDayMinus1Day);
         String monthlySubscription2 = String.format("Monthly subscription %s %s 10.00", sToday, sTodayPlus1MonthMinus1Day);
+        Assert.assertTrue(pdfList.contains(monthlySubscription1), failedAssertMessage + monthlySubscription1);
+        Assert.assertTrue(pdfList.contains(monthlySubscription2), failedAssertMessage + monthlySubscription2);
 
         String AdjmtChargesAndCredits1 = String.format("%s %s Nokia 2720 for %s 0.00", sNewStartDate, sNewStartDate, newSubscriptionNumber);
         String AdjmtChargesAndCredits2 = String.format("%s %s Monthly 500MB data allowance for %s 5.00", sNewStartDate, sToDayMinus1Day, newSubscriptionNumber);
@@ -201,17 +213,11 @@ public class TC30029_Care_Change_of_MPN extends BaseTest {
         String AdjmtChargesAndCredits4 = String.format("%s %s Monthly 500MB data allowance for %s 5.00", sToday, sTodayPlus1MonthMinus1Day, newSubscriptionNumber);
         String AdjmtChargesAndCredits5 = String.format("%s %s £20 safety buffer for %s 0.00", sToday, sTodayPlus1MonthMinus1Day, newSubscriptionNumber);
 
-        Assert.assertTrue(pdfList.contains(summaryOfUserCharges));
-        Assert.assertTrue(pdfList.contains(userCharges));
-
-        Assert.assertTrue(pdfList.contains(monthlySubscription1));
-        Assert.assertTrue(pdfList.contains(monthlySubscription2));
-
-        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits1));
-        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits2));
-        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits3));
-        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits4));
-        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits5));
+        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits1), failedAssertMessage + AdjmtChargesAndCredits1);
+        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits2), failedAssertMessage + AdjmtChargesAndCredits2);
+        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits3), failedAssertMessage + AdjmtChargesAndCredits3);
+        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits4), failedAssertMessage + AdjmtChargesAndCredits4);
+        Assert.assertTrue(pdfList.contains(AdjmtChargesAndCredits5), failedAssertMessage + AdjmtChargesAndCredits5);
 
     }
 }

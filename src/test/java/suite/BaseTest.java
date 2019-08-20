@@ -111,8 +111,7 @@ public class BaseTest {
     }
 
     public static void updateBillGroupPaymentCollectionDateTo10DaysLater() {
-        Date paymentCollectionDate = Date.valueOf(LocalDate.now().plusDays(10));
-        BillingActions.getInstance().updateBillGroupPaymentCollectionDate(paymentCollectionDate, BillingActions.getInstance().tempBillingGroupHeader.getKey());
+        BillingActions.getInstance().updateBillGroupPaymentCollectionDate(10, BillingActions.getInstance().tempBillingGroupHeader.getKey());
     }
 
     protected static void setBillGroupForCustomer(String customerId) {
@@ -160,12 +159,15 @@ public class BaseTest {
         return listResult;
     }
 
-    public static Date paymentCollectionDateEscapeNonWorkDay(int numberOfdate){
-        return BillingActions.getInstance().getInvoiceDueDateByPaymentCollectionDate(numberOfdate);
+    public static Date paymentCollectionDateEscapeNonWorkDay(int numberOfDate){
+        return BillingActions.getInstance().getInvoiceDueDateByPaymentCollectionDate(numberOfDate);
     }
 
     public static void downloadInvoicePDFFile(String customerNumber){
         InvoicesContentPage.InvoiceDetailsContentPage.getInstance().saveFileFromWebRequest(customerNumber);
+    }
+    public static String getDownloadInvoicePDFFile(String customerNumber){
+        return InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getSaveFileFromWebRequest(customerNumber);
     }
 
     public String randomNumberAndString()

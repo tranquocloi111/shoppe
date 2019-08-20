@@ -154,8 +154,8 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("FINAL", BillingActions.getInstance().getInvoiceTypeByInvoiceNumber(invoiceNumber));
 
         test.get().info("Step 20 : Verify the adjustment and miscellaneous are charged on Invoice PDF");
-        InvoicesContentPage.InvoiceDetailsContentPage.getInstance().saveFileFromWebRequest(customerNumber);
-        List<String> listInvoiceContent = InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getListInvoiceContent(3);
+        String downloadedPDFFile = BaseTest.getDownloadInvoicePDFFile(customerNumber);
+        List<String> listInvoiceContent = InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getListInvoiceContent(downloadedPDFFile,1);
         Assert.assertTrue(listInvoiceContent.contains(String.format("%s %s Credit Transfer from Prepay for Deactivation Refund -25.00", Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT_IN_PDF), Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT_IN_PDF))));
         Assert.assertTrue(listInvoiceContent.contains(String.format("(%s  Mobile Ref 1)", subscriptionNumber)));
         Assert.assertTrue(listInvoiceContent.contains(String.format("%s %s Customer Care refund issued for %s 132.50", Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT_IN_PDF), Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT_IN_PDF), subscriptionNumber)));
@@ -1332,13 +1332,13 @@ public class ShakeOutTest extends BaseTest {
     }
 
     public void verifyPDFFile(String customerId, String fcScriptionNumber, String ncScriptionNumber){
-        BaseTest.downloadInvoicePDFFile(customerId);
-        List<String>  pdfList = Pdf.getInstance().getText(InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getPathOfPdfFile(), 1, 1);
+        String downloadedPDFFile = BaseTest.getDownloadInvoicePDFFile(customerId);
+        List<String> pdfList = InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getListInvoiceContent(downloadedPDFFile,1, 1);
 
         String expectFirstBill = "Your first bill   £30.00 Clubcard";
         Assert.assertTrue(pdfList.contains(expectFirstBill));
 
-        pdfList = Pdf.getInstance().getText(InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getPathOfPdfFile(), 3);
+        pdfList = InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getListInvoiceContent(downloadedPDFFile,3);
         String summaryOfUserCharges = "Summary of charges";
 
         String userChargesFC = String.format("User charges for %s  FC Mobile (£7.50 SIM Only Tariff 1 Month Contract)", fcScriptionNumber);
@@ -1357,8 +1357,8 @@ public class ShakeOutTest extends BaseTest {
     }
 
     private void verifyPDFFile(String customerId, Date newStartDate, String serviceRefOf1stSubscription, String serviceRefOf2ndSubscription){
-        BaseTest.downloadInvoicePDFFile(customerId);
-        List<String>  pdfList = Pdf.getInstance().getText(InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getPathOfPdfFile(), 3);
+        String downloadedPDFFile = BaseTest.getDownloadInvoicePDFFile(customerId);
+        List<String> pdfList = InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getListInvoiceContent(downloadedPDFFile,3);
         Assert.assertTrue(pdfList.stream().anyMatch(x -> x.startsWith("Summary of charges")));
         Assert.assertTrue(pdfList.get(7).equalsIgnoreCase("From Date To Date Cost Charge (£)"));
 

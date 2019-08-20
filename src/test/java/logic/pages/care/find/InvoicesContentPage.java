@@ -82,8 +82,17 @@ public class InvoicesContentPage extends BasePage {
             MiscHelper.saveFileFromWebRequest(btnViewPdf, fileToDownloadLocation, pdfFile);
         }
 
-        public List<String> getListInvoiceContent(int startPage){
-            return Pdf.getInstance().getText(System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFile, startPage);
+        public String getSaveFileFromWebRequest(String customerNumber){
+            saveFileFromWebRequest(customerNumber);
+            return pdfFile;
+        }
+
+        public List<String> getListInvoiceContent(String pdfFilePath, int startPage){
+            return Pdf.getInstance().getText(System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFilePath, startPage);
+        }
+
+        public List<String> getListInvoiceContent(String pdfFilePath, int startPage, int endPage){
+            return Pdf.getInstance().getText(System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFilePath, startPage, endPage);
         }
 
         public String getPathOfPdfFile(){

@@ -5,20 +5,20 @@ import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.params.ClientPNames;
-import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Set;
+
 
 public class FileDownloader {
 
@@ -130,27 +130,21 @@ public class FileDownloader {
      * @throws NullPointerException
      */
     private String downloader(WebElement element, String fileToDownloadLocation, String pdfFile) throws IOException, NullPointerException, URISyntaxException {
-        //Common.getInstance().createUserDir("QA_Project");
-        //String [] param = element.getAttribute(attribute).split(",");
-        //String fileToDownloadLocation = String.format("%scustomer/CustomerInvoice.aspx?item=invoice&rootbuid=%s&invid=%s", Config.getProp("careUrl"),Common.getInstance().stripNonDigits(param[0]), Common.getInstance().stripNonDigits(param[1]));
         if (fileToDownloadLocation.trim().equals("")) throw new NullPointerException("The element you have specified does not link to anything!");
 
         URL fileToDownload = new URL(fileToDownloadLocation);
         File downloadedFile = new File(this.localDownloadPath + pdfFile);
         if (downloadedFile.canWrite() == false) downloadedFile.setWritable(true);
 
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = HttpClientBuilder.create().disableRedirectHandling().build();
         BasicHttpContext localContext = new BasicHttpContext();
 
         Log.info("Mimic WebDriver cookie state: " + this.mimicWebDriverCookieState);
         if (this.mimicWebDriverCookieState) {
-            localContext.setAttribute(ClientContext.COOKIE_STORE, mimicCookieState(WdManager.get().manage().getCookies()));
+            localContext.setAttribute(HttpClientContext.COOKIE_STORE, mimicCookieState(WdManager.get().manage().getCookies()));
         }
 
         HttpGet httpget = new HttpGet(fileToDownload.toURI());
-        HttpParams httpRequestParameters = httpget.getParams();
-        httpRequestParameters.setParameter(ClientPNames.HANDLE_REDIRECTS, this.followRedirects);
-        httpget.setParams(httpRequestParameters);
 
         Log.info("Sending GET request for: " + httpget.getURI());
         HttpResponse response = client.execute(httpget, localContext);

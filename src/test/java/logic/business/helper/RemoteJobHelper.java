@@ -219,4 +219,16 @@ public class RemoteJobHelper {
         submitRemoteJob("DoSMSRequest.sh -e $HUB_SID -P -J");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "SMS Request");
     }
+
+    public void runDoDealXMLExtractJob() {
+        int currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJob("DoDealXMLExtract.sh -e $HUB_SID -J");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
+    }
+
+    public void runDealCatalogueExtractJob() {
+        int currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJob("DoDealXMLExtract.sh -e $HUB_SID -J");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Deal Catalogue Extract");
+    }
 }
