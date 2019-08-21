@@ -86,7 +86,7 @@ service
         MakeAOneOffPaymentPage.CardDetailSection.getInstance().clickSubmitBtn();
 
         test.get().info("Step 6 : input 3D Password");
-        Test3DSecurePage.getInstance().driver = Test3DSecurePage.getInstance().switchFrameByName("issuer");
+        Test3DSecurePage.getInstance().switchFrameByName("issuer");
         Test3DSecurePage.getInstance().enter3DPassword("1234");
         Test3DSecurePage.getInstance().clickVerifyMe();
 
