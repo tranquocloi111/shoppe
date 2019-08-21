@@ -57,10 +57,10 @@ public class TC32131_Basic_Path_Active_Account_with_Clubcard extends BaseTest {
 
         test.get().info("Build Expected Account Summary Response Data");
         String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getaccount\\TC32131_response.xml";
-        Xml expectedResponse = swsActions.buildSimpleAccountSummaryResponseData(sampleResponseFile, newStartDate, customerNumber, latestSubscriptionNumber);
+        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
+        Xml expectedResponse = selfCareWSTestBase.buildSimpleAccountSummaryResponseData(sampleResponseFile, newStartDate, customerNumber, latestSubscriptionNumber);
 
         test.get().info("Verify Get Account Summary Response");
-        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponse, response);
     }
 }
