@@ -5,7 +5,10 @@ import framework.utils.RandomCharacter;
 import javafx.util.Pair;
 import logic.business.db.OracleDB;
 import logic.business.entities.DiscountBundleEntity;
+import logic.business.entities.PaymentGatewayEnity;
+import logic.business.entities.PaymentGatewayRespondEnity;
 import logic.utils.Parser;
+import logic.utils.TimeStamp;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -96,6 +99,8 @@ public class BillingActions extends OracleDB {
             throwable.printStackTrace();
         }
     }
+
+
 
     private Pair<Integer, String> createNewBillGroupHeader() throws SQLException {
         String sql = "select periodid from PERIOD where descr='Monthly'";
@@ -231,6 +236,83 @@ public class BillingActions extends OracleDB {
         Log.info("Service order id:" + serviceOrderId);
         String sql = String.format("update hitransactionproperty set propvaldate = trunc(sysdate) where hitransactionid = %s and propertykey in ('PDATE','BILLDATE')", serviceOrderId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
+    public static int findPayemtGateWay(List<PaymentGatewayEnity> allPaymentGateEnity, String action, String paymentType, String saleChannel) {
+        return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action) && x.getPaymentType().equalsIgnoreCase(paymentType) && x.getSaleChannel().equalsIgnoreCase(saleChannel)).count()));
+    }
+
+    public static List<PaymentGatewayEnity> getPaymentGatewayRequestForOrderInOEDb(String serviceOrder) {
+
+        List<PaymentGatewayEnity> paymentGateWayList = new ArrayList<>();
+
+        String sql = String.format("select paymentgtwrequestid,action,paymenttype,saleschannel from paymentgtwrequest where externalid='%s'", serviceOrder);
+        try {
+            ResultSet res = OracleDB.SetToOEDatabase().executeQuery(sql);
+            while (res.next()) {
+                PaymentGatewayEnity payment= new PaymentGatewayEnity();
+                payment.setPaymentGTWRequestID(res.getString(1));
+                payment.setAction(res.getString(2));
+                payment.setPaymentType(res.getString(3));
+                payment.setSaleChannel(res.getString(4));
+                System.out.println(payment.toString());
+                paymentGateWayList.add(payment);
+            }
+        } catch (Exception ex) {
+
+        }
+        return paymentGateWayList;
+    }
+    public static List<PaymentGatewayRespondEnity> getPaymentGatewayRespondForOrderInOEDb(List<String> requestIDList) {
+
+        List<PaymentGatewayRespondEnity> paymentGateWayList = new ArrayList<>();
+        String requestID = String.join(",",requestIDList);
+        String sql = String.format("select action,status,gatewaystatus,bankstatus,tdsauthresponsetype,fraudstatus,tokenstatus,gatewayrequestid from paymentgtwresponse where paymentgtwrequestid in (%s)", requestID);
+        try {
+            ResultSet res = OracleDB.SetToOEDatabase().executeQuery(sql);
+            while (res.next()) {
+                PaymentGatewayRespondEnity payment= new PaymentGatewayRespondEnity();
+                payment.setAction(res.getString(1));
+                payment.setStatus(res.getString(2));
+                payment.setGatewayStatus(res.getString(3));
+                payment.setBankStatus(res.getString(4));
+                payment.setTDSAuthResponseType(res.getString(5));
+                payment.setFraudStatus(res.getString(6));
+                payment.setTokenStatus(res.getString(7));
+                payment.setGatewayRequestid(res.getString(8));
+                paymentGateWayList.add(payment);
+            }
+        } catch (Exception ex) {
+
+        }
+        return paymentGateWayList;
+    }
+    public static int findPayemtGateWayRespond(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus, String tDSAuthResponseType) {
+        return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
+                && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus().equalsIgnoreCase(gateWayStatus)
+                && x.getBankStatus().equalsIgnoreCase(bankStatus)
+                && x.getTDSAuthResponseType().equalsIgnoreCase(tDSAuthResponseType)).count()));
+    }
+    public static int findPayemtGateWayRespondByFraudStatus(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus, String FraudStatus) {
+        return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
+                && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus().equalsIgnoreCase(gateWayStatus)
+                && x.getBankStatus().equalsIgnoreCase(bankStatus)
+                && x.getFraudStatus().equalsIgnoreCase(FraudStatus)).count()));
+    }
+    public static int findPayemtGateWayRespondByTokenStatus(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus, String TokenStatus) {
+        return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
+                && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus().equalsIgnoreCase(gateWayStatus)
+                && x.getBankStatus().equalsIgnoreCase(bankStatus)
+                && x.getTokenStatus().equalsIgnoreCase(TokenStatus)).count()));
+    }
+
+    public static void updateRunAsAtDateOfCurrentDateMinus1MonthAnd1Day() {
+        try {
+            OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update billruncalendar set asatdate=trunc(SYSDATE - %d) where asatdate=trunc(SYSDATE-1) and billinggroupid=%d", TimeStamp.TodayMinusTodayMinus1MonthMinus1Day(), tempBillingGroupHeader.getKey()));
+        } catch (Exception ex) {
+            Log.error(ex.getMessage());
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 }
 

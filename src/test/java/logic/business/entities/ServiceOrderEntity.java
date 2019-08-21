@@ -122,6 +122,7 @@ public class ServiceOrderEntity {
         return so;
     }
 
+
     public static List<HashMap<String, String>> dataFCServiceOrderProvisionWait(String serviceSubscription) {
         List<HashMap<String, String>> listOrderServer = new ArrayList<>();
         HashMap<String, String> so = new HashMap<String, String>();
@@ -195,4 +196,13 @@ public class ServiceOrderEntity {
 
         return listOrderServer;
     }
+
+    public static HashMap<String, String> dataServiceOrderFinancialTransaction() {
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Status", "Completed Task");
+        so.put("Type", "Ad-hoc Payment");
+        so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        return so;
+    }
+
 }

@@ -13,10 +13,11 @@ public class TasksContentPage extends BasePage {
 
     public static class TaskSummarySectionPage extends TasksContentPage {
         private static TaskSummarySectionPage instance = new TaskSummarySectionPage();
+
         public static TaskSummarySectionPage getInstance() {
             if (instance == null)
                 instance = new TaskSummarySectionPage();
-            return  new TaskSummarySectionPage();
+            return new TaskSummarySectionPage();
         }
 
         @FindBy(xpath = "//td[contains(text(),'Description:')]/following-sibling::td[1]")
@@ -43,6 +44,7 @@ public class TasksContentPage extends BasePage {
     public static class TaskPage extends TasksContentPage {
         public static class EventsGridSectionPage extends TaskPage {
             private static EventsGridSectionPage instance = new EventsGridSectionPage();
+
             public static EventsGridSectionPage getInstance() {
                 if (instance == null)
                     instance = new EventsGridSectionPage();
@@ -72,11 +74,12 @@ public class TasksContentPage extends BasePage {
             public int getNumberOfEvents(List<HashMap<String, String>> events) {
                 return table.findRowsByColumns(events).size();
             }
+
             public int getNumberOfEventsByEvent(HashMap<String, String> event) {
                 return table.findRowsByColumns(event).size();
             }
 
-            public int getRowNumberOfEventGird(){
+            public int getRowNumberOfEventGird() {
                 return table.getRowsCount();
             }
         }
@@ -84,11 +87,13 @@ public class TasksContentPage extends BasePage {
         public static class DetailsPage extends TaskPage {
 
             private static DetailsPage instance = new DetailsPage();
+
             public static DetailsPage getInstance() {
                 if (instance == null)
                     instance = new DetailsPage();
                 return new DetailsPage();
             }
+
 
             @FindBy(xpath = "//td[contains(text(),'Notification of low balance:')]/following-sibling::td[1]")
             WebElement lblNotificationOfLowBalance;
@@ -135,6 +140,10 @@ public class TasksContentPage extends BasePage {
             @FindBy(xpath = "//td[contains(text(),'EU Data Consent Flag:')]/following-sibling::td[1]")
             WebElement lblEUDataConsentFlag;
 
+            @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Details')]/../../..//following-sibling::div[1]//table")
+            WebElement detailTable;
+            TableControlBase tableControlBase = new TableControlBase(detailTable);
+
             public String getNotificationOfLowBalance() {
                 return getTextOfElement(lblNotificationOfLowBalance);
             }
@@ -159,11 +168,11 @@ public class TasksContentPage extends BasePage {
                 return getTextOfElement(lblBundlesRemoved);
             }
 
-            public String getPaymentAmount(){
+            public String getPaymentAmount() {
                 return getTextOfElement(lblPaymentAmount);
             }
 
-            public String getReDSStatusAuthorisation(){
+            public String getReDSStatusAuthorisation() {
                 return getTextOfElement(lblReDSStatusAuthorisation);
             }
 
@@ -172,29 +181,46 @@ public class TasksContentPage extends BasePage {
                 return getTextOfElement(lblOrderType);
             }
 
-            public String getTransactionStatus(){
+            public String getTransactionStatus() {
                 return getTextOfElement(lblTransactionStatus);
             }
 
-            public String getReceiptDate(){
+            public String getReceiptDate() {
                 return getTextOfElement(lblReceiptDate);
             }
 
-            public String getSalesChannel(){
+            public String getSalesChannel() {
                 return getTextOfElement(lblSalesChannel);
             }
 
-            public String getEndOfWizardMessage(){
+            public String getEndOfWizardMessage() {
                 return getTextOfElement(lblEndOfWizardMessage);
             }
 
-            public String getTemporaryChangeFlag(){
+            public String getTemporaryChangeFlag() {
                 return getTextOfElement(lblTemporaryChangeFlag);
             }
 
-            public String getEUDataConsentFlag(){
+            public String getEUDataConsentFlag() {
                 return getTextOfElement(lblEUDataConsentFlag);
             }
+
+            public String getCreditCardExpiryYear() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Credit Card Expiry Year"));
+            }
+
+            public String getCardNumber() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Card Number:"));
+            }
+
+            public String getAmountToBeDebited() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Amount to be Debited:"));
+            }
+
+            public String getReDSResponseCode() {
+                return getTextOfElement(tableControlBase.getCellByLabel("ReDS response code:"));
+            }
+
         }
     }
 
