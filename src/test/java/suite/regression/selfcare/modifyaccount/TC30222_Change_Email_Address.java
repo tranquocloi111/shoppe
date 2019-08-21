@@ -19,7 +19,7 @@ public class TC30222_Change_Email_Address extends BaseTest {
     public void TC30222_Change_Email_Address() {
 
         test.get().info("Step 1 : Create a CC customer with 3 subscriptions");
-        String path = "src\\test\\resources\\xml\\SelfCare\\viewaccount\\TC30222_CreateOrder";
+        String path = "src\\test\\resources\\xml\\selfcare\\viewaccount\\TC30222_CreateOrder";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
 

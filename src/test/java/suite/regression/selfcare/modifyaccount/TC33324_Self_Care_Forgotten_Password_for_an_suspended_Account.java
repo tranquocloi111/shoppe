@@ -36,7 +36,7 @@ Author: Tran Quoc Loi
         EmailHelper.getInstance().deleteAllEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", " ");
 
         test.get().info("Step 2 : Create a General customer ");
-        String path = "src\\test\\resources\\xml\\SelfCare\\viewaccount\\TC30222_CreateOrder";
+        String path = "src\\test\\resources\\xml\\selfcare\\viewaccount\\TC30222_CreateOrder";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrderForChangePassword(path);
         owsActions.getSubscription(owsActions.orderIdNo, "Mobile NC 1");

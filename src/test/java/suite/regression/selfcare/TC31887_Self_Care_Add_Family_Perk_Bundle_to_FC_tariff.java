@@ -40,7 +40,7 @@ public class TC31887_Self_Care_Add_Family_Perk_Bundle_to_FC_tariff extends BaseT
     @Test(enabled = true, description = "TC31887 Self Care Add Family Perk Bundle to FC tariff", groups = "SelfCare")
     public void TC31887_Self_Care_Add_Family_Perk_Bundle_to_FC_tariff() {
 
-        String TC31887_CREATE_ORDER = "src\\test\\resources\\xml\\SelfCare\\changebundle\\TC31887_CreateOrder";
+        String TC31887_CREATE_ORDER = "src\\test\\resources\\xml\\selfcare\\changebundle\\TC31887_CreateOrder";
         test.get().info("Step 1 : Create a CC customer, having family perk Bundle");
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(TC31887_CREATE_ORDER);

@@ -33,7 +33,7 @@ public class TC31889_SelfCare_Change_Bundle_Remove_Family_Perk_Bundle_on_next_bi
     @Test(enabled = true, description = "TC31889 SelfCare Change Bundle Remove Family Perk Bundle on next bill date", groups = "SelfCare")
     public void TC31889_SelfCare_Change_Bundle_Remove_Family_Perk_Bundle_on_next_bill_date()
     {
-        String TC1999_CreateOrder  = "src\\test\\resources\\xml\\SelfCare\\changebundle\\TC1999_CreateOrder";
+        String TC1999_CreateOrder  = "src\\test\\resources\\xml\\selfcare\\changebundle\\TC1999_CreateOrder";
         test.get().info("Step 1 : Create a CC customer, having family perk Bundle");
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(TC1999_CreateOrder);

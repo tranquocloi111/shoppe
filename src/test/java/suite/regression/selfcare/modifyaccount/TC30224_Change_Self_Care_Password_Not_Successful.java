@@ -36,7 +36,7 @@ Author: Tran Quoc Loi
     public void TC30223_Change_Self_Care_Password() {
 
         test.get().info("Step 1 : Create a General customer ");
-        String path = "src\\test\\resources\\xml\\SelfCare\\viewaccount\\TC30222_CreateOrder";
+        String path = "src\\test\\resources\\xml\\selfcare\\viewaccount\\TC30222_CreateOrder";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
 

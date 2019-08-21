@@ -27,7 +27,7 @@ public class TC33317_Self_Care_Change_Password extends BaseTest {
     public void TC33317_Self_Care_Change_Password() {
 
         test.get().info("Step 1 : Create a general customer");
-        String path = "src\\test\\resources\\xml\\SelfCare\\viewaccount\\TC30222_CreateOrder";
+        String path = "src\\test\\resources\\xml\\selfcare\\viewaccount\\TC30222_CreateOrder";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrderForChangePassword(path);
         EmailHelper.getInstance().deleteAllEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly","");

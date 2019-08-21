@@ -33,7 +33,7 @@ Author: Tran Quoc Loi
 
         test.get().info("Step 1 : Create a General customer ");
         String newEmailAddress = Config.getProp("emailUsername");
-        String path = "src\\test\\resources\\xml\\SelfCare\\viewaccount\\TC30222_CreateOrder";
+        String path = "src\\test\\resources\\xml\\selfcare\\viewaccount\\TC30222_CreateOrder";
         owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrderForChangePassword(path);
 

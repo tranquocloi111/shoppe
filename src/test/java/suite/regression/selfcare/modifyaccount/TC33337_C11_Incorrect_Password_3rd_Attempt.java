@@ -20,7 +20,7 @@ public class TC33337_C11_Incorrect_Password_3rd_Attempt extends BaseTest {
     public void TC33337_C11_Incorrect_Password_3rd_Attempt() {
 
         test.get().info("Step 1 : Create a CC customer with 3 subscriptions");
-        String path = "src\\test\\resources\\xml\\SelfCare\\viewaccount\\TC30222_CreateOrder";
+        String path = "src\\test\\resources\\xml\\selfcare\\viewaccount\\TC30222_CreateOrder";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         String customerNumber = owsActions.customerNo;

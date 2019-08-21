@@ -1,13 +1,21 @@
 package suite.regression.tropicana;
 
-import logic.business.helper.RemoteJobHelper;
+import logic.pages.selfcare.MyPersonalInformationPage;
 import org.testng.annotations.Test;
 import suite.BaseTest;
+import suite.regression.selfcare.SelfCareTestBase;
 
-public class TC4562 extends BaseTest {
+import java.sql.Date;
 
-    @Test(enabled = true, description = "TC 4682 HUB - Validation for Bonus bundles excluded from Deal Extract", groups = "Tropicana")
-    public void TC4682_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract() {
+public class TC4667_SC_Validation_For_Tropicana_Bundle_In_My_Tariff_Page extends BaseTest {
+    private String customerNumber = "15758";
+    private Date newStartDate;
+    private String username;
+    private String password;
+    String mpnOf1stSubscription;
+
+    @Test(enabled = true, description = "TC 4667 SC - Validation for Tropicana bundle in My Tariff page", groups = "Tropicana")
+    public void TC4667_SC_Validation_For_Tropicana_Bundle_In_My_Tariff_Page() {
 //        test.get().info("Step 1 : Create a customer with NC and device");
 //        OWSActions owsActions = new OWSActions();
 //        owsActions.createAnOnlinesCCCustomerWith2FCFamilyPerkAndNK2720();
@@ -36,15 +44,27 @@ public class TC4562 extends BaseTest {
 //        String path = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
 //        swsActions.submitMaintainBundleRequest(path,"","");
 //
-//        test.get().info("Step 7 : Submit Provision job");
+//        test.get().info("Step 7 : Submit ");
 //        BaseTest.updateThePDateAndBillDateForSO("");
 //        RemoteJobHelper.getInstance().runProvisionSevicesJob();
 
-        test.get().info("Step 8 : Submit DoDealXMLExtract Job");
-        RemoteJobHelper.getInstance().runDoDealXMLExtractJob();
+        test.get().info("Step 6 : Login to self care");
+        username = "un779765118@hsntech.com";//owsActions.username;//"un037730976@hsntech.com";
+        password = "password3";//owsActions.password;//"password3";
+        SelfCareTestBase.page().LoginIntoSelfCarePage(username, password, customerNumber);
 
-        test.get().info("Step 9 : Open extracted XML file and validate the existence of  bundles under Permitted Bundle Group. ");
+        test.get().info("Step 7 : Verify my personal information page is displayed");
+        SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
+        test.get().info("Step 8 : Click view or change my tariff details link");
+        MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
+
+        test.get().info("Step 9 : Verify my tariff details page is displayed");
+        SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
+
+        test.get().info("Step 10 : Verify Tropicana bundle is added as a Month as expected");
+
+        test.get().info("Step 10 : Hover mouse on tooltip of Tropicana bundle");
 
     }
 }

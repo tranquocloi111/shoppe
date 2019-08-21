@@ -22,7 +22,7 @@ Author: Tran Quoc Loi
     public void TC33339_Self_Care_Attempt_to_change_Self_Care_Username_to_an_existing_Username() {
 
         test.get().info("Step 1 : Create a CC customer ");
-        String path = "src\\test\\resources\\xml\\SelfCare\\viewaccount\\TC30222_CreateOrder";
+        String path = "src\\test\\resources\\xml\\selfcare\\viewaccount\\TC30222_CreateOrder";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
 

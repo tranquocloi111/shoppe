@@ -19,7 +19,7 @@ import suite.regression.selfcare.SelfCareTestBase;
 
 import java.sql.Date;
 
-public class TC4682 extends BaseTest {
+public class TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundle extends BaseTest {
     private String customerNumber = "15758";
     private Date newStartDate;
     private String username;
