@@ -23,7 +23,7 @@ public class DateTimeHelper {
     }
 
     public String changeformatDate(Date value, String format) {
-        SimpleDateFormat f1 = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat f1 = new SimpleDateFormat(format);
         return f1.format(value);
     }
 
