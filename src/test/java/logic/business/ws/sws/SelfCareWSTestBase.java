@@ -4,16 +4,16 @@ import framework.utils.Xml;
 import logic.business.entities.NormalMaintainBundleEntity;
 import logic.business.ws.BaseWs;
 import logic.pages.care.MenuPage;
-import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.options.DeactivateSubscriptionPage;
 import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import logic.utils.XmlUtils;
 import org.testng.Assert;
+import suite.regression.care.CareTestBase;
 
+import java.io.File;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SelfCareWSTestBase extends BaseWs {
@@ -52,13 +52,49 @@ public class SelfCareWSTestBase extends BaseWs {
         DeactivateSubscriptionPage.DeactivateSubscription.getInstance().deactivateLastActiveSubscription();
     }
 
-    public List<String> getAllSubscription(int numberSubscriptions){
-        ArrayList<String> subscriptionNumberList = new ArrayList<String>();
-        for(int i = 1; i<=numberSubscriptions; i++){
-            String subscriptionNumber = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
-            subscriptionNumberList.add(subscriptionNumber);
-        }
-        return subscriptionNumberList;
+    public Xml buildSimpleAccountSummaryResponseData(String file, Date startDate, String customerNumber, String subscriptionNumber){
+        Xml response = new Xml(new File(file));
+
+        String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
+        String SNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DateFormatXml());
+
+        String accountName = "Mr " + CareTestBase.getCustomerName();
+
+        response.setTextByTagName("accountNumber", customerNumber);
+        response.setTextByTagName("accountName",accountName);
+        response.setTextByTagName("startDate",sStartDate);
+        response.setTextByTagName("nextBillDate", SNextBillDate);
+        response.setTextByTagName("endDate", "");
+        response.setTextByTagName("subscriptionNumber", subscriptionNumber);
+
+        response.setAttributeTextAllNodesByXpath("tariff", "startDate", sStartDate);
+
+        return response;
     }
 
+    public Xml buildSimpleSubscriptionSummaryResponseData(String sampleFile, Date startDate, String customerNumber, List<String> subscriptionNumberList){
+        String sStartDate =  Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
+        String sNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DateFormatXml());
+        String subscriptionFC = "INVALID";
+        String subscriptionNC = "INVALID";
+
+        for (String subscription: subscriptionNumberList) {
+            if(subscription.contains("Mobile FC")){
+                subscriptionFC = subscription.split(" ")[0];
+            }else if (subscription.contains("Mobile NC"))
+            {
+                subscriptionNC =subscription.split(" ")[0];
+            }
+        }
+
+        String file =  Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
+                .replace("$subscriptionNumberMobileFC$", subscriptionFC)
+                .replace("$startDate$", sStartDate)
+                .replace("$nextBillDate$", sNextBillDate)
+                .replace("$subscriptionNumberMobileNC$", subscriptionNC);
+
+        Xml response = new Xml(new File(file));
+        return response;
+
+    }
 }

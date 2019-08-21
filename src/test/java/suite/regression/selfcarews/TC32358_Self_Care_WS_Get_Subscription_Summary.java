@@ -1,5 +1,6 @@
 package suite.regression.selfcarews;
 
+import framework.utils.Xml;
 import logic.business.db.billing.CommonActions;
 import logic.business.ws.ows.OWSActions;
 import logic.business.ws.sws.SWSActions;
@@ -42,11 +43,8 @@ public class TC32358_Self_Care_WS_Get_Subscription_Summary extends BaseTest {
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
         //=============================================================================
 
-        test.get().info("Login to HUBNet then search Customer by customer number");
+        test.get().info("Login to HUBNet then search Customer by customer number then open Customer Summary");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
-
-        test.get().info("Open Summary Content For Customer");
-        //////NOT IMPLEMENTED YET
 
         test.get().info("Verify Customer Start Date and Billing Group are updated successfully");
         CareTestBase.page().verifyCustomerStartDateAndBillingGroupAreUpdatedSuccessfully(newStartDate);
@@ -54,17 +52,18 @@ public class TC32358_Self_Care_WS_Get_Subscription_Summary extends BaseTest {
 
         test.get().info("Submit Get Subscription Summary Request to SelfCare WS");
         SWSActions swsActions = new SWSActions();
-        //////NOT IMPLEMENTED YET
+        Xml response = swsActions.submitGetSubscriptionSummaryRequestToSelfCareWS(customerNumber);
 
         test.get().info("Get All Subscriptions Number");
+        subscriptionNumberList = CareTestBase.getAllSubscription(2);
+
+        test.get().info("Build Subscription Summary Response Data");
+        String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getsubscription\\TC32358_response";
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        subscriptionNumberList = selfCareWSTestBase.getAllSubscription(2);
+        Xml expectedResponse = selfCareWSTestBase.buildSimpleSubscriptionSummaryResponseData(sampleResponseFile, newStartDate, customerNumber, subscriptionNumberList);
 
-        test.get().info("Verify Subscription Summary Response of Mobile FC");
-        //////NOT IMPLEMENTED YET
-
-        test.get().info("Verify Subscription Summary Response of Mobile NC");
-        //////NOT IMPLEMENTED YET
+        test.get().info("Verify Subscription Summary Response is correct");
+        selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponse, response);
 
     }
 }
