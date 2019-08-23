@@ -100,6 +100,9 @@ public class MenuPage extends BasePage {
             }
             return result;
         }
+        public void clickFinancialTransactionLink() {
+            clickLinkByName("Financial Transactions");
+        }
     }
 
     public static class RightMenuPage extends MenuPage {
@@ -145,6 +148,9 @@ public class MenuPage extends BasePage {
             click(element);
             waitForPageLoadComplete(60);
         }
+        public void clickConfigureBarRoamingonLink() {
+            clickLinkByName("Configure Bar/Roaming");
+        }
     }
 
     public static class BreadCrumbPage extends MenuPage {
@@ -165,6 +171,8 @@ public class MenuPage extends BasePage {
             click(breadCrumbDiv.findElement(By.partialLinkText(text)));
             waitForPageLoadComplete(60);
         }
+
+
     }
 
 }

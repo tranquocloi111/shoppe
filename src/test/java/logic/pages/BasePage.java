@@ -134,8 +134,7 @@ public class BasePage {
 //    }
 
     public void waitForPageLoadComplete(int specifiedTimeout) {
-        ExpectedCondition<Boolean> pageLoadCondition = new
-                ExpectedCondition<Boolean>() {
+        ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
                     public Boolean apply(WebDriver driver) {
                         return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
                     }
@@ -247,6 +246,13 @@ public class BasePage {
     }
 
     public void getTextComfirmDialog() { getDriver().switchTo().alert().getText(); }
+
+    public void clickSubmitBtn(){click(getDriver().findElement(By.xpath("//a[@id='SubmitBtn']")));}
+    public void clickContinueBtn(){click(getDriver().findElement(By.xpath("//a[@id='ContinueBtn']")));}
+    public WebDriver switchFrameByName(String name)
+    {
+        return getDriver().switchTo().frame(name);
+    }
 
     //endregion
 }

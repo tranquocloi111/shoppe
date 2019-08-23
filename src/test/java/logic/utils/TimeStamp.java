@@ -165,4 +165,10 @@ public class TimeStamp {
         String timeZone = Config.getProp("timeZone");
         return "yyyy-MM-dd" + timeZone;
     }
+
+    public static long TodayMinusTodayMinus1MonthMinus1Day() {
+        LocalDate day1 = LocalDate.now();
+        LocalDate day2 = LocalDate.now().minusMonths(1).minusDays(1);
+        return ChronoUnit.DAYS.between(day2,day1);
+    }
 }
