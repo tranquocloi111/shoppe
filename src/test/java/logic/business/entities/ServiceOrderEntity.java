@@ -197,6 +197,17 @@ public class ServiceOrderEntity {
         return listOrderServer;
     }
 
+    public static List<HashMap<String, String>> dataServiceOrderBySubAndType(String serviceSubscription, String type, String status) {
+        List<HashMap<String, String>> listOrderServer = new ArrayList<>();
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Subscription", serviceSubscription);
+        so.put("Type", type);
+        so.put("Status",status);
+        listOrderServer.add(so);
+
+        return listOrderServer;
+    }
+
     public static HashMap<String, String> dataServiceOrderFinancialTransaction() {
         HashMap<String, String> so = new HashMap<String, String>();
         so.put("Status", "Completed Task");
@@ -204,5 +215,4 @@ public class ServiceOrderEntity {
         so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
         return so;
     }
-
 }

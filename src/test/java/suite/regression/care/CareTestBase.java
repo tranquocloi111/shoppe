@@ -238,4 +238,15 @@ public class CareTestBase extends BasePage {
         }
         return subscriptionNumberList;
     }
+
+    public static List<String> getAllSubscriptionsNumber(){
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        List<String> subscriptionNumberList = new ArrayList<>();
+        for (int i = 0; i < 3; i++){
+            String subNo = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
+            subscriptionNumberList.add(subNo);
+        }
+
+        return subscriptionNumberList;
+    }
 }

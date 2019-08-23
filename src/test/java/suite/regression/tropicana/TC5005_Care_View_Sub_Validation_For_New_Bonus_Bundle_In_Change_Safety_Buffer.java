@@ -8,8 +8,11 @@ import logic.business.ws.sws.SWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.ServiceOrdersContentPage;
+import logic.pages.care.main.ServiceOrdersPage;
+import logic.utils.Common;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
@@ -17,17 +20,18 @@ import suite.regression.care.CareTestBase;
 import java.sql.Date;
 import java.util.List;
 
-public class TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscription_Inventory_List extends BaseTest {
+public class TC5005_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Safety_Buffer extends BaseTest {
     private String customerNumber = "15758";
     private Date newStartDate;
     private String subscription1;
     private String serviceOrderId;
 
-    @Test(enabled = true, description = "TC4618 SC - Care-VIEW-SUB- Validation for new Tropicana bundle in subscription inventory list", groups = "Tropicana")
-    public void TC4618Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscription_Inventory_List(){
-        test.get().info("Step 1 : Create a customer with NC and device");
+    @Test(enabled = true, description = "TC 5005 Care-MODF-SUB- Validation for Bonus bundle in Change Safety Buffer", groups = "tropicana")
+    public void TC5005_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Safety_Buffer(){
+        test.get().info("Step 1 : Create a customer subscription related tariff linked with a Tropicana bundle group");
+        String path = "\\src\\test\\resources\\xml\\tropicana\\TC4617_TC001_request.xml";
         OWSActions owsActions = new OWSActions();
-        owsActions.createAnOnlinesCCCustomerWith2FCFamilyPerkAndNK2720();
+        owsActions.createGeneralCustomerOrder(path);
 
         test.get().info("Step 2 : Create New Billing Group");
         BaseTest.createNewBillingGroup();
@@ -46,25 +50,35 @@ public class TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscri
         test.get().info("Step 5 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscription1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
+        subscription1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
 
         test.get().info("Step 6 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();
-        String path = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
-        swsActions.submitMaintainBundleRequest(path, customerNumber, subscription1);
+        String selfCarePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
+        swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription1);
 
-        test.get().info("Step 7 : Submit Provision wait");
+        test.get().info("Step 7 : Submit Provision Wait");
         List<WebElement> serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderBySubAndType(subscription1, "Change Bundle"));
         serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByElementServiceOrders(serviceOrder);
         BaseTest.updateThePDateAndBillDateForSO(serviceOrderId);
         RemoteJobHelper.getInstance().runProvisionSevicesJob();
 
-        test.get().info("Step 5 : Load customer in hub net");
-        CareTestBase.page().loadCustomerInHubNet(customerNumber);
-        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue("FC Mobile 1");
+        test.get().info("Step 6: Navigate to Change Bundle page");
+        MenuPage.RightMenuPage.getInstance().clickChangeBundleLink();
 
-        test.get().info("Step 6 : Tropicana bundle appears in subscription inventory list as expected");
+        test.get().info("Step 7 : Select FC mobile to change permitted bundle");
+        List<String> subList = CareTestBase.getAllSubscriptionsNumber();
+        String fcSubText = Common.findValueOfStream(subList, "Mobile Ref 1");
+        ServiceOrdersPage.SelectSubscription.getInstance().selectSubscription(fcSubText, "Change Safety Buffer");
+
+        test.get().info("Step 8 : Observe the Current Bundle section");
+        ServiceOrdersPage.AddOneOffBundle addOneOffBundle = ServiceOrdersPage.AddOneOffBundle.getInstance();
+        Assert.assertEquals("", addOneOffBundle.getSubscriptionNumber());
+        Assert.assertEquals("", addOneOffBundle.getNextBillDateForThisAccount());
+        Assert.assertEquals("", addOneOffBundle.getCurrentTariff());
+        Assert.assertEquals("", addOneOffBundle.getPackagedBundle());
+        Assert.assertTrue(addOneOffBundle.isBonusBundleDisplayed(""));
+
 
 
     }

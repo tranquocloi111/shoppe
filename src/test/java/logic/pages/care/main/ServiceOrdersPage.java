@@ -602,6 +602,50 @@ public class ServiceOrdersPage extends BasePage {
 
     }
 
+    public static class  AddOneOffBundle extends  ServiceOrdersPage {
+        final static String BUNDLE_GROUP = "Bundle Group";
+
+        public static AddOneOffBundle getInstance(){
+            return new AddOneOffBundle();
+        }
+
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Subscription Number:')]/following-sibling::td")
+        WebElement subscriptionNumber;
+
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Next Bill Date for this Account:')]/following-sibling::td")
+        WebElement nextBillDateForThisAccount;
+
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Current Tariff:')]/following-sibling::td")
+        WebElement currentTariff;
+
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Packaged Bundle:')]/following-sibling::td")
+        WebElement packagedBundle;
+
+        @FindBy(className = "PanelList")
+        WebElement currentBundleTable;
+        TableControlBase table = new TableControlBase(currentBundleTable);
+
+        public String getSubscriptionNumber(){
+            return getTextOfElement(subscriptionNumber);
+        }
+
+        public String getNextBillDateForThisAccount(){
+            return getTextOfElement(nextBillDateForThisAccount);
+        }
+
+        public String getCurrentTariff(){
+            return getTextOfElement(currentTariff);
+        }
+
+        public String getPackagedBundle(){
+            return getTextOfElement(packagedBundle);
+        }
+
+        public boolean isBonusBundleDisplayed(String cellValue){
+            return getTextOfElement(table.getRowByColumnNameAndCellValue(BUNDLE_GROUP, cellValue)).isEmpty();
+        }
+    }
+
     public void clickNextButton(){
         clickNextBtn();
     }
