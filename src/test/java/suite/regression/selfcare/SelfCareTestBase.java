@@ -4,7 +4,9 @@ import ch.ethz.ssh2.Session;
 import framework.config.Config;
 import framework.utils.Log;
 import logic.business.db.OracleDB;
+import logic.business.db.billing.BillingActions;
 import logic.business.helper.FTPHelper;
+import logic.business.ws.ows.OWSActions;
 import logic.pages.BasePage;
 
 import java.io.File;
@@ -16,6 +18,7 @@ import logic.utils.Common;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import suite.BaseTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +56,12 @@ public class SelfCareTestBase extends BasePage {
         loginPage.relogin(userName, passWord, customerId);
         waitForPageLoadComplete(10);
     }
+
     public void openSelfCareLoginPageThenClickForgotPasswordLink() {
         loginPage.navigateToSelfCarePage();
         clickLinkByText("Forgotten your password? Click here.");
     }
+
     public void openSelfCareLoginPageThenClickForgotUsernameLink() {
         loginPage.navigateToSelfCarePage();
         clickLinkByText("Forgotten your username? Click here.");
@@ -109,15 +114,19 @@ public class SelfCareTestBase extends BasePage {
         super.clickLinkByText("Change my account password");
     }
 
+
     public void clickLogOffLink() {
         super.clickLinkByText("Log off");
     }
+
     public void verifyForgotenPasswordPageDisplayed() {
         Assert.assertEquals("Forgotten password", MyPersonalInformationPage.getInstance().getHeader());
     }
+
     public void verifyMyAccountDetailPageIsDisplayed() {
         Assert.assertEquals("My account details", MyPersonalInformationPage.getInstance().getHeader());
     }
+
     public static String downloadGRGSMSFile() {
         String sql = "SELECT h.OrigTransactionIdent" +
                 " FROM HITransactionDefinition d, HITransaction h" +
@@ -134,10 +143,11 @@ public class SelfCareTestBase extends BasePage {
         Log.info("TM_HUB_SMSRQST file:" + localPath);
         return localPath + value;
     }
+
     public static void verifyGRGTemporaryPasswordIsNotRecorded(String fileName) {
         File file = new File("fileName");
         String expectedResult = fileName.split("_")[4];
-        expectedResult=String.format("|HUB|GRG|%s|", expectedResult);
+        expectedResult = String.format("|HUB|GRG|%s|", expectedResult);
         String fileResult = Common.readFile(fileName);
         Assert.assertTrue(fileResult.contains(expectedResult));
         Assert.assertFalse(fileResult.contains("password1"));
@@ -153,15 +163,19 @@ public class SelfCareTestBase extends BasePage {
     }
 
     public void unSelectBundlesByName(WebElement element, String... names) {
-        for(String name : names)
-        {
+        for (String name : names) {
             WebElement checkbox = findCheckBox(element, name);
             if (checkbox.getAttribute("checked").equalsIgnoreCase("true")) {
                 click(checkbox);
             }
         }
     }
-
+    public void clickMakeAOneOfPayment() {
+        super.clickLinkByText("Make a one-off payment");
+    }
+    public void verifyMakeAOneOffPayment() {
+        Assert.assertEquals("Make a one-off payment", MyPersonalInformationPage.getInstance().getHeader());
+    }
 
 }
 
