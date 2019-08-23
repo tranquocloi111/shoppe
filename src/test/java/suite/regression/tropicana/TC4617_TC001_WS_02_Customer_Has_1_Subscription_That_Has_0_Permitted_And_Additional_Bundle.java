@@ -24,9 +24,10 @@ public class TC4617_TC001_WS_02_Customer_Has_1_Subscription_That_Has_0_Permitted
 
     @Test(enabled = true, description = "TC4617 SCWS-Get Bundle- Validation for new Bonus Bundle Group and its bundles in response", groups = "Tropicana")
     public void TC4719_SCWS_Get_Bundle_Validation_For_New_Bonus_Bundle_Group_And_Its_Bundles_In_Response() {
-        test.get().info("Step 1 : Create a customer with NC and device");
+        test.get().info("Step 1 : Create a Customer has 1 Subscription that has 0 Permitted/Additional Bundle (Bonus Bundle Group associated with tariff)");
+        String path = "\\src\\test\\resources\\xml\\tropicana\\TC4617_TC001_request.xml";
         OWSActions owsActions = new OWSActions();
-        owsActions.createAnOnlinesCCCustomerWith2FCFamilyPerkAndNK2720();
+        owsActions.createGeneralCustomerOrder(path);
 
         test.get().info("Step 2 : Create New Billing Group");
         BaseTest.createNewBillingGroup();

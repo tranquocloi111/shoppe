@@ -195,4 +195,15 @@ public class ServiceOrderEntity {
 
         return listOrderServer;
     }
+
+    public static List<HashMap<String, String>> dataServiceOrderBySubAndType(String serviceSubscription, String type, String status) {
+        List<HashMap<String, String>> listOrderServer = new ArrayList<>();
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Subscription", serviceSubscription);
+        so.put("Type", type);
+        so.put("Status",status);
+        listOrderServer.add(so);
+
+        return listOrderServer;
+    }
 }

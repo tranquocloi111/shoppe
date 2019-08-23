@@ -6,6 +6,7 @@
       <sel:externalSystemID>MOBILEAWARE</sel:externalSystemID>
       <sel:accountCriteria>
         <sel:accountNumber>$accountNumber$</sel:accountNumber>
+        <sel:subscriptionNumber>$subscriptionNumber$</sel:subscriptionNumber>
       </sel:accountCriteria>
     </sel:getSubscriptionSummaryRequest>
   </soapenv:Body>

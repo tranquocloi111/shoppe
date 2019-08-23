@@ -1,62 +1,81 @@
 package suite.regression.tropicana;
 
+import logic.business.db.billing.CommonActions;
+import logic.business.entities.ServiceOrderEntity;
+import logic.business.helper.RemoteJobHelper;
+import logic.business.ws.ows.OWSActions;
+import logic.business.ws.sws.SWSActions;
+import logic.pages.care.MenuPage;
+import logic.pages.care.find.CommonContentPage;
+import logic.pages.care.find.ServiceOrdersContentPage;
 import logic.pages.selfcare.AddOrChangeAFamilyPerkPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import suite.BaseTest;
+import suite.regression.care.CareTestBase;
 import suite.regression.selfcare.SelfCareTestBase;
 
 import java.sql.Date;
+import java.util.List;
 
 public class TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Family_Perk extends BaseTest {
-    String serviceRefOf1stSubscription;
     private String customerNumber = "15758";
     private Date newStartDate;
     private String username;
     private String password;
+    String subscription1;
+    String subscription2;
+    String serviceOrderId;
 
     @Test(enabled = true, description = "TC4719 SC-MODF-SUB - Validation for Tropicana bundle in Add/Change Family Perk page", groups = "Tropicana")
     public void TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Family_Perk() {
-//        test.get().info("Step 1 : Create a customer with NC and device");
-//        OWSActions owsActions = new OWSActions();
-//        owsActions.createAnOnlinesCCCustomerWith2FCFamilyPerkAndNK2720();
-//
-//        test.get().info("Step 2 : Create New Billing Group");
-//        BaseTest.createNewBillingGroup();
-//
-//        test.get().info("Step 3 : Update Bill Group Payment Collection Date To 10 Days Later");
-//        BaseTest.updateBillGroupPaymentCollectionDateTo10DaysLater();
-//
-//        test.get().info("Step 4 : Set bill group for customer");
-//        customerNumber = owsActions.customerNo;
-//        BaseTest.setBillGroupForCustomer(customerNumber);
-//
-//        test.get().info("Step 4 : Update Customer Start Date");
-//        newStartDate = TimeStamp.TodayMinus15Days();
-//        CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
-//
-//        test.get().info("Step 5 : Get Subscription Number");
-//        CareTestBase.page().loadCustomerInHubNet(customerNumber);
-//        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-//        mpnOf1stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
+        test.get().info("Step 1 : Create a customer subscription related tariff linked with a Tropicana bundle group");
+        OWSActions owsActions = new OWSActions();
+        String path = "\\src\\test\\resources\\xml\\tropicana\\TC4682_request.xml";
+        owsActions.createGeneralCustomerOrder(path);;
 
-//        test.get().info("Step 6 : Add Bonus Bundle to Subscription");
-//        SWSActions swsActions = new SWSActions();
-//        String path = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
-//        swsActions.submitMaintainBundleRequest(path,"","");
-//
-//        test.get().info("Step 7 : Submit Provision Service Job");
-//        BaseTest.updateThePDateAndBillDateForSO("");
-//        RemoteJobHelper.getInstance().runProvisionSevicesJob();
+        test.get().info("Step 2 : Create New Billing Group");
+        BaseTest.createNewBillingGroup();
 
-//        test.get().info("Step 8 : Login to self care");
-//        SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
-//
-//        test.get().info("Step 9 : Verify my personal information page is displayed");
-//        SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
+        test.get().info("Step 3 : Update Bill Group Payment Collection Date To 10 Days Later");
+        BaseTest.updateBillGroupPaymentCollectionDateTo10DaysLater();
+
+        test.get().info("Step 4 : Set bill group for customer");
+        customerNumber = owsActions.customerNo;
+        BaseTest.setBillGroupForCustomer(customerNumber);
+
+        test.get().info("Step 4 : Update Customer Start Date");
+        newStartDate = TimeStamp.TodayMinus15Days();
+        CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
+
+        test.get().info("Step 5 : Get Subscription Number");
+        CareTestBase.page().loadCustomerInHubNet(customerNumber);
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        subscription1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        subscription2 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
+
+        test.get().info("Step 6 : Add Bonus Bundle to Subscription");
+        SWSActions swsActions = new SWSActions();
+        String selfCarepath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
+        swsActions.submitMaintainBundleRequest(selfCarepath, customerNumber, subscription2);
+
+        test.get().info("Step 7 : Submit Provision Service Job");
+        List<WebElement> serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderBySubAndType(subscription2, "Change Bundle"));
+        serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByElementServiceOrders(serviceOrder);
+        BaseTest.updateThePDateAndBillDateForSO(serviceOrderId);
+        RemoteJobHelper.getInstance().runProvisionSevicesJob();
+
+        test.get().info("Step 8 : Login to self care");
+        username = owsActions.username;
+        password = owsActions.password;
+        SelfCareTestBase.page().LoginIntoSelfCarePage(username, password, customerNumber);
+
+        test.get().info("Step 9 : Verify my personal information page is displayed");
+        SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
         test.get().info("Step 10 : Click view or change my tariff details link");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
@@ -65,12 +84,12 @@ public class TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Fa
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
         test.get().info("Step 13 : Click add or change a family perk button for mobile 1");
-        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobile1Tariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("FC Mobile 1");
+        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobile1Tariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 2");
         mobile1Tariff.clickAddOrChangeAFamilyPerkBtn();
 
         test.get().info("Step 14 : Verify mobile phone info is correct");
         AddOrChangeAFamilyPerkPage.InfoPage infoPage = AddOrChangeAFamilyPerkPage.InfoPage.getInstance();
-        Assert.assertEquals(serviceRefOf1stSubscription + " - FC Mobile 1", infoPage.getMobilePhoneNumber());
+        Assert.assertEquals(subscription1 + " - FC Mobile 1", infoPage.getMobilePhoneNumber());
         Assert.assertEquals("£10 Tariff 12 Month Contract", infoPage.getTariff());
         Assert.assertEquals("500 mins, 5000 texts (FC)", infoPage.getMonthlyAllowance());
         Assert.assertTrue(infoPage.getMonthlyBundles().isEmpty());

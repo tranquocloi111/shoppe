@@ -29,32 +29,32 @@ import java.util.List;
 public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract extends BaseTest {
     String customerNumber;
     Date newStartDate;
-    String mpnOf1stSubscription;
+    String subscription1;
 
     @Test(enabled = true, description = "TC 4562 HUB - Validation for Bonus bundles excluded from Deal Extract", groups = "Tropicana")
     public void TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract() {
-//        test.get().info("Step 1 : Create a customer with NC and device");
-//        OWSActions owsActions = new OWSActions();
-//        owsActions.createAnOnlinesCCCustomerWith2FCFamilyPerkAndNK2720();
-//
-//        test.get().info("Step 2 : Create New Billing Group");
-//        BaseTest.createNewBillingGroup();
-//
-//        test.get().info("Step 3 : Update Bill Group Payment Collection Date To 10 Days Later");
-//        BaseTest.updateBillGroupPaymentCollectionDateTo10DaysLater();
-//
-//        test.get().info("Step 4 : Set bill group for customer");
-//        customerNumber = owsActions.customerNo;
-//        BaseTest.setBillGroupForCustomer(customerNumber);
-//
-//        test.get().info("Step 5 : Update Customer Start Date");
-//        newStartDate = TimeStamp.TodayMinus15Days();
-//        CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
-//
-//        test.get().info("Step 6 : Get Subscription Number");
-//        CareTestBase.page().loadCustomerInHubNet(customerNumber);
-//        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-//        mpnOf1stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
+        test.get().info("Step 1 : Create a customer with NC and device");
+        OWSActions owsActions = new OWSActions();
+        owsActions.createAnOnlinesCCCustomerWith2FCFamilyPerkAndNK2720();
+
+        test.get().info("Step 2 : Create New Billing Group");
+        BaseTest.createNewBillingGroup();
+
+        test.get().info("Step 3 : Update Bill Group Payment Collection Date To 10 Days Later");
+        BaseTest.updateBillGroupPaymentCollectionDateTo10DaysLater();
+
+        test.get().info("Step 4 : Set bill group for customer");
+        customerNumber = owsActions.customerNo;
+        BaseTest.setBillGroupForCustomer(customerNumber);
+
+        test.get().info("Step 5 : Update Customer Start Date");
+        newStartDate = TimeStamp.TodayMinus15Days();
+        CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
+
+        test.get().info("Step 6 : Get Subscription Number");
+        CareTestBase.page().loadCustomerInHubNet(customerNumber);
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        subscription1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
 
         test.get().info("Step 7 : Submit DoDealXMLExtract and DealCatalogueExtract Job");
         RemoteJobHelper.getInstance().runDoDealXMLExtractJob();
