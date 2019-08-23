@@ -52,7 +52,7 @@ public class TC32358_Self_Care_WS_Get_Subscription_Summary extends BaseTest {
 
         test.get().info("Submit Get Subscription Summary Request to SelfCare WS");
         SWSActions swsActions = new SWSActions();
-        Xml response = swsActions.submitGetSubscriptionSummaryRequestToSelfCareWS(customerNumber);
+        Xml response = swsActions.submitGetSubscriptionSummaryRequestByCusNumber(customerNumber, true);
 
         test.get().info("Get All Subscriptions Number");
         subscriptionNumberList = CareTestBase.getAllSubscription(2);

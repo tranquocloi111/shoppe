@@ -943,7 +943,7 @@ public class ShakeOutTest extends BaseTest {
     @Test(enabled = true, description = "TC31888 Self Care Change Family Perk Bundle on next bill date", groups = "Smoke")
     public void TC31888_Self_Care_Change_Family_Perk_Bundle_on_next_bill_date(){
         test.get().info("Step 1 : Create a CC cusotmer with via Care Inhand MasterCard");
-        String path = "src\\test\\resources\\xml\\SelfCare\\changebundle\\TC62_createOrder.xml";
+        String path = "src\\test\\resources\\xml\\selfcare\\changebundle\\TC62_createOrder.xml";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
 
