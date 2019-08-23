@@ -163,23 +163,15 @@ public class TimeStamp {
         return "yyyy-MM-dd" + timeZone;
     }
 
-<<<<<<< HEAD
+
     public static Date TodayPlus1Year() {
         return Date.valueOf(String.valueOf(LocalDateTime.now().plusYears(1).toLocalDate()));
     }
 
-=======
->>>>>>> 4953f0944f55064019d9d59b9a533f70b4f452fc
+
     public static long TodayMinusTodayMinus1MonthMinus1Day() {
         LocalDate day1 = LocalDate.now();
         LocalDate day2 = LocalDate.now().minusMonths(1).minusDays(1);
-        return ChronoUnit.DAYS.between(day2,day1);
-<<<<<<< HEAD
-
-
+        return ChronoUnit.DAYS.between(day2, day1);
     }
-
-=======
-    }
->>>>>>> 4953f0944f55064019d9d59b9a533f70b4f452fc
 }
