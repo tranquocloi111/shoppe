@@ -10,34 +10,29 @@ import java.util.HashMap;
 
 public class PaymentPage extends BasePage {
 
-    public static class ReceiptDetail extends PaymentPage {
 
-        public static ReceiptDetail getInstance() {
-            return new ReceiptDetail();
+    public static class paymentConentGrid extends PaymentPage {
+
+        public static paymentConentGrid getInstance() {
+            return new paymentConentGrid();
         }
 
-        @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Receipt Details')]/../../..//following-sibling::div[1]//table")
-        WebElement serviceOrdertable;
-        TableControlBase tableControlBase = new TableControlBase(serviceOrdertable);
+        @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Payments')]//ancestor::table[1]//following-sibling::div//table")
+        WebElement paymentTable;
+        TableControlBase table = new TableControlBase(paymentTable);
 
-        public String getReceiptType() {
-            return getTextOfElement(tableControlBase.getCellByLabel("Receipt Type"));
+        public int getNumberPaymentRecord(HashMap<String, String> payment) {
+            return table.findRowsByColumns(payment).size();
         }
-        public String getReceiptStatus() {
-            return getTextOfElement(tableControlBase.getCellByLabel("Receipt Status"));
+
+        public void clickPaymentByType(String type) {
+            table.getRowByColumnNameAndCellValue(type, type).findElement(By.tagName("a")).click();
         }
-        public String getPaymentAmount() {
-            return getTextOfElement(tableControlBase.getCellByLabel("Payment Amount"));
-        }
-        public String getPaymentCurrency() {
-            return getTextOfElement(tableControlBase.getCellByLabel("Payment Currency"));
-        }
-        public String getCardType() {
-            return getTextOfElement(tableControlBase.getCellByLabel("Card Type"));
-        }
-        public String getCardNumber() {
-            return getTextOfElement(tableControlBase.getCellByLabel("Card Number"));
+
+        public String getRefNoByType(String type) {
+            return table.getRowByColumnNameAndCellValue(type, type).findElement(By.tagName("a")).getText();
         }
     }
 
 }
+

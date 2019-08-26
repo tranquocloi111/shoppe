@@ -405,6 +405,11 @@ public class ServiceOrdersPage extends BasePage {
             selectByVisibleText(ddAction, action);
             clickNextBtn();
         }
+
+        public void selectSubscriptionWithouAction(String subNo) {
+                selectByVisibleText(ddSubscriptionNumber, subNo);
+            clickNextBtn();
+        }
     }
 
     public static class ChangeBundle extends ServiceOrdersPage {
@@ -643,6 +648,40 @@ public class ServiceOrdersPage extends BasePage {
 
         public boolean isBonusBundleDisplayed(String cellValue){
             return getTextOfElement(table.getRowByColumnNameAndCellValue(BUNDLE_GROUP, cellValue)).isEmpty();
+        }
+    }
+    public static class ConfigureSubscription extends ServiceOrdersPage {
+        private static ConfigureSubscription instance = new ConfigureSubscription();
+
+        public static ConfigureSubscription getInstance() {
+            if (instance == null)
+                return new ConfigureSubscription();
+            return new ConfigureSubscription();
+        }
+
+        @FindBy(name = "PropFld_SOSNOBAR")
+        WebElement subScriptionBarring;
+        @FindBy(name = "PropFld_OUTBARFLG")
+        WebElement subScriptionBarReason;
+        @FindBy(name = "PropFld_SNOROAM")
+        WebElement subScriptionRoaming;
+        @FindBy(name = "PropFld_NOTES")
+        WebElement note;
+
+        public void selectSubscriptionBarring(String barring) {
+            selectByVisibleText(subScriptionBarring, barring);
+        }
+
+        public void selectSubscriptionBarReason(String barring) {
+            selectByVisibleText(subScriptionBarReason, barring);
+        }
+
+        public void selectSubscriptionRoaming(String barring) {
+            selectByVisibleText(subScriptionRoaming, barring);
+        }
+
+        public void enterNote(String noteValue) {
+            enterValueByLabel(note, noteValue);
         }
     }
 

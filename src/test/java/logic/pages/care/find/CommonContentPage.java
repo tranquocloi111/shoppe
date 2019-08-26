@@ -27,7 +27,6 @@ public class CommonContentPage extends BasePage {
         public static SubscriptionsGirdSectionPage getInstance() {
             if (instance == null)
                 return new SubscriptionsGirdSectionPage();
-            ;
             return new SubscriptionsGirdSectionPage();
         }
 
@@ -111,6 +110,9 @@ public class CommonContentPage extends BasePage {
 
         public String getCustomerSummaryStartDate() {
             return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Start Date:')]/following-sibling::td[1]")));
+        }
+        public String getAmountBalance() {
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Account Balance:')]/following-sibling::td[1]")));
         }
     }
 

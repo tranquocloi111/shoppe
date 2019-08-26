@@ -39,7 +39,7 @@ public class BillingActions extends OracleDB {
         }
         String sql = String.format("update BGPROPERTY set propvalnumber= %d where propertykey='BGPCDAY' and billinggroupid= %d ", date.getDate(), billingGroupId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
-    }
+}
 
     public static void setBillGroupForCustomer(String customerId, int billGroupId) {
         int hmbrid = getHmbrid(customerId);
@@ -308,6 +308,15 @@ public class BillingActions extends OracleDB {
     public static void updateRunAsAtDateOfCurrentDateMinus1MonthAnd1Day() {
         try {
             OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update billruncalendar set asatdate=trunc(SYSDATE - %d) where asatdate=trunc(SYSDATE-1) and billinggroupid=%d", TimeStamp.TodayMinusTodayMinus1MonthMinus1Day(), tempBillingGroupHeader.getKey()));
+        } catch (Exception ex) {
+            Log.error(ex.getMessage());
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+    public static void updateInvoiceDueDate(String customerNumber) {
+        try {
+            OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update invoice set DateDue=trunc(to_date('%s','yyyy-mm-dd')) where hmbrid=%s" ,TimeStamp.Today(),getHmbrid(customerNumber)));
         } catch (Exception ex) {
             Log.error(ex.getMessage());
         } catch (Throwable throwable) {

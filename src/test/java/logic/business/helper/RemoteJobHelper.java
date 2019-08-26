@@ -231,4 +231,14 @@ public class RemoteJobHelper {
         submitRemoteJob("DoDealXMLExtract.sh -e $HUB_SID -J");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Deal Catalogue Extract");
     }
+    public void submitPaymentAllocationBatchJobRun() {
+        int currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJob("DoAutoAlloc.sh -e $HUB_SID -S");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Auto Allocation Processing");
+    }
+    public void submitCreditCardBatchJobRun() {
+        int currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJob("Subcreditcard.sh -e $HUB_SID -S");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Process Credit Card");
+    }
 }

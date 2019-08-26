@@ -5,6 +5,7 @@ import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class SubscriptionContentPage extends BasePage {
         public static class GeneralSectionPage extends SubscriptionDetailsPage {
 
             private static GeneralSectionPage instance = new GeneralSectionPage();
+
             public static GeneralSectionPage getInstance() {
                 return new GeneralSectionPage();
             }
@@ -125,7 +127,7 @@ public class SubscriptionContentPage extends BasePage {
             }
         }
 
-        public static class OtherProductsGridSectionPage extends SubscriptionDetailsPage{
+        public static class OtherProductsGridSectionPage extends SubscriptionDetailsPage {
             private static final String productCode = "Product Code";
             private static final String type = "Type";
             private static final String description = "Description";
@@ -134,6 +136,7 @@ public class SubscriptionContentPage extends BasePage {
             private static final String charge = "Charge";
 
             private static OtherProductsGridSectionPage instance = new OtherProductsGridSectionPage();
+
             public static OtherProductsGridSectionPage getInstance() {
                 return new OtherProductsGridSectionPage();
             }
@@ -157,7 +160,8 @@ public class SubscriptionContentPage extends BasePage {
             public int getNumberOfOtherProducts(List<HashMap<String, String>> otherProduct) {
                 return table.findRowsByColumns(otherProduct).size();
             }
-            public int getNumberOfOtherProductsByProduct(HashMap<String, String>otherProduct) {
+
+            public int getNumberOfOtherProductsByProduct(HashMap<String, String> otherProduct) {
                 return table.findRowsByColumns(otherProduct).size();
             }
 
@@ -165,56 +169,70 @@ public class SubscriptionContentPage extends BasePage {
                 return table.findRowsByColumns(otherProduct).size();
             }
 
-            public void clickProductCode(String productCode){
-                click(otherProductsGridTable.findElement(By.xpath(".//td//a[contains(text(),'"+productCode+"')]")));
+            public void clickProductCode(String productCode) {
+                click(otherProductsGridTable.findElement(By.xpath(".//td//a[contains(text(),'" + productCode + "')]")));
             }
 
 
         }
 
-        public static class SubscriptionFeatureSectionPage extends SubscriptionDetailsPage{
+        public static class SubscriptionFeatureSectionPage extends SubscriptionDetailsPage {
             private static SubscriptionFeatureSectionPage instance = new SubscriptionFeatureSectionPage();
+
             public static SubscriptionFeatureSectionPage getInstance() {
                 return new SubscriptionFeatureSectionPage();
             }
 
             @FindBy(xpath = "//td[contains(text(),'Service Feature:')]//following-sibling::td[1]")
             WebElement lblServiceFeature;
+            @FindBy(xpath = "//td[contains(text(),'Barring:')]//following-sibling::td[1]")
+            WebElement lblBarring;
+            @FindBy(xpath = "//td[contains(text(),'Barring Status:')]//following-sibling::td[1]")
+            WebElement lblBarringStatus;
 
-            public String getServiceFeature(){
-                return getTextOfElement(lblServiceFeature);
+            public String getServiceFeature() { return getTextOfElement(lblServiceFeature); }
+
+            public String getBarring() {
+                return getTextOfElement(lblBarring);
+            }
+
+            public String getBarringStatus() {
+                return getTextOfElement(lblBarringStatus);
             }
         }
 
-        public static class TariffComponentsGridPage extends SubscriptionContentPage{
-            private static TariffComponentsGridPage instance = new TariffComponentsGridPage();
-            public static TariffComponentsGridPage getInstance() {
-                return new TariffComponentsGridPage();
-            }
+    }
 
-            @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Tariff Components')]")
-            WebElement headerText;
+    public static class TariffComponentsGridPage extends SubscriptionContentPage {
+        private static TariffComponentsGridPage instance = new TariffComponentsGridPage();
 
-            @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Tariff Components')]/../../..//following-sibling::div[1]//table")
-            WebElement TariffComponentsGridTable;
-            TableControlBase tableControlBase = new TableControlBase(TariffComponentsGridTable);
-
-            public List<WebElement> getTariffComponents(List<HashMap<String,String>> tariffComponents) {
-                return tableControlBase.findRowsByColumns(tariffComponents);
-            }
-
-            public List<WebElement> getTariffComponents(HashMap<String,String> tariffComponent) {
-                return tableControlBase.findRowsByColumns(tariffComponent);
-            }
-
-            public String getHeaderText(){
-                return getTextOfElement(headerText);
-            }
-
-            public int rowOfTariffComponents(){
-                return tableControlBase.getRowsCount();
-            }
-
+        public static TariffComponentsGridPage getInstance() {
+            return new TariffComponentsGridPage();
         }
+
+        @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Tariff Components')]")
+        WebElement headerText;
+
+        @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Tariff Components')]/../../..//following-sibling::div[1]//table")
+        WebElement TariffComponentsGridTable;
+        TableControlBase tableControlBase = new TableControlBase(TariffComponentsGridTable);
+
+        public List<WebElement> getTariffComponents(List<HashMap<String, String>> tariffComponents) {
+            return tableControlBase.findRowsByColumns(tariffComponents);
+        }
+
+        public List<WebElement> getTariffComponents(HashMap<String, String> tariffComponent) {
+            return tableControlBase.findRowsByColumns(tariffComponent);
+        }
+
+        public String getHeaderText() {
+            return getTextOfElement(headerText);
+        }
+
+        public int rowOfTariffComponents() {
+            return tableControlBase.getRowsCount();
+        }
+
     }
 }
+
