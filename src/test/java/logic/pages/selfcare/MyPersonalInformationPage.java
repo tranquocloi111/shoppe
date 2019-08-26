@@ -128,8 +128,24 @@ public class MyPersonalInformationPage extends BasePage {
                 return findLinkButtonText(myTariffTable(), "Add or change a bundle");
             }
 
+            private WebElement changeMySafetyBufferBtn(){
+                return findLinkButtonText(myTariffTable(), "Change my safety buffer");
+            }
+
+            private WebElement addASafetyBufferBtn(){
+                return findLinkButtonText(myTariffTable(), "Add a safety buffer");
+            }
+
             public void clickAddOrChangeABundleButton() {
                 click(addOrChangeABundleButton());
+            }
+
+            public void clickChangeMySafetyBufferBtn(){
+                click(changeMySafetyBufferBtn());
+            }
+
+            public void clickAddASafetyBufferBtn(){
+                click(addASafetyBufferBtn());
             }
 
             private WebElement findLinkButtonText(WebElement controlCell, String text) {
@@ -142,7 +158,6 @@ public class MyPersonalInformationPage extends BasePage {
                         }
                     }
                 }
-
                 return null;
             }
 
@@ -154,13 +169,10 @@ public class MyPersonalInformationPage extends BasePage {
                     if (familyPerk.getText().trim().contains("Family perk - ")) {
                         list.add(familyPerk.getText().trim());
                     }
-
                 }
                 return list;
             }
-
         }
-
     }
 
     public static class myAlertSection extends MyPersonalInformationPage {
