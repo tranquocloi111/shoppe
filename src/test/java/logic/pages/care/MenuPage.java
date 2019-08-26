@@ -103,6 +103,10 @@ public class MenuPage extends BasePage {
         public void clickFinancialTransactionLink() {
             clickLinkByName("Financial Transactions");
         }
+
+        public void clickPaymentsLink() {
+            clickLinkByName("Payments");
+        }
     }
 
     public static class RightMenuPage extends MenuPage {
@@ -171,6 +175,7 @@ public class MenuPage extends BasePage {
             click(breadCrumbDiv.findElement(By.partialLinkText(text)));
             waitForPageLoadComplete(60);
         }
+
 
 
     }

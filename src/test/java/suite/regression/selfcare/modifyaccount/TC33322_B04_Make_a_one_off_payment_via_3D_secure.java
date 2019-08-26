@@ -2,16 +2,13 @@ package suite.regression.selfcare.modifyaccount;
 
 
 import logic.business.db.billing.BillingActions;
-import logic.business.db.billing.CommonActions;
 import logic.business.entities.*;
-import logic.business.helper.EmailHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.*;
 import logic.pages.care.main.TasksContentPage;
 import logic.pages.selfcare.MakeAOneOffPaymentPage;
 import logic.pages.selfcare.Test3DSecurePage;
-import logic.utils.Common;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -112,12 +109,12 @@ service
 
         test.get().info("Step 11: verify the adhoc payment transaction detail");
         FinancialTransactionPage.FinancialTransactionGrid.getInstance().clickFinancialTransactionByDetail("Ad Hoc Payment");
-        Assert.assertEquals(PaymentPage.ReceiptDetail.getInstance().getReceiptType(), "Ad Hoc Payment");
-        Assert.assertEquals(PaymentPage.ReceiptDetail.getInstance().getReceiptStatus(), "Fully Allocated");
-        Assert.assertEquals(PaymentPage.ReceiptDetail.getInstance().getPaymentAmount(), "£5.23");
-        Assert.assertEquals(PaymentPage.ReceiptDetail.getInstance().getPaymentCurrency(), "Great Britain Pound");
-        Assert.assertEquals(PaymentPage.ReceiptDetail.getInstance().getCardType(), "MasterCard");
-        Assert.assertEquals(PaymentPage.ReceiptDetail.getInstance().getCardNumber(), "************5100");
+        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getReceiptType(), "Ad Hoc Payment");
+        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getReceiptStatus(), "Fully Allocated");
+        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentAmount(), "£5.23");
+        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentCurrency(), "Great Britain Pound");
+        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getCardType(), "MasterCard");
+        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getCardNumber(), "************5100");
 
         test.get().info("Step 12 :Open the service order content for customer");
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();

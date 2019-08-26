@@ -174,4 +174,8 @@ public class TimeStamp {
         LocalDate day2 = LocalDate.now().minusMonths(1).minusDays(1);
         return ChronoUnit.DAYS.between(day2, day1);
     }
+    public static Date TodayPlus4Years() {
+        return Date.valueOf(String.valueOf(LocalDateTime.now().plusYears(4).toLocalDate()));
+    }
+
 }

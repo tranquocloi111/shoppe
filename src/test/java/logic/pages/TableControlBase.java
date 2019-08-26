@@ -269,6 +269,7 @@ public class TableControlBase extends BasePage {
             return null;
         }
     }
+
     public List<WebElement> findRowsByColumns(List<HashMap<String, String>> columns) {
         int columnIndex;
         boolean flag = false;
@@ -277,7 +278,7 @@ public class TableControlBase extends BasePage {
         List<WebElement> column = new ArrayList<>();
         List<WebElement> body = getBody();
 
-        for(WebElement el : body){
+        for (WebElement el : body) {
             isIgnored = false;
             for (int i = 0; i < columns.size(); i++) {
                 for (Map.Entry mapElement : columns.get(i).entrySet()) {
@@ -289,14 +290,14 @@ public class TableControlBase extends BasePage {
                     if (elementText.equals(cellValue) && !isIgnored) {
                         flag = true;
                         isIgnored = false;
-                    }else {
+                    } else {
                         flag = false;
-                        isIgnored=true;
+                        isIgnored = true;
                         break;
                     }
                 }
             }
-            if(flag && !isIgnored){
+            if (flag && !isIgnored) {
                 elm = el;
                 column.add(elm);
             }
@@ -395,7 +396,9 @@ public class TableControlBase extends BasePage {
         return null;
     }
 
-    private List<WebElement> AllLabels() { return element.findElements(By.xpath(".//td[(@class!='fieldValue' and @class!='fieldvalue') or not(@class)]")); }
+    private List<WebElement> AllLabels() {
+        return element.findElements(By.xpath(".//td[(@class!='fieldValue' and @class!='fieldvalue') or not(@class)]"));
+    }
 
     public WebElement findControlCellByLabel(String label, int index) {
         WebElement labelCell = findLabelCell(label, index);
@@ -417,6 +420,12 @@ public class TableControlBase extends BasePage {
             return row;
         else
             return null;
+    }
+
+
+    public WebElement findCellByLabelText(String text) {
+        String xpath = String.format(".//td[contains(text(),'%s')]//following-sibling::td", text);
+        return element.findElement(By.xpath(xpath));
     }
 
 

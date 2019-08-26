@@ -8,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +36,7 @@ public class MyPersonalInformationPage extends BasePage {
         WebElement myPreviousOrdersContracttable;
 
         TableControlBase tableControlBase = new TableControlBase(myPreviousOrdersContracttable);
+
         public void clickViewByIndex(int index) {
             click(myPreviousOrdersContracttable.findElement(By.xpath(".//tr[" + index + "]")).findElement(By.linkText("View")));
         }
@@ -49,12 +49,14 @@ public class MyPersonalInformationPage extends BasePage {
 
         @FindBy(xpath = "//a[@href='/orderentry/ShowAllSubscriptions.do']")
         WebElement myTariffDetails;
+
         public void clickViewOrChangeMyTariffDetailsLink() {
             click(myTariffDetails);
         }
 
         public static class MyTariffDetailsPage extends MyTariffPage {
             static String serviceRefName;
+
             public static MyTariffDetailsPage getInstance(String name) {
                 serviceRefName = name;
                 return new MyTariffDetailsPage();
@@ -185,16 +187,26 @@ public class MyPersonalInformationPage extends BasePage {
                 return new myAlertSection();
             return instance;
         }
+
         TableControlBase tableControlBase = new TableControlBase(myAlertSection);
-        public String getAlertMessageByText(String text){
+
+        public String getAlertMessageByText(String text) {
             return (getTextOfElement(tableControlBase.getLinkByText(text)));
         }
-        public void clickAlertMessageByText(String text){
+
+        public void clickAlertMessageByText(String text) {
             click(tableControlBase.getLinkByText(text));
         }
 
 
+        @FindBy(xpath ="//span[contains(text(),'overdue')]" )
+        WebElement overDueAlert;
+        public String getAlertMessagebForOverDuePayment(){
+            return (getTextOfElement(overDueAlert));
+        }
+
     }
+
     public static class myAccountSection extends MyPersonalInformationPage {
         private static myAccountSection instance;
         @FindBy(xpath = "//b[contains(text(),'My account')]/ancestor::p/following-sibling::div[1]/table")
@@ -205,10 +217,11 @@ public class MyPersonalInformationPage extends BasePage {
                 return new myAccountSection();
             return instance;
         }
+
         TableControlBase tableControlBase = new TableControlBase(myAccountTable);
 
 
-        public void clickViewOrChangeMyAccountDetails(){
+        public void clickViewOrChangeMyAccountDetails() {
             tableControlBase.clickLinkByText("View or change my account details");
         }
 

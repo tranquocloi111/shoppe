@@ -18,6 +18,8 @@ public class OWSActions extends BaseWs {
     public String fullName;
     public String username;
     public String serviceRef;
+    public String firstName;
+    public String lastName;
     public String password;
     public String orderRef;
     public Xml requestForNextStep;
@@ -76,6 +78,13 @@ public class OWSActions extends BaseWs {
         fullName = request.getTextByTagName("firstName") + " " + request.getTextByTagName("lastName");
     }
 
+    private void setFirstName(){
+        firstName = request.getTextByTagName("firstName");
+    }
+    private void setLastName()
+    {
+       lastName= request.getTextByTagName("lastName");
+    }
     private void setserviceRef(String reference){
         serviceRef = response.getTextByXpath(String.format("//orderItem/serviceRef[@reference='%s']",reference));
     }
@@ -247,6 +256,7 @@ public class OWSActions extends BaseWs {
         Log.info("OrderId number:" + orderIdNo);
         setUsername();
         setPassword();
+        setFullName();
         checkAsyncProcessIsCompleted(orderIdNo);
     }
     public void createGeneralCustomerOrderForChangePassword(String path){
@@ -265,6 +275,9 @@ public class OWSActions extends BaseWs {
         Log.info("OrderId number:" + orderIdNo);
         setUsername();
         setPassword();
+        setFirstName();
+        setLastName();
+        setFullName();
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 
