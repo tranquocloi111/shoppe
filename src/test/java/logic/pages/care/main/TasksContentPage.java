@@ -118,6 +118,13 @@ public class TasksContentPage extends BasePage {
 
             @FindBy(xpath = "//td[contains(text(),'ReDS status authorisation:')]/following-sibling::td[1]")
             WebElement lblReDSStatusAuthorisation;
+            @FindBy(xpath = "//td[contains(text(),'ReDS response Date:')]/following-sibling::td[1]")
+            WebElement lblReDSRespondDate;
+
+            @FindBy(xpath = "//td[contains(text(),'Customer Name:')]/following-sibling::td[1]")
+            WebElement lblCustomerName;
+            @FindBy(xpath = "//td[contains(text(),'HUB Customer ID:')]/following-sibling::td[1]")
+            WebElement lblHUBCustomerID;
 
             @FindBy(xpath = "//td[contains(text(),'Order Type:')]/following-sibling::td[1]")
             WebElement lblOrderType;
@@ -127,6 +134,9 @@ public class TasksContentPage extends BasePage {
 
             @FindBy(xpath = "//td[contains(text(),'Receipt Date:')]/following-sibling::td[1]")
             WebElement lblReceiptDate;
+
+            @FindBy(xpath = "//td[contains(text(),'Receipt ID:')]/following-sibling::td[1]")
+            WebElement lblReceiptID;
 
             @FindBy(xpath = "//td[contains(text(),'Sales Channel:')]/following-sibling::td[1]")
             WebElement lblSalesChannel;
@@ -139,6 +149,24 @@ public class TasksContentPage extends BasePage {
 
             @FindBy(xpath = "//td[contains(text(),'EU Data Consent Flag:')]/following-sibling::td[1]")
             WebElement lblEUDataConsentFlag;
+
+            @FindBy(xpath = "//td[contains(text(),'HUB Rejection Code:')]/following-sibling::td[1]")
+            WebElement lblHubRejectionCode;
+
+            @FindBy(xpath = "//td[contains(text(),'Contact Details:')]/following-sibling::td[1]")
+            WebElement lblContactDetails;
+
+            @FindBy(xpath = "//td[contains(text(),'Hierarchy Mbr:')]/following-sibling::td[1]")
+            WebElement lblHierarchyMbr;
+
+            @FindBy(xpath = "//td[contains(text(),'Invoice Number:')]/following-sibling::td[1]")
+            WebElement lblInvoiceNumber;
+
+            @FindBy(xpath = "//td[contains(text(),'Red Code:')]/following-sibling::td[1]")
+            WebElement lblRedCode;
+
+            @FindBy(xpath = "//td[contains(text(),'ReDS Authorisation Number:')]/following-sibling::td[1]")
+            WebElement lblRedSAuthorisationNumber;
 
             @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Details')]/../../..//following-sibling::div[1]//table")
             WebElement detailTable;
@@ -220,7 +248,48 @@ public class TasksContentPage extends BasePage {
             public String getReDSResponseCode() {
                 return getTextOfElement(tableControlBase.getCellByLabel("ReDS response code:"));
             }
+            public String getReDSResponseDate() {
+                return getTextOfElement(tableControlBase.getCellByLabel("ReDS response Date:"));
+            }
 
+
+            public String getCustomerName() {
+                return getTextOfElement(lblCustomerName);
+            }
+            public String getCustomerID()
+            {
+                return  getTextOfElement(lblHUBCustomerID);
+            }
+            public String getHierarchyMbr()
+            {
+                return  getTextOfElement(lblHierarchyMbr);
+            }
+            public String getInvoiceNumber()
+            {
+                return  getTextOfElement(lblInvoiceNumber);
+            }
+
+            public String getContactDetail()
+            {
+                return  getTextOfElement(lblContactDetails);
+            }
+
+            public String getHubRejecttionCode()
+            {
+                return  getTextOfElement(lblHubRejectionCode);
+            }
+            public String getReceiptID()
+            {
+                return  getTextOfElement(lblReceiptID);
+            }
+            public String getRedCode()
+            {
+                return  getTextOfElement(lblRedCode);
+            }
+            public String getRedSAuthorisationNumber()
+            {
+                return  getTextOfElement(lblRedSAuthorisationNumber);
+            }
         }
     }
 

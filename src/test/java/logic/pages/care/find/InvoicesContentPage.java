@@ -53,6 +53,22 @@ public class InvoicesContentPage extends BasePage {
         return getTextOfElement(element);
     }
 
+    public String getDateIssuedByIndex(int index){
+        WebElement element = table.getElementByColumnNameAndRowIndex(index+1, dateIssued);
+        return getTextOfElement(element);
+    }
+
+    public String getAmountByIndex(int index){
+        WebElement element = table.getElementByColumnNameAndRowIndex(index+1, amount);
+        return getTextOfElement(element);
+    }
+    public String getAmountOutStandingByIndex(int index){
+        WebElement element = table.getElementByColumnNameAndRowIndex(index+1, amountOutstanding);
+        return getTextOfElement(element);
+    }
+
+
+
     public static class InvoiceDetailsContentPage extends InvoicesContentPage{
 
         private static InvoiceDetailsContentPage instance;
@@ -74,6 +90,8 @@ public class InvoicesContentPage extends BasePage {
 
         @FindBy(xpath = "//td[contains(text(),'End:')]/following-sibling::td[1]")
         WebElement end;
+        @FindBy(xpath = "//td[contains(text(),'Net Amount:')]/following-sibling::td[1]")
+        WebElement netAmount;
 
         public void saveFileFromWebRequest(String customerNumber){
             String [] param = btnViewPdf.getAttribute("href").split(",");
@@ -108,11 +126,14 @@ public class InvoicesContentPage extends BasePage {
         }
 
         public String getStatus(int index) {
-            return getTextOfElement(status.get(1));
+            return getTextOfElement(status.get(index));
         }
 
         public String getEnd() {
             return getTextOfElement(end);
+        }
+        public String getNetAmount() {
+            return getTextOfElement(netAmount);
         }
     }
 
