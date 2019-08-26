@@ -67,10 +67,16 @@ public class BillingActions extends OracleDB {
     public static Date getInvoiceDueDateByPaymentCollectionDate(int numberOfDate) {
         LocalDate today;
         LocalDate date = LocalDate.now().plusDays(numberOfDate);
-        for (int i = 0; i < numberOfDate; i++) {
-            today = LocalDate.now().plusDays(i);
-            if ((today.getDayOfWeek() == DayOfWeek.SATURDAY) || (today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
-                date = date.minusDays(1);
+        if (date.getDayOfMonth() > 28){
+            for (int i = 0; i < numberOfDate; i++) {
+                today = LocalDate.now().plusDays(i);
+                if ((today.getDayOfWeek() == DayOfWeek.SATURDAY) || (today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+                    date = date.minusDays(1);
+                }
+            }
+        }else {
+            while(date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY){
+                date = date.plusDays(1);
             }
         }
         return Date.valueOf(date);
@@ -80,10 +86,16 @@ public class BillingActions extends OracleDB {
         LocalDate today = LocalDate.now();
         LocalDate date = Parser.convertToLocalDateViaMilisecond(paymentCollectionDate);
         long days = ChronoUnit.DAYS.between(date, today);
-        for (int i = 0; i < Math.abs(days); i++) {
-            today = LocalDate.now().plusDays(i);
-            if ((today.getDayOfWeek() == DayOfWeek.SATURDAY) || (today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
-                date = date.minusDays(1);
+        if (date.getDayOfMonth() > 28) {
+            for (int i = 0; i < Math.abs(days); i++) {
+                today = LocalDate.now().plusDays(i);
+                if ((today.getDayOfWeek() == DayOfWeek.SATURDAY) || (today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+                    date = date.minusDays(1);
+                }
+            }
+        }else {
+            while(date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY){
+                date = date.plusDays(1);
             }
         }
         return Date.valueOf(date);
