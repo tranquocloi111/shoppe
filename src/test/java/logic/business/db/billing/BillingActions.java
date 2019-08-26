@@ -33,11 +33,11 @@ public class BillingActions extends OracleDB {
     }
 
     public static void updateBillGroupPaymentCollectionDate(Date collectionDate, int billingGroupId) {
-        Date date = collectionDate;
-        if (date.getDate() > 28) {
-            date = Date.valueOf(date.toLocalDate().minusDays(date.getDate() - 28));
+        LocalDate localDate = collectionDate.toLocalDate();
+        if (localDate.getDayOfMonth() > 28) {
+            localDate = localDate.plusDays(28 - localDate.getDayOfMonth());
         }
-        String sql = String.format("update BGPROPERTY set propvalnumber= %d where propertykey='BGPCDAY' and billinggroupid= %d ", date.getDate(), billingGroupId);
+        String sql = String.format("update BGPROPERTY set propvalnumber= %d where propertykey='BGPCDAY' and billinggroupid= %d ", localDate.getDayOfMonth(), billingGroupId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
