@@ -316,6 +316,11 @@ public class BillingActions extends OracleDB {
                 && x.getBankStatus().equalsIgnoreCase(bankStatus)
                 && x.getTokenStatus().equalsIgnoreCase(TokenStatus)).count()));
     }
+    public static int findPayemtGateWayRespondByBankStatus(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus) {
+        return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
+                && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus().equalsIgnoreCase(gateWayStatus)
+                && x.getBankStatus().equalsIgnoreCase(bankStatus)).count()));
+    }
 
     public static void updateRunAsAtDateOfCurrentDateMinus1MonthAnd1Day() {
         try {

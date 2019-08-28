@@ -176,6 +176,14 @@ public class SelfCareTestBase extends BasePage {
     public void verifyMakeAOneOffPayment() {
         Assert.assertEquals("Make a one-off payment", MyPersonalInformationPage.getInstance().getHeader());
     }
+    public void clickChangeMyPaymentDetails() {
+        super.clickLinkByText("Change my payment details");
+    }
+    public void verifyMyPaymentDetail() {
+        Assert.assertEquals("My payment details", MyPersonalInformationPage.getInstance().getHeader());
+    }
+
+
 
 }
 

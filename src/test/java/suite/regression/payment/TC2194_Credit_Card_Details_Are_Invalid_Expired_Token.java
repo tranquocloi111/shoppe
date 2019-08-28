@@ -1,18 +1,14 @@
-package suite.regression.selfcare.payment;
+package suite.regression.payment;
 
-import framework.utils.Log;
 import logic.business.db.OracleDB;
 import logic.business.db.billing.BillingActions;
 import logic.business.db.billing.CommonActions;
-import logic.business.entities.PaymentGirdEntity;
 import logic.business.entities.ServiceOrderEntity;
 import logic.business.helper.RemoteJobHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.InvoicesContentPage;
-import logic.pages.care.find.PaymentDetailPage;
 import logic.pages.care.find.ServiceOrdersContentPage;
-import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.main.TasksContentPage;
 import logic.utils.TimeStamp;
 import org.testng.Assert;
@@ -22,10 +18,7 @@ import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TC2194_Credit_Card_Details_Are_Invalid_Expired_Token extends BaseTest {
     /*

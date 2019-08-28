@@ -142,6 +142,10 @@ public class OracleDB extends Db {
         allowUpdating();
         return executeNonQuery(createConnection(), sql);
     }
+    public int executeNonQueryWithoutTrigger(String disable, String enable,String sql) {
+        allowUpdating();
+        return executeNonQueryWithOutTrigger(createConnection(),disable,enable, sql);
+    }
 
     public CallableStatement callableStatement() {
         CallableStatement stmt = null;

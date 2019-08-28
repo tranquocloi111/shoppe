@@ -11,10 +11,10 @@ import java.util.HashMap;
 public class PaymentPage extends BasePage {
 
 
-    public static class paymentConentGrid extends PaymentPage {
+    public static class paymentContentGrid extends PaymentPage {
 
-        public static paymentConentGrid getInstance() {
-            return new paymentConentGrid();
+        public static paymentContentGrid getInstance() {
+            return new paymentContentGrid();
         }
 
         @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Payments')]//ancestor::table[1]//following-sibling::div//table")
