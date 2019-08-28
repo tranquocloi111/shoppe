@@ -37,7 +37,7 @@ public class TC33318_Self_Care_Change_Payment_method_CC_to_DD extends BaseTest {
 
 
         test.get().info("update the backdate for payment");
-        backDateThePaymentMethodStartDateToTodayMinus1Day();
+        super.backDateThePaymentMethodStartDateToTodayMinus1Day(customerNumber);
 
         test.get().info("Load user in the hub Net");
         CareTestBase.page().loadCustomerInHubNet(owsActions.customerNo);
@@ -127,12 +127,7 @@ public class TC33318_Self_Care_Change_Payment_method_CC_to_DD extends BaseTest {
 
     }
 
-    public void backDateThePaymentMethodStartDateToTodayMinus1Day() {
-        String disableTrigger = "ALTER TABLE hmbrproperty DISABLE ALL TRIGGERS";
-        String enableTrigger = "ALTER TABLE hmbrproperty ENABLE ALL TRIGGERS";
-        String sql = String.format("update hmbrproperty set datestart=sysdate-1 where hmbrid IN (SELECT hmbrid FROM hierarchymbr WHERE buid IN (SELECT buid FROM businessunit WHERE buid =%s OR rootbuid=%s)) AND datestart IS NOT NULL AND propertykey IN ('PAYMT', 'CLUBNUM')", customerNumber, customerNumber);
-        OracleDB.SetToNonOEDatabase().executeNonQueryWithoutTrigger(disableTrigger, enableTrigger, sql);
-    }
+
 
 
 }

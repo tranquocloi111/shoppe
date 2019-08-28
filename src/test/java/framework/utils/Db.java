@@ -43,20 +43,7 @@ public class Db {
         return result;
     }
 
-    public int executeNonQueryWithOutTrigger(Connection connection, String disable, String enable, String sql) {
-        int result = 0;
-        Connection conn  = connection;;
-        try {
-            executeNonQuery(connection,disable);
-            executeNonQuery(connection,sql);
-            //conn.close();
-        } catch (Exception ex) {
-            Log.error(ex.getMessage());
-        } finally {
-            executeNonQuery(connection,enable);
-        }
-        return result;
-    }
+
 
     public static List executeQuery(Connection conn, String query, int maxRowCount) throws SQLException {
         Statement stmt = null;

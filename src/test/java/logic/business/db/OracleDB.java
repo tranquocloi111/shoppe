@@ -142,10 +142,7 @@ public class OracleDB extends Db {
         allowUpdating();
         return executeNonQuery(createConnection(), sql);
     }
-    public int executeNonQueryWithoutTrigger(String disable, String enable,String sql) {
-        allowUpdating();
-        return executeNonQueryWithOutTrigger(createConnection(),disable,enable, sql);
-    }
+
 
     public CallableStatement callableStatement() {
         CallableStatement stmt = null;
@@ -187,6 +184,24 @@ public class OracleDB extends Db {
             for (int y = 0; y < sms.size(); y++) {
                 result.add(sms.get(y).toString());
             }
+        }
+        return result;
+    }
+    public int executeNonQueryWithoutTrigger(String disable, String enable,String sql) {
+        allowUpdating();
+        return executeNonQueryWithOutTrigger(createConnection(),disable,enable, sql);
+    }
+    public int executeNonQueryWithOutTrigger(Connection connection, String disable, String enable, String sql) {
+        int result = 0;
+        Connection conn  = connection;;
+        try {
+            executeNonQuery(connection,disable);
+            executeNonQuery(connection,sql);
+            //conn.close();
+        } catch (Exception ex) {
+            Log.error(ex.getMessage());
+        } finally {
+            executeNonQuery(connection,enable);
         }
         return result;
     }
