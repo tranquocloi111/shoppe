@@ -11,10 +11,12 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 import framework.config.Config;
 import framework.wdm.WDFactory;
 import framework.wdm.WdManager;
+import logic.business.db.OracleDB;
 import logic.business.db.billing.BillingActions;
 import logic.business.entities.DiscountBundleEntity;
 import logic.business.helper.FTPHelper;
 import logic.business.helper.RemoteJobHelper;
+import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.InvoicesContentPage;
@@ -205,6 +207,15 @@ public class BaseTest {
 
     protected static void downLoadFile(String remotePath, String fileName, String localPath){
         FTPHelper.getInstance().downLoadFromDisk(remotePath, fileName, localPath);
+    }
+    public void updateCustomerDDIDetailsInDatabase(String DDIReference, int hrmid, String newStarDate)
+    {
+        String sql = String.format("update hmbrproperty set propvalchar='A' where propertykey='DDISTAT' and hmbrid=%d", hrmid);
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+        sql = String.format("update hmbrproperty set propvalchar='%s',datestart=to_date('%s','yyyy-mm-dd') where propertykey='DDIREF' and hmbrid=%d", DDIReference,newStarDate, hrmid);
+
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
     //end region
 
