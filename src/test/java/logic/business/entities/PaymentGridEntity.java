@@ -5,7 +5,7 @@ import logic.utils.TimeStamp;
 
 import java.util.HashMap;
 
-public class PaymentGirdEntity {
+public class PaymentGridEntity {
 
 
     public static HashMap<String, String> getPaymentEnity(String type,String amount) {

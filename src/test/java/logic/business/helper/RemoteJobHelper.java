@@ -241,4 +241,9 @@ public class RemoteJobHelper {
         submitRemoteJob("Subcreditcard.sh -e $HUB_SID -S");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Process Credit Card");
     }
+    public void submitSendDDIRequestJob() {
+        int currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJob("Subdirectdebit1.sh -e $HUB_SID -S");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Process Direct Debit - Send DDI");
+    }
 }
