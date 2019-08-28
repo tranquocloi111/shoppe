@@ -27,7 +27,7 @@ public class TC33318_Self_Care_Change_Payment_method_CC_to_DD extends BaseTest {
     @Test(enabled = true, description = "TC33318 self care change payment details CC to DD", groups = "SelfCare")
     public void TC33318_Self_Care_Change_Payment_method_CC_to_DD() {
 
-        test.get().info("Step 1 : create an online cc customer");
+        test.get().info(" create an online cc customer");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_2_bundles_and_NK2720";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrderForChangePassword(path);
@@ -35,6 +35,8 @@ public class TC33318_Self_Care_Change_Payment_method_CC_to_DD extends BaseTest {
         int hrmid = BillingActions.getHmbrid(customerNumber);
         String fullName = owsActions.fullName;
 
+
+        test.get().info("update the backdate for payment");
         backDateThePaymentMethodStartDateToTodayMinus1Day();
 
         test.get().info("Load user in the hub Net");
