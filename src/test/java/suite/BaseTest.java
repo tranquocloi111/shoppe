@@ -9,6 +9,7 @@ import com.aventstack.extentreports.reporter.KlovReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import framework.config.Config;
+import framework.utils.RandomCharacter;
 import framework.wdm.WDFactory;
 import framework.wdm.WdManager;
 import logic.business.db.OracleDB;
@@ -16,20 +17,21 @@ import logic.business.db.billing.BillingActions;
 import logic.business.entities.DiscountBundleEntity;
 import logic.business.helper.FTPHelper;
 import logic.business.helper.RemoteJobHelper;
-import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.InvoicesContentPage;
 import logic.utils.TimeStamp;
+import org.testng.Assert;
 import org.testng.ITestResult;
-import org.testng.annotations.*;
-import framework.utils.RandomCharacter;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BaseTest {
@@ -127,40 +129,24 @@ public class BaseTest {
         BillingActions.getInstance().updateTheBillDateForSo(serviceOrderId);
     }
 
-    protected static List<Integer> verifyFCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef){
-        List<Integer> listResult = new ArrayList<Integer>();
-        int result1 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "FC", startDate, TimeStamp.TodayMinus1Day(), partitionIdRef, "ACTIVE");
-        listResult.add(result1);
-        int result2 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "FC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "ACTIVE");
-        listResult.add(result2);
-
-        return listResult;
+    protected static void verifyFCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef){
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "FC", startDate, TimeStamp.TodayMinus1Day(), partitionIdRef, "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "FC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "ACTIVE"));
     }
 
-    protected static List<Integer> verifyNCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef){
-        List<Integer> listResult = new ArrayList<Integer>();
-        int result1 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", startDate, TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "ACTIVE");
-        listResult.add(result1);
-        int result2 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "ACTIVE");
-        listResult.add(result2);
-        int result3 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), partitionIdRef, "ACTIVE");
-        listResult.add(result3);
-
-        return listResult;
+    protected static void verifyNCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef){
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", startDate, TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), partitionIdRef, "ACTIVE"));
     }
 
     protected static void updateThePDateAndBillDateForChangeBundleForSo(String serviceOrderId){
         BillingActions.getInstance().updateThePDateAndBillDateForChangeBundle(serviceOrderId);
     }
 
-    protected static List<Integer> VerifyNewNCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, String partitionIdRef, String bundleCode){
-        List<Integer> listResult = new ArrayList<Integer>();
-        int result1 = BillingActions.getInstance().findNewDiscountBundlesByCondition(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, bundleCode, "ACTIVE");
-        listResult.add(result1);
-        int result2 = BillingActions.getInstance().findNewDiscountBundlesByCondition(allDiscountBundles, "NC", TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), partitionIdRef, bundleCode, "ACTIVE");
-        listResult.add(result2);
-
-        return listResult;
+    protected static void verifyNewNCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, String partitionIdRef, String bundleCode){
+        Assert.assertEquals(1, BillingActions.getInstance().findNewDiscountBundlesByCondition(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, bundleCode, "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findNewDiscountBundlesByCondition(allDiscountBundles, "NC", TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), partitionIdRef, bundleCode, "ACTIVE"));
     }
 
     public static Date paymentCollectionDateEscapeNonWorkDay(int numberOfDate){
@@ -222,6 +208,16 @@ public class BaseTest {
         String enableTrigger = "ALTER TABLE hmbrproperty ENABLE ALL TRIGGERS";
         String sql = String.format("update hmbrproperty set datestart=sysdate-1 where hmbrid IN (SELECT hmbrid FROM hierarchymbr WHERE buid IN (SELECT buid FROM businessunit WHERE buid =%s OR rootbuid=%s)) AND datestart IS NOT NULL AND propertykey IN ('PAYMT', 'CLUBNUM')", customerNumber, customerNumber);
         OracleDB.SetToNonOEDatabase().executeNonQueryWithoutTrigger(disableTrigger, enableTrigger, sql);
+    }
+
+    protected void verifyFCDiscountBundlesFoBillingGroupMinus15days(List<DiscountBundleEntity> discountBundles, Date startDate, String partitionIdRef){
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "FC", startDate, TimeStamp.TodayMinus16DaysAdd1Month(), partitionIdRef, "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "FC", TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.TodayMinus16DaysAdd2Months(), partitionIdRef, "ACTIVE"));
+    }
+    protected void verifyNCDiscountBundlesFoBillingGroupMinus15days(List<DiscountBundleEntity> discountBundles, Date startDate, String partitionIdRef){
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "NC", startDate, TimeStamp.TodayMinus16DaysAdd2Months(), partitionIdRef, "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "NC", TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.TodayMinus16DaysAdd2Months(), partitionIdRef, "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "NC", TimeStamp.TodayMinus15DaysAdd2Months(), TimeStamp.TodayMinus16DaysAdd3Months(), partitionIdRef, "ACTIVE"));
     }
     //end region
 

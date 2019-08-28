@@ -217,13 +217,25 @@ public class OtherProductEntiy {
 
         return listOtherProduct;
     }
-    public static HashMap<String, String> dataForAOtherBundleProduct(String productCode, String type, String description,String charge ,Date newStartDate) {
+    public static HashMap<String, String> dataForAnOtherBundleProduct(String productCode, String type, String description, String charge , Date newStartDate) {
         HashMap<String, String> otherProduct = new HashMap<String, String>();
         otherProduct.put("Product Code", productCode);
         otherProduct.put("Type", type);
         otherProduct.put("Description", description);
-        otherProduct.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        otherProduct.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
         otherProduct.put("End Date", "");
+        otherProduct.put("Charge", charge);
+
+
+        return otherProduct;
+    }
+    public static HashMap<String, String> dataForAnEndedOtherBundleProduct(String productCode, String type, String description,String charge ,Date newStartDate) {
+        HashMap<String, String> otherProduct = new HashMap<String, String>();
+        otherProduct.put("Product Code", productCode);
+        otherProduct.put("Type", type);
+        otherProduct.put("Description", description);
+        otherProduct.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
+        otherProduct.put("End Date", Parser.parseDateFormate(TimeStamp.TodayMinus1Day(), TimeStamp.DATE_FORMAT));
         otherProduct.put("Charge", charge);
 
 

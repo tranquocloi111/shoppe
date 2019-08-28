@@ -76,10 +76,10 @@ public class TC32132_Basic_Path_Active_Account_with_Current_Draft_Invoice extend
         test.get().info("Build Expected Account Summary Response Data");
         String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getaccount\\TC32132_response.xml";
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        Xml expectedResponse = selfCareWSTestBase.buildSimpleAccountSummaryResponseData(sampleResponseFile, newStartDate, customerNumber, latestSubscriptionNumber);
+        String expectedResponseFile = selfCareWSTestBase.buildSimpleAccountSummaryResponseData(sampleResponseFile, newStartDate, customerNumber, latestSubscriptionNumber);
 
         test.get().info("Verify Get Account Summary Response");
-        selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponse, response);
+        selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponseFile, response);
     }
 
 

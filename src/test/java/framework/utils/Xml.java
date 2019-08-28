@@ -173,4 +173,9 @@ public class Xml {
         return null;
     }
 
+    public String getAttributeTextByXpath(String xpath, String attributeName, int index){
+        NodeList nodes = getElementsByXpath(xpath);
+        return nodes.item(index).getAttributes().getNamedItem(attributeName).getNodeValue();
+    }
+
 }

@@ -200,14 +200,10 @@ public class ShakeOutTest extends BaseTest {
 
         List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCodeOfMobileRef1);
         Assert.assertEquals(11, discountBundles.size());
-        List<Integer> listBundleFLX17 = BaseTest.verifyFCDiscountBundles(discountBundles, newStartDate, "FLX17");
-        Assert.assertEquals(2, Common.steamFilterCondition(listBundleFLX17, 1));
-        List<Integer> listBundleTM500 = BaseTest.verifyNCDiscountBundles(discountBundles, newStartDate, "TM500");
-        Assert.assertEquals(3, Common.steamFilterCondition(listBundleTM500, 1));
-        List<Integer> listBundleTMT5K = BaseTest.verifyNCDiscountBundles(discountBundles, newStartDate, "TMT5K");
-        Assert.assertEquals(3, Common.steamFilterCondition(listBundleTMT5K, 1));
-        List<Integer> listBundleTD250 = BaseTest.verifyNCDiscountBundles(discountBundles, newStartDate, "TD250");
-        Assert.assertEquals(3, Common.steamFilterCondition(listBundleTD250, 1));
+        verifyFCDiscountBundles(discountBundles, newStartDate, "FLX17");
+        verifyNCDiscountBundles(discountBundles, newStartDate, "TM500");
+        verifyNCDiscountBundles(discountBundles, newStartDate, "TMT5K");
+        verifySpecificNCDiscountBundles(discountBundles, "TD250");
 
         test.get().info("Step 8 : Back to subscription content page");
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
@@ -324,8 +320,7 @@ public class ShakeOutTest extends BaseTest {
         discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCodeOfMobileRef1);
         Assert.assertEquals(13, discountBundles.size());
 
-        listBundleTD250 = verifySpecificNCDiscountBundles(discountBundles, "TD250");
-        Assert.assertEquals(2, Common.steamFilterCondition(listBundleTD250, 1));
+        verifySpecificNCDiscountBundles(discountBundles, "TD250");
         Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "NC", newStartDate, TimeStamp.TodayPlus1MonthMinus1Day(), "TD250", "DELETED"));
         Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), "TMDAT", "ACTIVE"));
         Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "NC", TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), "TMDAT", "ACTIVE"));
@@ -898,7 +893,7 @@ public class ShakeOutTest extends BaseTest {
         test.get().info("Step 42 : Verify the discount bundle record FC is updated");
         List<DiscountBundleEntity> bundleEntityList = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCodeOfFCMobile);
         Assert.assertEquals(13, bundleEntityList.size());
-        Assert.assertEquals(2, BaseTest.VerifyNewNCDiscountBundles(bundleEntityList, "TM1GB","1GB-3GDATA-0500-FC").size());
+        verifyNewNCDiscountBundles(bundleEntityList, "TM1GB","1GB-3GDATA-0500-FC");
 
         test.get().info("Step 43 : Go back to subscriptions");
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
@@ -1235,14 +1230,9 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("Family perk - 250MB per month", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesRemoved());
     }
 
-    private List<Integer> verifySpecificNCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, String partitionIdRef){
-        List<Integer> listResult = new ArrayList<Integer>();
-        int result1 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "DELETED");
-        listResult.add(result1);
-        int result2 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), partitionIdRef, "DELETED");
-        listResult.add(result2);
-
-        return listResult;
+    private void verifySpecificNCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, String partitionIdRef){
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus1Day(), partitionIdRef, "DELETED"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), partitionIdRef, "DELETED"));
     }
 
     private String [] Verify4SubscriptionsAnd4CreditAgreements(OWSActions owsActions, String orderId){
@@ -1273,7 +1263,7 @@ public class ShakeOutTest extends BaseTest {
     }
 
     private void verifyAgreementDetails(String subscriptionNumber, String agreementNumber){
-        Assert.assertEquals(1, CreditAgreementsContentPage.CreditAgreementsGridPage.getInstance().getCreditAgreement(CreditAgreementsGirdEntity.getCreditAgreementGird(subscriptionNumber)).size());
+        Assert.assertEquals(1, CreditAgreementsContentPage.CreditAgreementsGridPage.getInstance().getCreditAgreement(CreditAgreementsGridEntity.getCreditAgreementGird(subscriptionNumber)).size());
         CreditAgreementsContentPage.CreditAgreementsGridPage.getInstance().clickExpandButtonOfCABySubscription(subscriptionNumber);
 
         CreditAgreementsContentPage.CreditAgreementsGridPage.CADetailClass caDetailClass = CreditAgreementsContentPage.CreditAgreementsGridPage.getInstance().getCADetailBySubscription(subscriptionNumber);
@@ -1412,14 +1402,10 @@ public class ShakeOutTest extends BaseTest {
     private void verifyDiscountBundleBeforeChangingBundle(Date newStartDate ,String  discountGroupCode){
         List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCode);
         Assert.assertEquals(11, discountBundles.size());
-        List<Integer> listBundleFLX17 = BaseTest.verifyFCDiscountBundles(discountBundles, newStartDate, "FLX17");
-        Assert.assertEquals(2, Common.steamFilterCondition(listBundleFLX17, 1));
-        List<Integer> listBundleTM500 = BaseTest.verifyNCDiscountBundles(discountBundles, newStartDate, "TM500");
-        Assert.assertEquals(3, Common.steamFilterCondition(listBundleTM500, 1));
-        List<Integer> listBundleTMT5K = BaseTest.verifyNCDiscountBundles(discountBundles, newStartDate, "TMT5K");
-        Assert.assertEquals(3, Common.steamFilterCondition(listBundleTMT5K, 1));
-        List<Integer> listBundleTD250 = BaseTest.verifyNCDiscountBundles(discountBundles, newStartDate, "TM150");
-        Assert.assertEquals(3, Common.steamFilterCondition(listBundleTD250, 1));
+        verifyFCDiscountBundles(discountBundles, newStartDate, "FLX17");
+        verifyNCDiscountBundles(discountBundles, newStartDate, "TM500");
+        verifyNCDiscountBundles(discountBundles, newStartDate, "TMT5K");
+        verifyNCDiscountBundles(discountBundles, newStartDate, "TMDAT");
     }
 
     private void verifyGetBundleResponseAreCorrect(Xml xml, String customerId, String subscriptionNumber, String serviceOrderId, Date newStartDate){
