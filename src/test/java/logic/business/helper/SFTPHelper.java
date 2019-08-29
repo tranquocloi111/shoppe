@@ -3,6 +3,7 @@ package logic.business.helper;
 import framework.config.Config;
 import framework.utils.Log;
 import framework.utils.SFTP;
+import org.testng.Assert;
 
 public class SFTPHelper extends SFTP {
     String userName = Config.getProp("unixUsername");
@@ -16,7 +17,7 @@ public class SFTPHelper extends SFTP {
     public void downloadFileFromRemoteServerToLocal(String localPath, String remotePath) {
         SFTP sftp = new SFTP();
         try {
-            sftp.connect(host, 22, userName, passWord);
+            Assert.assertTrue(sftp.connect(host, 22, userName, passWord));
             sftp.downloadFile(remotePath, localPath);
             Log.info(localPath);
         } catch (Exception ex) {
@@ -30,7 +31,7 @@ public class SFTPHelper extends SFTP {
     public void upFileFromLocalToRemoteServer(String localPath, String remotePath) {
         SFTP sftp = new SFTP();
         try {
-            sftp.connect(host, 22, userName, passWord);
+            Assert.assertTrue(sftp.connect(host, 22, userName, passWord));
             sftp.uploadFile( localPath,remotePath);
             Log.info(localPath);
         } catch (Exception ex) {
