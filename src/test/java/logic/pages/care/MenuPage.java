@@ -1,9 +1,9 @@
 package logic.pages.care;
 
+import framework.utils.Log;
 import logic.pages.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 
 public class MenuPage extends BasePage {
@@ -96,7 +96,7 @@ public class MenuPage extends BasePage {
                 WebElement element = leftMainDiv.findElement(By.linkText(linkName));
                 result = isElementPresent(element);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.info("Link " + linkName +" is selected");
             }
             return result;
         }
@@ -175,8 +175,6 @@ public class MenuPage extends BasePage {
             click(breadCrumbDiv.findElement(By.partialLinkText(text)));
             waitForPageLoadComplete(60);
         }
-
-
 
     }
 

@@ -167,10 +167,10 @@ service
     public void verifyPaymentGateWayRespond(List<PaymentGatewayRespondEnity> result) {
         List<String> requestId = new ArrayList<>();
         Assert.assertEquals(result.size(), 4);
-        Assert.assertEquals(BillingActions.findPayemtGateWayRespond(result, "PE", "APPROVE", "PAREQ", "00", "ENROLLED"), 1);
-        Assert.assertEquals(BillingActions.findPayemtGateWayRespond(result, "PA", "APPROVE", "SUCCESS", "00", "CARD_SIGN_OK"), 1);
+        Assert.assertEquals(BillingActions.findPaymentGateWayRespond(result, "PE", "APPROVE", "PAREQ", "00", "ENROLLED"), 1);
+        Assert.assertEquals(BillingActions.findPaymentGateWayRespond(result, "PA", "APPROVE", "SUCCESS", "00", "CARD_SIGN_OK"), 1);
         Assert.assertEquals(BillingActions.findPayemtGateWayRespondByFraudStatus(result, "OC", "APPROVE", "APPROVE", "00", "ACCEPT"), 1);
-        Assert.assertEquals(BillingActions.findPayemtGateWayRespondByTokenStatus(result, "OA", "APPROVE", "APPROVE", "00", "ACTIVE"), 1);
+        Assert.assertEquals(BillingActions.findPaymentGateWayRespondByTokenStatus(result, "OA", "APPROVE", "APPROVE", "00", "ACTIVE"), 1);
     }
 
 

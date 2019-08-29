@@ -60,7 +60,7 @@ public class TC32358_Self_Care_WS_Get_Subscription_Summary extends BaseTest {
         test.get().info("Build Subscription Summary Response Data");
         String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getsubscription\\TC32358_response";
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        Xml expectedResponse = selfCareWSTestBase.buildSimpleSubscriptionSummaryResponseData(sampleResponseFile, newStartDate, customerNumber, subscriptionNumberList);
+        String expectedResponse = selfCareWSTestBase.buildSimpleSubscriptionSummaryResponseData(sampleResponseFile, newStartDate, customerNumber, subscriptionNumberList);
 
         test.get().info("Verify Subscription Summary Response is correct");
         selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponse, response);

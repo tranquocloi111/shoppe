@@ -3,41 +3,50 @@
         <getAccountSummaryResponse xmlns="http://selfcare.telco.hsntech.com" xmlns:ns2="http://wsdl.hsntech.com">
             <accountSummary>
                 <accountDetail>
-                    <accountNumber>12930</accountNumber>
-                    <accountName>Mr first150756343 last351631304</accountName>
-                    <startDate>2019-07-21+08:00</startDate>
+                    <accountNumber>$accountNumber$</accountNumber>
+                    <accountName>$accountName$</accountName>
+                    <startDate>$startDate$</startDate>
                     <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
                     <clubcardNumber>634143330730912784</clubcardNumber>
-                    <nextBillDate>2019-08-15+08:00</nextBillDate>
+                    <nextBillDate>$nextBillDate$</nextBillDate>
                 </accountDetail>
                 <subscriptions>
                     <subscription>
                         <subscriptionDetail>
-                            <subscriptionNumber>07077715350</subscriptionNumber>
-                            <subscriptionDescription>Mobile NC</subscriptionDescription>
+                            <subscriptionNumber>$subscriptionNumberFC$</subscriptionNumber>
+                            <subscriptionDescription>Mobile FC</subscriptionDescription>
                             <masterSubscriptionFlag>true</masterSubscriptionFlag>
                             <status>ACTIVE</status>
-                            <startDate>2019-07-21+08:00</startDate>
+                            <startDate>$startDate$</startDate>
                             <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
                         </subscriptionDetail>
-                        <tariff capType="FLEXIBLECAP" code="FC12-1000-500SO" descr="£10 Tariff 12 Month Contract" startDate="2019-07-21+08:00" charge="10.0">
+                        <tariff capType="FLEXIBLECAP" code="FC12-1000-500SO" descr="£10 Tariff 12 Month Contract" startDate="$startDate$" charge="10.0">
                             <flexibleCapAmt flexibleCapType="SAFETYBUFFER">20.0</flexibleCapAmt>
                         </tariff>
                     </subscription>
                     <subscription>
                         <subscriptionDetail>
-                            <subscriptionNumber>07960513510</subscriptionNumber>
-                            <subscriptionDescription>Mobile FC</subscriptionDescription>
+                            <subscriptionNumber>$subscriptionNumberNC$</subscriptionNumber>
+                            <subscriptionDescription>Mobile NC</subscriptionDescription>
                             <masterSubscriptionFlag>false</masterSubscriptionFlag>
                             <status>ACTIVE</status>
-                            <startDate>2019-07-21+08:00</startDate>
+                            <startDate>$startDate$</startDate>
                             <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
                         </subscriptionDetail>
-                        <tariff capType="FLEXIBLECAP" code="FC12-1000-500SO" descr="£10 Tariff 12 Month Contract" startDate="2019-07-21+08:00" charge="10.0">
-                            <flexibleCapAmt flexibleCapType="SAFETYBUFFER">20.0</flexibleCapAmt>
+                        <tariff capType="NETWORKCAPPED" code="NC1-1000-250" descr="£10 SIM Only Tariff" startDate="$startDate$" charge="10.0">
                         </tariff>
                     </subscription>
                 </subscriptions>
+                <alerts>
+                    <alert>
+                        <type>PERKGAIN</type>
+                        <subscription>$subscriptionNumberFC$</subscription>
+                    </alert>
+                    <alert>
+                        <type>PERKGAIN</type>
+                        <subscription>$subscriptionNumberNC$</subscription>
+                    </alert>
+                </alerts>
             </accountSummary>
         </getAccountSummaryResponse>
     </S:Body>

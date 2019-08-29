@@ -5,7 +5,7 @@ import logic.utils.TimeStamp;
 
 import java.util.HashMap;
 
-public class CreditAgreementsGirdEntity {
+public class CreditAgreementsGridEntity {
 
 
     public static HashMap<String, String> getCreditAgreementGird(String subNo1) {

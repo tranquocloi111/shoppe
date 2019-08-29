@@ -1,7 +1,6 @@
 package logic.business.entities;
 
 import javafx.util.Pair;
-import logic.pages.care.find.ServiceOrdersContentPage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,8 +44,6 @@ public class EventEntity {
         this.dateTime = dateTime;
     }
 
-
-
     public static List<HashMap<String, String>> dataForEventChangeBundle() {
         List<HashMap<String, String>> listEventChangeBundle = new ArrayList<>();
         HashMap<String, String> event = new HashMap<String, String>();
@@ -88,4 +85,25 @@ public class EventEntity {
         return new Pair<String,String>(description,status);
     }
 
+    public static List<HashMap<String, String>> dataForEventChangeBundleImmediate() {
+        String[][] eventData = new String [][]{
+                {"Service Order created", "Open Service Order"},
+                {"SMS Request Completed", "Completed Task"},
+                {"Remove offer on network", "In Progress"},
+                {"Refill Amount: £37.50 - Completed", "Completed Task"},
+                {"Bonus Money reset to zero", "In Progress"},
+                {"PPB: AddSubscription: Request completed", "Completed Task"},
+                {"Service Order Completed","Completed Task" },
+        };
+
+        List<HashMap<String, String>> listEventChangeBundle = new ArrayList<>();
+
+        for(int i = 0; i<eventData.length; i++){
+                HashMap<String, String> event = new HashMap<String, String>();
+                event.put("Description", eventData[i][0]);
+                event.put("Status", eventData[i][1]);
+                listEventChangeBundle.add(event);
+        }
+        return listEventChangeBundle;
+    }
 }
