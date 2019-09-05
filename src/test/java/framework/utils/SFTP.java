@@ -1,11 +1,11 @@
 package framework.utils;
 
-import com.jcraft.jsch.*;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPReply;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
 
-import java.io.*;
+import java.io.File;
+import java.nio.file.Files;
 
 /**
  * SFTP Connection
@@ -28,24 +28,31 @@ public class SFTP {
     private ChannelSftp mChannelSftp = null;
 
 
-
-    public boolean connect(String strHostAddress, int iPort, String strUserName, String strPassword) {
+    public boolean connect(String strHostAddress, int iPort, String strUserName) {
         boolean blResult = false;
 
         try {
             //creating a new jsch session
             this.mJschSession = new JSch();
+            String filePath = "src\\test\\resources\\privatekey\\privateKey.ppk";
+            byte[] bFile = Files.readAllBytes(new File(filePath).toPath());
+            final byte[] emptyPassPhrase = new byte[0];
+            this.mJschSession.addIdentity(
+                    strUserName,
+                    bFile,
+                    null,
+                    emptyPassPhrase
+
+            );
+
+            //creating session with user, host port
+            this.mSSHSession = mJschSession.getSession(strUserName, strHostAddress, iPort);
+            this.mSSHSession.setConfig("PreferredAuthentications", "publickey");
 
             //set sftp server no check key when login
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
             this.mJschSession.setConfig(config);
-
-            //creating session with user, host port
-            this.mSSHSession = mJschSession.getSession(strUserName, strHostAddress, iPort);
-
-            //set password
-            this.mSSHSession.setPassword(strPassword);
 
             //connect to host
             this.mSSHSession.connect();
@@ -63,6 +70,8 @@ public class SFTP {
         }
         return blResult;
     }
+
+
 
     //download file
     public void downloadFile(String strSftpFile, String strLocalFile) {

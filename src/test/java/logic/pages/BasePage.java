@@ -135,10 +135,10 @@ public class BasePage {
 
     public void waitForPageLoadComplete(int specifiedTimeout) {
         ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
-                    public Boolean apply(WebDriver driver) {
-                        return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
-                    }
-                };
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            }
+        };
         WebDriverWait wait = new WebDriverWait(getDriver(), specifiedTimeout);
         wait.until(pageLoadCondition);
     }
@@ -181,6 +181,7 @@ public class BasePage {
     public String getValueOfElement(WebElement element) {
         return element.getAttribute("value");
     }
+
 
     public boolean isElementPresent(WebElement element) {
         try {
@@ -239,20 +240,43 @@ public class BasePage {
         el.selectByVisibleText(text);
     }
 
-    public void acceptComfirmDialog() { getDriver().switchTo().alert().accept(); }
+    public void acceptComfirmDialog() {
+        getDriver().switchTo().alert().accept();
+    }
 
     public void dismissComfirmDialog() {
         getDriver().switchTo().alert().dismiss();
     }
 
-    public void getTextComfirmDialog() { getDriver().switchTo().alert().getText(); }
+    public void getTextComfirmDialog() {
+        getDriver().switchTo().alert().getText();
+    }
 
-    public void clickSubmitBtn(){click(getDriver().findElement(By.xpath("//a[@id='SubmitBtn']")));}
-    public void clickContinueBtn(){click(getDriver().findElement(By.xpath("//a[@id='ContinueBtn']")));}
-    public WebDriver switchFrameByName(String name)
-    {
+    public void clickSubmitBtn() {
+        click(getDriver().findElement(By.xpath("//a[@id='SubmitBtn']")));
+    }
+
+    public void clickContinueBtn() {
+        click(getDriver().findElement(By.xpath("//a[@id='ContinueBtn']")));
+    }
+
+    public WebDriver switchFrameByName(String name) {
         return getDriver().switchTo().frame(name);
     }
 
+    public String getTextOfSelectedOption(WebElement element) {
+        Select select = new Select(element.findElement(By.tagName("select")));
+        return select.getFirstSelectedOption().getText();
+    }
+
+    public void clickHelpBtnByIndex(int index) {
+        List<WebElement> helpList = getDriver().findElements(By.xpath("//img[@src='images/icons/qmark.jpg?v=2.60.0-SNAPSHOT']"));
+        waitUntilElementClickable(helpList.get(index));
+        click(helpList.get(index));
+    }
+
+    public void waitUntilElementClickable(WebElement ele) {
+        WdManager.getWait().until(ExpectedConditions.elementToBeClickable(ele));
+    }
     //endregion
 }

@@ -30,7 +30,7 @@ public class TC2194_Credit_Card_Details_Are_Invalid_Expired_Token extends BaseTe
     String fullName = null;
     String invoiceNumber=null;
 
-    @Test(enabled = true, description = "TC2194 Credit Card detail are invalid token", groups = "SelfCare")
+    @Test(enabled = true, description = "TC2194 Credit Card detail are invalid token", groups = "Payment")
     public void TC2194_Credit_Card_Details_Are_Invalid_Expired_Token() {
         test.get().info("Step 1 : create an online cc customer with FC 1 bundle of SB and sim only");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_and_NK2720";

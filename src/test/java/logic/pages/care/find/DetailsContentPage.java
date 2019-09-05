@@ -108,6 +108,12 @@ public class DetailsContentPage extends BasePage {
         public void changeEmail(String email) {
             enterValueByLabel(getDriver().findElement(By.xpath(".//td[contains(text(),'Email Address:')]/following-sibling::td[1]//input")), email);
         }
+        public String getEveningTelephoneNumber() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Evening Telephone Number"));
+        }
+        public String getDayTimeTelephoneNumber() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Daytime Telephone Number"));
+        }
 
     }
 
