@@ -17,7 +17,7 @@ public class SFTPHelper extends SFTP {
     public void downloadFileFromRemoteServerToLocal(String localPath, String remotePath) {
         SFTP sftp = new SFTP();
         try {
-            Assert.assertTrue(sftp.connect(host, 22, userName, passWord));
+            Assert.assertTrue(sftp.connect(host, 22, userName));
             sftp.downloadFile(remotePath, localPath);
             Log.info(localPath);
         } catch (Exception ex) {
@@ -31,7 +31,7 @@ public class SFTPHelper extends SFTP {
     public void upFileFromLocalToRemoteServer(String localPath, String remotePath) {
         SFTP sftp = new SFTP();
         try {
-            Assert.assertTrue(sftp.connect(host, 22, userName, passWord));
+            Assert.assertTrue(sftp.connect(host, 22, userName));
             sftp.uploadFile( localPath,remotePath);
             Log.info(localPath);
         } catch (Exception ex) {
