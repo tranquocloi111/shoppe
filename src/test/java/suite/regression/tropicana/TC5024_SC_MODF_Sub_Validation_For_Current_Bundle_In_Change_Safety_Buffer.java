@@ -45,46 +45,51 @@ public class TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_B
         customerNumber = owsActions.customerNo;
         BaseTest.setBillGroupForCustomer(customerNumber);
 
-        test.get().info("Step 4 : Update Customer Start Date");
+        test.get().info("Step 5 : Update Customer Start Date");
         newStartDate = TimeStamp.TodayMinus15Days();
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
 
-        test.get().info("Step 5 : Get Subscription Number");
+        test.get().info("Step 6 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         subscription1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
         subscription2 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
-        test.get().info("Step 6 : Add Bonus Bundle to Subscription");
+        test.get().info("Step 7 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();
         String selfCarePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
         swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription2);
 
-        test.get().info("Step 7 : Submit Provision Wait");
+        test.get().info("Step 8 : Submit Provision Wait");
         List<WebElement> serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderBySubAndType(subscription2, "Change Bundle"));
         serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByElementServiceOrders(serviceOrder);
         BaseTest.updateThePDateAndBillDateForSO(serviceOrderId);
         RemoteJobHelper.getInstance().runProvisionSevicesJob();
 
-        test.get().info("Step 6 : Login to self care");
+        test.get().info("Step 9 : Login to self care");
         username = owsActions.username;
         password = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(username, password, customerNumber);
 
-        test.get().info("Step 7 : Verify my personal information page is displayed");
+        test.get().info("Step 10 : Verify my personal information page is displayed");
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
-        test.get().info("Step 8 : Click view or change my tariff details link");
+        test.get().info("Step 11 : Click view or change my tariff details link");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
 
-        test.get().info("Step 9 : Verify my tariff details page is displayed");
+        test.get().info("Step 12 : Verify my tariff details page is displayed");
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
-        test.get().info("Step 10 : Click add or change bundle button for monthly bundle without tropicana");
+        test.get().info("Step 13 : Click add or change bundle button for monthly bundle without tropicana");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobile1Tariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1");
         mobile1Tariff.clickChangeMySafetyBufferBtn();
 
+        test.get().info("Step 14 : Validate the the Current Allowance");
 
+        test.get().info("Step 15 : Navigate to Add/Change Family Perk page");
+        mobile1Tariff.clickAddOrChangeAFamilyPerkBtn();
+
+        test.get().info("Step 16 : Validate the the Current Allowance");
 
     }
 }

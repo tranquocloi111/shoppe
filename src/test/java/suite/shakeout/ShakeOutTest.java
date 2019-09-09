@@ -642,6 +642,7 @@ public class ShakeOutTest extends BaseTest {
         BaseTest.verifyNCDiscountBundles(discountBundle, newStartDate, "TM5HO");
         BaseTest.verifyFCDiscountBundles(discountBundle, newStartDate, "FLX01");
 
+
         test.get().info("Step 9 : Verify FC tariff and other products are correct");
         String tariffHeaderText = "Tariff Components (2 found) FC1-0750-150SO - £7.50 SIM Only Tariff 1 Month Contract";
         Assert.assertEquals(tariffHeaderText, SubscriptionContentPage.SubscriptionDetailsPage.TariffComponentsGridPage.getInstance().getHeaderText());

@@ -28,6 +28,9 @@ public class DetailsContentPage extends BasePage {
         public String getMasterMPN() {
             return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Master MPN:')]/following-sibling::td[1]"))).split(" ")[0];
         }
+        public String getBillStyle() {
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Bill Style:')]/following-sibling::td[1]"))).split(" ")[0];
+        }
     }
 
     public static class PaymentInformationPage extends DetailsContentPage {

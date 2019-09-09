@@ -69,7 +69,7 @@ public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract 
         test.get().info("Step 9 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();
         String path = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
-        swsActions.submitMaintainBundleRequest(path, "", "");
+        swsActions.submitMaintainBundleRequest(path, customerNumber, subscription1);
 
         test.get().info("Step 10 : Submit Provision job");
         BaseTest.updateThePDateAndBillDateForSO("");
