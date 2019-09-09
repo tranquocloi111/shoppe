@@ -337,9 +337,9 @@ public class BillingActions extends OracleDB {
         }
     }
 
-    public static void updateInvoiceDueDate(String customerNumber) {
+    public static void updateInvoiceDueDate(String customerNumber, Date day) {
         try {
-            OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update invoice set DateDue=trunc(to_date('%s','yyyy-mm-dd')) where hmbrid=%s", TimeStamp.Today(), getHmbrid(customerNumber)));
+            OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update invoice set DateDue=trunc(to_date('%s','yyyy-mm-dd')) where hmbrid=%s", day, getHmbrid(customerNumber)));
         } catch (Exception ex) {
             Log.error(ex.getMessage());
         } catch (Throwable throwable) {
@@ -350,5 +350,6 @@ public class BillingActions extends OracleDB {
     public int findDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String bundleCode, String status) {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.partitionIdRef.equalsIgnoreCase(partitionIdRef) && x.bundleCode.equalsIgnoreCase(bundleCode) && x.status.equalsIgnoreCase(status)).count()));
     }
+
 }
 
