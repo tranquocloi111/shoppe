@@ -61,7 +61,7 @@ public class TC2192_Process_Continuous_Credit_Card_Payment_Requests extends Base
         Assert.assertEquals(InvoicesContentPage.getInstance().getStatusByIndex(1), "Confirmed");
 
         test.get().info("Step 5 : update invoice due date");
-        BillingActions.updateInvoiceDueDate(customerNumber);
+        BillingActions.updateInvoiceDueDate(customerNumber,TimeStamp.Today());
 
         test.get().info("Step 6 : submit payment all location and credit card batch job");
         RemoteJobHelper.getInstance().submitPaymentAllocationBatchJobRun();

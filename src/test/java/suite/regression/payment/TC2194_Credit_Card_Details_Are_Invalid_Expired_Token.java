@@ -58,7 +58,7 @@ public class TC2194_Credit_Card_Details_Are_Invalid_Expired_Token extends BaseTe
         updateCreditCardExpiryDate();
 
         test.get().info("Step 4 : update invoice due date");
-        BillingActions.updateInvoiceDueDate(customerNumber);
+        BillingActions.updateInvoiceDueDate(customerNumber,TimeStamp.Today());
 
         test.get().info("Step 5 : submit payment all location and credit card batch job");
         RemoteJobHelper.getInstance().submitPaymentAllocationBatchJobRun();
