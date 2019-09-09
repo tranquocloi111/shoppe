@@ -6,10 +6,12 @@ import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.testng.Assert;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MyPersonalInformationPage extends BasePage {
@@ -276,6 +278,28 @@ public class MyPersonalInformationPage extends BasePage {
             tableControlBase.clickLinkByText("View or change my account details");
         }
 
+    }
 
+    public static class MyBillsAndPaymentsSection extends MyPersonalInformationPage {
+        private static MyBillsAndPaymentsSection instance;
+        @FindBy(xpath = "//b[contains(text(),'My bills and payments')]/ancestor::p/following-sibling::div[1]/table")
+        WebElement myBillsandPaymentstable;
+
+        public static MyBillsAndPaymentsSection getInstance() {
+            if (instance == null)
+                return new MyBillsAndPaymentsSection();
+            return instance;
+        }
+
+        TableControlBase tableControlBase = new TableControlBase(myBillsandPaymentstable);
+
+
+        public void clickViewDetailsOfMyBillsAndPayments() {
+            tableControlBase.clickLinkByText("View details of my bills and payments");
+        }
+
+        public void verifyTheMyBillsAndPaymentsPage() {
+            Assert.assertEquals(MyPersonalInformationPage.getInstance().getHeader(), "My bills and payments");
+        }
     }
 }

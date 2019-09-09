@@ -25,9 +25,7 @@ import java.util.List;
 
 public class TC30223_Change_Self_Care_Password extends BaseTest {
 /*
-add email information in properties file
-Change expected email URL base on environment
-Note: Mel environment can not run FTP.
+Tran Quoc Loi
  */
 
     @Test(enabled = true, description = "TC30223 Change password by selfcare", groups = "SelfCare")
@@ -37,9 +35,7 @@ Note: Mel environment can not run FTP.
         String expectedFile = "src\\test\\resources\\txt\\TC30223_expectedEmail.txt";
         String actualFile = "src\\test\\resources\\txt\\TC30223_actualEmail.txt";
         Common.deleteFile(actualFile);
-        EmailHelper.getInstance().deleteAllEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset");
-        EmailHelper.getInstance().deleteAllEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Have you logged");
-        EmailHelper.getInstance().deleteAllEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Change of your Pay Monthly Price Plans");
+        EmailHelper.getInstance().deleteAllEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "");
 
         test.get().info("Step 2 : Create a CC customer with 3 subscriptions");
         String path = "src\\test\\resources\\xml\\selfcare\\viewaccount\\TC30222_CreateOrder";
@@ -72,9 +68,9 @@ Note: Mel environment can not run FTP.
         SelfCareSettingContentPage.SelfCareSettingSection.getInstance().acceptComfirmDialog();
 
         test.get().info("Step 8 : get temporary password ");
-        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset", 120);
-        String temporaryPassEmail = EmailHelper.getInstance().extractPasswordEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset");
-        String link = EmailHelper.getInstance().extractLinkEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset");
+        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset ", 50);
+        String temporaryPassEmail = EmailHelper.getInstance().extractPasswordEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset - Pay Monthly Price Plans - Tesco Mobile");
+        String link = EmailHelper.getInstance().extractLinkEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Password reset - Pay Monthly Price Plans - Tesco Mobile");
 
         test.get().info("Step 9: login selfcare via the link and password in email");
         SelfCareTestBase.page().LoginIntoSelfCarePageByChangePasswordLink(owsActions.username, temporaryPassEmail, owsActions.customerNo, link);
@@ -92,7 +88,7 @@ Note: Mel environment can not run FTP.
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
         test.get().info("Step 13 : Verify the second email format ");
-        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Change of your Pay Monthly Price ", 120);
+        EmailHelper.getInstance().waitEmailByFolderNameAndEmailSubject("TescoMobilePayMonthly", "Change of your Pay Monthly Price ", 50);
         verifySecondEmail(expectedFile, actualFile);
 
         test.get().info("Step 14 : load user in hub net and go to service order ");

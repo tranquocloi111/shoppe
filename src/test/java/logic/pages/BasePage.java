@@ -278,5 +278,9 @@ public class BasePage {
     public void waitUntilElementClickable(WebElement ele) {
         WdManager.getWait().until(ExpectedConditions.elementToBeClickable(ele));
     }
+    public String getCurrentUrl()
+    {
+       return getDriver().getCurrentUrl();
+    }
     //endregion
 }

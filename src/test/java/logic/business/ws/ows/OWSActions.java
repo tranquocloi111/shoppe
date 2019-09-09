@@ -11,6 +11,7 @@ import logic.utils.Parser;
 import logic.utils.TimeStamp;
 
 import java.io.File;
+import java.security.PublicKey;
 
 public class OWSActions extends BaseWs {
     public String customerNo;
@@ -21,6 +22,7 @@ public class OWSActions extends BaseWs {
     public String firstName;
     public String lastName;
     public String password;
+    public String email;
     public String orderRef;
     public Xml requestForNextStep;
     public Xml responseForNextStep;
@@ -93,6 +95,11 @@ public class OWSActions extends BaseWs {
         orderRef = request.getTextByXpath("//orderDetail//@orderRef");
     }
 
+    private void setEmail()
+    {
+        email= request.getTextByTagName("emailAddress");
+    }
+
     public void createOrderHavingFamilyPerkBundle() {
         request = new Xml(new File(TC32533_CREATE_ORDER));
         request.setTextByTagName(commonModMap);
@@ -108,6 +115,29 @@ public class OWSActions extends BaseWs {
 
     public void createOrderAndSignAgreementByUI(){
         request = new Xml(new File(TC29699_CREATE_ORDER));
+        request.setTextByTagName(commonModMap);
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+
+        String agreementSigningUrl = response.getTextByTagName("URL");
+        AgreementSigningContractPage agreementSigningContractPage = new AgreementSigningContractPage();
+        agreementSigningContractPage.signAgreementViaUI(agreementSigningUrl, 1);
+
+        request.setTextByXpath("//createOrder//@correlationId", response.getTextByXpath("//createOrderResponse//@correlationId"));
+        request.setAttributeTextByXpath("//orderDetail","orderId",response.getTextByTagName("orderId"));
+        request.setTextByXpath("//verification//@termsAndConditionsAccepted", "true");
+        request.setTextByXpath("//verification//@acceptAgreement", "true");
+
+        Log.info("Request: " + request.toString());
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        setCustomerNo();
+        Log.info("Account number:" + customerNo);
+        setOrderIdNo();
+        Log.info("OrderId number:" + orderIdNo);
+        checkAsyncProcessIsCompleted(orderIdNo);
+    }
+
+    public void createOrderAndSignAgreementByUI(String filePath){
+        request = new Xml(new File(filePath));
         request.setTextByTagName(commonModMap);
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
 
@@ -249,6 +279,7 @@ public class OWSActions extends BaseWs {
         request = new Xml(new File(path));
         request.setTextByTagName(commonModMap);
         request.setTextByTagName("billGroupId", "2");
+        request.setTextByTagName("password", "password1");
 
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());
@@ -257,8 +288,11 @@ public class OWSActions extends BaseWs {
         setOrderIdNo();
         Log.info("OrderId number:" + orderIdNo);
         setUsername();
+        setFirstName();
+        setLastName();
         setPassword();
         setFullName();
+        setEmail();
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 

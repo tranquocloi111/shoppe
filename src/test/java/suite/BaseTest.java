@@ -114,6 +114,9 @@ public class BaseTest {
     protected static void createNewBillingGroupToMinus15days() {
         BillingActions.getInstance().createNewBillingGroup(-15, true, -1);
     }
+    protected static void createNewBillingGroupToMinus20days() {
+        BillingActions.getInstance().createNewBillingGroup(-20, true, -1);
+    }
 
     public static void updateBillGroupPaymentCollectionDateTo10DaysLater() {
         Date paymentCollectionDate = Date.valueOf(LocalDate.now().plusDays(10));
