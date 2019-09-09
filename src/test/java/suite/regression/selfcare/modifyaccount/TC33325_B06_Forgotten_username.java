@@ -117,14 +117,6 @@ DateTime helper
         return new Object[][]{{"gc"}, {"ff"}, {"ie"}};
     }
 
-    public void verifySecondEmail(String expectedFile, String actualFile) {
-        Common.deleteFile(actualFile);
-        Common.waitForFileDelete(120, actualFile);
-        EmailHelper.getInstance().convertEmailToFile("TescoMobilePayMonthly", "Change of your Pay Monthly Price Plans", actualFile);
-        Common.waitForFileExist(120, actualFile);
-        List result = Common.compareFiles(expectedFile, actualFile, "Dear ");
-        Assert.assertEquals(result.size(), 0);
 
-    }
 
 }

@@ -54,6 +54,15 @@ public class CareTestBase extends BasePage {
         findPage.openCustomerByIndex(1);
     }
 
+    public void verifyCustomerIsNotExistInHubNet(String customerId) {
+        loginPage.navigateToLoginPage();
+        loginPage.login(userName, passWord);
+
+        findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
+        Assert.assertFalse(findPage.IsCustomerDiplayedByIndex(1));
+    }
+
+
     public void reLoadCustomerInHubNet(String customerId) {
         MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
         findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
@@ -199,8 +208,8 @@ public class CareTestBase extends BasePage {
         return DetailsContentPage.CreditInformationPage.getInstance().getClubCardNumber();
     }
 
-    public static String recordDiscountBundleMonthlyRefillSOId(String subscriptionNumber){
-        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SERVICE_ORDERS)){
+    public static String recordDiscountBundleMonthlyRefillSOId(String subscriptionNumber) {
+        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SERVICE_ORDERS)) {
             MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
         }
         return ServiceOrdersContentPage.getInstance().getServiceOrderIdByOrderServices(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Discount Bundle Monthly Refill"));
@@ -226,23 +235,23 @@ public class CareTestBase extends BasePage {
         return DetailsContentPage.AddressInformationPage.getInstance().getEmail();
     }
 
-    public static List<String> getAllSubscription(int numberSubscriptions){
-        if(MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SUBSCRIPTIONS)){
+    public static List<String> getAllSubscription(int numberSubscriptions) {
+        if (MenuPage.LeftMenuPage.getInstance().verifyLinkIsNotSelected(SUBSCRIPTIONS)) {
             MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         }
 
         ArrayList<String> subscriptionNumberList = new ArrayList<String>();
-        for(int i = 1; i<=numberSubscriptions; i++){
+        for (int i = 1; i <= numberSubscriptions; i++) {
             String subscriptionNumber = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
             subscriptionNumberList.add(subscriptionNumber);
         }
         return subscriptionNumberList;
     }
 
-    public static List<String> getAllSubscriptionsNumber(){
+    public static List<String> getAllSubscriptionsNumber() {
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         List<String> subscriptionNumberList = new ArrayList<>();
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             String subNo = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
             subscriptionNumberList.add(subNo);
         }

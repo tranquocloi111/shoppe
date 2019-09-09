@@ -30,7 +30,6 @@ public class TableControlBase extends BasePage {
     }
 
     public WebElement getLinkByText(String text) {
-        // i = 1: Header
         try {
             WebElement row = element.findElement(By.xpath(String.format(".//tr/td//a[contains(text(),'%s')]", text)));
             return row;
@@ -426,6 +425,10 @@ public class TableControlBase extends BasePage {
     public WebElement findCellByLabelText(String text) {
         String xpath = String.format(".//td[contains(text(),'%s')]//following-sibling::td", text);
         return element.findElement(By.xpath(xpath));
+    }
+
+    public List<WebElement> getAllRows() {
+        return element.findElements(By.tagName("tr"));
     }
 
 
