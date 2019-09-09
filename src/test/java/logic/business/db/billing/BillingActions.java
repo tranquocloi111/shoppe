@@ -39,7 +39,7 @@ public class BillingActions extends OracleDB {
         }
         String sql = String.format("update BGPROPERTY set propvalnumber= %d where propertykey='BGPCDAY' and billinggroupid= %d ", localDate.getDayOfMonth(), billingGroupId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
-}
+    }
 
     public static void setBillGroupForCustomer(String customerId, int billGroupId) {
         int hmbrid = getHmbrid(customerId);
@@ -67,15 +67,15 @@ public class BillingActions extends OracleDB {
     public static Date getInvoiceDueDateByPaymentCollectionDate(int numberOfDate) {
         LocalDate today;
         LocalDate date = LocalDate.now().plusDays(numberOfDate);
-        if (date.getDayOfMonth() > 28){
+        if (date.getDayOfMonth() > 28) {
             for (int i = 0; i < numberOfDate; i++) {
                 today = LocalDate.now().plusDays(i);
                 if ((today.getDayOfWeek() == DayOfWeek.SATURDAY) || (today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
                     date = date.minusDays(1);
                 }
             }
-        }else {
-            while(date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY){
+        } else {
+            while (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
                 date = date.plusDays(1);
             }
         }
@@ -93,8 +93,8 @@ public class BillingActions extends OracleDB {
                     date = date.minusDays(1);
                 }
             }
-        }else {
-            while(date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY){
+        } else {
+            while (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
                 date = date.plusDays(1);
             }
         }
@@ -111,7 +111,6 @@ public class BillingActions extends OracleDB {
             throwable.printStackTrace();
         }
     }
-
 
 
     private Pair<Integer, String> createNewBillGroupHeader() throws SQLException {
@@ -249,6 +248,7 @@ public class BillingActions extends OracleDB {
         String sql = String.format("update hitransactionproperty set propvaldate = trunc(sysdate) where hitransactionid = %s and propertykey in ('PDATE','BILLDATE')", serviceOrderId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
+
     public static int findPayemtGateWay(List<PaymentGatewayEnity> allPaymentGateEnity, String action, String paymentType, String saleChannel) {
         return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action) && x.getPaymentType().equalsIgnoreCase(paymentType) && x.getSaleChannel().equalsIgnoreCase(saleChannel)).count()));
     }
@@ -261,7 +261,7 @@ public class BillingActions extends OracleDB {
         try {
             ResultSet res = OracleDB.SetToOEDatabase().executeQuery(sql);
             while (res.next()) {
-                PaymentGatewayEnity payment= new PaymentGatewayEnity();
+                PaymentGatewayEnity payment = new PaymentGatewayEnity();
                 payment.setPaymentGTWRequestID(res.getString(1));
                 payment.setAction(res.getString(2));
                 payment.setPaymentType(res.getString(3));
@@ -274,15 +274,16 @@ public class BillingActions extends OracleDB {
         }
         return paymentGateWayList;
     }
+
     public static List<PaymentGatewayRespondEnity> getPaymentGatewayRespondForOrderInOEDb(List<String> requestIDList) {
 
         List<PaymentGatewayRespondEnity> paymentGateWayList = new ArrayList<>();
-        String requestID = String.join(",",requestIDList);
+        String requestID = String.join(",", requestIDList);
         String sql = String.format("select action,status,gatewaystatus,bankstatus,tdsauthresponsetype,fraudstatus,tokenstatus,gatewayrequestid from paymentgtwresponse where paymentgtwrequestid in (%s)", requestID);
         try {
             ResultSet res = OracleDB.SetToOEDatabase().executeQuery(sql);
             while (res.next()) {
-                PaymentGatewayRespondEnity payment= new PaymentGatewayRespondEnity();
+                PaymentGatewayRespondEnity payment = new PaymentGatewayRespondEnity();
                 payment.setAction(res.getString(1));
                 payment.setStatus(res.getString(2));
                 payment.setGatewayStatus(res.getString(3));
@@ -298,23 +299,32 @@ public class BillingActions extends OracleDB {
         }
         return paymentGateWayList;
     }
-    public static int findPayemtGateWayRespond(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus, String tDSAuthResponseType) {
+
+    public static int findPaymentGateWayRespond(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus, String tDSAuthResponseType) {
         return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
                 && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus().equalsIgnoreCase(gateWayStatus)
                 && x.getBankStatus().equalsIgnoreCase(bankStatus)
                 && x.getTDSAuthResponseType().equalsIgnoreCase(tDSAuthResponseType)).count()));
     }
+
     public static int findPayemtGateWayRespondByFraudStatus(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus, String FraudStatus) {
         return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
                 && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus().equalsIgnoreCase(gateWayStatus)
                 && x.getBankStatus().equalsIgnoreCase(bankStatus)
                 && x.getFraudStatus().equalsIgnoreCase(FraudStatus)).count()));
     }
-    public static int findPayemtGateWayRespondByTokenStatus(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus, String TokenStatus) {
+
+    public static int findPaymentGateWayRespondByTokenStatus(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus, String TokenStatus) {
         return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
                 && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus().equalsIgnoreCase(gateWayStatus)
                 && x.getBankStatus().equalsIgnoreCase(bankStatus)
                 && x.getTokenStatus().equalsIgnoreCase(TokenStatus)).count()));
+    }
+
+    public static int findPaymentGateWayRespondByBankStatus(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus) {
+        return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
+                && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus().equalsIgnoreCase(gateWayStatus)
+                && x.getBankStatus().equalsIgnoreCase(bankStatus)).count()));
     }
 
     public static void updateRunAsAtDateOfCurrentDateMinus1MonthAnd1Day() {
@@ -326,14 +336,19 @@ public class BillingActions extends OracleDB {
             throwable.printStackTrace();
         }
     }
+
     public static void updateInvoiceDueDate(String customerNumber) {
         try {
-            OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update invoice set DateDue=trunc(to_date('%s','yyyy-mm-dd')) where hmbrid=%s" ,TimeStamp.Today(),getHmbrid(customerNumber)));
+            OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update invoice set DateDue=trunc(to_date('%s','yyyy-mm-dd')) where hmbrid=%s", TimeStamp.Today(), getHmbrid(customerNumber)));
         } catch (Exception ex) {
             Log.error(ex.getMessage());
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
+    }
+
+    public int findDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String bundleCode, String status) {
+        return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.partitionIdRef.equalsIgnoreCase(partitionIdRef) && x.bundleCode.equalsIgnoreCase(bundleCode) && x.status.equalsIgnoreCase(status)).count()));
     }
 }
 

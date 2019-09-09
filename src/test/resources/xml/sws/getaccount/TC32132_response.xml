@@ -3,24 +3,24 @@
       <getAccountSummaryResponse xmlns="http://selfcare.telco.hsntech.com" xmlns:ns2="http://wsdl.hsntech.com">
          <accountSummary>
             <accountDetail>
-               <accountNumber>20653</accountNumber>
-               <accountName>Mr first936024006 last030862137</accountName>
-               <startDate>2019-07-23+08:00</startDate>
+               <accountNumber>$accountNumber$</accountNumber>
+               <accountName>$accountName$</accountName>
+               <startDate>$startDate$</startDate>
                <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
                <clubcardNumber>634143330730912784</clubcardNumber>
-               <nextBillDate>2019-08-17+08:00</nextBillDate>
+               <nextBillDate>$nextBillDate$</nextBillDate>
             </accountDetail>
             <subscriptions>
                <subscription>
                   <subscriptionDetail>
-                     <subscriptionNumber>07016385060</subscriptionNumber>
+                     <subscriptionNumber>$subscriptionNumber$</subscriptionNumber>
                      <subscriptionDescription>Mobile Ref 1</subscriptionDescription>
                      <masterSubscriptionFlag>true</masterSubscriptionFlag>
                      <status>ACTIVE</status>
-                     <startDate>2019-07-23+08:00</startDate>
+                     <startDate>$startDate$</startDate>
                      <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
                   </subscriptionDetail>
-                  <tariff capType="FLEXIBLECAP" code="FC12-1000-500SO" descr="£10 Tariff 12 Month Contract" startDate="2019-07-23+08:00" charge="10.0">
+                  <tariff capType="FLEXIBLECAP" code="FC12-1000-500SO" descr="£10 Tariff 12 Month Contract" startDate="$startDate$" charge="10.0">
                      <flexibleCapAmt flexibleCapType="SAFETYBUFFER">20.0</flexibleCapAmt>
                   </tariff>
                </subscription>

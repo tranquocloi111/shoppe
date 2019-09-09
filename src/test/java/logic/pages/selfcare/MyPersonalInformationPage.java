@@ -130,11 +130,11 @@ public class MyPersonalInformationPage extends BasePage {
                 return findLinkButtonText(myTariffTable(), "Add or change a bundle");
             }
 
-            private WebElement changeMySafetyBufferBtn(){
+            private WebElement changeMySafetyBufferBtn() {
                 return findLinkButtonText(myTariffTable(), "Change my safety buffer");
             }
 
-            private WebElement addASafetyBufferBtn(){
+            private WebElement addASafetyBufferBtn() {
                 return findLinkButtonText(myTariffTable(), "Add a safety buffer");
             }
 
@@ -142,11 +142,11 @@ public class MyPersonalInformationPage extends BasePage {
                 click(addOrChangeABundleButton());
             }
 
-            public void clickChangeMySafetyBufferBtn(){
+            public void clickChangeMySafetyBufferBtn() {
                 click(changeMySafetyBufferBtn());
             }
 
-            public void clickAddASafetyBufferBtn(){
+            public void clickAddASafetyBufferBtn() {
                 click(addASafetyBufferBtn());
             }
 
@@ -174,6 +174,37 @@ public class MyPersonalInformationPage extends BasePage {
                 }
                 return list;
             }
+
+            public String getMonthlyAllowance() {
+                return getTextOfElement(tableControlBase.findCellByLabelText("Monthly allowance"));
+            }
+
+            public String getMonthlyBundles() {
+                return getTextOfElement(tableControlBase.findCellByLabelText("Monthly bundles"));
+            }
+
+            @FindBy(xpath = "//label[text()='Roaming']//ancestor::td[1]//following-sibling::td")
+            WebElement roamingCell;
+
+            public String getRoaming() {
+                return getTextOfElement(roamingCell);
+            }
+
+            public String getDataCapAbroad() {
+                return getTextOfElement(tableControlBase.findCellByLabelText("£40 data cap abroad"));
+            }
+
+            public boolean isDataCapAbroadRed() {
+                return tableControlBase.findCellByLabelText("£40 data cap abroad").findElement(By.tagName("a")).getAttribute("style").contains("red");
+            }
+
+            public String getHelpIntructionByIndex(int index) {
+                clickHelpBtnByIndex(index);
+                waitUntilElementVisible(getDriver().findElement(By.xpath("//td[@id='WzBoDyI']")));
+                String toolTip = getTextOfElement(getDriver().findElement(By.xpath("//td[@id='WzBoDyI']")));
+                click(getDriver().findElement(By.xpath("//span[@id='WzClOsE']")));
+                return toolTip;
+            }
         }
     }
 
@@ -194,14 +225,34 @@ public class MyPersonalInformationPage extends BasePage {
             return (getTextOfElement(tableControlBase.getLinkByText(text)));
         }
 
+        public List<String> getAllMessage() {
+            List<WebElement> elementList = myAlertSection.findElements(By.xpath(".//tr"));
+            List<String> allMessg = new ArrayList<>();
+            for (int i = 0; i < elementList.size(); i++) {
+                allMessg.add(getTextOfElement(elementList.get(i)));
+            }
+            return allMessg;
+        }
+
+        public boolean isMssgDisplayed(String mssg) {
+            List<String> allMessg = getAllMessage();
+            for (int i = 0; i < allMessg.size(); i++) {
+                if (allMessg.get(i).equalsIgnoreCase(mssg)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void clickAlertMessageByText(String text) {
             click(tableControlBase.getLinkByText(text));
         }
 
 
-        @FindBy(xpath ="//span[contains(text(),'overdue')]" )
+        @FindBy(xpath = "//span[contains(text(),'overdue')]")
         WebElement overDueAlert;
-        public String getAlertMessagebForOverDuePayment(){
+
+        public String getAlertMessagebForOverDuePayment() {
             return (getTextOfElement(overDueAlert));
         }
 

@@ -193,7 +193,7 @@ public class TC31887_Self_Care_Add_Family_Perk_Bundle_to_FC_tariff extends BaseT
         CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " FC Mobile 1");
 
         test.get().info("Step 28: Verify the one off bundle just added is listed in other products grid");
-        HashMap<String, String> otherProducts = OtherProductEntiy.dataForAOtherBundleProduct("BUNDLER - [500-FONMIN-0-FC]", "Bundle", "Discount Bundle Recurring - [Family perk - 500 Tesco Mobile only minutes per month]", "£0.00", newStartDate);
+        HashMap<String, String> otherProducts = OtherProductEntiy.dataForAnOtherBundleProduct("BUNDLER - [500-FONMIN-0-FC]", "Bundle", "Discount Bundle Recurring - [Family perk - 500 Tesco Mobile only minutes per month]", "£0.00", newStartDate);
         SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage otherProductsGridSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance();
         Assert.assertEquals(1, otherProductsGridSectionPage.getNumberOfOtherProductsByProduct(otherProducts));
 
@@ -201,8 +201,7 @@ public class TC31887_Self_Care_Add_Family_Perk_Bundle_to_FC_tariff extends BaseT
         test.get().info("Step 29: Verify 1 new discount bundle record generated for customer");
         discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCodeOfMobileRef1);
         Assert.assertEquals(11, discountBundles.size());
-        Assert.assertEquals(3, verifyDiscountBundlesForNewNCTariff(discountBundles).size());
-
+        verifyDiscountBundlesForNewNCTariff(discountBundles);
 
     }
 
@@ -242,47 +241,16 @@ public class TC31887_Self_Care_Add_Family_Perk_Bundle_to_FC_tariff extends BaseT
     private void verifyAllDiscountBundleEntriesAlignWithBillRunCalendarEntires(Date newStartDate, String discountGroupCode) {
         List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCode);
         Assert.assertEquals(8, discountBundles.size());
-        List<Integer> listBundleFLX17 = this.verifyFCDiscountBundles(discountBundles, newStartDate, "FLX17");
-        Assert.assertEquals(2, Common.steamFilterCondition(listBundleFLX17, 1));
-        List<Integer> listBundleTM500 = this.verifyNCDiscountBundles(discountBundles, newStartDate, "TM500");
-        Assert.assertEquals(3, Common.steamFilterCondition(listBundleTM500, 1));
-        List<Integer> listBundleTMT5K = this.verifyNCDiscountBundles(discountBundles, newStartDate, "TMT5K");
-        Assert.assertEquals(3, Common.steamFilterCondition(listBundleTMT5K, 1));
 
+        verifyFCDiscountBundlesFoBillingGroupMinus15days(discountBundles, newStartDate, "FLX17");
+        verifyNCDiscountBundlesFoBillingGroupMinus15days(discountBundles, newStartDate, "TM500");
+        verifyNCDiscountBundlesFoBillingGroupMinus15days(discountBundles, newStartDate, "TMT5K");
     }
 
-    protected static List<Integer> verifyFCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef) {
-        List<Integer> listResult = new ArrayList<Integer>();
-        int result1 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "FC", startDate, TimeStamp.TodayMinus16DaysAdd1Month(), partitionIdRef, "ACTIVE");
-        listResult.add(result1);
-        int result2 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "FC", TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.TodayMinus16DaysAdd2Months(), partitionIdRef, "ACTIVE");
-        listResult.add(result2);
-
-        return listResult;
-    }
-
-    protected static List<Integer> verifyDiscountBundlesForNewNCTariff(List<DiscountBundleEntity> allDiscountBundles) {
-        List<Integer> listResult = new ArrayList<Integer>();
-        int result1 = BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayMinus16DaysAdd2Months(), "500-FONMIN-0-FC", "ACTIVE");
-        listResult.add(result1);
-        int result2 = BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(allDiscountBundles, "NC", TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.TodayMinus16DaysAdd2Months(), "500-FONMIN-0-FC", "ACTIVE");
-        listResult.add(result2);
-        int result3 = BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(allDiscountBundles, "NC", TimeStamp.TodayMinus15DaysAdd2Months(), TimeStamp.TodayMinus16DaysAdd3Months(), "500-FONMIN-0-FC", "ACTIVE");
-        listResult.add(result3);
-
-        return listResult;
-    }
-
-    protected static List<Integer> verifyNCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef) {
-        List<Integer> listResult = new ArrayList<Integer>();
-        int result1 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", startDate, TimeStamp.TodayMinus16DaysAdd2Months(), partitionIdRef, "ACTIVE");
-        listResult.add(result1);
-        int result2 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.TodayMinus16DaysAdd2Months(), partitionIdRef, "ACTIVE");
-        listResult.add(result2);
-        int result3 = BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(allDiscountBundles, "NC", TimeStamp.TodayMinus15DaysAdd2Months(), TimeStamp.TodayMinus16DaysAdd3Months(), partitionIdRef, "ACTIVE");
-        listResult.add(result3);
-
-        return listResult;
+    private static void verifyDiscountBundlesForNewNCTariff(List<DiscountBundleEntity> allDiscountBundles) {
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayMinus16DaysAdd2Months(), "500-FONMIN-0-FC", "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(allDiscountBundles, "NC", TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.TodayMinus16DaysAdd2Months(), "500-FONMIN-0-FC", "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(allDiscountBundles, "NC", TimeStamp.TodayMinus15DaysAdd2Months(), TimeStamp.TodayMinus16DaysAdd3Months(), "500-FONMIN-0-FC", "ACTIVE"));
     }
 
 }

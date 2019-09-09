@@ -42,11 +42,40 @@ public class DetailsContentPage extends BasePage {
 
         @FindBy(xpath = "//td[contains(text(),'Payment Information')]/ancestor::table[1]/following-sibling::div[1]")
         WebElement parent;
+        @FindBy(xpath = "//td[contains(text(),'Payment Information')]/ancestor::table[1]/following-sibling::div[1]//table")
+        WebElement paymentInfotable;
+        TableControlBase tableControlBase=new TableControlBase(parent);
 
         public String getCardType() {
-            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Card Type:')]/following-sibling::td[1]")));
+            return getTextOfElement(tableControlBase.findCellByLabelText("Card Type:"));
         }
-
+        public String getPaymentMethod() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("Payment Method:"));
+        }
+        public String getBankSortCode() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("Bank Sort Code:"));
+        }
+        public String getBankAccountNumber() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("Bank Account Number"));
+        }
+        public String getBankAccountHolderName() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("Bank Account Holder Name:"));
+        }
+        public String getDDIReference() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("DDI Reference:"));
+        }
+        public String getDDIStatus() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("DDI Status:"));
+        }
+        public String getCreditCardNumber() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("Credit Card Number:"));
+        }
+        public String getCardExpireYear() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("Credit Card Expiry Year:"));
+        }
+        public String getCardExpireMonth() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("Credit Card Expiry Month:"));
+        }
     }
 
 
@@ -81,6 +110,12 @@ public class DetailsContentPage extends BasePage {
 
         public void changeEmail(String email) {
             enterValueByLabel(getDriver().findElement(By.xpath(".//td[contains(text(),'Email Address:')]/following-sibling::td[1]//input")), email);
+        }
+        public String getEveningTelephoneNumber() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Evening Telephone Number"));
+        }
+        public String getDayTimeTelephoneNumber() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Daytime Telephone Number"));
         }
 
     }

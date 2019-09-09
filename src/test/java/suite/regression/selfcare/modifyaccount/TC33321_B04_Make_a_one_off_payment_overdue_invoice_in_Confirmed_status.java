@@ -37,13 +37,6 @@ import java.util.List;
 public class TC33321_B04_Make_a_one_off_payment_overdue_invoice_in_Confirmed_status extends BaseTest {
     /*
     Tran Quoc Loi
-    makeapaymentpage
-    Taskcontent
-
-    commonaction
-    service
-    ftphelper
-
      */
     String amountOverDue = null;
     String invoiceNumber = null;

@@ -37,7 +37,7 @@
                             <cardName>CardName</cardName>
                             <cardNumber>5105105105105100</cardNumber>
                             <cardType>MC</cardType>
-                            <cardExpiryDate>$cardExpiryDate$</cardExpiryDate>
+                            <cardExpiryDate></cardExpiryDate>
                             <cardStartDate>0110</cardStartDate>
                             <cvv>123</cvv>
                         </creditCard>

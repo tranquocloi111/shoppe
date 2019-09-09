@@ -1,4 +1,4 @@
-package suite.regression.selfcare.payment;
+package suite.regression.payment;
 
 import framework.utils.Log;
 import logic.business.db.OracleDB;
@@ -24,15 +24,13 @@ import java.util.List;
 
 public class TC2192_Process_Continuous_Credit_Card_Payment_Requests extends BaseTest {
     /*
-     * PaymentDetailPage
-     * PaymentDPage
-     * RemoteJobHelper
+     Tran Quoc Loi
      * */
     public String batchID = null;
     public String transCount = null;
     String fullName = "last926186493, first122103967";
 
-    @Test(enabled = true, description = "TC2192 Process Continuous Credit Card Payment Requests", groups = "SelfCare")
+    @Test(enabled = true, description = "TC2192 Process Continuous Credit Card Payment Requests", groups = "Payment")
     public void TC2192_Process_Continuous_Credit_Card_Payment_Requests() {
         test.get().info("Step 1 : create an online cc customer with FC 1 bundle of SB and sim only");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_and_NK2720";
@@ -81,7 +79,7 @@ public class TC2192_Process_Continuous_Credit_Card_Payment_Requests extends Base
         MenuPage.LeftMenuPage.getInstance().clickPaymentsLink();
 
         String refNo = PaymentDetailPage.paymentConentGrid.getInstance().getRefNoByType("Credit Card Payment");
-        HashMap<String, String> paymentEnity = PaymentGirdEntity.getPaymentEnity("Credit Card Payment", "£10.00");
+        HashMap<String, String> paymentEnity = PaymentGridEntity.getPaymentEnity("Credit Card Payment", "£10.00");
         Assert.assertEquals(PaymentDetailPage.paymentConentGrid.getInstance().getNumberPaymentRecord(paymentEnity), 1);
 
 
@@ -160,7 +158,7 @@ public class TC2192_Process_Continuous_Credit_Card_Payment_Requests extends Base
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentCurrency(), "Great Britain Pound");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentMethod(), "Credit Card");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getCardNumber(), "************5100");
-        HashMap<String, String> paymentEnity = PaymentGirdEntity.getRecieptEnity(invoiceNumber, "£10.00", fullName);
+        HashMap<String, String> paymentEnity = PaymentGridEntity.getRecieptEnity(invoiceNumber, "£10.00", fullName);
         Assert.assertEquals(PaymentDetailPage.receiptAllocation.getInstance().getNumberReceiptRecord(paymentEnity), 1);
     }
 

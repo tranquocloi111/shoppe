@@ -3,9 +3,11 @@ package suite.regression.selfcare;
 import ch.ethz.ssh2.Session;
 import framework.config.Config;
 import framework.utils.Log;
+import framework.utils.SFTP;
 import logic.business.db.OracleDB;
 import logic.business.db.billing.BillingActions;
 import logic.business.helper.FTPHelper;
+import logic.business.helper.SFTPHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.BasePage;
 
@@ -103,7 +105,7 @@ public class SelfCareTestBase extends BasePage {
     }
 
     public void verifyAddOrChangeAFamilyPerkIsDisplayed() {
-        Assert.assertEquals("Add or change a Family perk", MyPersonalInformationPage.getInstance().getHeader());
+        Assert.assertEquals("Add or change a Family Perk", MyPersonalInformationPage.getInstance().getHeader());
     }
 
     public void verifyMyPersonalInformationPageIsDisplayed() {
@@ -136,10 +138,10 @@ public class SelfCareTestBase extends BasePage {
         List<String> GRGSMSFileName = OracleDB.SetToNonOEDatabase().executeQueryReturnListString(sql);
         String firstResult = GRGSMSFileName.get(0);
         String value = firstResult.substring(firstResult.indexOf("=") + 1).replace("}", "");
-        String ftpFilePath = Config.getProp("cdrFolder");
-        ftpFilePath = ftpFilePath.replace("Feed/a2aInterface/fileinbox", "ftp/tesgrg/fileoutbox");
+        String sftpFilePath = Config.getProp("cdrFolder");
+        sftpFilePath = sftpFilePath.replace("Feed/a2aInterface/fileinbox", "ftp/tesgrg/fileoutbox");
         String localPath = Common.getFolderLogFilePath();
-        FTPHelper.getInstance().downLoadFromDisk(ftpFilePath, value, localPath);
+        FTPHelper.getInstance().downLoadFromDisk( sftpFilePath,value,localPath);
         Log.info("TM_HUB_SMSRQST file:" + localPath);
         return localPath + value;
     }
@@ -175,6 +177,16 @@ public class SelfCareTestBase extends BasePage {
     }
     public void verifyMakeAOneOffPayment() {
         Assert.assertEquals("Make a one-off payment", MyPersonalInformationPage.getInstance().getHeader());
+    }
+    public void clickChangeMyPaymentDetails() {
+        super.clickLinkByText("Change my payment details");
+    }
+    public void verifyMyPaymentDetail() {
+        Assert.assertEquals("My payment details", MyPersonalInformationPage.getInstance().getHeader());
+    }
+
+    public void verifyMyTarriffAndCreditAgreementdocuments() {
+        Assert.assertEquals("My tariff and credit agreement documents", MyPersonalInformationPage.getInstance().getHeader());
     }
 
 }

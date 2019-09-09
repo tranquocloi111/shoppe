@@ -1,25 +1,8 @@
 package logic.utils;
 
-import com.sun.org.apache.xml.internal.security.c14n.CanonicalizationException;
-import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer;
-import com.sun.org.apache.xml.internal.security.c14n.InvalidCanonicalizerException;
-import framework.config.Config;
 import framework.utils.Log;
 import framework.utils.Xml;
-import logic.business.db.OracleDB;
-import logic.business.helper.FTPHelper;
-import org.apache.commons.io.FileUtils;
-import org.testng.Assert;
-import org.w3c.dom.Element;
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,8 +10,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import static org.testng.Assert.assertEquals;
 
 public class Common {
     public static String splitSignatureCode(String imgUrl) {

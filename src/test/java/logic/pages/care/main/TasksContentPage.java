@@ -290,6 +290,27 @@ public class TasksContentPage extends BasePage {
             {
                 return  getTextOfElement(lblRedSAuthorisationNumber);
             }
+            public String getServiceOrderStatus() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Service Order Status:"));
+            }
+            public String getDDIReference() {
+                return getTextOfElement(tableControlBase.getCellByLabel("DDI Reference:"));
+            }
+            public String getCreditCardExpiryMonth() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Credit Card Expiry Month:"));
+            }
+            public String getCreditCardSecurityCode() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Credit Card Security Code:"));
+            }
+            public String getCreditCardHolderName() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Credit Card Holder Name:"));
+            }
+            public String getNewPaymentMethod() {
+                return getTextOfElement(tableControlBase.getCellByLabel("New Payment Method:"));
+            }
+            public String getCardType() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Card Type:"));
+            }
         }
     }
 

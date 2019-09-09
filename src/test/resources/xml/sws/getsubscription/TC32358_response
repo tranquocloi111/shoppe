@@ -5,7 +5,7 @@
             <nextBillDate>$nextBillDate$</nextBillDate>
             <subscription>
                 <subscriptionDetail>
-                    <subscriptionNumber>$subscriptionNumberMobileFC$</subscriptionNumber>
+                    <subscriptionNumber>$subscriptionNumberFC$</subscriptionNumber>
                     <subscriptionDescription>Mobile FC</subscriptionDescription>
                     <masterSubscriptionFlag>true</masterSubscriptionFlag>
                     <status>ACTIVE</status>
@@ -53,18 +53,18 @@
                     <totalChargeOutside>0.0</totalChargeOutside>
                     <highUsageLimit>0.0</highUsageLimit>
                     <minimumTopUp>0.0</minimumTopUp>
-                    <lastCDRLoaded>2018-05-04T09:22:58.000+10:00</lastCDRLoaded>
+                    <lastCDRLoaded>2018-05-04T10:36:47.000+10:00</lastCDRLoaded>
                 </overageSummary>
                 <alerts>
                     <alert>
                         <type>PERKGAIN</type>
-                        <subscription>$subscriptionNumberMobileFC$</subscription>
+                        <subscription>$subscriptionNumberFC$</subscription>
                     </alert>
                 </alerts>
             </subscription>
             <subscription>
                 <subscriptionDetail>
-                    <subscriptionNumber>$subscriptionNumberMobileNC$</subscriptionNumber>
+                    <subscriptionNumber>$subscriptionNumberNC$</subscriptionNumber>
                     <subscriptionDescription>Mobile NC</subscriptionDescription>
                     <masterSubscriptionFlag>false</masterSubscriptionFlag>
                     <status>ACTIVE</status>
@@ -111,12 +111,12 @@
                     <totalChargeOutside>0.0</totalChargeOutside>
                     <highUsageLimit>0.0</highUsageLimit>
                     <minimumTopUp>0.0</minimumTopUp>
-                    <lastCDRLoaded>2018-05-04T09:22:58.000+10:00</lastCDRLoaded>
+                    <lastCDRLoaded>2018-05-04T10:36:47.000+10:00</lastCDRLoaded>
                 </overageSummary>
                 <alerts>
                     <alert>
                         <type>PERKGAIN</type>
-                        <subscription>$subscriptionNumberMobileNC$</subscription>
+                        <subscription>$subscriptionNumberNC$</subscription>
                     </alert>
                 </alerts>
             </subscription>
