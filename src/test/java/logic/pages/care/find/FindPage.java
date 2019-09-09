@@ -35,6 +35,9 @@ public class FindPage extends BasePage {
         click(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));
         waitForPageLoadComplete(60);
     }
+    public boolean IsCustomerDiplayedByIndex(int index) {
+        return isElementPresent(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));
+    }
 
     public void navigateToCustomerDetailPage(int index, String customerNumber){
         MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
