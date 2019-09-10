@@ -42,7 +42,8 @@ public class ShakeOutTest extends BaseTest {
     public void TC29701_Deactivate_Account_with_contracted_subscription_within_28_days_with_a_delay_return_and_immediate_refund() {
         test.get().info("Step 1 : Create a customer with NC and device");
         OWSActions owsActions = new OWSActions();
-        owsActions.createOrderAndSignAgreementByUI();
+        String TC29699_CREATE_ORDER = "src\\test\\resources\\xml\\ows\\TC29699_createOrder.xml";
+        owsActions.createOrderAndSignAgreementByUI(TC29699_CREATE_ORDER, 1);
 
         test.get().info("Step 2 : Create New Billing Group");
         BaseTest.createNewBillingGroup();
@@ -98,7 +99,7 @@ public class ShakeOutTest extends BaseTest {
         test.get().info("Step 11 : Verify Customer End Date Updated Successfully");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         Assert.assertEquals(Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT), CommonContentPage.CustomerSummarySectionPage.getInstance().getCustomerSummaryEndDate());
-        Assert.assertEquals(Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT), CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getValueOfSubscriptionsTable(1, "End Date"));
+        Assert.assertEquals(Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT), CommonContentPage.SubscriptionsGridSectionPage.getInstance().getValueOfSubscriptionsTable(1, "End Date"));
 
         MenuPage.LeftMenuPage.getInstance().clickOtherChargesCreditsItem();
         Assert.assertEquals(2, OtherChargesCreditsContent.getInstance().getRowNumberOfOtherChargesCreditsContentTable());
@@ -107,11 +108,11 @@ public class ShakeOutTest extends BaseTest {
         test.get().info("Step 12 : Verify Customer End Date And Subscription End Date Changed Successfully");
         MenuPage.LeftMenuPage.getInstance().clickSummaryLink();
         Assert.assertEquals(Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT), CommonContentPage.CustomerSummarySectionPage.getInstance().getCustomerSummaryEndDate());
-        Assert.assertEquals(1, CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getRowNumberOfSubscriptionsTable());
-        Assert.assertEquals(1, CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptions(SubscriptionEntity.dataForSummarySubscriptions(newStartDate, endDate)).size());
+        Assert.assertEquals(1, CommonContentPage.SubscriptionsGridSectionPage.getInstance().getRowNumberOfSubscriptionsTable());
+        Assert.assertEquals(1, CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptions(SubscriptionEntity.dataForSummarySubscriptions(newStartDate, endDate)).size());
 
         test.get().info("Step 13 : Verify NC discount bundles are removed in HUB");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         Assert.assertEquals(3, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().getRowNumberOfOtherProductsGridTable());
         Assert.assertEquals(3, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().getOtherProducts(OtherProductEntiy.dataForOtherProduct(newStartDate, endDate)).size());
         String discountGroupCodeOfMobileRef1 = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
@@ -192,10 +193,10 @@ public class ShakeOutTest extends BaseTest {
 
         test.get().info("Step 7 : Verify all discount bundle entries align with bill run calendar entires");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
-        String serviceRefOf2stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
+        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        String serviceRefOf2stSubscription = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " Mobile Ref 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " Mobile Ref 1");
         String discountGroupCodeOfMobileRef1 = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
 
         List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCodeOfMobileRef1);
@@ -209,12 +210,12 @@ public class ShakeOutTest extends BaseTest {
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
 
         test.get().info("Step 9 : Verify subscription 1 service feature is none");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " Mobile Ref 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " Mobile Ref 1");
         Assert.assertEquals("None", SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getServiceFeature());
 
         test.get().info("Step 10 : Verify subscription 2 service feature is none");
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf2stSubscription + " Mobile Ref 2");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf2stSubscription + " Mobile Ref 2");
         Assert.assertEquals("None", SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getServiceFeature());
 
         test.get().info("Step 11 : Submit maintain bundle request to Selfcare WS");
@@ -250,7 +251,7 @@ public class ShakeOutTest extends BaseTest {
         String serviceSubscription = ServiceOrdersContentPage.getInstance().getSubscriptionNumber(serviceOrder);
 
         test.get().info("Step 19 : Verify a new service order created for customer");
-        serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderProvisionWait(serviceOrderId, serviceSubscription));
+        serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderProvisionWaitChangeBundle(serviceOrderId, serviceSubscription));
         Assert.assertEquals(1, serviceOrder.size());
 
         test.get().info("Step 20 : Click service order id to open details");
@@ -264,7 +265,7 @@ public class ShakeOutTest extends BaseTest {
 
         serviceOrderId = TasksContentPage.TaskSummarySectionPage.getInstance().getSoID();
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle()));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventServiceOrderCreated()));
 
         test.get().info("Step 22 : Update Provision Date Of Change Bundle Service Order");
         CommonActions.updateProvisionDateOfChangeBundleServiceOrder(serviceOrderId);
@@ -310,7 +311,7 @@ public class ShakeOutTest extends BaseTest {
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
 
         test.get().info("Step 28 : Verify subscription 1 service feature is turned on");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " Mobile Ref 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " Mobile Ref 1");
         Assert.assertEquals("4G Service=ON", SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getServiceFeature());
 
         test.get().info("Step 29 : Verify the old FP bundle is removed and new FP bundle is added");
@@ -327,7 +328,7 @@ public class ShakeOutTest extends BaseTest {
 
         test.get().info("Step 30 : Verify 2nd subscription service feature is none");
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf2stSubscription + " Mobile Ref 2");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf2stSubscription + " Mobile Ref 2");
         Assert.assertEquals("None", SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getServiceFeature());
     }
 
@@ -355,8 +356,8 @@ public class ShakeOutTest extends BaseTest {
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 6 : Get subscription number and agreement number");
-        String subNo1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
-        String subNo2 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
+        String subNo1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        String subNo2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
         MenuPage.LeftMenuPage.getInstance().clickCreditAgreementsItem();
         CreditAgreementsContentPage.CreditAgreementsGridPage.getInstance().clickExpandButtonOfCABySubscription(subNo1);
         String agreementNo1 =  CreditAgreementsContentPage.CreditAgreementsGridPage.getInstance().getCADetailBySubscription(subNo1).agreementNumber();
@@ -368,7 +369,7 @@ public class ShakeOutTest extends BaseTest {
         ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscription();
 
         test.get().info("Step 8 : Verify the subscription status is Inactive");
-        Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getStatusValue(subNo2));
+        Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo2));
 
         test.get().info("Step 9 : Take a payment to master subscription");
         MenuPage.RightMenuPage.getInstance().clickApplyFinancialTransactionLink();
@@ -562,7 +563,7 @@ public class ShakeOutTest extends BaseTest {
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
 
         test.get().info("Step 10 : Verify HTC WILDFIRE XXX 60 exist in other product and subscription is same as assigned");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         Assert.assertEquals(owsActions.subscriptionNumber, SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber());
         Assert.assertEquals(3, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().getRowNumberOfOtherProductsGridTable());
         Assert.assertEquals(3, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().getNumberOfOtherProducts(OtherProductEntiy.dataForOtherProductHTCWILDFIRE()));
@@ -626,7 +627,7 @@ public class ShakeOutTest extends BaseTest {
 
         test.get().info("Step 8 : Verify all discount bundle entries align with bill run calendar entires for FC");
         String fcSubText = Common.findValueOfStream(subList, "FC Mobile");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(fcSubText);
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(fcSubText);
         String discountGroupCodeOfFCMobile = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
         String fcSubNumber = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
 
@@ -636,7 +637,6 @@ public class ShakeOutTest extends BaseTest {
         BaseTest.verifyNCDiscountBundles(discountBundle, newStartDate, "TM150");
         BaseTest.verifyNCDiscountBundles(discountBundle, newStartDate, "TM5HO");
         BaseTest.verifyFCDiscountBundles(discountBundle, newStartDate, "FLX01");
-
 
         test.get().info("Step 9 : Verify FC tariff and other products are correct");
         String tariffHeaderText = "Tariff Components (2 found) FC1-0750-150SO - £7.50 SIM Only Tariff 1 Month Contract";
@@ -651,7 +651,7 @@ public class ShakeOutTest extends BaseTest {
         MenuPage.LeftMenuPage.getInstance().clickSummaryLink();
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         String ncSubText = Common.findValueOfStream(subList, "NC Mobile");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(ncSubText);
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(ncSubText);
         String discountGroupCodeOfNCMobile = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
         String ncSubNumber = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
 
@@ -792,7 +792,7 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("3G data - 1GB;", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
 
         Assert.assertEquals(2, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle()));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventServiceOrderCreated()));
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundleProvisionWait()));
 
 
@@ -816,7 +816,7 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("Monthly data bundle - 1GB (Capped);", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
 
         Assert.assertEquals(2, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle()));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventServiceOrderCreated()));
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundleProvisionWait()));
 
         test.get().info("Step 34 : Update the PDATE and BILLDATE for change bundle FC and NC");
@@ -830,10 +830,10 @@ public class ShakeOutTest extends BaseTest {
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
 
         test.get().info("Step 36 : Verify there are 3 change bundle service orders are completed");
-        listServiceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderProvisionWait(fcSubNumber));
+        listServiceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderCompletedTaskChangeBundle(fcSubNumber));
         Assert.assertEquals(1, listServiceOrder.size());
 
-        listServiceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderProvisionWait(ncSubNumber));
+        listServiceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderCompletedTaskChangeBundle(ncSubNumber));
         Assert.assertEquals(1, listServiceOrder.size());
 
         test.get().info("Step 37 : Verify FC change bundle SO details are updated");
@@ -850,11 +850,11 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("3G data - 1GB;", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
 
         Assert.assertEquals(4, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle()));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventServiceOrderCreated()));
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundleProvisionWait()));
 
-//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed","Completed Task")));
-//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order Completed","Completed Task")));
+//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrderCreated("PPB: AddSubscription: Request completed","Completed Task")));
+//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrderCreated("Service Order Completed","Completed Task")));
 
 
         test.get().info("Step 38 : Back to customer");
@@ -875,21 +875,21 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("Monthly data bundle - 1GB (Capped);", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
 
         Assert.assertEquals(4, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundle()));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventServiceOrderCreated()));
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(EventEntity.dataForEventChangeBundleProvisionWait()));
 
-//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed","Completed Task")));
-//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order Completed","Completed Task")));
+//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrderCreated("PPB: AddSubscription: Request completed","Completed Task")));
+//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrderCreated("Service Order Completed","Completed Task")));
 
         test.get().info("Step 40 : Back to customer");
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
 
         test.get().info("Step 41 : Verify FC other products are updated");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(fcSubText);
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(fcSubText);
         Assert.assertEquals(4, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().getRowNumberOfOtherProductsGridTable());
         Assert.assertEquals(1, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().
-                getNumberOfOtherProduct(OtherProductEntiy.dataBundlerForOtherProduct("BUNDLER - [1GB-3GDATA-0500-FC]", "Bundle", "Discount Bundle Recurring - [3G data - 1GB]", "", "£5.00")));
+                getNumberOfOtherProduct(OtherProductEntiy.dataBundleForOtherProduct("BUNDLER - [1GB-3GDATA-0500-FC]", "Bundle", "Discount Bundle Recurring - [3G data - 1GB]", "£5.00")));
 
         test.get().info("Step 42 : Verify the discount bundle record FC is updated");
         List<DiscountBundleEntity> bundleEntityList = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCodeOfFCMobile);
@@ -901,10 +901,10 @@ public class ShakeOutTest extends BaseTest {
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
 
         test.get().info("Step 44 : Verify the discount bundle record NC is updated");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(ncSubText);
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(ncSubText);
         Assert.assertEquals(3, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().getRowNumberOfOtherProductsGridTable());
         Assert.assertEquals(1, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().
-                getNumberOfOtherProduct(OtherProductEntiy.dataBundlerForOtherProduct("BUNDLER - [1GB-DATA-750-NC]", "Bundle", "Discount Bundle Recurring - [Monthly data bundle - 1GB (Capped)]", "", "£7.50")));
+                getNumberOfOtherProduct(OtherProductEntiy.dataBundleForOtherProduct("BUNDLER - [1GB-DATA-750-NC]", "Bundle", "Discount Bundle Recurring - [Monthly data bundle - 1GB (Capped)]", "£7.50")));
 
         test.get().info("Step 45 : Run refill job");
         RemoteJobHelper.getInstance().submitDoRefillBcJob(TimeStamp.Today());
@@ -966,15 +966,15 @@ public class ShakeOutTest extends BaseTest {
 
         test.get().info("Step 7 : Verify all discount bundle entries align with bill run calendar entires");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
-        String serviceRefOf2stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 2");
+        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
+        String serviceRefOf2stSubscription = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 2");
 
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " FC Mobile 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " FC Mobile 1");
         String discountGroupCodeOfMobileRef1 = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
         verifyDiscountBundleBeforeChangingBundle(newStartDate, discountGroupCodeOfMobileRef1);
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf2stSubscription + " FC Mobile 2");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf2stSubscription + " FC Mobile 2");
         String discountGroupCodeOfMobileRef2 = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
         verifyDiscountBundleBeforeChangingBundle(newStartDate, discountGroupCodeOfMobileRef2);
 
@@ -1080,7 +1080,7 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("Family perk - 150 Mins per month;", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesRemoved());
 
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order set to Provision Wait","Provision Wait")));
+//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrderCreated("Service Order set to Provision Wait","Provision Wait")));
         String serviceOrderId = TasksContentPage.TaskPage.TaskSummarySectionPage.getInstance().getSoID();
 
         test.get().info("Step 26 : Update provision date of change bundle service order");
@@ -1108,9 +1108,9 @@ public class ShakeOutTest extends BaseTest {
         Assert.assertEquals("Family perk - 150 Mins per month;", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesRemoved());
 
         Assert.assertEquals(3,  TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order set to Provision Wait","Provision Wait")));
-//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed","Completed Task")));
-//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order Completed","Completed Task")));
+//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrderCreated("Service Order set to Provision Wait","Provision Wait")));
+//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrderCreated("PPB: AddSubscription: Request completed","Completed Task")));
+//        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrderCreated("Service Order Completed","Completed Task")));
 
         test.get().info("Step 32 : Login to self care without Pin");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
@@ -1133,10 +1133,10 @@ public class ShakeOutTest extends BaseTest {
 
         test.get().info("Step 37 : Open details for customer 1st subscription");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " FC Mobile 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " FC Mobile 1");
 
         test.get().info("Step 38 : Verify the one off bundle just added is listed in other products grid");
-        List<HashMap<String,String>> otherProducts = OtherProductEntiy.dataForOtherProduct(newStartDate);
+        List<HashMap<String,String>> otherProducts = OtherProductEntiy.dataSampleForOtherProduct(newStartDate);
         SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage otherProductsGridSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance();
         Assert.assertEquals(4, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().getNumberOfOtherProducts(otherProducts));
 
@@ -1312,10 +1312,10 @@ public class ShakeOutTest extends BaseTest {
     }
 
     private List<String> getAllSubscriptionsNumber(){
-       MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-       List<String> subscriptionNumberList = new ArrayList<>();
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        List<String> subscriptionNumberList = new ArrayList<>();
         for (int i = 0; i < 3; i++){
-            String subNo = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
+            String subNo = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
             subscriptionNumberList.add(subNo);
         }
 

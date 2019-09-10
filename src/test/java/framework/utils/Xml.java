@@ -68,7 +68,6 @@ public class Xml {
         return null;
     }
 
-
     public void setTextByTagName(String tagName, String value) {
         NodeList nodes = getElementsByTagName(tagName);
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -131,6 +130,7 @@ public class Xml {
             ((Element)node).setAttribute(attributeName, value);
         }
     }
+
     public void setAttributeTextByXpath(String tagName, String attributeName, String value){
         NodeList nodes = getElementsByXpath(tagName);
         Node node = nodes.item(0);
@@ -176,6 +176,13 @@ public class Xml {
     public String getAttributeTextByXpath(String xpath, String attributeName, int index){
         NodeList nodes = getElementsByXpath(xpath);
         return nodes.item(index).getAttributes().getNamedItem(attributeName).getNodeValue();
+    }
+
+    public Node getParentNode(String xpathExp) {
+        Node parentNode = null;
+        NodeList nodes = getElementsByXpath(xpathExp);
+        parentNode = nodes.item(0).getParentNode();
+        return parentNode;
     }
 
 }

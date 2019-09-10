@@ -99,7 +99,7 @@ service
 
         test.get().info("Step 9 :get lastest subscription");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberByIndex(1).split(" ")[0];
+        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberByIndex(1).split(" ")[0];
 
 
         test.get().info("Step 10 :Open the financial transaction content for customer");

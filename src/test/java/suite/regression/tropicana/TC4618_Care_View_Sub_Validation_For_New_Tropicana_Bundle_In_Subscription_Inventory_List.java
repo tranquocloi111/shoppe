@@ -46,7 +46,7 @@ public class TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscri
         test.get().info("Step 5 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscription1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
+        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
 
         test.get().info("Step 6 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();
@@ -62,7 +62,7 @@ public class TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscri
         test.get().info("Step 5 : Load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue("FC Mobile 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue("FC Mobile 1");
 
         test.get().info("Step 6 : Tropicana bundle appears in subscription inventory list as expected");
 

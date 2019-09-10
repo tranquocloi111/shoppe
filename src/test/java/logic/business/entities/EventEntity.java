@@ -44,7 +44,7 @@ public class EventEntity {
         this.dateTime = dateTime;
     }
 
-    public static List<HashMap<String, String>> dataForEventChangeBundle() {
+    public static List<HashMap<String, String>> dataForEventServiceOrderCreated() {
         List<HashMap<String, String>> listEventChangeBundle = new ArrayList<>();
         HashMap<String, String> event = new HashMap<String, String>();
         event.put("Description", "Service Order created");
@@ -64,46 +64,57 @@ public class EventEntity {
         return listEventChangeBundle;
     }
 
-    public static HashMap<String, String> dataForEventChangeBundle(String description, String status) {
-
+    public static HashMap<String, String> dataForEventServiceOrder(String description, String status) {
         HashMap<String, String> event = new HashMap<String, String>();
         event.put("Description", description);
         event.put("Status", status);
 
         return event;
     }
+
     public static HashMap<String, String> dataForEventChangePassword(String description, String status, String username) {
-
         HashMap<String, String> event = new HashMap<String, String>();
         event.put("Description", description);
         event.put("Status", status);
-        event.put("Username",username);
+        event.put("Username", username);
 
         return event;
     }
-    public static Pair<String,String> setEvents(String description, String status){
-        return new Pair<String,String>(description,status);
+
+    public static Pair<String, String> setEvents(String description, String status) {
+        return new Pair<String, String>(description, status);
     }
 
     public static List<HashMap<String, String>> dataForEventChangeBundleImmediate() {
-        String[][] eventData = new String [][]{
+        String[][] eventData = new String[][]{
                 {"Service Order created", "Open Service Order"},
                 {"SMS Request Completed", "Completed Task"},
                 {"Remove offer on network", "In Progress"},
                 {"Refill Amount: £37.50 - Completed", "Completed Task"},
                 {"Bonus Money reset to zero", "In Progress"},
                 {"PPB: AddSubscription: Request completed", "Completed Task"},
-                {"Service Order Completed","Completed Task" },
+                {"Service Order Completed", "Completed Task"},
         };
 
         List<HashMap<String, String>> listEventChangeBundle = new ArrayList<>();
 
-        for(int i = 0; i<eventData.length; i++){
-                HashMap<String, String> event = new HashMap<String, String>();
-                event.put("Description", eventData[i][0]);
-                event.put("Status", eventData[i][1]);
-                listEventChangeBundle.add(event);
+        for (int i = 0; i < eventData.length; i++) {
+            HashMap<String, String> event = new HashMap<String, String>();
+            event.put("Description", eventData[i][0]);
+            event.put("Status", eventData[i][1]);
+            listEventChangeBundle.add(event);
         }
         return listEventChangeBundle;
     }
+
+    public static List<HashMap<String, String>> dataForEventServiceOrderCompleted() {
+        List<HashMap<String, String>> listEventChangeBundle = new ArrayList<>();
+        HashMap<String, String> event = new HashMap<String, String>();
+        event.put("Description", "Service Order Completed");
+        event.put("Status", "Completed Task");
+        listEventChangeBundle.add(event);
+
+        return listEventChangeBundle;
+    }
+
 }

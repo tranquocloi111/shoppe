@@ -191,7 +191,7 @@ public class BaseTest {
     protected static String getSubscriptionNumberBySubscriptionNumber(String Subscription)
     {
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        return CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue(Subscription);
+        return CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue(Subscription);
     }
 
     protected static void downLoadFile(String remotePath, String fileName, String localPath){

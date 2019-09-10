@@ -1,12 +1,14 @@
 package logic.utils;
 
 import framework.config.Config;
-import org.joda.time.Days;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class TimeStamp {
@@ -18,6 +20,8 @@ public class TimeStamp {
     public final static String DATE_FORMAT_IN_PDF = "dd/MM/yyyy";
     public final static String DATE_FORMAT_IN_PDF2 = "dd-MMM-yyyy";
     public final static String DATE_FORMAT_IN_PDF3 = "MM/yyyy";
+    public final static String DATE_FORMAT_XML = "yyyy-MM-dd";
+
 
 
     public static Date Today() {
@@ -159,8 +163,7 @@ public class TimeStamp {
     }
 
     public static String DateFormatXml() {
-        String timeZone = Config.getProp("timeZone");
-        return "yyyy-MM-dd" + timeZone;
+        return DATE_FORMAT_XML + TimeZone();
     }
 
 
@@ -177,5 +180,27 @@ public class TimeStamp {
     public static Date TodayPlus4Years() {
         return Date.valueOf(String.valueOf(LocalDateTime.now().plusYears(4).toLocalDate()));
     }
+    public static String DateTimeFormatXml() {
+//        String timeZone = Config.getProp("timeZone");
+//        String format =  "yyyy-MM-dd HH:mm:ss.SSS" + timeZone;
+//        return format;
 
+        DateTimeZone timeZone = DateTimeZone.forID( Config.getProp("timeZoneId") );
+        DateTime now = new DateTime( timeZone );
+        return now.toString();
+    }
+
+    public static Date TodayMinus1DayPlus23Months(){
+        return Date.valueOf(LocalDate.now().minusDays(1).plusMonths(23));
+    }
+
+    public static Date TodayPlusMonth(int numberOfMonth) {
+        return Date.valueOf(LocalDate.now().plusMonths(numberOfMonth));
+    }
+
+    public static String TimeZone(){
+        ZoneId zone = ZoneId.of(Config.getProp("timeZoneId"));
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(zone);
+        return zonedDateTime.getOffset().toString();
+    }
 }

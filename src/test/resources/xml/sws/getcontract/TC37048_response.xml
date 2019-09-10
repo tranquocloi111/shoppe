@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <getContractSummaryResponse xmlns="http://selfcare.telco.hsntech.com" xmlns:ns2="http://wsdl.hsntech.com">
+         <return>
+            <account>
+               <accountNumber>$accountNumber$</accountNumber>
+               <accountName>$accountName$</accountName>
+               <startDate>$startDate$$timeZone$</startDate>
+               <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+            </account>
+            <tariff>
+               <subscriptionNumber>$subscriptionNumber$</subscriptionNumber>
+               <startDate>$startDate$T00:00:00.000$timeZone$</startDate>
+               <endDate>$endDate$T00:00:00.000$timeZone$</endDate>
+               <etc>100</etc>
+               <monthlyCharge>10</monthlyCharge>
+            </tariff>
+            <devices>
+               <device>
+                  <make>HTC</make>
+                  <model>Wildfire</model>
+               </device>
+            </devices>
+            <peripherals>
+               <peripheral>
+                  <make>Apple</make>
+                  <model>Watch Sport 38mm Aluminium Case</model>
+               </peripheral>
+            </peripherals>
+            <agreements/>
+         </return>
+      </getContractSummaryResponse>
+   </S:Body>
+</S:Envelope>
