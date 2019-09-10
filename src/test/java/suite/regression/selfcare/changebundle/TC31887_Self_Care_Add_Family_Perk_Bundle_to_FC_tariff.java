@@ -12,7 +12,6 @@ import logic.pages.care.find.ServiceOrdersContentPage;
 import logic.pages.care.main.TasksContentPage;
 import logic.pages.selfcare.AddOrChangeAFamilyPerkPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
-import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.testng.Assert;
@@ -24,11 +23,9 @@ import logic.business.db.billing.CommonActions;
 import logic.business.ws.ows.OWSActions;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import logic.business.ws.ows.OWSActions;
 import logic.pages.care.find.SubscriptionContentPage;
 import suite.regression.selfcare.SelfCareTestBase;
 
@@ -68,15 +65,15 @@ public class TC31887_Self_Care_Add_Family_Perk_Bundle_to_FC_tariff extends BaseT
 
         test.get().info("Step 8 : Verify all discount bundle entries align with bill run calendar entires");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
-        String serviceRefOf2stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 2");
+        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
+        String serviceRefOf2stSubscription = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 2");
 
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " FC Mobile 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " FC Mobile 1");
         String discountGroupCodeOfMobileRef1 = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
         verifyAllDiscountBundleEntriesAlignWithBillRunCalendarEntires(newStartDate, discountGroupCodeOfMobileRef1);
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf2stSubscription + " FC Mobile 2");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf2stSubscription + " FC Mobile 2");
         String discountGroupCodeOfMobileRef2 = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
         List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCodeOfMobileRef1);
         verifyAllDiscountBundleEntriesAlignWithBillRunCalendarEntires(newStartDate, discountGroupCodeOfMobileRef2);
@@ -182,15 +179,15 @@ public class TC31887_Self_Care_Add_Family_Perk_Bundle_to_FC_tariff extends BaseT
         Assert.assertEquals("Family perk - 500 Tesco Mobile only minutes per month;", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
 
         Assert.assertEquals(4, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
-        Assert.assertEquals(3, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("PPB: AddSubscription: Request completed", "Completed Task")));
-        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangeBundle("Service Order Completed", "Completed Task")));
+        Assert.assertEquals(3, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrder("PPB: AddSubscription: Request completed", "Completed Task")));
+        Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrder("Service Order Completed", "Completed Task")));
 
         test.get().info("Step 26 : Load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 27 : Open details for customer 1st subscription");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " FC Mobile 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " FC Mobile 1");
 
         test.get().info("Step 28: Verify the one off bundle just added is listed in other products grid");
         HashMap<String, String> otherProducts = OtherProductEntiy.dataForAnOtherBundleProduct("BUNDLER - [500-FONMIN-0-FC]", "Bundle", "Discount Bundle Recurring - [Family perk - 500 Tesco Mobile only minutes per month]", "£0.00", newStartDate);

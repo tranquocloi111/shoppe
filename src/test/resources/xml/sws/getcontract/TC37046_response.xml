@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <getContractSummaryResponse xmlns="http://selfcare.telco.hsntech.com" xmlns:ns2="http://wsdl.hsntech.com">
+         <return>
+            <account>
+               <accountNumber>$accountNumber$</accountNumber>
+               <accountName>$accountName$</accountName>
+               <startDate>$startDate$$timeZone$</startDate>
+               <endDate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            </account>
+            <tariff>
+               <subscriptionNumber>$subscriptionNumber$</subscriptionNumber>
+               <startDate>$startDate$T00:00:00.000$timeZone$</startDate>
+               <endDate>$tariffEndDate$T00:00:00.000$timeZone$</endDate>
+               <etc>100</etc>
+               <monthlyCharge>10</monthlyCharge>
+            </tariff>
+            <devices>
+               <device>
+                  <agreementNumber>$deviceAgreementNumber$</agreementNumber>
+                  <make>HTC</make>
+                  <model>Desire HD</model>
+               </device>
+            </devices>
+            <peripherals>
+               <peripheral>
+                  <agreementNumber>$peripheralsAgreementNumber$</agreementNumber>
+                  <make>Apple</make>
+                  <model>Watch Sport 38mm Aluminium Case</model>
+               </peripheral>
+            </peripherals>
+            <agreements>
+               <agreement>
+                  <agreementNumber>$deviceAgreementNumber$</agreementNumber>
+                  <dealType>AUSTANDARD</dealType>
+                  <agreementPhases>1</agreementPhases>
+                  <description>Credit Agreement</description>
+                  <startDate>$startDate$T00:00:00.000$timeZone$</startDate>
+                  <endDate>$agrEndDate$T00:00:00.000$timeZone$</endDate>
+                  <outstandingBalance>368</outstandingBalance>
+                  <agreementMonths>24</agreementMonths>
+                  <monthlyCharge>16</monthlyCharge>
+                  <agreementMonthsTotal>24</agreementMonthsTotal>
+                  <agreementValue>384</agreementValue>
+                  <monthlyChargePaid>16</monthlyChargePaid>
+                  <otherPayments>0</otherPayments>
+               </agreement>
+               <agreement>
+                  <agreementNumber>$peripheralsAgreementNumber$</agreementNumber>
+                  <dealType>AUSTANDARD</dealType>
+                  <agreementPhases>1</agreementPhases>
+                  <description>Credit Agreement</description>
+                  <startDate>$startDate$T00:00:00.000$timeZone$</startDate>
+                  <endDate>$agrEndDate$T00:00:00.000$timeZone$</endDate>
+                  <outstandingBalance>299</outstandingBalance>
+                  <agreementMonths>24</agreementMonths>
+                  <monthlyCharge>13</monthlyCharge>
+                  <agreementMonthsTotal>24</agreementMonthsTotal>
+                  <agreementValue>312</agreementValue>
+                  <monthlyChargePaid>13</monthlyChargePaid>
+                  <otherPayments>0</otherPayments>
+               </agreement>
+            </agreements>
+         </return>
+      </getContractSummaryResponse>
+   </S:Body>
+</S:Envelope>

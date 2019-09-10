@@ -33,7 +33,7 @@ public class TC31932_Self_Care_View_My_tariff extends BaseTest {
 
         test.get().info("Load user in the hub net");
         CareTestBase.page().loadCustomerInHubNet(owsActions.customerNo);
-        subNo = CommonContentPage.CustomerSummarySectionPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberByIndex(1);
+        subNo = CommonContentPage.CustomerSummarySectionPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberByIndex(1);
 
 
         test.get().info("Login in to selfcare page");

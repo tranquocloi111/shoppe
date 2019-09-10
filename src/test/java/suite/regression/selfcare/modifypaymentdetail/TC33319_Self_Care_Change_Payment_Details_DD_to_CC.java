@@ -2,10 +2,8 @@ package suite.regression.selfcare.modifypaymentdetail;
 
 import logic.business.db.OracleDB;
 import logic.business.db.billing.BillingActions;
-import logic.business.db.billing.CommonActions;
 import logic.business.entities.CardDetailsEntity;
 import logic.business.entities.EventEntity;
-import logic.business.entities.PaymentInfoEnity;
 import logic.business.entities.ServiceOrderEntity;
 import logic.business.helper.RemoteJobHelper;
 import logic.business.ws.ows.OWSActions;
@@ -13,7 +11,6 @@ import logic.pages.care.MenuPage;
 import logic.pages.care.find.DetailsContentPage;
 import logic.pages.care.find.ServiceOrdersContentPage;
 import logic.pages.care.main.TasksContentPage;
-import logic.pages.selfcare.MakeAOneOffPaymentPage;
 import logic.pages.selfcare.MyPaymentDetailsPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
@@ -23,9 +20,7 @@ import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 import suite.regression.selfcare.SelfCareTestBase;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class TC33319_Self_Care_Change_Payment_Details_DD_to_CC extends BaseTest {
 
@@ -152,7 +147,7 @@ public class TC33319_Self_Care_Change_Payment_Details_DD_to_CC extends BaseTest 
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getCreditCardHolderName(), fullName);
 
         Assert.assertTrue(TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getDescriptionByIndex(2).contains("Red Authentication passed - APPROVE TransactionID"));
-        HashMap<String, String> expecteventEnity = EventEntity.dataForEventChangeBundle("Payment Details update Successful", "Completed Task");
+        HashMap<String, String> expecteventEnity = EventEntity.dataForEventServiceOrder("Payment Details update Successful", "Completed Task");
         Assert.assertEquals(TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(expecteventEnity), 1);
 
 

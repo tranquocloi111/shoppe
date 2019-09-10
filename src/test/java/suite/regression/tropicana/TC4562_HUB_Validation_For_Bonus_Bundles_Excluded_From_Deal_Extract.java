@@ -54,7 +54,7 @@ public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract 
         test.get().info("Step 6 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscription1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
+        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
 
         test.get().info("Step 7 : Submit DoDealXMLExtract and DealCatalogueExtract Job");
         RemoteJobHelper.getInstance().runDoDealXMLExtractJob();

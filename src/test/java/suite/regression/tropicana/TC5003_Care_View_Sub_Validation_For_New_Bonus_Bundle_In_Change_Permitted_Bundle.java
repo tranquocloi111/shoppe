@@ -52,7 +52,7 @@ public class TC5003_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Perm
         test.get().info("Step 5 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscription1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
 
         test.get().info("Step 6 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();

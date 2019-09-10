@@ -53,7 +53,7 @@
                     <totalChargeOutside>0.0</totalChargeOutside>
                     <highUsageLimit>0.0</highUsageLimit>
                     <minimumTopUp>0.0</minimumTopUp>
-                    <lastCDRLoaded>2018-05-04T10:36:47.000+10:00</lastCDRLoaded>
+                    <lastCDRLoaded>2019-09-03T18:26:43.000+10:00</lastCDRLoaded>
                 </overageSummary>
                 <alerts>
                     <alert>
@@ -111,7 +111,7 @@
                     <totalChargeOutside>0.0</totalChargeOutside>
                     <highUsageLimit>0.0</highUsageLimit>
                     <minimumTopUp>0.0</minimumTopUp>
-                    <lastCDRLoaded>2018-05-04T10:36:47.000+10:00</lastCDRLoaded>
+                    <lastCDRLoaded>2019-09-03T18:26:43.000+10:00</lastCDRLoaded>
                 </overageSummary>
                 <alerts>
                     <alert>

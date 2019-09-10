@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CommonContentPage extends BasePage {
 
-    public static class SubscriptionsGirdSectionPage extends CommonContentPage {
+    public static class SubscriptionsGridSectionPage extends CommonContentPage {
         private static final String subscriptionNumber = "Subscription Number";
         private static final String usageType = "Usage Type";
         private static final String startDate = "Start Date";
@@ -22,12 +22,12 @@ public class CommonContentPage extends BasePage {
         private static final String barring = "Barring";
         private static final String grg = "GRG";
 
-        private static SubscriptionsGirdSectionPage instance;
+        private static SubscriptionsGridSectionPage instance;
 
-        public static SubscriptionsGirdSectionPage getInstance() {
+        public static SubscriptionsGridSectionPage getInstance() {
             if (instance == null)
-                return new SubscriptionsGirdSectionPage();
-            return new SubscriptionsGirdSectionPage();
+                return new SubscriptionsGridSectionPage();
+            return new SubscriptionsGridSectionPage();
         }
 
         @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Subscriptions')]/../../..//following-sibling::div[1]//table")

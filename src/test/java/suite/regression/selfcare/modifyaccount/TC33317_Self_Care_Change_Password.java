@@ -54,7 +54,7 @@ public class TC33317_Self_Care_Change_Password extends BaseTest {
         test.get().info("Step 7: Load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(owsActions.customerNo);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile NC 1");
+        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile NC 1");
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
 
         test.get().info("Step 8: Verify expected SO is generated for customer");
