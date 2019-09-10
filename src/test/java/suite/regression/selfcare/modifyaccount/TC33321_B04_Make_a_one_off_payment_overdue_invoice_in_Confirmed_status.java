@@ -1,15 +1,11 @@
 package suite.regression.selfcare.modifyaccount;
 
 
-import framework.config.Config;
-import framework.utils.Log;
-import framework.utils.RandomCharacter;
 import logic.business.db.billing.BillingActions;
 import logic.business.db.billing.CommonActions;
 import logic.business.entities.CardDetailsEntity;
 import logic.business.entities.FinancialTransactionEnity;
 import logic.business.entities.ServiceOrderEntity;
-import logic.business.helper.FTPHelper;
 import logic.business.helper.RemoteJobHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
@@ -19,7 +15,6 @@ import logic.pages.care.main.TasksContentPage;
 import logic.pages.selfcare.MakeAOneOffPaymentPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.pages.selfcare.Test3DSecurePage;
-import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.WebElement;
@@ -146,7 +141,7 @@ public class TC33321_B04_Make_a_one_off_payment_overdue_invoice_in_Confirmed_sta
 
         test.get().info("Step 15 :get lastest subscription");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberByIndex(1).split(" ")[0];
+        String serviceRefOf1stSubscription = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberByIndex(1).split(" ")[0];
 
 
         test.get().info("Step 16 :Open the financial transaction content for customer");
@@ -204,7 +199,7 @@ public class TC33321_B04_Make_a_one_off_payment_overdue_invoice_in_Confirmed_sta
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
 
         test.get().info("Step 24 :verify treatment bar is turned off");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickLinkByText(subScriptNo1+" FC Mobile 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickLinkByText(subScriptNo1+" FC Mobile 1");
         Assert.assertEquals(SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getBarring(), "No Barring");
         String expectedBarringStatus = "Capped Excess=OFF, Fraud=OFF, Treatment=OFF, Customer=OFF, HighUsage=OFF";
         Assert.assertEquals(SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getBarringStatus(), expectedBarringStatus);

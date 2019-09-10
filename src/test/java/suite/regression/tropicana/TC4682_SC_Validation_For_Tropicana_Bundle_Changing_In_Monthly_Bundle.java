@@ -56,8 +56,8 @@ public class TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundl
         test.get().info("Step 5 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscription1 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
-        subscription2 = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
+        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        subscription2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
         test.get().info("Step 6 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();

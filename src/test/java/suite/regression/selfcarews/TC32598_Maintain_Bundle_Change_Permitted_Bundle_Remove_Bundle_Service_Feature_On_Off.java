@@ -69,8 +69,8 @@ public class TC32598_Maintain_Bundle_Change_Permitted_Bundle_Remove_Bundle_Servi
 
         test.get().info("Verify all discount bundle entries align with bill run calendar entires");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscriptionNumber = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
+        subscriptionNumber = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         discountGroupCode = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
         verifyDiscountBundleBeforeChangingBundle(newStartDate, discountGroupCode);
 
@@ -78,13 +78,14 @@ public class TC32598_Maintain_Bundle_Change_Permitted_Bundle_Remove_Bundle_Servi
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
 
         test.get().info("Verify subscription 1 service is turned on");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subscriptionNumber + " Mobile Ref 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subscriptionNumber + " Mobile Ref 1");
         Assert.assertEquals("4G Service=ON", SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getServiceFeature());
 
         //==============================================================================
         test.get().info("Submit maintain bundle request only Customer Number and Subscription Number");
         SWSActions swsActions = new SWSActions();
-        Xml response = swsActions.submitMaintainBundleRequest(customerNumber, subscriptionNumber);
+        String maintain_bundle_request = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC32598_maintain_remove_nextbilldate_request.xml";;
+        Xml response = swsActions.submitMaintainBundleRequest(maintain_bundle_request, customerNumber, subscriptionNumber);
 
         test.get().info("Verify normal maintain bundle response");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
@@ -105,7 +106,7 @@ public class TC32598_Maintain_Bundle_Change_Permitted_Bundle_Remove_Bundle_Servi
         String serviceSubscription = ServiceOrdersContentPage.getInstance().getSubscriptionNumber(serviceOrder);
 
         test.get().info("Verify a new Provision Wait service order is created for customer");
-        serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderProvisionWait(serviceOrderId, serviceSubscription));
+        serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderProvisionWaitChangeBundle(serviceOrderId, serviceSubscription));
         Assert.assertEquals(1, serviceOrder.size());
 
         test.get().info("Click service order to open details");
@@ -151,7 +152,7 @@ public class TC32598_Maintain_Bundle_Change_Permitted_Bundle_Remove_Bundle_Servi
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
 
         test.get().info("Verify subscription 1 service feature is none");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subscriptionNumber + " Mobile Ref 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subscriptionNumber + " Mobile Ref 1");
         Assert.assertEquals("None", SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getServiceFeature());
 
         test.get().info("Verify the permitted bundle is removed");
@@ -183,7 +184,7 @@ public class TC32598_Maintain_Bundle_Change_Permitted_Bundle_Remove_Bundle_Servi
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getSubscriptionNumber(), subscriptionNumber + " Mobile Ref 1");
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getTariff(), "FC12-1000-500SO £10 Tariff 12 Month Contract {£10.00}");
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getProvisioningDate(), Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT));
-        Assert.assertNull(TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
+        Assert.assertEquals("",TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesRemoved(), "Monthly 250MB data allowance - 4G");
         Assert.assertEquals(TasksContentPage.TaskPage.TaskSummarySectionPage.getInstance().getDescription(), "Change Bundle");
         Assert.assertEquals(TasksContentPage.TaskPage.TaskSummarySectionPage.getInstance().getStatus(),"Provision Wait");
@@ -191,7 +192,7 @@ public class TC32598_Maintain_Bundle_Change_Permitted_Bundle_Remove_Bundle_Servi
 
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(
-                EventEntity.dataForEventChangeBundle()
+                EventEntity.dataForEventServiceOrderCreated()
         ));
 
     }
@@ -201,18 +202,18 @@ public class TC32598_Maintain_Bundle_Change_Permitted_Bundle_Remove_Bundle_Servi
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getSubscriptionNumber(), subscriptionNumber + " Mobile Ref 1");
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getTariff(), "FC12-1000-500SO £10 Tariff 12 Month Contract {£10.00}");
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getProvisioningDate(), Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
-        Assert.assertNull(TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
+        Assert.assertEquals("", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesRemoved(), "Monthly 250MB data allowance - 4G");
 
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(
-                EventEntity.dataForEventChangeBundle()
+                EventEntity.dataForEventServiceOrderCreated()
         ));
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(
-                EventEntity.dataForEventChangeBundle("Successful Add", "Completed Task")));
+                EventEntity.dataForEventServiceOrder("Successful Add", "Completed Task")));
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(
-                EventEntity.dataForEventChangeBundle("O2SOA: getAccountSummary: Request completed", "Completed Task")));
+                EventEntity.dataForEventServiceOrder("O2SOA: getAccountSummary: Request completed", "Completed Task")));
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(
-                EventEntity.dataForEventChangeBundle("Service Feature 4G Service is removed", "Completed Task")
+                EventEntity.dataForEventServiceOrder("Service Feature 4G Service is removed", "Completed Task")
         ));
     }
 

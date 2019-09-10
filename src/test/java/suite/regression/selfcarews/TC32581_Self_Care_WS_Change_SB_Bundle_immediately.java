@@ -65,8 +65,8 @@ public class TC32581_Self_Care_WS_Change_SB_Bundle_immediately extends BaseTest 
 
         test.get().info("Verify all discount bundle entries align with bill run calendar entires");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscriptionNumber = CommonContentPage.SubscriptionsGirdSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
+        subscriptionNumber = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         String discountGroupCode = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
         verifyDiscountBundleBeforeChangingBundle(discountGroupCode);
         //==============================================================================
@@ -108,7 +108,7 @@ public class TC32581_Self_Care_WS_Change_SB_Bundle_immediately extends BaseTest 
 
         test.get().info("Open details for the Mobile Ref 1 Subscription");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        CommonContentPage.SubscriptionsGirdSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subscriptionNumber + " Mobile Ref 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subscriptionNumber + " Mobile Ref 1");
 
         test.get().info("Verify 40 safety buffer has been added and 20 safety buffer has been removed to the subscription");
         HashMap<String, String> simOnlyProduct = OtherProductEntiy.dataForAnOtherBundleProduct("SIM-ONLY", "SIM-Only", "Standard/Micro SIM", "£0.00", newStartDate);

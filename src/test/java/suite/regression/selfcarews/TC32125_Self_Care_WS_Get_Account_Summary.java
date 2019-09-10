@@ -47,7 +47,7 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Get All Subscriptions Number");
-        subscriptionNumberList = CareTestBase.getAllSubscription(2);
+        subscriptionNumberList = CareTestBase.getAllSubscription();
 
         test.get().info("Verify Customer Start Date and Billing Group are updated successfully");
         CareTestBase.page().verifyCustomerStartDateAndBillingGroupAreUpdatedSuccessfully(newStartDate);
@@ -55,12 +55,12 @@ public class TC32125_Self_Care_WS_Get_Account_Summary extends BaseTest {
 
         test.get().info("Submit Get Account Summary Request to SelfCare WS");
         SWSActions swsActions = new SWSActions();
-        Xml response = swsActions.submitGetAccountSummaryRequestToSelfCareWS(customerNumber);
+        Xml response = swsActions.submitGetAccountSummaryRequest(customerNumber);
 
         test.get().info("Build Expected Account Summary Response Data");
         String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getaccount\\TC32125_response";
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        String expectedResponseFile = selfCareWSTestBase.buildSimpleAccountSummaryResponseData(sampleResponseFile, newStartDate, customerNumber, subscriptionNumberList);
+        String expectedResponseFile = selfCareWSTestBase.buildResponseData(sampleResponseFile, newStartDate, TimeStamp.TodayMinus15DaysAdd1Month(), customerNumber, subscriptionNumberList);
 
         test.get().info("Verify Get Account Summary Response");
         selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponseFile, response);

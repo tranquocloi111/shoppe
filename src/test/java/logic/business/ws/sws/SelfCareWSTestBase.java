@@ -51,70 +51,6 @@ public class SelfCareWSTestBase extends BaseWs {
         DeactivateSubscriptionPage.DeactivateSubscription.getInstance().deactivateLastActiveSubscription();
     }
 
-    public String buildSimpleAccountSummaryResponseData(String sampleFile, Date startDate, String customerNumber, String subscriptionNumber) {
-        String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
-        String sNextBillDate = Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DateFormatXml());
-
-        String accountName = "Mr " + CareTestBase.getCustomerName();
-
-        String file = Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
-                .replace("$accountName$", accountName)
-                .replace("startDate", sStartDate)
-                .replace("nextBillDate", sNextBillDate)
-                .replace("subscriptionNumber", subscriptionNumber);
-
-        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
-    }
-
-    public String buildSimpleAccountSummaryResponseData(String sampleFile, Date startDate, String customerNumber, List<String> subscriptionNumberList) {
-        String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
-        String sNextBillDate = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
-
-        String subscriptionFC = "INVALID";
-        String subscriptionNC = "INVALID";
-        String accountName = "Mr " + CareTestBase.getCustomerName();
-
-        for (String subscription : subscriptionNumberList) {
-            if (subscription.contains("Mobile FC")) {
-                subscriptionFC = subscription.split(" ")[0];
-            } else if (subscription.contains("Mobile NC")) {
-                subscriptionNC = subscription.split(" ")[0];
-            }
-        }
-
-        String file = Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
-                .replace("$accountName$", accountName)
-                .replace("$subscriptionNumberFC$", subscriptionFC)
-                .replace("$startDate$", sStartDate)
-                .replace("$nextBillDate$", sNextBillDate)
-                .replace("$subscriptionNumberNC$", subscriptionNC);
-
-        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
-    }
-
-    public String buildSimpleSubscriptionSummaryResponseData(String sampleFile, Date startDate, String customerNumber, List<String> subscriptionNumberList) {
-        String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
-        String sNextBillDate = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
-        String subscriptionFC = "INVALID";
-        String subscriptionNC = "INVALID";
-
-        for (String subscription : subscriptionNumberList) {
-            if (subscription.contains("Mobile FC")) {
-                subscriptionFC = subscription.split(" ")[0];
-            } else if (subscription.contains("Mobile NC")) {
-                subscriptionNC = subscription.split(" ")[0];
-            }
-        }
-
-        String file = Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
-                .replace("$subscriptionNumberFC$", subscriptionFC)
-                .replace("$startDate$", sStartDate)
-                .replace("$nextBillDate$", sNextBillDate)
-                .replace("$subscriptionNumberNC$", subscriptionNC);
-
-        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
-    }
-
     public void verifyImmediateMaintainBundleResponse(Xml response) {
         Assert.assertEquals(MaintainBundleEntity.getImmediateMaintainBundleData().getTypeAttribute(), response.getTextByXpath("//message//@type"));
         Assert.assertEquals(MaintainBundleEntity.getImmediateMaintainBundleData().getCode(), response.getTextByXpath("//message//code"));
@@ -146,5 +82,59 @@ public class SelfCareWSTestBase extends BaseWs {
             }
         }
 
+    }
+
+    public String buildResponseData(String sampleFile, Date startDate,Date nextBillDate, String customerNumber, String subscriptionNumber){
+        String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
+        String sNextBillDate = Parser.parseDateFormate(nextBillDate, TimeStamp.DateFormatXml());
+
+        String accountName = "Mr " + CareTestBase.getCustomerName();
+
+        String file = Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
+                .replace("$accountName$", accountName)
+                .replace("$startDate$", sStartDate)
+                .replace("$nextBillDate$", sNextBillDate)
+                .replace("$subscriptionNumber$", subscriptionNumber);
+
+        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
+    }
+
+    public String buildResponseData(String sampleFile, Date startDate, Date nextBillDate, String customerNumber, List<String> subscriptionNumberList){
+        String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
+        String sSubStartDate = Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT_XML);
+        String sBufStartDate = "";
+        String sEndDate = Parser.parseDateFormate(TimeStamp.TodayMinus16DaysAdd1Month(), TimeStamp.DateFormatXml());
+        String sNextBillDate = Parser.parseDateFormate(nextBillDate, TimeStamp.DateFormatXml());
+        String SNextScheduledRefill = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
+        String subscriptionFC = "INVALID";
+        String subscriptionNC = "INVALID";
+        String subscription3 = "INVALID";
+        String accountName = "Mr " + CareTestBase.getCustomerName();
+
+
+        for (String subscription : subscriptionNumberList) {
+            if (subscription.contains("Mobile FC")) {
+                subscriptionFC = subscription.split(" ")[0];
+            } else if (subscription.contains("Mobile NC")) {
+                subscriptionNC = subscription.split(" ")[0];
+            }else{
+                subscription3 = subscription.split(" ")[0];
+            }
+        }
+
+        String file = Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
+                .replace("$accountName$", accountName)
+                .replace("$subscriptionNumberFC$", subscriptionFC)
+                .replace("$startDate$", sStartDate)
+                .replace("$endDate$", sEndDate)
+                .replace("$nextBillDate$", sNextBillDate)
+                .replace("$nextScheduledRefill$", SNextScheduledRefill)
+                .replace("$subscriptionNumberNC$", subscriptionNC)
+                .replace("$subscriptionNumber3$", subscription3)
+                .replace("$subStartDate$", sSubStartDate)
+                .replace("$timeZone$", TimeStamp.TimeZone());
+
+
+        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
     }
 }
