@@ -282,5 +282,10 @@ public class BasePage {
     {
        return getDriver().getCurrentUrl();
     }
+
+    public void clickBackBtn() {
+        click(getDriver().findElement(By.xpath("//a[@id='BackBtn']")));
+    }
+
     //endregion
 }

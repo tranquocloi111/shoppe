@@ -23,7 +23,6 @@ public class TimeStamp {
     public final static String DATE_FORMAT_XML = "yyyy-MM-dd";
 
 
-
     public static Date Today() {
         return Date.valueOf(LocalDate.now());
     }
@@ -177,20 +176,22 @@ public class TimeStamp {
         LocalDate day2 = LocalDate.now().minusMonths(1).minusDays(1);
         return ChronoUnit.DAYS.between(day2, day1);
     }
+
     public static Date TodayPlus4Years() {
         return Date.valueOf(String.valueOf(LocalDateTime.now().plusYears(4).toLocalDate()));
     }
+
     public static String DateTimeFormatXml() {
 //        String timeZone = Config.getProp("timeZone");
 //        String format =  "yyyy-MM-dd HH:mm:ss.SSS" + timeZone;
 //        return format;
 
-        DateTimeZone timeZone = DateTimeZone.forID( Config.getProp("timeZoneId") );
-        DateTime now = new DateTime( timeZone );
+        DateTimeZone timeZone = DateTimeZone.forID(Config.getProp("timeZoneId"));
+        DateTime now = new DateTime(timeZone);
         return now.toString();
     }
 
-    public static Date TodayMinus1DayPlus23Months(){
+    public static Date TodayMinus1DayPlus23Months() {
         return Date.valueOf(LocalDate.now().minusDays(1).plusMonths(23));
     }
 
@@ -198,9 +199,15 @@ public class TimeStamp {
         return Date.valueOf(LocalDate.now().plusMonths(numberOfMonth));
     }
 
-    public static String TimeZone(){
+    public static String TimeZone() {
         ZoneId zone = ZoneId.of(Config.getProp("timeZoneId"));
         ZonedDateTime zonedDateTime = ZonedDateTime.now(zone);
         return zonedDateTime.getOffset().toString();
+    }
+
+    public static long todayPlus1YearMinus1DayMinusToday() {
+        LocalDate day1 = LocalDate.now();
+        LocalDate day2 = LocalDate.now().plusMonths(1).minusDays(1);
+        return ChronoUnit.DAYS.between(day2, day1);
     }
 }

@@ -3,6 +3,7 @@ package logic.business.entities;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 
+import javax.print.DocFlavor;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -142,6 +143,18 @@ public class SubscriptionEntity {
 
         listActiveSubscription.add(summarySubscriptions);
         return listActiveSubscription;
+    }
+    public static HashMap<String, String> dataForFullSummarySubscriptions(Date startDate, String usageType, String tariff, String subscriptionNumber, String status) {
+
+        HashMap<String, String> summarySubscriptions = new HashMap<String, String>();
+        summarySubscriptions.put("Start Date", Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT));
+        summarySubscriptions.put("End Date", "");
+        summarySubscriptions.put("Subscription Number", subscriptionNumber);
+        summarySubscriptions.put("Usage Type", usageType);
+        summarySubscriptions.put("Tariff", tariff);
+        summarySubscriptions.put("Status", status);
+
+        return summarySubscriptions;
     }
 
 }
