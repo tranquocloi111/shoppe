@@ -6,9 +6,8 @@ import framework.utils.SFTP;
 import org.testng.Assert;
 
 public class SFTPHelper extends SFTP {
-    String userName = Config.getProp("unixUsername");
-    String passWord = Config.getProp("unixPassword");
-    String host = Config.getProp("unixServer");
+    String userName = Config.getProp("UnixSFTPUsername");
+    String host = Config.getProp("UnixSFTPServer");
 
     public static SFTPHelper getInstance() {
         return new SFTPHelper();

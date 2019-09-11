@@ -207,6 +207,45 @@ public class MyPersonalInformationPage extends BasePage {
                 click(getDriver().findElement(By.xpath("//span[@id='WzClOsE']")));
                 return toolTip;
             }
+            public String getHighUsage()
+            {
+                return getTextOfElement(tableControlBase.findCellByLabelText("High usage").findElement(By.tagName("span")));
+            }
+
+            public String getCustomer()
+            {
+                return getTextOfElement(tableControlBase.findCellByLabelText("Customer").findElement(By.tagName("span")));
+            }
+            public String getUnpaidBill()
+            {
+                return getTextOfElement(tableControlBase.findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
+            }
+            public String getFraud()
+            {
+                return getTextOfElement(tableControlBase.findCellByLabelText("Fraud").findElement(By.tagName("span")));
+            }
+            public void clickDataCapAbroad() {
+                 click(tableControlBase.findCellByLabelText("£40 data cap abroad").findElement(By.tagName("span")));
+            }
+
+            public void clickUnPaidLink() {
+                click(tableControlBase.findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
+            }
+            public String getUnPaidToolTip()
+            {
+                clickHelpBtnByIndex(8);
+                waitUntilElementVisible(getDriver().findElement(By.xpath("//td[@id='WzBoDyI']")));
+                return getTextOfElement(getDriver().findElement(By.xpath("//td[@id='WzBoDyI']")));
+            }
+            public void updateDescription(String value) {
+                 enterValueByLabel(tableControlBase.findControlCellByLabel("Description", 1).findElement(By.tagName("input")),value);
+            }
+            @FindBy(xpath = "//a[@id='SaveBtn']")
+            WebElement savePhoneUserNameBtn;
+            public void clickSavePhoneUserNameBtn()
+            {
+                savePhoneUserNameBtn.click();
+            }
         }
     }
 
@@ -300,6 +339,9 @@ public class MyPersonalInformationPage extends BasePage {
 
         public void verifyTheMyBillsAndPaymentsPage() {
             Assert.assertEquals(MyPersonalInformationPage.getInstance().getHeader(), "My bills and payments");
+        }
+        public void clickViewDetailsOfMyCLubCardPoints() {
+            tableControlBase.clickLinkByText("View details of my Clubcard points");
         }
     }
 }

@@ -3,6 +3,7 @@ package suite.regression.selfcare;
 import ch.ethz.ssh2.Session;
 import framework.config.Config;
 import framework.utils.Log;
+import framework.utils.RandomCharacter;
 import framework.utils.SFTP;
 import logic.business.db.OracleDB;
 import logic.business.db.billing.BillingActions;
@@ -55,6 +56,11 @@ public class SelfCareTestBase extends BasePage {
     }
 
     public void LoginIntoSelfCarePageFail(String userName, String passWord, String customerId) {
+        loginPage.relogin(userName, passWord, customerId);
+        waitForPageLoadComplete(10);
+    }
+    public void LoginIntoSelfCarePageWithOutPin(String userName, String passWord, String customerId) {
+        loginPage.navigateToSelfCarePage();
         loginPage.relogin(userName, passWord, customerId);
         waitForPageLoadComplete(10);
     }
@@ -189,5 +195,17 @@ public class SelfCareTestBase extends BasePage {
         Assert.assertEquals("My tariff and credit agreement documents", MyPersonalInformationPage.getInstance().getHeader());
     }
 
+    public void verifyAcceptDataChargesOfMoreThan40WhileAbroadPageOpen() {
+        Assert.assertEquals("Accept data charges of more than £40 while abroad", MyPersonalInformationPage.getInstance().getHeader());
+    }
+
+    public String newSubscriptionNumber()
+    {
+      String newSubscriptionNumber = "0" + RandomCharacter.getRandomNumericString(9) + "0";
+        return newSubscriptionNumber;
+    }
+    public void verifyMonthlyBundleDisplayed() {
+        Assert.assertEquals("Monthly bundles - Add, change or remove", MyPersonalInformationPage.getInstance().getHeader());
+    }
 }
 
