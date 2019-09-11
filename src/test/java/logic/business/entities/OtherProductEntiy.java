@@ -164,7 +164,7 @@ public class OtherProductEntiy {
         return otherProduct1;
     }
 
-    public static HashMap<String, String> dataBundlerForOtherProduct(String productCode, String type, String description, String endDate, String charge) {
+    public static HashMap<String, String> dataBundleForOtherProduct(String productCode, String type, String description, String charge) {
         HashMap<String, String> otherProduct1 = new HashMap<String, String>();
         otherProduct1.put("Product Code", productCode);
         otherProduct1.put("Type", type);
@@ -175,7 +175,7 @@ public class OtherProductEntiy {
         return otherProduct1;
     }
 
-    public static List<HashMap<String, String>> dataForOtherProduct(Date newStartDate) {
+    public static List<HashMap<String, String>> dataSampleForOtherProduct(Date newStartDate) {
         List<HashMap<String, String>> listOtherProduct = new ArrayList<>();
 
         HashMap<String, String> otherProduct1 = new HashMap<String, String>();

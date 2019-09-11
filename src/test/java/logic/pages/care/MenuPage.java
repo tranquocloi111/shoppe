@@ -155,6 +155,11 @@ public class MenuPage extends BasePage {
         public void clickConfigureBarRoamingonLink() {
             clickLinkByName("Configure Bar/Roaming");
         }
+
+        public void clickChangeBillCycle() {
+            clickLinkByName("Change Bill Cycle");
+        }
+
     }
 
     public static class BreadCrumbPage extends MenuPage {
