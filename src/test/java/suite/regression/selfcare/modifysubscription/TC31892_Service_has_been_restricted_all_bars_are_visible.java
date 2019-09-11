@@ -65,8 +65,8 @@ public class TC31892_Service_has_been_restricted_all_bars_are_visible extends Ba
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("generate the cdr file then upload to server");
-        int remoteJobID=generateCDRFileFromTemplateThenUploadToServer(subNo1);
-        RemoteJobHelper.getInstance().waitForRemoteJobComplete(remoteJobID,"Java  - Tesco Mobile Post Pay");
+        generateCDRFileFromTemplateThenUploadToServer(subNo1);
+        BaseTest.waitLoadCDRJobComplete();
 
         test.get().info("Turn on all bars in Barring and Roaming options");
         turnOnAllBarsInBarringAndRoamingOptions();
@@ -101,8 +101,7 @@ public class TC31892_Service_has_been_restricted_all_bars_are_visible extends Ba
         SelfCareTestBase.page().verifyMakeAOneOffPayment();
 
     }
-    public  int generateCDRFileFromTemplateThenUploadToServer(String subNo1)
-    {
+    public void generateCDRFileFromTemplateThenUploadToServer(String subNo1){
         String filePath = "src\\test\\resources\\txt\\care\\TM_DRAS_CDR_20150106170007";
         String cdrFileString = Common.readFile(filePath);
         String fileName= Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT2)+ RandomCharacter.getRandomNumericString(6);
@@ -113,10 +112,9 @@ public class TC31892_Service_has_been_restricted_all_bars_are_visible extends Ba
         Common.writeFile(cdrFileString,fileName);
         String remotePath= Config.getProp("CDRSFTPFolder");
         SFTPHelper.getInstance().upFileFromLocalToRemoteServer(fileName,remotePath);
-        return RemoteJobHelper.getInstance().getMaxRemoteJobId();
     }
-    public void turnOnAllBarsInBarringAndRoamingOptions()
-    {
+
+    public void turnOnAllBarsInBarringAndRoamingOptions(){
         for(int i=0;i<bar.size();i++) {
             MenuPage.RightMenuPage.getInstance().clickConfigureBarRoamingonLink();
             ServiceOrdersPage.SelectSubscription.getInstance().clickNextButton();
@@ -126,12 +124,11 @@ public class TC31892_Service_has_been_restricted_all_bars_are_visible extends Ba
             ServiceOrdersPage.ConfigureSubscription.getInstance().selectSubscriptionBarReason(bar.get(i));
             ServiceOrdersPage.ConfigureSubscription.getInstance().clickNextButton();
 
-
             ServiceOrdersPage.ConfigureSubscription.getInstance().clickReturnToCustomer();
         }
     }
-    public void verifyAllBarMessageInMyTariffPage()
-    {
+
+    public void verifyAllBarMessageInMyTariffPage(){
         Assert.assertEquals("Call Customer Care team on 0345 301 4455 to make a top-up", MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile NC 1").getHighUsage());
         Assert.assertEquals("Call Customer Care team for more details",MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile NC 1").getCustomer());
         Assert.assertEquals("Click here to make a payment", MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile NC 1").getUnpaidBill());

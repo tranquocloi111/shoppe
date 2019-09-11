@@ -246,4 +246,9 @@ public class RemoteJobHelper {
         submitRemoteJob("Subdirectdebit1.sh -e $HUB_SID -S");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Process Direct Debit - Send DDI");
     }
+
+    public void  waitLoadCDRJobComplete(){
+        int currentMaxJobId = getMaxRemoteJobId();
+        waitForRemoteJobComplete(currentMaxJobId, "Java LAR - Tesco Mobile Post Pay");
+    }
 }

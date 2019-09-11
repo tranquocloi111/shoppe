@@ -52,7 +52,7 @@ public class BaseTest {
     public void beforeMethod(Method m) throws MalformedURLException {
         test.set(extent.createTest(m.getName()));
        //WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.chrome()));
-        WDFactory.getConfig().setDriverVersion("75");
+        WDFactory.getConfig().setDriverVersion("77");
         WdManager.set(WDFactory.initBrowser(Config.getProp("browser")));
         WdManager.get().get(Config.getProp("careUrl"));
     }
@@ -221,6 +221,10 @@ public class BaseTest {
         Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "NC", startDate, TimeStamp.TodayMinus16DaysAdd2Months(), partitionIdRef, "ACTIVE"));
         Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "NC", TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.TodayMinus16DaysAdd2Months(), partitionIdRef, "ACTIVE"));
         Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByPartitionIdRef(discountBundles, "NC", TimeStamp.TodayMinus15DaysAdd2Months(), TimeStamp.TodayMinus16DaysAdd3Months(), partitionIdRef, "ACTIVE"));
+    }
+
+    protected static void waitLoadCDRJobComplete(){
+        RemoteJobHelper.getInstance().waitLoadCDRJobComplete();
     }
     //end region
 
