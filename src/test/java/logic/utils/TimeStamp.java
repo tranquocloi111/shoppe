@@ -163,7 +163,7 @@ public class TimeStamp {
     }
 
     public static String DateFormatXml() {
-        return DATE_FORMAT_XML + TimeZone();
+        return DATE_FORMAT_XML + Config.getProp("timeZone");
     }
 
 

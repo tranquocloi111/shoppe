@@ -78,7 +78,7 @@ public class ServiceOrderEntity {
         return listOrderServer;
     }
 
-    public static List<HashMap<String, String>> dataServiceOrderProvisionWait(String serviceOrderID, String serviceSubscription) {
+    public static List<HashMap<String, String>> dataServiceOrderProvisionWaitChangeBundle(String serviceOrderID, String serviceSubscription) {
         List<HashMap<String, String>> listOrderServer = new ArrayList<>();
         HashMap<String, String> so = new HashMap<String, String>();
         so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
@@ -147,7 +147,7 @@ public class ServiceOrderEntity {
         return listOrderServer;
     }
 
-    public static List<HashMap<String, String>> dataServiceOrderProvisionWait(String serviceSubscription) {
+    public static List<HashMap<String, String>> dataServiceOrderCompletedTaskChangeBundle(String serviceSubscription) {
         List<HashMap<String, String>> listOrderServer = new ArrayList<>();
         HashMap<String, String> so = new HashMap<String, String>();
         so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
