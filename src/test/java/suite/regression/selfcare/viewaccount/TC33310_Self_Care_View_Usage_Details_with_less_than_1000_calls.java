@@ -7,6 +7,7 @@ import logic.pages.selfcare.MyBillsAndPaymentsPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.utils.TimeStamp;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.selfcare.SelfCareTestBase;
@@ -45,6 +46,11 @@ public class TC33310_Self_Care_View_Usage_Details_with_less_than_1000_calls exte
         HashMap<String,String> myBillsAndPaymentsEnity= MyBillAndPaymentEnity.dataForMyBillsAndPayment("Online Payment","£-17.50","£-17.50");
         Assert.assertEquals(MyBillsAndPaymentsPage.getInstance().getNumberPaymentByEnity(myBillsAndPaymentsEnity),1);
         Assert.assertEquals(MyBillsAndPaymentsPage.getInstance().getTotalNumberPayment(),1);
+    }
+
+    @DataProvider(name = "browsername")
+    public Object[][] dataProviderMethod() {
+        return new Object[][]{{"gc"}, {"ff"}, {"ie"}};
     }
 
 

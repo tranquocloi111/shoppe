@@ -360,6 +360,25 @@ public class OWSActions extends BaseWs {
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 
+    public void createACCCustomerWith1FCSubscriptions(String path, String mpn){
+        request = new Xml(new File(path));
+        String subNo=RandomCharacter.getRandomNumericString(9)+"10";
+        request.setTextByTagName(commonModMap);
+        request.setTextByTagName("serviceRef",mpn);
+        request.setTextByTagName("billGroupId", "2");
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+        setCustomerNo();
+        Log.info("Account number:" + customerNo);
+        setOrderIdNo();
+        Log.info("OrderId number:" + orderIdNo);
+        setUsername();
+        setPassword();
+        setFullName();
+        checkAsyncProcessIsCompleted(orderIdNo);
+    }
+
     public void createAnOnlinesCCCustomerWithFC2BundlesAndNK2720() {
         createGeneralCustomerOrder(Online_CC_CUSTOMER_WITH_FC_2_BUNDLES_AND_NK2720);
     }
