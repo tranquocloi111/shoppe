@@ -6,12 +6,11 @@ import framework.utils.RandomCharacter;
 import framework.utils.Soap;
 import framework.utils.Xml;
 import logic.business.ws.BaseWs;
-import logic.pages.agreement.AgreementSigningContractPage;
+import logic.pages.agreement.AgreementWrapperPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import java.io.File;
 
@@ -176,8 +175,9 @@ public class OWSActions extends BaseWs {
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
 
         String agreementSigningUrl = response.getTextByTagName("URL");
-        AgreementSigningContractPage agreementSigningContractPage = new AgreementSigningContractPage();
-        agreementSigningContractPage.signAgreementViaUI(agreementSigningUrl, 4);
+
+        AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
+        AgreementWrapperPage.getInstance().signAgreementViaUI(4);
 
         request.setTextByXpath("//createOrder//@correlationId", response.getTextByXpath("//createOrderResponse//@correlationId"));
         request.setTextByXpath("//verification//@termsAndConditionsAccepted", "true");
@@ -235,8 +235,8 @@ public class OWSActions extends BaseWs {
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
 
         String agreementSigningUrl = response.getTextByTagName("URL");
-        AgreementSigningContractPage agreementSigningContractPage = new AgreementSigningContractPage();
-        agreementSigningContractPage.signAgreementViaUI(agreementSigningUrl, 1);
+        AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
+        AgreementWrapperPage.getInstance().signAgreementViaUI(1);
 
         request.setTextByXpath("//createOrder//@correlationId", response.getTextByXpath("//createOrderResponse//@correlationId"));
         request.setAttributeTextByXpath("//orderDetail","orderId",response.getTextByTagName("orderId"));
@@ -258,8 +258,8 @@ public class OWSActions extends BaseWs {
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
 
         String agreementSigningUrl = response.getTextByTagName("URL");
-        AgreementSigningContractPage agreementSigningContractPage = new AgreementSigningContractPage();
-        agreementSigningContractPage.signAgreementViaUI(agreementSigningUrl, agreementCount);
+        AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
+        AgreementWrapperPage.getInstance().signAgreementViaUI(agreementCount);
 
         request.setTextByXpath("//createOrder//@correlationId", response.getTextByXpath("//createOrderResponse//@correlationId"));
         request.setAttributeTextByXpath("//orderDetail", "orderId", response.getTextByTagName("orderId"));
@@ -283,8 +283,8 @@ public class OWSActions extends BaseWs {
 
         String agreementSigningUrl = response.getTextByTagName("URL");
         String correlation = response.getTextByXpath("//createOrderResponse//@correlationId");
-        AgreementSigningContractPage agreementSigningContractPage = new AgreementSigningContractPage();
-        agreementSigningContractPage.signAgreementViaUI(agreementSigningUrl, 2);
+        AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
+        AgreementWrapperPage.getInstance().signAgreementViaUI(2);
 
         request.setTextByXpath("//createOrder//@correlationId", correlation);
         request.setTextByXpath("//verification//@termsAndConditionsAccepted", "true");
@@ -362,7 +362,7 @@ public class OWSActions extends BaseWs {
 
     public void createACCCustomerWith1FCSubscriptions(String path, String mpn){
         request = new Xml(new File(path));
-        String subNo=RandomCharacter.getRandomNumericString(9)+"10";
+        String subNo = RandomCharacter.getRandomNumericString(9)+"10";
         request.setTextByTagName(commonModMap);
         request.setTextByTagName("serviceRef",mpn);
         request.setTextByTagName("billGroupId", "2");

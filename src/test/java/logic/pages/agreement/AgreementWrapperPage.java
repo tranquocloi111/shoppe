@@ -1,14 +1,23 @@
 package logic.pages.agreement;
 
+import framework.config.Config;
 import framework.utils.Log;
-import framework.wdm.WdManager;
 import logic.pages.BasePage;
 import logic.utils.Common;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+public class AgreementWrapperPage extends BasePage {
 
-public class AgreementSigningContractPage extends BasePage {
+    public static AgreementWrapperPage getInstance(){
+        return new AgreementWrapperPage();
+    }
+
+    @FindBy(id = "agreement_sign_app")
+    WebElement txtAgreementSigningURL;
+
+    @FindBy(id = "submit")
+    WebElement btnSubmit;
 
     @FindBy(id = "ccaform:acceptTAndCs")
     WebElement ckAcceptTAndCs;
@@ -28,10 +37,21 @@ public class AgreementSigningContractPage extends BasePage {
     @FindBy(id = "ccaform:confirm-continue")
     WebElement btnNextAgmtPopupDialog;
 
+    @FindBy(id = "contractPages")
+    WebElement frameContractPages;
 
-    public  void signAgreementViaUI(String agreementSigningUrl, int numberOfAgreements){
+    public void openAgreementSigningMainPage(String agreementSigningURL){
+        getDriver().get(Config.getProp("agreementwrapper"));
+        waitForPageLoadComplete(90);
+
+        waitUntilElementVisible(txtAgreementSigningURL);
+        enterValueByLabel(txtAgreementSigningURL, agreementSigningURL);
+        click(btnSubmit);
+    }
+
+    public  void signAgreementViaUI(int numberOfAgreements){
+        switchFrameByName(frameContractPages);
         try {
-            getDriver().get(agreementSigningUrl);
             for (int i = 0; i < numberOfAgreements; i++) {
                 waitUntilElementVisible(ckAcceptTAndCs);
                 scrollToElement(ckAcceptTAndCs);
@@ -47,7 +67,6 @@ public class AgreementSigningContractPage extends BasePage {
                 waitUntilElementVisible(btnSubmitCode);
 
                 click(btnSubmitCode);
-
                 if (isElementPresent(btnNextAgmtPopupDialog))
                     click(btnNextAgmtPopupDialog);
             }
@@ -57,4 +76,5 @@ public class AgreementSigningContractPage extends BasePage {
         }
 
     }
+
 }
