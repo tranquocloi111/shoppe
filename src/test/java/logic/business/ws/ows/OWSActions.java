@@ -11,7 +11,6 @@ import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import java.io.File;
 
@@ -50,6 +49,7 @@ public class OWSActions extends BaseWs {
     private static final String CUSTOMER_WITH_FC_3_BUNDLE_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_3_bundles_and_NK2720.xml";
     private static final String CUSTOMER_WITH_3_SUBSCRIPTION = "src\\test\\resources\\xml\\ows\\care_CSA_customer_with_3_subscriptions.xml";
     private static final String ONLINE_CC_CUSTOMER_WITH_2_FC_1_BUNDLE_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_2_FC_1_bundles_and_simonly.xml";
+    private static final String ONLINE_CC_CUSTOMER_WITH_FC_1_BUNDLE_OF_SB_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only.xml";
     //endregion
 
 
@@ -149,7 +149,7 @@ public class OWSActions extends BaseWs {
     }
 
     public String getCreditAgreementNumberByReference(String reference) {
-        Node parentNode = response.getParentNode(String.format("//orderItem//serviceRef[@reference='%s']", reference));
+        Node parentNode = response.getParentNodeByXpath(String.format("//orderItem//serviceRef[@reference='%s']", reference));
         Element deviceElement = response.getChildNodeByTagName((Element) parentNode, "device");
         Element agreement = response.getChildNodeByTagName(deviceElement, "agreement");
         Element number = response.getChildNodeByTagName(agreement, "number");
@@ -159,7 +159,7 @@ public class OWSActions extends BaseWs {
     }
 
     public String getPeripheralCreditAgreementNumberByReference(String reference) {
-        Node parentNode = response.getParentNode(String.format("//orderItem//serviceRef[@reference='%s']", reference));
+        Node parentNode = response.getParentNodeByXpath(String.format("//orderItem//serviceRef[@reference='%s']", reference));
         Element deviceElement = response.getChildNodeByTagName((Element) parentNode, "peripheral");
         Element agreement = response.getChildNodeByTagName(deviceElement, "agreement");
         Element number = response.getChildNodeByTagName(agreement, "number");
@@ -398,6 +398,10 @@ public class OWSActions extends BaseWs {
 
     public void createAnOnlinesCCCustomerWith2FC1BundleAndSimOnly() {
         createGeneralCustomerOrder(ONLINE_CC_CUSTOMER_WITH_2_FC_1_BUNDLE_AND_SIMONLY);
+    }
+
+    public void createAnOnlineCCCustomerWithFC1BundleOfSBAndSimonly() {
+        createGeneralCustomerOrder(ONLINE_CC_CUSTOMER_WITH_FC_1_BUNDLE_OF_SB_AND_SIMONLY);
     }
 
     //endregion

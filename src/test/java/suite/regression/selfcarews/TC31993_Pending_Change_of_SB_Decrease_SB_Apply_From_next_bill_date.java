@@ -1,9 +1,8 @@
 package suite.regression.selfcarews;
 
-import framework.utils.Log;
 import framework.utils.Xml;
+import logic.business.entities.BundlesToSelectEntity;
 import logic.business.entities.ErrorResponseEntity;
-import logic.business.entities.MaintainBundleEntity;
 import logic.business.entities.ServiceOrderEntity;
 import logic.business.ws.ows.OWSActions;
 import logic.business.ws.sws.SWSActions;
@@ -13,7 +12,7 @@ import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.ServiceOrdersContentPage;
 import logic.pages.care.find.SubscriptionContentPage;
 import logic.pages.care.main.ServiceOrdersPage;
-import logic.pages.care.options.ChangeBillCyclePage;
+import logic.pages.care.options.ChangeSafetyBufferPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import suite.BaseTest;
@@ -25,16 +24,16 @@ import java.util.List;
 
 /**
  * User: Nhi Dinh
- * Date: 10/09/2019
+ * Date: 6/09/2019
  */
-public class TC31983_Pending_Change_of_Bill_Cycle_Increase_SB_Apply_Now_untill_next_bill_date extends BaseTest {
+public class TC31993_Pending_Change_of_SB_Decrease_SB_Apply_From_next_bill_date extends BaseTest {
     String customerNumber;
     String subscriptionNumber;
     String subscriptionNumberValue;
-    String orderWebServiceId;
+    String serviceOrderId;
 
-    @Test(enabled = true, description = "TC31983_Pending_Change_of_Bill_Cycle_Increase_SB_Apply_Now_untill_next_bill_date", groups = "SelfCareWS")
-    public void TC31983_Pending_Change_of_Bill_Cycle_Increase_SB_Apply_Now_untill_next_bill_date(){
+    @Test(enabled = true, description = "TC31993_Pending Change of SB Decrease SB Apply From next bill date", groups = "SelfCareWS")
+    public void TC31993_Pending_Change_of_SB_Decrease_SB_Apply_From_next_bill_date(){
         test.get().info("Create an online CC customer with FC 1 bundle of SB and simonly");
         OWSActions owsActions = new OWSActions();
         owsActions.createAnOnlineCCCustomerWithFC1BundleOfSBAndSimonly();
@@ -49,20 +48,19 @@ public class TC31983_Pending_Change_of_Bill_Cycle_Increase_SB_Apply_Now_untill_n
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         subscriptionNumber = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
 
-        test.get().info("Pending change bill cycle");
-        pendingChangeBillCycle();
+        test.get().info("Change safety buffer from next bill date");
+        changeSafetyBufferFromNextBillDate();
 
         test.get().info("Open service orders content for customer");
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
 
-        test.get().info("Verify change bill cycle is in progress");
-        verifyChangeBillCycleIsInProgress();
-        //============================================================
-        test.get().info("Build maintain bundle request only customer number and subscription number");
+        test.get().info("Verify Change bundle is in provision wait status");
+        verifyChangeBundleIsInProvisionWaitStatus();
+        //===============================================================================
+        test.get().info("Build and submit maintain bundle request only customer number subscription number");
         SWSActions swsActions = new SWSActions();
-        String filePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC31983_request.xml";
+        String filePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC31993_request.xml";
         Xml response = swsActions.submitMaintainBundleRequest(filePath, customerNumber, subscriptionNumber);
-        Log.info("Response: " + response);
 
         test.get().info("Build fault response data");
         ErrorResponseEntity falseResponse = buildFalseResponse();
@@ -82,7 +80,7 @@ public class TC31983_Pending_Change_of_Bill_Cycle_Increase_SB_Apply_Now_untill_n
         List<ErrorResponseEntity.SelfCareServiceMultiExceptionEntity> sCSMultiExceptionList = new ArrayList<>();
         ErrorResponseEntity.SelfCareServiceMultiExceptionEntity sCSMultiException = new ErrorResponseEntity.SelfCareServiceMultiExceptionEntity(
                 "UBE_001",
-                String.format("Pending service order error (Change Bill Cycle (Service Order ID %s))", orderWebServiceId),
+                String.format("Pending service order error (Change Bundle (%s  Mobile Ref 1) (Service Order ID %s))", subscriptionNumber, serviceOrderId),
                 "ERROR");
         sCSMultiExceptionList.add(sCSMultiException);
 
@@ -90,35 +88,21 @@ public class TC31983_Pending_Change_of_Bill_Cycle_Increase_SB_Apply_Now_untill_n
 
         return falseResponse;
     }
-
-
-    private void verifyChangeBillCycleIsInProgress(){
-        orderWebServiceId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByIndex(1);
-        HashMap<String, String> serviceOrder = ServiceOrderEntity.dataServiceOrder("", "Change Bill Cycle", "In Progress");
+    private void verifyChangeBundleIsInProvisionWaitStatus(){
+        serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByIndex(2);
+        HashMap<String, String> serviceOrder = ServiceOrderEntity.dataServiceOrder(subscriptionNumber, "Change Bundle", "Provision Wait");
         Assert.assertEquals(1, ServiceOrdersContentPage.getInstance().getNumberOfServiceOrdersByOrderService(serviceOrder));
     }
 
-    private void pendingChangeBillCycle(){
-        MenuPage.RightMenuPage.getInstance().clickChangeBillCycle();
-        ChangeBillCyclePage.ChangeBillCycle changeBillCycle = new ChangeBillCyclePage.ChangeBillCycle();
-        String currentBillCycle = changeBillCycle.getCurrentBillCycle();
-
-        switch (currentBillCycle) {
-            case "1st of month (14th bill run)":
-                changeBillCycle.selectNewBillCycle("22nd of month (9th bill run)");
-                break;
-            case "8th of month (23rd bill run)":
-                changeBillCycle.selectNewBillCycle("22nd of month (9th bill run)");
-                break;
-            case "22nd of month (9th bill run)":
-                changeBillCycle.selectNewBillCycle("1st of month (14th bill run)");
-                break;
-            default:
-                changeBillCycle.selectNewBillCycle("22nd of month (9th bill run)");
-                break;
-        }
-
-        changeBillCycle.clickNextButton();
+    private void changeSafetyBufferFromNextBillDate(){
+        MenuPage.RightMenuPage.getInstance().clickChangeBundleLink();
+        ServiceOrdersPage.SelectSubscription.getInstance().selectSubscription(subscriptionNumberValue, "Change Safety Buffer");
+        ChangeSafetyBufferPage.ChangeSafetyBuffer changeSafetyBuffer = new ChangeSafetyBufferPage.ChangeSafetyBuffer();
+        changeSafetyBuffer.unSelectBundlesByName(BundlesToSelectEntity.getSafetyBuffersAToSelect(),"£20 safety buffer");
+        changeSafetyBuffer.selectBundlesByName(BundlesToSelectEntity.getSafetyBuffersAToSelect(), "£10 safety buffer");
+        changeSafetyBuffer.selectWhenToApplyChangeText("From next bill date (permanent)");
+        changeSafetyBuffer.clickNextButton();
+        ServiceOrdersPage.ConfirmChangeBundle.getInstance().clickNextButton();
         ServiceOrdersPage.ServiceOrderComplete.getInstance().clickReturnToCustomer();
     }
 }

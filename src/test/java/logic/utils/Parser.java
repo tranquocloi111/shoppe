@@ -32,4 +32,10 @@ public class Parser {
         Date newStartDate = TimeStamp.TodayMinus15Days();
         System.out.println(parseDateFormate(newStartDate,"ddMMyyyy"));
     }
+
+    public static Float parseToInt(String s){
+        return Float.parseFloat(s);
+    }
+
+
 }
