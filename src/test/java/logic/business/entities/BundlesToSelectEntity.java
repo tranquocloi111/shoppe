@@ -24,4 +24,41 @@ public class BundlesToSelectEntity {
                 "Monthly data bundle - 1GB (Capped) - £7.50 per Month (Recurring)",};
     }
 
+    public static String [] getSafetyBuffersAToSelect(){
+        return new String[]{
+                "£2.50 safety buffer",
+                "£5 safety buffer",
+                "£7.50 safety buffer",
+                "£10 safety buffer",
+                "£20 safety buffer",
+                "£30 safety buffer",
+                "£40 safety buffer",
+                "£50 High usage limit(No safety buffer)",
+//                "£50 High usage limit (No safety buffer)",
+                "£100 High usage limit(No safety buffer) (For exceptional use - check process first)",
+//                "£100 High usage limit (No safety buffer) (For exceptional use - check process first)",
+                "£100 safety buffer (For exceptional use - check process first)",
+
+        };
+    }
+
+    public static String[] getMonthlySweetenerBundles(){
+        return new String[]{
+                "Loyalty Bundle - 100MB 4G Data - £0.00 per Month (Non-Recurring)",
+                "Loyalty Bundle - 250MB per month - £0.00 per Month (Recurring)",
+                "Loyalty Bundle - 500MB per month - £0.00 per Month (Recurring)",
+                "Loyalty Bundle - 100 Mins per month - £0.00 per Month (Recurring)",
+                "Loyalty Bundle - 150 Mins per month - £0.00 per Month (Recurring)",
+                "Loyalty Bundle - 250 Mins per month - £0.00 per Month (Recurring)"
+        };
+    }
+
+    public static String[] getStandardDataBundles(){
+        return new String[]{
+                "Monthly 500MB data allowance - £5.00 per Month (Recurring)",
+                "Monthly 1GB data allowance - £7.50 per Month (Recurring)",
+                "Monthly 250MB data allowance - 4G - £5.00 per Month (Recurring)"
+
+        };
+    }
 }

@@ -178,11 +178,21 @@ public class Xml {
         return nodes.item(index).getAttributes().getNamedItem(attributeName).getNodeValue();
     }
 
-    public Node getParentNode(String xpathExp) {
+    public Node getParentNodeByXpath(String xpathExp) {
         Node parentNode = null;
         NodeList nodes = getElementsByXpath(xpathExp);
         parentNode = nodes.item(0).getParentNode();
         return parentNode;
     }
 
+    public List<Element> getListChildNodeByTagName(Element parent, String tagName){
+        List<Element> listChildNode = new ArrayList<>();
+
+        for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()){
+            if (child instanceof Element && tagName.equals(child.getNodeName())) {
+                listChildNode.add((Element) child);
+            }
+        }
+        return listChildNode;
+    }
 }
