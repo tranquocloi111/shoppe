@@ -2,8 +2,8 @@
 
 <suite name="RegressionSuite" verbose="1">
     <test name="test1" parallel="methods" thread-count="3">
-        <classes>
-            <class name="suite.shakeout.ShakeOutTest"></class>
-        </classes>
+        <packages>
+            <package name="suite.shakeout"/>
+        </packages>
     </test>
 </suite>

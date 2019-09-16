@@ -24,6 +24,9 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
     @FindBy(xpath = "//p[//b[.='Monthly bundles']]/following-sibling::div[.//table[.//div[@id='BundleGrp0_ErrorPanel']]]")
     WebElement msgBoxDivMonthlyBundles;
 
+    @FindBy(xpath = "//div[@class='msg-box'][1]")
+    WebElement infoTable;
+
     private List<WebElement> msgBoxList() {
         return getDriver().findElements(By.xpath(".//div[@class='msg-box']"));
     }
@@ -148,5 +151,31 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
         click(btnBack);
     }
 
+    public String getMobilePhoneNumber() {
+        table = new TableControlBase(infoTable);
+        return getTextOfElement(table.findCellByLabelText("Mobile phone number"));
+    }
+    public String getTariff() {
+        table = new TableControlBase(infoTable);
+        return getTextOfElement(table.findCellByLabelText("Tariff"));
+    }
+    public String getMonthlyAllowance() {
+        table = new TableControlBase(infoTable);
+        return getTextOfElement(table.findCellByLabelText("Monthly allowance"));
+    }
+    public String getMonthlySafetyBuffer() {
+        table = new TableControlBase(infoTable);
+        return getTextOfElement(table.findCellByLabelText("Monthly safety buffer"));
+    }
+
+    public String getMonthAllowanceExpiryDate() {
+        table = new TableControlBase(infoTable);
+        return getTextOfElement(table.findCellByLabelText("This month’s allowance expiry date"));
+    }
+    public String getMonthlyDataBundleDescriptionByValue(String value) {
+        table = new TableControlBase(msgBoxDivMonthlyBundles);
+        WebElement row = table.findRowByLabel(value);
+        return row.findElement(By.xpath(".//td[2]")).getText().trim();
+    }
 }
 

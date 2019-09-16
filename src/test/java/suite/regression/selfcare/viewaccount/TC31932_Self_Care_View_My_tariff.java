@@ -10,6 +10,7 @@ import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
@@ -50,6 +51,11 @@ public class TC31932_Self_Care_View_My_tariff extends BaseTest {
         verifyPageToolTip();
 
 
+    }
+
+    @DataProvider(name = "browsername")
+    public Object[][] dataProviderMethod() {
+        return new Object[][]{{"gc"}, {"ff"}, {"ie"}};
     }
 
     public void verifyMyTariffDetailsOtherInformationIsCorrect() {

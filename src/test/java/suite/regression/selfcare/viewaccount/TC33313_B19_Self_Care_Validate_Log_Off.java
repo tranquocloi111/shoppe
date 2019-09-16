@@ -2,6 +2,7 @@ package suite.regression.selfcare.viewaccount;
 
 import logic.business.ws.ows.OWSActions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.selfcare.SelfCareTestBase;
@@ -29,6 +30,11 @@ public class TC33313_B19_Self_Care_Validate_Log_Off extends BaseTest {
         String url = "https://www.tescomobile.com/my-account-logout";
         Assert.assertEquals(SelfCareTestBase.page().getCurrentUrl(),url);
 
+    }
+
+    @DataProvider(name = "browsername")
+    public Object[][] dataProviderMethod() {
+        return new Object[][]{{"gc"}, {"ff"}, {"ie"}};
     }
 
 

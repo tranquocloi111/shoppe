@@ -60,9 +60,17 @@ public class BasePage {
     }
 
     protected void enterValueByLabel(WebElement element, String val) {
-        element.click();
         element.clear();
         element.sendKeys(val);
+    }
+
+    protected void enterValueByJs(WebElement element, String val){
+        setClearInputValue(element);
+        ((JavascriptExecutor)getDriver()).executeAsyncScript("arguments[0].value='"+val+"'", element);
+    }
+
+    protected void setClearInputValue(WebElement element){
+        ((JavascriptExecutor)getDriver()).executeAsyncScript("arguments[0].value=''", element);
     }
 
     protected WebElement getCell(WebElement tbl, int row, int col) {
@@ -264,6 +272,10 @@ public class BasePage {
         return getDriver().switchTo().frame(name);
     }
 
+    public WebDriver switchFrameByName(WebElement element) {
+        return getDriver().switchTo().frame(element);
+    }
+
     public String getTextOfSelectedOption(WebElement element) {
         Select select = new Select(element.findElement(By.tagName("select")));
         return select.getFirstSelectedOption().getText();
@@ -282,5 +294,10 @@ public class BasePage {
     {
        return getDriver().getCurrentUrl();
     }
+
+    public void clickBackBtn() {
+        click(getDriver().findElement(By.xpath("//a[@id='BackBtn']")));
+    }
+
     //endregion
 }

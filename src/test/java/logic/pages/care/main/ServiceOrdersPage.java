@@ -407,8 +407,11 @@ public class ServiceOrdersPage extends BasePage {
         }
 
         public void selectSubscriptionWithouAction(String subNo) {
-                selectByVisibleText(ddSubscriptionNumber, subNo);
+            selectByVisibleText(ddSubscriptionNumber, subNo);
             clickNextBtn();
+        }
+        public String getSubscription() {
+           return getTextOfSelectedOption(ddSubscriptionNumber);
         }
     }
 
