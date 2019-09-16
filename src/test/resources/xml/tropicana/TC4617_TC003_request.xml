@@ -55,7 +55,7 @@
         <dateTime>2011-06-10T00:00:00</dateTime>
         <orderItem dealSKU="DEAL-INHAND" id="1">
           <serviceRef reference="Mobile Ref 1"/>
-          <tariff productCode="FC12-1000-500SO">
+          <tariff productCode="AUTO-FC12-1000-500SO">
             <deliveryMethod>INHAND</deliveryMethod>
           </tariff>
 
@@ -67,11 +67,11 @@
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
 
-          <discBundle productCode="250MB-4GDATA2-0-FC" bundleGroup="DOUBLE_DATA">
+          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
 
-          <discBundle productCode="250MB-4GDATA2-0-FC" bundleGroup="DOUBLE_DATA">
+          <discBundle productCode="1GB-DATA-750-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
 

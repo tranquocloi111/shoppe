@@ -55,7 +55,7 @@
         <dateTime>2011-06-10T00:00:00</dateTime>
         <orderItem dealSKU="DEAL-INHAND" id="1">
           <serviceRef reference="Mobile Ref 1"/>
-          <tariff productCode="FC12-1000-500SO">
+          <tariff productCode="AUTO-FC12-1000-500SO">
             <deliveryMethod>INHAND</deliveryMethod>
           </tariff>
           <device productCode="SIM-ONLY">
@@ -64,19 +64,22 @@
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
-          <discBundle productCode="250MB-4GDATA2-0-FC" bundleGroup="DOUBLE_DATA">
+          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>
         <orderItem dealSKU="DEAL-INHAND" id="2">
           <serviceRef reference="Mobile Ref 2"/>
-          <tariff productCode="FC12-1000-500SO">
+          <tariff productCode="AUTO-FC12-1000-500SO">
             <deliveryMethod>INHAND</deliveryMethod>
           </tariff>
           <device productCode="SIM-ONLY">
             <deliveryMethod>DELIVER</deliveryMethod>
           </device>
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>

@@ -9,6 +9,7 @@ import com.aventstack.extentreports.reporter.KlovReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import framework.config.Config;
+import framework.report.elasticsearch.ExecutionListener;
 import framework.utils.RandomCharacter;
 import framework.wdm.WDFactory;
 import framework.wdm.WdManager;
@@ -23,10 +24,7 @@ import logic.pages.care.find.InvoicesContentPage;
 import logic.utils.TimeStamp;
 import org.testng.Assert;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -34,6 +32,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
+@Listeners(ExecutionListener.class)
 public class BaseTest {
 
     //region Hooks

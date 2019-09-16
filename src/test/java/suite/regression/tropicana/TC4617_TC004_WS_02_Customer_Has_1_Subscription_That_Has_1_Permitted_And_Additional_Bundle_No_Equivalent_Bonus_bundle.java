@@ -2,30 +2,35 @@ package suite.regression.tropicana;
 
 import framework.utils.Xml;
 import logic.business.db.billing.CommonActions;
+import logic.business.entities.ServiceOrderEntity;
 import logic.business.ws.ows.OWSActions;
 import logic.business.ws.sws.SWSActions;
+import logic.pages.care.MenuPage;
+import logic.pages.care.find.CommonContentPage;
+import logic.pages.care.find.ServiceOrdersContentPage;
 import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import logic.utils.XmlUtils;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import suite.BaseTest;
+import suite.regression.care.CareTestBase;
 
 import java.sql.Date;
+import java.util.List;
 
 public class TC4617_TC004_WS_02_Customer_Has_1_Subscription_That_Has_1_Permitted_And_Additional_Bundle_No_Equivalent_Bonus_bundle extends BaseTest {
     String subscriptionNumber;
-    private String customerNumber = "15758";
+    private String customerNumber;
     private Date newStartDate;
-    private String username;
-    private String password;
     private String serviceOrderId;
 
-    @Test(enabled = true, description = "TC4617 SCWS-Get Bundle- Validation for new Bonus Bundle Group and its bundles in response", groups = "Tropicana")
-    public void TC4719_SCWS_Get_Bundle_Validation_For_New_Bonus_Bundle_Group_And_Its_Bundles_In_Response() {
-        test.get().info("Step 1 : Create a Customer has 1 Subscription that has 1 Permitted/Additional Bundle and there's NO equivalent Bonus bundle be identified (Bonus Bundle Group associated with tariff)");
-        String path = "\\src\\test\\resources\\xml\\tropicana\\TC4617_TC004_request.xml";
+    @Test(enabled = true, description = "TC4617_TC004_WS_02_Customer_Has_1_Subscription_That_Has_1_Permitted_And_Additional_Bundle_No_Equivalent_Bonus_bundle", groups = "Tropicana")
+    public void TC4617_TC004_WS_02_Customer_Has_1_Subscription_That_Has_1_Permitted_And_Additional_Bundle_No_Equivalent_Bonus_bundle() {
+        test.get().info("Step 1 : Customer has 1 Subscription that has 1 Permitted/Additional Bundle and 0 Bonus bundle (NO Bonus Bundle Group associated with tariff)");
+        String path = "src\\test\\resources\\xml\\tropicana\\TC4617_TC004_request.xml";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
 
@@ -39,11 +44,19 @@ public class TC4617_TC004_WS_02_Customer_Has_1_Subscription_That_Has_1_Permitted
         customerNumber = owsActions.customerNo;
         BaseTest.setBillGroupForCustomer(customerNumber);
 
-        test.get().info("Step 4 : Update Customer Start Date");
+        test.get().info("Step 5 : Update Customer Start Date");
         newStartDate = TimeStamp.TodayMinus15Days();
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
 
-        test.get().info("Step 5 : Submit get Bundle");
+        test.get().info("Step 6 : Get Subscription Number");
+        CareTestBase.page().loadCustomerInHubNet(customerNumber);
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        subscriptionNumber = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+        List<WebElement> serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderBySubAndType(subscriptionNumber, "Discount Bundle Monthly Refill", "In Progress"));
+        serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByElementServiceOrders(serviceOrder);
+
+        test.get().info("Step 7 : Locate test customer/subscription in GetBundle and run request");
         SWSActions swsActions = new SWSActions();
         Xml xml = swsActions.submitGetBundleRequest(customerNumber, subscriptionNumber);
 

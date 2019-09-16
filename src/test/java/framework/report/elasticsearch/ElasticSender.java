@@ -16,7 +16,7 @@ public final class ElasticSender {
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String ELASTICSEARCH_URL = "http://localhost:9200";
     private static final String RESULT_URL = ELASTICSEARCH_URL + "/result";
-    private static final String META_URL = ELASTICSEARCH_URL + "/setting/current";
+    private static final String META_URL = ELASTICSEARCH_URL + "/tm_auto/settings";
     //endregion
 
     //region INFO

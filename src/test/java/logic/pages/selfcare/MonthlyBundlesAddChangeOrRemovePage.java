@@ -27,6 +27,9 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
     @FindBy(xpath = "//div[@class='msg-box'][1]")
     WebElement infoTable;
 
+    @FindBy(xpath = "//div[@id='BundleGrp0_MessagePanel']//p")
+    WebElement monthlyBundleErrorMessage;
+
     private List<WebElement> msgBoxList() {
         return getDriver().findElements(By.xpath(".//div[@class='msg-box']"));
     }
@@ -172,10 +175,31 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
         table = new TableControlBase(infoTable);
         return getTextOfElement(table.findCellByLabelText("This month’s allowance expiry date"));
     }
+
     public String getMonthlyDataBundleDescriptionByValue(String value) {
         table = new TableControlBase(msgBoxDivMonthlyBundles);
         WebElement row = table.findRowByLabel(value);
         return row.findElement(By.xpath(".//td[2]")).getText().trim();
+    }
+
+    public String getCurrentBundleDescriptionByCellValue(String value, int index) {
+        table = new TableControlBase(currentBundlesTable);
+        WebElement row = table.getRowByCellValue(value);
+        return row.findElement(By.xpath(".//following-sibling::td["+index+"]")).getText();
+    }
+
+    public  boolean isBonusBundleDisplay(String value){
+        table = new TableControlBase(currentBundlesTable);
+        WebElement row = table.getRowByCellValue(value);
+        return isElementPresent(row);
+    }
+
+    public String getMonthlyBundleErrorMessage(){
+        return  getTextOfElement(monthlyBundleErrorMessage);
+    }
+
+    public boolean isMonthlyBundleErrorMessageDisplay(){
+        return isElementPresent(monthlyBundleErrorMessage);
     }
 }
 

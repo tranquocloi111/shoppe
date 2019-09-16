@@ -1,17 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
   <soapenv:Header/>
   <soapenv:Body>
     <sel:maintainBundleRequest>
-      <sel:maintainBundleAction effective="NEXTBILLDATE" acceptWarning="true">
+      <sel:maintainBundleAction effective="IMMEDIATE" acceptWarning="false">
         <sel:externalSystemId>NETCALL</sel:externalSystemId>
         <sel:accountNumber>$accountNumber$</sel:accountNumber>
         <sel:subscriptionNumber>$subscriptionNumber$</sel:subscriptionNumber>
         <sel:bundleActions>
-          <sel:bundleAction actionType="REMOVE">
+          <sel:bundleAction actionType="ADD">
             <sel:group>BONUS</sel:group>
             <sel:groupCode>DOUBLE_DATA</sel:groupCode>
-            <sel:bundleCode>250MB-FDATA-0-FC</sel:bundleCode>
+            <sel:bundleCode>1GB-DATA-0-FC</sel:bundleCode>
           </sel:bundleAction>
         </sel:bundleActions>
       </sel:maintainBundleAction>

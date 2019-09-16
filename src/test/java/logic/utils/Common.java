@@ -4,6 +4,8 @@ import framework.utils.Log;
 import framework.utils.Xml;
 
 import java.io.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -251,6 +253,10 @@ public class Common {
         return  zippedFile;
     }
 
+    public static String getCurrentLocalTime(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH_mm_ss");
+        return  "_" + LocalTime.now().format(formatter);
+    }
 
     public static void main(String[] args) throws InterruptedException, IOException {
         String zipFilePath = "C:\\Users\\vuq\\Documents\\TM_HUB_DEAL_Onlines_20190816.XML.zip";

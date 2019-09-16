@@ -64,7 +64,7 @@
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
-          <discBundle productCode="250MB-4GDATA2-0-FC" bundleGroup="DOUBLE_DATA">
+          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>
@@ -79,13 +79,13 @@
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
-          <discBundle productCode="250MB-4GDATA2-0-FC" bundleGroup="DOUBLE_DATA">
+          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>
         <orderItem dealSKU="DEAL-INHAND" id="3">
           <serviceRef reference="Mobile Ref 3"/>
-          <tariff productCode="FC12-1000-500SO">
+          <tariff productCode="AUTO-FC12-1000-500SO">
             <deliveryMethod>INHAND</deliveryMethod>
           </tariff>
           <device productCode="SIM-ONLY">
@@ -94,16 +94,22 @@
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
+          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
         </orderItem>
         <orderItem dealSKU="DEAL-INHAND" id="4">
           <serviceRef reference="Mobile Ref 4"/>
-          <tariff productCode="FC12-1000-500SO">
+          <tariff productCode="AUTO-FC12-1000-500SO">
             <deliveryMethod>INHAND</deliveryMethod>
           </tariff>
           <device productCode="SIM-ONLY">
             <deliveryMethod>DELIVER</deliveryMethod>
           </device>
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>

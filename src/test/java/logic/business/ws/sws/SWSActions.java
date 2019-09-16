@@ -118,7 +118,7 @@ public class SWSActions extends BaseWs {
         return response;
 
     }
-    private Xml submitGetByCustomerAndSubscriptionNumbersRequest(String filePath, String customerNumber, String subscriptionNumber){
+    public Xml submitGetByCustomerAndSubscriptionNumbersRequest(String filePath, String customerNumber, String subscriptionNumber){
         request = new Xml(new File(filePath));
         request.setTextByTagName("sel:accountNumber", customerNumber);
         request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);

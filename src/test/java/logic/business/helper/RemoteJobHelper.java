@@ -20,6 +20,7 @@ public class RemoteJobHelper {
     private String unixUsernName;
     private String unixPassword;
     private String unixServer;
+    private int currentMaxJobId;
 
     private RemoteJobHelper() {
         this.unixUsernName = Config.getProp("unixUsername");
@@ -38,7 +39,7 @@ public class RemoteJobHelper {
         return Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery("select max(JOBID) as MAXJOBID from REMOTEJOB"), "MAXJOBID")));
     }
 
-    private void submitRemoteJobs(String command, int currentMaxJobId) {
+    private void submitRemoteJobs(String command, int currentMaxJobId, String jobDescr) {
         String sql = String.format("select count(*) as numberJob from REMOTEJOB where jobid > %d ", currentMaxJobId);
         if (command.contains("-n 96 -j")) {
             delay(10);
@@ -47,6 +48,7 @@ public class RemoteJobHelper {
         MiscHelper.executeFuncntion(5, () ->
         {
             submitRemoteJob(command);
+            //submitRemoteJob(command, jobDescr);
             return Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "numberJob"))) > 0;
         }, 5);
     }
@@ -70,26 +72,26 @@ public class RemoteJobHelper {
     }
 
     public int runProvisionSevicesJob() {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs("DoProvisionServices.sh -e $HUB_SID -JS $HUB_BIN/java/external-resources.zip -JS", currentMaxJobId);
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("DoProvisionServices.sh -e $HUB_SID -JS $HUB_BIN/java/external-resources.zip -JS", currentMaxJobId, "Provision Waiting Services");
         return waitForRemoteJobComplete(currentMaxJobId, "Provision Waiting Services");
     }
 
     public int submitDoRefillBcJob(Date date) {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs(String.format("DoRefillBC.sh -e $HUB_SID -d %s -S", Parser.parseDateFormate(date, "ddMMyyyy")), currentMaxJobId);
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs(String.format("DoRefillBC.sh -e $HUB_SID -d %s -S", Parser.parseDateFormate(date, "ddMMyyyy")),  currentMaxJobId,"Refill Processing for Billing Cap");
         return waitForRemoteJobComplete(currentMaxJobId, "Refill Processing for Billing Cap");
     }
 
     public int submitDoRefillNcJob(Date date) {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs(String.format("DoRefillNC.sh -e $HUB_SID -d %s -R Y -P Y -m CDR -S", Parser.parseDateFormate(date, "ddMMyyyy")), currentMaxJobId);
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs(String.format("DoRefillNC.sh -e $HUB_SID -d %s -R Y -P Y -m CDR -S", Parser.parseDateFormate(date, "ddMMyyyy")), currentMaxJobId,"Refill Processing for Network Cap");
         return waitForRemoteJobComplete(currentMaxJobId, "Refill Processing for Network Cap");
     }
 
     public void submitDoBundleRenewJob(Date date) {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs(String.format("DoBundleRenew.sh -e $HUB_SID -d %s -n 1 -S", Parser.parseDateFormate(date, "ddMMyyyy")), currentMaxJobId);
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs(String.format("DoBundleRenew.sh -e $HUB_SID -d %s -n 1 -S", Parser.parseDateFormate(date, "ddMMyyyy")), currentMaxJobId,"DoBundleRenew.sh");
         waitForBundleRenewJobComplete(currentMaxJobId);
     }
 
@@ -117,12 +119,12 @@ public class RemoteJobHelper {
                     while (rs.next()) {
                         String exitcode = rs.getString("exitcode");
                         String cmdstatus = rs.getString("cmdstatus");
-                        if (exitcode == null) {
+                        if (exitcode == null || cmdstatus == null) {
                             jobComplete = false;
-                        } else {
-                            if (!cmdstatus.equalsIgnoreCase("N")) {
-                                jobComplete = false;
-                            }
+                        } else if(!exitcode.equalsIgnoreCase("0") || !cmdstatus.equalsIgnoreCase("N")) {
+                            jobComplete = false;
+                        } else if(exitcode.equalsIgnoreCase("0") && cmdstatus.equalsIgnoreCase("N")){
+                            jobComplete = true;
                         }
                     }
                     if (jobComplete)
@@ -153,14 +155,13 @@ public class RemoteJobHelper {
                 ResultSet rs = OracleDB.SetToNonOEDatabase().executeQuery(sql);
                 while (rs.next()) {
                     hasJob = true;
-                    int exitcode = rs.getInt("exitcode");
-                    String cmdstatus = rs.getString("cmdstatus");
-                    if (exitcode != 0) {
+                    int exitCode = rs.getInt("exitcode");
+                    String cmdStatus = rs.getString("cmdstatus");
+                    if (exitCode != 0 || !cmdStatus.equalsIgnoreCase("N")) {
                         allComplete = false;
                         break;
-                    }
-                    if (!cmdstatus.equalsIgnoreCase("N")) {
-                        allComplete = false;
+                    }else if (exitCode == 0 && cmdStatus.equalsIgnoreCase("N")) {
+                        allComplete = true;
                         break;
                     }
                 }
@@ -183,8 +184,8 @@ public class RemoteJobHelper {
     }
 
     public void submitDraftBillRun() {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs("DoBillrun.sh -e $HUB_SID -a s -C -S", currentMaxJobId);
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("DoBillrun.sh -e $HUB_SID -a s -C -S", currentMaxJobId,"Bill Run");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
     }
 
@@ -208,47 +209,57 @@ public class RemoteJobHelper {
         int billRunInvocationId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(resultSet, "brinvocationid")));
         Log.info("InvocationId:" + billRunInvocationId);
 
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT2)), currentMaxJobId);
-
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT2)), currentMaxJobId, "Bill Run");
         waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
     }
 
     public void runSMSRequestJob() {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJob("DoSMSRequest.sh -e $HUB_SID -P -J");
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("DoSMSRequest.sh -e $HUB_SID -P -J", currentMaxJobId,"SMS Request");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "SMS Request");
     }
 
     public void runDoDealXMLExtractJob() {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJob("DoDealXMLExtract.sh -e $HUB_SID -J");
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("DoDealXMLExtract.sh -e $HUB_SID -J", currentMaxJobId,"Deal XML Extract");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
     }
 
     public void runDealCatalogueExtractJob() {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJob("DoDealXMLExtract.sh -e $HUB_SID -J");
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("DoDealXMLExtract.sh -e $HUB_SID -J", currentMaxJobId,"Deal Catalogue Extract");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Deal Catalogue Extract");
     }
     public void submitPaymentAllocationBatchJobRun() {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJob("DoAutoAlloc.sh -e $HUB_SID -S");
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("DoAutoAlloc.sh -e $HUB_SID -S", currentMaxJobId,"Auto Allocation Processing");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Auto Allocation Processing");
     }
     public void submitCreditCardBatchJobRun() {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJob("Subcreditcard.sh -e $HUB_SID -S");
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("Subcreditcard.sh -e $HUB_SID -S", currentMaxJobId,"Process Credit Card");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Process Credit Card");
     }
     public void submitSendDDIRequestJob() {
-        int currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJob("Subdirectdebit1.sh -e $HUB_SID -S");
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("Subdirectdebit1.sh -e $HUB_SID -S", currentMaxJobId,"Process Direct Debit - Send DDI");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Process Direct Debit - Send DDI");
     }
 
     public void  waitLoadCDRJobComplete(){
-        int currentMaxJobId = getMaxRemoteJobId();
+        currentMaxJobId = getMaxRemoteJobId();
         waitForRemoteJobComplete(currentMaxJobId, "Java LAR - Tesco Mobile Post Pay");
+    }
+
+    public static void submitRemoteJob(String command, String jobdescr) {
+        String sql = "INSERT INTO remotejob (cmdtype,cmdstatus,execattimestamp,submitby, jobcmdline, jobtype, jobdescr) " +
+                " SELECT 'R','W',pkg_calc.now,1 " +
+                " ,'"+ command + "' " +
+                " ,'B' " +
+                " ,'"+jobdescr+"' " +
+                " FROM dual  ";
+
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 }
