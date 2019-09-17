@@ -165,8 +165,14 @@ public class CommonActions extends OracleDB {
         return result;
     }
 
+    public static List getBundleByCustomerId(String customerId) {
+        String sql = "SELECT * FROM VW_GETBUNDLE WHERE ROOTBUID = " + customerId + " and LEVL = 'Current'" ;
+        return OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+    }
 
 
-    public static void main(String[] args) throws InterruptedException, IOException {}
+    public static void main(String[] args) throws InterruptedException, IOException {
+        System.out.println(getBundleByCustomerId("1007"));
+    }
 
 }

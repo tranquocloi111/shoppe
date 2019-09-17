@@ -65,14 +65,15 @@ public class TC4617_TC004_WS_02_Customer_Has_1_Subscription_That_Has_1_Permitted
     }
 
     private void verifyGetBundleResponseAreCorrect(Xml xml){
-        String actualFile = Common.saveXmlFile(customerNumber +"_ActualResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(xml.toString())));
-        String file =  Common.readFile("src\\test\\resources\\xml\\sws\\getbundle\\TC3363_response.xml")
+        String localTime = Common.getCurrentLocalTime();
+        String actualFile = Common.saveXmlFile(customerNumber + localTime +"_ActualResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(xml.toString())));
+        String file =  Common.readFile("src\\test\\resources\\xml\\tropicana\\TC4617_TC004_response.xml")
                 .replace("$accountNumber$", customerNumber)
                 .replace("$subscriptionNumber$", subscriptionNumber)
                 .replace("$startDate$", Parser.parseDateFormate(newStartDate,"yyyy-MM-dd"))
                 .replace("$nextScheduledRefill$", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"yyyy-MM-dd"))
                 .replace("$SOId$", serviceOrderId);;
-        String expectedResponseFile = Common.saveXmlFile(customerNumber +"_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
+        String expectedResponseFile = Common.saveXmlFile(customerNumber + localTime +"_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
         int size = Common.compareFile(actualFile, expectedResponseFile).size();
         Assert.assertEquals(1, size);
     }

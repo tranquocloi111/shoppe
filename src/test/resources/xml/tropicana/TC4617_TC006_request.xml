@@ -64,6 +64,9 @@
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
+          <discBundle productCode="2GB-DATA-0-FC" bundleGroup="2GBDATA">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
           <discBundle productCode="1GB-DATA-750-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>

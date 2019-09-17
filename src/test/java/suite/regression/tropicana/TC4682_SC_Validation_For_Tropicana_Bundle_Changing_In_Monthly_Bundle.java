@@ -28,9 +28,9 @@ public class TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundl
     private Date newStartDate;
     private String username;
     private String password;
-    private String subscription1 = "07397602610";
-    private String subscription2 = "07187929650";
-    private String serviceOrderId;
+    private String subscription1;
+    private String subscription2;
+
 
     @Test(enabled = true, description = "TC4682 SC - Validation for Tropicana bundle changing in Monthly Bundle", groups = "Tropicana")
     public void TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundle(){

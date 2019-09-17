@@ -22,12 +22,16 @@ import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.InvoicesContentPage;
 import logic.utils.TimeStamp;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -50,7 +54,7 @@ public class BaseTest {
     @BeforeMethod
     public void beforeMethod(Method m) throws MalformedURLException {
         test.set(extent.createTest(m.getName()));
-       //WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.chrome()));
+        //WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.internetExplorer()));
         WDFactory.getConfig().setDriverVersion("77");
         WdManager.set(WDFactory.initBrowser(Config.getProp("browser")));
         WdManager.get().get(Config.getProp("careUrl"));

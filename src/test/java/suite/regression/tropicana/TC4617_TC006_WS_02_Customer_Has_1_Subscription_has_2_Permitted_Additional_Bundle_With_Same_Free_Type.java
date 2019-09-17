@@ -21,16 +21,16 @@ import suite.regression.care.CareTestBase;
 import java.sql.Date;
 import java.util.List;
 
-public class TC4617_TC003_WS_02_Customer_Has_1_Subscription_That_Has_2_Permitted_And_Additional_Bundle_With_Different_Free_Type extends BaseTest {
+public class TC4617_TC006_WS_02_Customer_Has_1_Subscription_has_2_Permitted_Additional_Bundle_With_Same_Free_Type extends BaseTest {
     String subscriptionNumber;
     private String customerNumber;
     private Date newStartDate;
     private String serviceOrderId;
 
-    @Test(enabled = true, description = "TC4617 SCWS-Get Bundle- Validation for new Bonus Bundle Group and its bundles in response", groups = "Tropicana")
-    public void TC4719_SCWS_Get_Bundle_Validation_For_New_Bonus_Bundle_Group_And_Its_Bundles_In_Response() {
-        test.get().info("Step 1 : Create a Customer has 1 Subscription that has 2 Permitted/Additional Bundle (Bonus Bundle Group associated with tariff)");
-        String path = "src\\test\\resources\\xml\\tropicana\\TC4617_TC003_request.xml";
+    @Test(enabled = true, description = "TC4617_TC006_WS_02_Customer_Has_1_Subscription_has_2_Permitted_Additional_Bundle_With_Same_Free_Type", groups = "Tropicana")
+    public void TC4617_TC006_WS_02_Customer_Has_1_Subscription_has_2_Permitted_Additional_Bundle_With_Same_Free_Type() {
+        test.get().info("Step 1 : Customer has 1 Subscription that has 2 Permitted/Additional Bundle with same Free Type");
+        String path = "src\\test\\resources\\xml\\tropicana\\TC4617_TC006_request.xml";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
 
@@ -67,11 +67,10 @@ public class TC4617_TC003_WS_02_Customer_Has_1_Subscription_That_Has_2_Permitted
     private void verifyGetBundleResponseAreCorrect(Xml xml){
         String localTime = Common.getCurrentLocalTime();
         String actualFile = Common.saveXmlFile(customerNumber + localTime +"_ActualResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(xml.toString())));
-        String file =  Common.readFile("src\\test\\resources\\xml\\tropicana\\TC4617_TC003_response.xml")
+        String file =  Common.readFile("src\\test\\resources\\xml\\tropicana\\TC4617_TC006_response.xml")
                 .replace("$accountNumber$", customerNumber)
                 .replace("$subscriptionNumber$", subscriptionNumber)
                 .replace("$startDate$", Parser.parseDateFormate(newStartDate,"yyyy-MM-dd"))
-                .replace("$startDateBonus$", Parser.parseDateFormate(TimeStamp.Today(),"yyyy-MM-dd"))
                 .replace("$nextScheduledRefill$", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"yyyy-MM-dd"))
                 .replace("$SOId$", serviceOrderId);;
         String expectedResponseFile = Common.saveXmlFile(customerNumber + localTime +"_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));

@@ -1489,7 +1489,7 @@ public class DiffMatchPatch {
     }
 
 
-    public String diff_prettyHtml(List<Diff> diffs) throws IOException {
+    public String diff_prettyHtml(List<Diff> diffs, String actualFile, String expectedFile) throws IOException {
         String equal1 = "";
         String equal2 = "";
         String inser = "";
@@ -1499,7 +1499,7 @@ public class DiffMatchPatch {
         html.append("<body>");
         html.append("<table border=\"1\">");
         html.append("<tr><td colspan=\"2\" align=\"center\"><b>Legend:</b> <font style=\"background-color: yellow\" color=\"black\">added</font>&nbsp;&nbsp;<font style=\"background-color: red\" color=\"black\">removed</font>&nbsp;&nbsp;<font style=\"background-color: lightgreen\" color=\"black\">changed</font>&nbsp;&nbsp;<font style=\"background-color: red\" color=\"blue\">moved from</font>&nbsp;&nbsp;<font style=\"background-color: yellow\" color=\"blue\">moved to</font>&nbsp;&nbsp;<font style=\"background-color: white\" color=\"#AAAAAA\">ignored</font></td></tr>");
-        html.append("<tr><td><b> File Name : C:\\QA_Project\\AutomationScreenShot\\10852_ExpectedResponse.xml</b></td><td><b> File Name : C:\\QA_Project\\AutomationScreenShot\\10852_ActualResponse.xml</b></td></tr>");
+        html.append("<tr><td><b> File Name : C:\\QA_Project\\AutomationScreenShot\\"+expectedFile+"</b></td><td><b> File Name : C:\\QA_Project\\AutomationScreenShot\\"+actualFile+"</b></td></tr>");
         for (Diff aDiff : diffs) {
             String text = aDiff.text.replace("&", "&amp;").replace("<", "&lt;")
                     .replace(">", "&gt;").replace("\n", "\r<br>").replace(" ", "&nbsp;");

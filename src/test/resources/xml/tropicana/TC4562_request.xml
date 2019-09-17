@@ -64,10 +64,11 @@
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
-          <discBundle productCode="1GB-DATA-750-FC" bundleGroup="STANDARDDATAFC">
+          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>
+
         <paymentRequest>
           <cardName>CardName</cardName>
           <cardNumber>5105105105105100</cardNumber>

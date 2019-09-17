@@ -66,7 +66,7 @@ public class Common {
             System.out.printf("Elapsed time: %f\n", ((end_time - start_time) / 1000000000.0));
 
             dmp.diff_cleanupSemantic(d);
-            dmp.diff_prettyHtml(d);
+            dmp.diff_prettyHtml(d, file1, file2);
 
         } catch (Exception e) {
             e.printStackTrace();

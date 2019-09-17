@@ -8,6 +8,7 @@ import logic.business.ws.sws.SWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.ServiceOrdersContentPage;
+import logic.pages.care.find.SubscriptionContentPage;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -15,19 +16,21 @@ import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscription_Inventory_List extends BaseTest {
-    private String customerNumber = "15758";
+    private String customerNumber;
     private Date newStartDate;
     private String subscription1;
-    private String serviceOrderId;
+    private String subscription2;
 
     @Test(enabled = true, description = "TC4618 SC - Care-VIEW-SUB- Validation for new Tropicana bundle in subscription inventory list", groups = "Tropicana")
     public void TC4618Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscription_Inventory_List(){
-        test.get().info("Step 1 : Create a customer with NC and device");
+        test.get().info("Step 1 :  Create a Customer has 2 Subscription that has Tropicana bundle and has no Tropicana");
         OWSActions owsActions = new OWSActions();
-        owsActions.createAnOnlinesCCCustomerWith2FCFamilyPerkAndNK2720();
+        String path = "src\\test\\resources\\xml\\tropicana\\TC4682_request.xml";
+        owsActions.createGeneralCustomerOrder(path);
 
         test.get().info("Step 2 : Create New Billing Group");
         BaseTest.createNewBillingGroup();
@@ -39,32 +42,41 @@ public class TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscri
         customerNumber = owsActions.customerNo;
         BaseTest.setBillGroupForCustomer(customerNumber);
 
-        test.get().info("Step 4 : Update Customer Start Date");
+        test.get().info("Step 5 : Update Customer Start Date");
         newStartDate = TimeStamp.TodayMinus15Days();
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
 
-        test.get().info("Step 5 : Get Subscription Number");
+        test.get().info("Step 6 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
+        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        subscription2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
-        test.get().info("Step 6 : Add Bonus Bundle to Subscription");
+        test.get().info("Step 7 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();
-        String path = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
-        swsActions.submitMaintainBundleRequest(path, customerNumber, subscription1);
+        String selfCarePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
+        swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription2);
 
-        test.get().info("Step 7 : Submit Provision wait");
-        List<WebElement> serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderBySubAndType(subscription1, "Change Bundle"));
-        serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByElementServiceOrders(serviceOrder);
-        BaseTest.updateThePDateAndBillDateForSO(serviceOrderId);
-        RemoteJobHelper.getInstance().runProvisionSevicesJob();
-
-        test.get().info("Step 5 : Load customer in hub net");
+        test.get().info("Step 8 : Load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue("FC Mobile 1");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue("Mobile Ref 2");
 
-        test.get().info("Step 6 : Tropicana bundle appears in subscription inventory list as expected");
+        test.get().info("Step 9 : Validate new Tropicana bundle added in subscription inventory list");
+        validateNewTropicanaBundle();
+    }
+
+    private void validateNewTropicanaBundle(){
+        HashMap<String,String> bonus = new HashMap<String,String>();
+        bonus.put("Product Code","BUNDLER - [250MB-FDATA-0-FC]");
+        bonus.put("Type","Bundle");
+        bonus.put("Description","BUNDLER - [250MB-FDATA-0-FC]");
+        SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage otherProductsGrid = SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance();
+        otherProductsGrid.getOtherProduct(bonus);
+    }
+
+    private void verifyNewTropicanaBundleInDB(){
+        List bundle = CommonActions.getBundleByCustomerId(customerNumber);
 
 
     }

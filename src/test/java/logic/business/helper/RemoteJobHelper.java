@@ -228,7 +228,7 @@ public class RemoteJobHelper {
 
     public void runDealCatalogueExtractJob() {
         currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs("DoDealXMLExtract.sh -e $HUB_SID -J", currentMaxJobId,"Deal Catalogue Extract");
+        submitRemoteJobs("Reports.sh -e $HUB_SID -J", currentMaxJobId,"Deal Catalogue Extract");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Deal Catalogue Extract");
     }
     public void submitPaymentAllocationBatchJobRun() {

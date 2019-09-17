@@ -1,24 +1,16 @@
 package logic.utils;
 
-import com.sun.org.apache.xml.internal.security.c14n.CanonicalizationException;
+
 import com.sun.org.apache.xml.internal.security.c14n.Canonicalizer;
-import com.sun.org.apache.xml.internal.security.c14n.InvalidCanonicalizerException;
 import framework.utils.Log;
 import org.w3c.dom.Element;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.IOException;
 import java.io.StringReader;
-
 import static com.sun.org.apache.xml.internal.security.Init.init;
-
 import static org.junit.Assert.assertEquals;
 
 public class XmlUtils {

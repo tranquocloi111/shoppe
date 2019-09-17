@@ -31,11 +31,13 @@ public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract 
     Date newStartDate;
     String subscription1;
 
-    @Test(enabled = true, description = "TC 4562 HUB - Validation for Bonus bundles excluded from Deal Extract", groups = "Tropicana")
+    //OF_04 - Deal Extract Changes
+    @Test(enabled = true, description = "TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract", groups = "Tropicana")
     public void TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract() {
         test.get().info("Step 1 : Create a customer with NC and device");
         OWSActions owsActions = new OWSActions();
-        owsActions.createAnOnlinesCCCustomerWith2FCFamilyPerkAndNK2720();
+        String path = "src\\test\\resources\\xml\\tropicana\\TC4562_request.xml";
+        owsActions.createGeneralCustomerOrder(path);
 
         test.get().info("Step 2 : Create New Billing Group");
         BaseTest.createNewBillingGroup();
@@ -54,35 +56,31 @@ public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract 
         test.get().info("Step 6 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("FC Mobile 1");
+        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
 
         test.get().info("Step 7 : Submit DoDealXMLExtract and DealCatalogueExtract Job");
         RemoteJobHelper.getInstance().runDoDealXMLExtractJob();
         RemoteJobHelper.getInstance().runDealCatalogueExtractJob();
 
         test.get().info("Step 8 : Open extracted XML file and validate the existence of  bundles under Permitted Bundle Group. ");
-        VerifyDealXMLExtractFile(false, "productCode=\"bonus\"");
-        VerifyDealXMLExtractFile(true, "productCode=\"NC24-4500-3000-IP-S\"");
-        VerifyDealCatalogueExtractFile(false, "productCode=\"bonus\"");
-        VerifyDealCatalogueExtractFile(true, "productCode=\"NC24-4500-3000-IP-S\"");
+        VerifyDealXMLExtractFile(false, "productCode=\"BONUS\"");
+        VerifyDealXMLExtractFile(true, "productCode=\"00250-SB-A\"");
+        VerifyDealCatalogueExtractFile(false, "productCode=\"BONUS\"");
+        VerifyDealCatalogueExtractFile(true, "productCode=\"00250-SB-A\"");
 
         test.get().info("Step 9 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();
-        String path = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
-        swsActions.submitMaintainBundleRequest(path, customerNumber, subscription1);
-
-        test.get().info("Step 10 : Submit Provision job");
-        BaseTest.updateThePDateAndBillDateForSO("");
-        RemoteJobHelper.getInstance().runProvisionSevicesJob();
+        String selfCare = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
+        swsActions.submitMaintainBundleRequest(selfCare, customerNumber, subscription1);
 
         test.get().info("Step 7 : Submit DoDealXMLExtract and DealCatalogueExtract Job");
         RemoteJobHelper.getInstance().runDoDealXMLExtractJob();
         RemoteJobHelper.getInstance().runDealCatalogueExtractJob();
 
         test.get().info("Step 12 : Open extracted XML file and validate the existence of  bundles under Permitted Bundle Group.");
-        VerifyDealXMLExtractFile(false, "productCode=\"bonus\"");
+        VerifyDealXMLExtractFile(false, "productCode=\"BONUS\"");
         VerifyDealXMLExtractFile(true, "productCode=\"NC24-4500-3000-IP-S\"");
-        VerifyDealCatalogueExtractFile(false, "productCode=\"bonus\"");
+        VerifyDealCatalogueExtractFile(false, "productCode=\"BONUS\"");
         VerifyDealCatalogueExtractFile(true, "productCode=\"NC24-4500-3000-IP-S\"");
     }
 
@@ -152,8 +150,6 @@ public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract 
                 Assert.assertFalse(xml.toString().contains(bundleCode[i]));
             }
         }
-
-
     }
 
 }
