@@ -62,10 +62,10 @@ public class SelfCareWSTestBase extends BaseWs {
         Assert.assertEquals(response.getTextByTagName("faultstring"), falseResponseData.getFaultString());
 
         if (falseResponseData.getCodeAttribute() != null) {
-            Assert.assertEquals(falseResponseData.getCodeAttribute(), response.getTextByTagName("codeattribute"));
+            Assert.assertEquals(falseResponseData.getCodeAttribute(), response.getAttributeTextByXpath("//selfcareServiceException","code", 0));
         }
         if (falseResponseData.getTypeAttribute() != null) {
-            Assert.assertEquals(falseResponseData.getTypeAttribute(), response.getTextByTagName("typeattribute"));
+            Assert.assertEquals(falseResponseData.getTypeAttribute(), response.getAttributeTextByXpath("//selfcareServiceException", "type", 0));
         }
         if (falseResponseData.getDescription() != null) {
             Assert.assertEquals(falseResponseData.getDescription(), response.getTextByTagName("description"));
@@ -103,7 +103,7 @@ public class SelfCareWSTestBase extends BaseWs {
         String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
         String sSubStartDate = Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT_XML);
         String sBufStartDate = "";
-        String sEndDate = Parser.parseDateFormate(TimeStamp.TodayMinus16DaysAdd1Month(), TimeStamp.DateFormatXml());
+        String sEndDate = Parser.parseDateFormate(TimeStamp.TodayMinus16DaysAdd2Months(), TimeStamp.DateFormatXml());
         String sNextBillDate = Parser.parseDateFormate(nextBillDate, TimeStamp.DateFormatXml());
         String SNextScheduledRefill = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
         String subscriptionFC = "INVALID";
@@ -122,7 +122,7 @@ public class SelfCareWSTestBase extends BaseWs {
             }
         }
 
-        String file = Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
+        String XmlValue = Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
                 .replace("$accountName$", accountName)
                 .replace("$subscriptionNumberFC$", subscriptionFC)
                 .replace("$startDate$", sStartDate)
@@ -134,7 +134,21 @@ public class SelfCareWSTestBase extends BaseWs {
                 .replace("$subStartDate$", sSubStartDate)
                 .replace("$timeZone$", TimeStamp.TimeZone());
 
+        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(XmlValue)));
+    }
 
-        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
+    public String buildCustomerDetailsResponseData(String tempFilePath, String customerNumber, String addressee,String MPNNumber,String email, String billingGroupName){
+        String firstName = addressee.split(" ")[0];
+        String lastName = addressee.split(" ")[1];
+
+        String XmlValue = Common.readFile(tempFilePath).replace("$accountNumber$", customerNumber)
+                .replace("$firstName$", firstName)
+                .replace("$lastName$", lastName)
+                .replace("$mainSubscription$", MPNNumber)
+                .replace("$email$", email)
+                .replace("$BillingGroup$", billingGroupName)
+                .replace("$cardName$", addressee);
+
+        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(XmlValue)));
     }
 }

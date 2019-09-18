@@ -17,6 +17,7 @@ public class SWSActions extends BaseWs {
     private static final String GET_INVALID_SUBSCRIPTION_SUMMARY__REQUEST = "src\\test\\resources\\xml\\sws\\getsubscription\\Get_Subscription_Summary_Request.xml";
     private static final String GET_USAGE_SUMMARY_REQUEST = "src\\test\\resources\\xml\\sws\\getusage\\Get_Usage_Summary_Request.xml";
     private static final String GET_CONTRACT_SUMMARY_REQUEST = "src\\test\\resources\\xml\\sws\\getcontract\\Get_Contract_Summary_Request.xml";
+    private static final String GET_ACCOUNT_DETAIL_REQUEST = "src\\test\\resources\\xml\\sws\\getaccountdetails\\Get_Account_Detail_Request.xml";
 
     //endregion
 
@@ -99,7 +100,7 @@ public class SWSActions extends BaseWs {
         return submitGetByCustomerNumberRequest(GET_USAGE_SUMMARY_REQUEST, customerNumber);
     }
 
-    private Xml submitGetByCustomerNumberRequest(String filePath, String customerNumber){
+    public Xml submitGetByCustomerNumberRequest(String filePath, String customerNumber){
         request = new Xml(new File(filePath));
         request.setTextByTagName("sel:accountNumber", customerNumber);
 
@@ -109,7 +110,7 @@ public class SWSActions extends BaseWs {
         return response;
     }
 
-    private Xml submitGetBySubscriptionNumberRequest(String filePath, String subscriptionNumber){
+    public Xml submitGetBySubscriptionNumberRequest(String filePath, String subscriptionNumber){
         request = new Xml(new File(filePath));
         request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);
         response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
@@ -131,4 +132,24 @@ public class SWSActions extends BaseWs {
     public Xml submitGetContractSummaryRequest(String subscriptionNumber){
         return submitGetBySubscriptionNumberRequest(GET_CONTRACT_SUMMARY_REQUEST, subscriptionNumber);
     }
+
+    public Xml submitGetAccountAuthorityRequest(String filePath,String username, String password){
+        request = new Xml(new File(filePath));
+        request.setTextByTagName("sel:username", username);
+        request.setTextByTagName("sel:password", password);
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
+
+    public Xml submitGetAccountDetailsRequest(String accountNumber){
+        request = new Xml(new File(GET_ACCOUNT_DETAIL_REQUEST));
+        request.setTextByTagName("sel:accountNumber", accountNumber);
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
 }
+

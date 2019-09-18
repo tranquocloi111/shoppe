@@ -1,12 +1,11 @@
 ﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
   <soapenv:Header/>
   <soapenv:Body>
-    <sel:getAccountSummaryRequest>
-      <sel:includeInactiveSubscriptionFlag>true</sel:includeInactiveSubscriptionFlag>
+    <sel:getAccountDetailRequest>
       <sel:externalSystemID>MOBILEAWARE</sel:externalSystemID>
       <sel:accountCriteria>
         <sel:accountNumber>$accountNumber$</sel:accountNumber>
       </sel:accountCriteria>
-    </sel:getAccountSummaryRequest>
+    </sel:getAccountDetailRequest>
   </soapenv:Body>
 </soapenv:Envelope>
