@@ -184,6 +184,8 @@ public class ServiceOrdersPage extends BasePage {
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Notes:')]/following-sibling::td//input")
         WebElement notesCtl;
 
+
+
         public static ReturnsAndEtcPage getInstance() {
             if (instance == null)
                 return new ReturnsAndEtcPage();
@@ -217,6 +219,11 @@ public class ServiceOrdersPage extends BasePage {
                     return tds.get(2).getText().trim();
             }
             return null;
+        }
+        public void selectWaiveETCReasonByIndexAndValue(int index,String value)
+        {
+            List<WebElement> elementList= getDriver().findElements(By.xpath("//td[contains(text(),'Waive ETC Reason:')]"));
+            selectByVisibleText(elementList.get(index).findElement(By.xpath("..//following-sibling::td[1]//select")),value);
         }
     }
 

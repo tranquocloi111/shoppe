@@ -64,13 +64,13 @@ public class BasePage {
         element.sendKeys(val);
     }
 
-    protected void enterValueByJs(WebElement element, String val){
+    protected void enterValueByJs(WebElement element, String val) {
         setClearInputValue(element);
-        ((JavascriptExecutor)getDriver()).executeAsyncScript("arguments[0].value='"+val+"'", element);
+        ((JavascriptExecutor) getDriver()).executeAsyncScript("arguments[0].value='" + val + "'", element);
     }
 
-    protected void setClearInputValue(WebElement element){
-        ((JavascriptExecutor)getDriver()).executeAsyncScript("arguments[0].value=''", element);
+    protected void setClearInputValue(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeAsyncScript("arguments[0].value=''", element);
     }
 
     protected WebElement getCell(WebElement tbl, int row, int col) {
@@ -290,14 +290,27 @@ public class BasePage {
     public void waitUntilElementClickable(WebElement ele) {
         WdManager.getWait().until(ExpectedConditions.elementToBeClickable(ele));
     }
-    public String getCurrentUrl()
-    {
-       return getDriver().getCurrentUrl();
+
+    public String getCurrentUrl() {
+        return getDriver().getCurrentUrl();
     }
 
     public void clickBackBtn() {
         click(getDriver().findElement(By.xpath("//a[@id='BackBtn']")));
     }
 
+    public void clickSaveBtn() {
+        click(getDriver().findElement(By.xpath("//a[@id='SaveBtn']")));
+    }
+
+    public WebElement getMssgBoxByIndex(int index) {
+        String xpath = String.format("//div[@class='msg-box'][%s]", index);
+        return getDriver().findElement(By.xpath("//div[@class='msg-box'][1]"));
+    }
+
+    public void selectRadioButtonByText(WebElement element, String text) {
+        String xpath = String.format("//input[ @value='%s' and @type='radio']", text);
+        click(element.findElement(By.xpath(xpath)));
+    }
     //endregion
 }

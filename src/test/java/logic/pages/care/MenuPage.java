@@ -107,6 +107,9 @@ public class MenuPage extends BasePage {
         public void clickPaymentsLink() {
             clickLinkByName("Payments");
         }
+        public void clickUnBilledSummaryItem() {
+            clickLinkByName("Unbilled Summary");
+        }
     }
 
     public static class RightMenuPage extends MenuPage {

@@ -41,6 +41,11 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
             enterValueByLabel(deactivationDate, sDeactivationDate);
         }
 
+        public void selectDeactiveBySubscription(String subNo)
+        {
+            String xpath=String.format("//td[contains(text(),'%s')]//input[@type='checkbox']",subNo);
+            click(getDriver().findElement(By.xpath(xpath)));
+        }
         public void setNotes(String text) {
             deactivationNotes.sendKeys(text);
         }

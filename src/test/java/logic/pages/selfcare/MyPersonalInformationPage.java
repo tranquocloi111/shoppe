@@ -1,6 +1,9 @@
 package logic.pages.selfcare;
 
+import framework.config.Config;
 import framework.utils.Log;
+import framework.utils.RandomCharacter;
+import logic.business.helper.MiscHelper;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
@@ -185,6 +188,13 @@ public class MyPersonalInformationPage extends BasePage {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Monthly bundles"));
             }
 
+            @FindBy(xpath = "//td[contains(text(),'Monthly bundles')]//ancestor::tr[1]//following-sibling::tr[1]//td[@class='fieldvalue']")
+            WebElement secondMontlyBundle;
+
+            public String getSecondMonthlyBundles() {
+                return getTextOfElement(secondMontlyBundle);
+            }
+
             @FindBy(xpath = "//label[text()='Roaming']//ancestor::td[1]//following-sibling::td")
             WebElement roamingCell;
 
@@ -207,46 +217,76 @@ public class MyPersonalInformationPage extends BasePage {
                 click(getDriver().findElement(By.xpath("//span[@id='WzClOsE']")));
                 return toolTip;
             }
-            public String getHighUsage()
-            {
+
+            public String getHighUsage() {
                 return getTextOfElement(tableControlBase.findCellByLabelText("High usage").findElement(By.tagName("span")));
             }
 
-            public String getCustomer()
-            {
+            public String getCustomer() {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Customer").findElement(By.tagName("span")));
             }
-            public String getUnpaidBill()
-            {
+
+            public String getUnpaidBill() {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
             }
-            public String getFraud()
-            {
+
+            public String getFraud() {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Fraud").findElement(By.tagName("span")));
             }
+
             public void clickDataCapAbroad() {
-                 click(tableControlBase.findCellByLabelText("£40 data cap abroad").findElement(By.tagName("span")));
+                click(tableControlBase.findCellByLabelText("£40 data cap abroad").findElement(By.tagName("span")));
             }
 
             public void clickUnPaidLink() {
                 click(tableControlBase.findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
             }
-            public String getUnPaidToolTip()
-            {
+
+            public String getUnPaidToolTip() {
                 clickHelpBtnByIndex(8);
                 waitUntilElementVisible(getDriver().findElement(By.xpath("//td[@id='WzBoDyI']")));
                 return getTextOfElement(getDriver().findElement(By.xpath("//td[@id='WzBoDyI']")));
             }
+
             public void updateDescription(String value) {
-                 enterValueByLabel(tableControlBase.findControlCellByLabel("Description", 1).findElement(By.tagName("input")),value);
+                enterValueByLabel(tableControlBase.findControlCellByLabel("Description", 1).findElement(By.tagName("input")), value);
             }
+
             @FindBy(xpath = "//a[@id='SaveBtn']")
             WebElement savePhoneUserNameBtn;
-            public void clickSavePhoneUserNameBtn()
-            {
+
+            public void clickSavePhoneUserNameBtn() {
                 savePhoneUserNameBtn.click();
             }
+
+            public void setCreditAgreementSelectByVisibleText(String text) {
+                WebElement el = myTariffTable().findElement(By.xpath("..//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
+                selectByVisibleText(el, text);
+            }
+            public void savePDFFile(String CCANo, String CreditAgreements, String customerNumber) {
+
+                String ccaType= null;
+                switch (CreditAgreements) {
+                    case "Your Credit Agreement":
+                        ccaType = "CCA_DOCUMENT";
+                        break;
+                    case "Your statement to date":
+                        ccaType = "ACCOUNT_STATEMENT";
+                        break;
+                    case "What you've paid and your remaining balance":
+                        ccaType = "CCD_STATEMENT";
+                        break;
+                    case "Your annual statement":
+                        ccaType = "PERIODIC_STATEMENT";
+                        break;
+                }
+                WebElement el = myTariffTable().findElement(By.xpath("//a[@id='viewAgreementButton']"));
+                String fileName= String.format("%s_%s_%s_mobile1.pdf", customerNumber, RandomCharacter.getRandomNumericString(9), "31927");
+                String url = Config.getProp("selfCareUrl") + String.format("/ShowAgreementDocument.do?agreementNumber=%s&documentType=%s", CCANo, ccaType);
+                MiscHelper.saveFileFromWebRequest(el,url,fileName);
+            }
         }
+
     }
 
     public static class myAlertSection extends MyPersonalInformationPage {
@@ -340,6 +380,7 @@ public class MyPersonalInformationPage extends BasePage {
         public void verifyTheMyBillsAndPaymentsPage() {
             Assert.assertEquals(MyPersonalInformationPage.getInstance().getHeader(), "My bills and payments");
         }
+
         public void clickViewDetailsOfMyCLubCardPoints() {
             tableControlBase.clickLinkByText("View details of my Clubcard points");
         }
