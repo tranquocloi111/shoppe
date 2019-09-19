@@ -14,6 +14,7 @@ import logic.pages.care.find.*;
 import logic.pages.care.main.LoginPage;
 import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.options.ChangeSubscriptionNumberPage;
+import logic.pages.care.options.DeactivateSubscriptionPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.By;
@@ -231,7 +232,7 @@ public class CareTestBase extends BasePage {
         return list;
     }
 
-    public String getEmail() {
+    public static String getEmail() {
         return DetailsContentPage.AddressInformationPage.getInstance().getEmail();
     }
 
@@ -257,5 +258,24 @@ public class CareTestBase extends BasePage {
         }
 
         return subscriptionNumberList;
+    }
+
+    public static void deactivateSubscription(String subscription){
+        MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
+        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().selectTheSubscriptionToBeDeactivated(subscription);
+        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().clickNextButton();
+
+        String warningMessage = String.format("Subscription %s will be deactivated and cannot be undone. Are you sure? Select 'Next' to confirm.", subscription.split(" ")[0]);
+        Assert.assertEquals(warningMessage, DeactivateSubscriptionPage.ConfirmDeactivatingSubscription.getInstance().getConfirmDeactivatingSubscription());
+        DeactivateSubscriptionPage.ConfirmDeactivatingSubscription.getInstance().clickNextButton();
+
+        String serviceCompletedMessage = "*** Deactivation Performed Immediately as Deactivate Date was past ***";
+        Assert.assertEquals(serviceCompletedMessage, ServiceOrdersPage.ServiceOrderComplete.getInstance().getMessage());
+    }
+
+    public static void verifySubscriptionStatus(String subscription, String expectedStatus){
+        MenuPage.LeftMenuPage.getInstance().clickSummaryLink();
+        String actualStatus = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusOfSubscription(subscription);
+        Assert.assertEquals(expectedStatus, actualStatus);
     }
 }

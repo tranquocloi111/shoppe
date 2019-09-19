@@ -1,0 +1,43 @@
+﻿<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <S:Body>
+    <getAccountDetailResponse xmlns="http://selfcare.telco.hsntech.com" xmlns:ns2="http://wsdl.hsntech.com">
+      <accountDetail>
+        <customerDetail>
+          <accountNumber>$accountNumber$</accountNumber>
+          <title>Mr</title>
+          <firstName>$firstName$</firstName>
+          <lastName>$lastName$</lastName>
+          <birthDate>1985-01-01+11:00</birthDate>
+          <mainSubscription>$mainSubscription$</mainSubscription>
+          <email>$email$</email>
+          <billingDetail>
+            <BillingGroup>$BillingGroup$</BillingGroup>
+            <InvoiceStyle>SUMMARY</InvoiceStyle>
+            <InvoiceNotification>SMS</InvoiceNotification>
+          </billingDetail>
+          <phoneNumber preferredContact="DAYTIME">
+            <daytime>0398403850</daytime>
+            <evening>0208619999</evening>
+            <mobile>02086999990</mobile>
+          </phoneNumber>
+        </customerDetail>
+        <addressDetail>
+          <buildingIdentifer>6</buildingIdentifer>
+          <addressLine1>LUKIN STREET</addressLine1>
+          <town>LONDON</town>
+          <country>United Kingdom</country>
+          <postcode>E10AA</postcode>
+          <pafKey>3075103S0X</pafKey>
+        </addressDetail>
+        <paymentDetail ongoingPaymentMethod="CARD">
+          <creditCard>
+            <cardName>$cardName$</cardName>
+            <cardNumber>************5100</cardNumber>
+            <cardType>MC</cardType>
+            <cardExpireDate>2030-11-30+11:00</cardExpireDate>
+          </creditCard>
+        </paymentDetail>
+      </accountDetail>
+    </getAccountDetailResponse>
+  </S:Body>
+</S:Envelope>

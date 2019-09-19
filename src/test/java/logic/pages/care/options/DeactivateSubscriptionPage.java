@@ -3,6 +3,7 @@ package logic.pages.care.options;
 import logic.pages.care.main.ServiceOrdersPage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -16,6 +17,9 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
         public static DeactivateSubscription getInstance(){
             return new DeactivateSubscription();
         }
+
+        @FindBy(xpath = "//td[normalize-space(text())='Deactivate Subscription']//ancestor::form[1]")
+        WebElement form;
 
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Next Bill Date:')]/following-sibling::td//input")
         WebElement nextBillDate;
@@ -49,6 +53,12 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
             clickNextButton();
             clickReturnToCustomer();
         }
+
+        public void selectTheSubscriptionToBeDeactivated(String subscription){
+            WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", subscription)));
+            WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
+            click(checkbox);
+        }
     }
 
     public static class ConfirmDeactivatingSubscription extends DeactivateSubscriptionPage{
@@ -63,8 +73,14 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
         @FindBy(xpath = "//form[@id='wizard']//td[contains(text(),'Confirm Deactivating Subscription')]")
         WebElement lblConfirmDeactivatingSubscription;
 
+        @FindBy(xpath = "//td[@class='descError']")
+        WebElement lblConfirmMessage;
+
         public boolean verifyConfirmDeactivatingSubscriptionIsDisplay(){
             return isElementPresent(lblConfirmDeactivatingSubscription);
+        }
+        public String getConfirmDeactivatingSubscription(){
+            return getTextOfElement(lblConfirmMessage);
         }
 
     }
