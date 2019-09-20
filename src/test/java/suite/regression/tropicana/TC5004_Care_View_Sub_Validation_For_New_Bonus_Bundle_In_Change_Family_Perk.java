@@ -26,7 +26,7 @@ public class TC5004_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Fami
     private String subscription1;
     private String serviceOrderId;
 
-    @Test(enabled = true, description = "TC 5004 Care-MODF-SUB- Validation for Bonus bundle in Change Family Perk", groups = "tropicana")
+    @Test(enabled = true, description = "TC5004_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Family_Perk", groups = "tropicana")
     public void TC5004_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Family_Perk(){
         test.get().info("Step 1 : Create a customer subscription related tariff linked with a Tropicana bundle group");
         String path = "\\src\\test\\resources\\xml\\tropicana\\TC4617_TC001_request.xml";

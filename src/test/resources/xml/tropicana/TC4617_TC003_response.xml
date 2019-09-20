@@ -110,6 +110,35 @@
           </bundleGroup>
           <bundleGroup>
             <group>ADDITIONAL</group>
+            <groupCode>2GBDATA</groupCode>
+            <descr>2GB Data bundles</descr>
+            <minQuantity>0</minQuantity>
+            <maxQuantity>1</maxQuantity>
+            <bundle charge="0.0" code="2GB-DATA-0-FC"
+                    descr="Monthly 2GB inclusive data allowance"
+                    group="ADDITIONAL" selected="false">
+              <serviceFeatures/>
+              <allowances>
+                <allowance>
+                  <allowanceType>MB</allowanceType>
+                  <totalAllowance>2048.0</totalAllowance>
+                </allowance>
+              </allowances>
+            </bundle>
+            <bundle charge="10.0" code="3GB-DATA-1000-FC"
+                    descr="Monthly 3GB data allowance (upgrade from 2GB)"
+                    group="ADDITIONAL" selected="false">
+              <serviceFeatures/>
+              <allowances>
+                <allowance>
+                  <allowanceType>MB</allowanceType>
+                  <totalAllowance>3072.0</totalAllowance>
+                </allowance>
+              </allowances>
+            </bundle>
+          </bundleGroup>
+          <bundleGroup>
+            <group>ADDITIONAL</group>
             <groupCode>STANDARDDATAFC</groupCode>
             <descr>Standard Data Bundles</descr>
             <minQuantity>0</minQuantity>

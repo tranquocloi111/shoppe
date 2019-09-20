@@ -8,8 +8,10 @@ import logic.business.ws.sws.SWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.ServiceOrdersContentPage;
+import logic.pages.care.find.SubscriptionContentPage;
 import logic.pages.care.main.ServiceOrdersPage;
 import logic.utils.Common;
+import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -18,19 +20,20 @@ import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off_Bundle extends BaseTest {
-    private String customerNumber = "15758";
-    private Date newStartDate;
-    private String subscription1;
+    private String customerNumber;
+    private String subscription2;
     private String serviceOrderId;
 
-    @Test(enabled = true, description = "Care-VIEW-SUB- Validation for new Bonus bundle in Add One-off Bundle", groups = "tropicana")
+    @Test(enabled = true, description = "TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off_Bundle", groups = "tropicana")
     public void TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off_Bundle(){
         test.get().info("Step 1 : Create a customer subscription related tariff linked with a Tropicana bundle group");
-        String path = "\\src\\test\\resources\\xml\\tropicana\\TC4617_TC001_request.xml";
         OWSActions owsActions = new OWSActions();
+        String path = "src\\test\\resources\\xml\\tropicana\\TC4682_request.xml";
         owsActions.createGeneralCustomerOrder(path);
 
         test.get().info("Step 2 : Create New Billing Group");
@@ -43,43 +46,43 @@ public class TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off
         customerNumber = owsActions.customerNo;
         BaseTest.setBillGroupForCustomer(customerNumber);
 
-        test.get().info("Step 4 : Update Customer Start Date");
-        newStartDate = TimeStamp.TodayMinus15Days();
-        CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
-
         test.get().info("Step 5 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
-        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        List<String> subList = getAllSubscriptionsNumber();
+        subscription2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
         test.get().info("Step 6 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();
         String selfCarePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
-        swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription1);
-
-        test.get().info("Step 7 : Submit Provision Wait");
-        List<WebElement> serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderBySubAndType(subscription1, "Change Bundle"));
-        serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByElementServiceOrders(serviceOrder);
-        BaseTest.updateThePDateAndBillDateForSO(serviceOrderId);
-        RemoteJobHelper.getInstance().runProvisionSevicesJob();
+        swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription2);
 
         test.get().info("Step 6: Navigate to Change Bundle page");
         MenuPage.RightMenuPage.getInstance().clickChangeBundleLink();
 
         test.get().info("Step 7 : Select FC mobile to Add One-off Bundle");
-        List<String> subList = CareTestBase.getAllSubscriptionsNumber();
-        String fcSubText = Common.findValueOfStream(subList, "Mobile Ref 1");
+        String fcSubText = Common.findValueOfStream(subList, "Mobile Ref 2");
         ServiceOrdersPage.SelectSubscription.getInstance().selectSubscription(fcSubText, "Add One-off Bundle");
 
         test.get().info("Step 8 : Observe the Current Bundle section");
+        verifyCurrentBundleSection();
+    }
+
+    private void verifyCurrentBundleSection(){
         ServiceOrdersPage.AddOneOffBundle addOneOffBundle = ServiceOrdersPage.AddOneOffBundle.getInstance();
-        Assert.assertEquals("", addOneOffBundle.getSubscriptionNumber());
-        Assert.assertEquals("", addOneOffBundle.getNextBillDateForThisAccount());
-        Assert.assertEquals("", addOneOffBundle.getCurrentTariff());
-        Assert.assertEquals("", addOneOffBundle.getPackagedBundle());
-        Assert.assertTrue(addOneOffBundle.isBonusBundleDisplayed(""));
+        Assert.assertEquals(addOneOffBundle.getSubscriptionNumber(), subscription2 + " Mobile Ref 2");
+        Assert.assertEquals(addOneOffBundle.getNextBillDateForThisAccount(), Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT4) + " (30 days from today)");
+        Assert.assertEquals(addOneOffBundle.getCurrentTariff(),"£10 Tariff 12 Month Contract");
+        Assert.assertEquals(addOneOffBundle.getPackagedBundle(), "Bundle - 500 mins, 5000 texts (FC)");
+        Assert.assertEquals(addOneOffBundle.getCellValueByIndex(3),"Double Data  0  1  Family perk - 250MB per month  250MB  N/A  N/A  £0.00 ");
+    }
 
-
-
+    private List<String> getAllSubscriptionsNumber(){
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        List<String> subscriptionNumberList = new ArrayList<>();
+        for (int i = 0; i < 3; i++){
+            String subNo = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(i);
+            subscriptionNumberList.add(subNo);
+        }
+        return subscriptionNumberList;
     }
 }

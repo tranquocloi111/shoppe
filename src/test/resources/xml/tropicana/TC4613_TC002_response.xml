@@ -22,7 +22,7 @@
             </allowance>
             <allowance>
               <type>UNIT</type>
-              <amount>5000.0</amount>
+              <amount>5000.0</amount>L chay
             </allowance>
           </bundle>
           <bundle charge="0.0" code="250MB-FDATA-0-FC" cycles="9999" descr="Family perk - 250MB per month" endDate="$startDateBonus$+10:00" group="BONUS" groupCode="DOUBLE_DATA" startDate="$startDateBonus$+10:00">

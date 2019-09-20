@@ -15,13 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MyPersonalInformationPage extends BasePage {
+    @FindBy(id = "header")
+    WebElement header;
+
     //private static MyPersonalInformationPage instance;
     public static MyPersonalInformationPage getInstance() {
         return new MyPersonalInformationPage();
     }
-
-    @FindBy(id = "header")
-    WebElement header;
 
     public String getHeader() {
         waitUntilElementVisible(header);
@@ -29,15 +29,14 @@ public class MyPersonalInformationPage extends BasePage {
     }
 
     public static class MyPreviousOrdersPage extends MyPersonalInformationPage {
+        @FindBy(xpath = "//b[contains(text(),'My previous orders and contract')]/ancestor::table[1]/following-sibling::div//table")
+        WebElement myPreviousOrdersContracttable;
+        TableControlBase tableControlBase = new TableControlBase(myPreviousOrdersContracttable);
+
         //private static MyPreviousOrdersPage instance;
         public static MyPreviousOrdersPage getInstance() {
             return new MyPreviousOrdersPage();
         }
-
-        @FindBy(xpath = "//b[contains(text(),'My previous orders and contract')]/ancestor::table[1]/following-sibling::div//table")
-        WebElement myPreviousOrdersContracttable;
-
-        TableControlBase tableControlBase = new TableControlBase(myPreviousOrdersContracttable);
 
         public void clickViewByIndex(int index) {
             click(myPreviousOrdersContracttable.findElement(By.xpath(".//tr[" + index + "]")).findElement(By.linkText("View")));
@@ -45,12 +44,12 @@ public class MyPersonalInformationPage extends BasePage {
     }
 
     public static class MyTariffPage extends MyPersonalInformationPage {
+        @FindBy(xpath = "//a[@href='/orderentry/ShowAllSubscriptions.do']")
+        WebElement myTariffDetails;
+
         public static MyTariffPage getInstance() {
             return new MyTariffPage();
         }
-
-        @FindBy(xpath = "//a[@href='/orderentry/ShowAllSubscriptions.do']")
-        WebElement myTariffDetails;
 
         public void clickViewOrChangeMyTariffDetailsLink() {
             click(myTariffDetails);
@@ -58,13 +57,16 @@ public class MyPersonalInformationPage extends BasePage {
 
         public static class MyTariffDetailsPage extends MyTariffPage {
             static String serviceRefName;
+            TableControlBase tableControlBase = new TableControlBase(myTariffTable());
+            @FindBy(xpath = "//label[text()='Roaming']//ancestor::td[1]//following-sibling::td")
+            WebElement roamingCell;
+            @FindBy(xpath = "//a[@id='SaveBtn']")
+            WebElement savePhoneUserNameBtn;
 
             public static MyTariffDetailsPage getInstance(String name) {
                 serviceRefName = name;
                 return new MyTariffDetailsPage();
             }
-
-            TableControlBase tableControlBase = new TableControlBase(myTariffTable());
 
             private WebElement myTariffTable() {
                 return getDriver().findElement(By.xpath("//form//input[@value='" + serviceRefName + "']//ancestor::table[1]"));
@@ -185,9 +187,6 @@ public class MyPersonalInformationPage extends BasePage {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Monthly bundles"));
             }
 
-            @FindBy(xpath = "//label[text()='Roaming']//ancestor::td[1]//following-sibling::td")
-            WebElement roamingCell;
-
             public String getRoaming() {
                 return getTextOfElement(roamingCell);
             }
@@ -207,44 +206,71 @@ public class MyPersonalInformationPage extends BasePage {
                 click(getDriver().findElement(By.xpath("//span[@id='WzClOsE']")));
                 return toolTip;
             }
-            public String getHighUsage()
-            {
+
+            public String getHighUsage() {
                 return getTextOfElement(tableControlBase.findCellByLabelText("High usage").findElement(By.tagName("span")));
             }
 
-            public String getCustomer()
-            {
+            public String getCustomer() {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Customer").findElement(By.tagName("span")));
             }
-            public String getUnpaidBill()
-            {
+
+            public String getUnpaidBill() {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
             }
-            public String getFraud()
-            {
+
+            public String getFraud() {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Fraud").findElement(By.tagName("span")));
             }
+
             public void clickDataCapAbroad() {
-                 click(tableControlBase.findCellByLabelText("£40 data cap abroad").findElement(By.tagName("span")));
+                click(tableControlBase.findCellByLabelText("£40 data cap abroad").findElement(By.tagName("span")));
             }
 
             public void clickUnPaidLink() {
                 click(tableControlBase.findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
             }
-            public String getUnPaidToolTip()
-            {
+
+            public String getUnPaidToolTip() {
                 clickHelpBtnByIndex(8);
                 waitUntilElementVisible(getDriver().findElement(By.xpath("//td[@id='WzBoDyI']")));
                 return getTextOfElement(getDriver().findElement(By.xpath("//td[@id='WzBoDyI']")));
             }
+
             public void updateDescription(String value) {
-                 enterValueByLabel(tableControlBase.findControlCellByLabel("Description", 1).findElement(By.tagName("input")),value);
+                enterValueByLabel(tableControlBase.findControlCellByLabel("Description", 1).findElement(By.tagName("input")), value);
             }
-            @FindBy(xpath = "//a[@id='SaveBtn']")
-            WebElement savePhoneUserNameBtn;
-            public void clickSavePhoneUserNameBtn()
-            {
+
+            public void clickSavePhoneUserNameBtn() {
                 savePhoneUserNameBtn.click();
+            }
+
+            public List<WebElement> getFamilyPerkStack() {
+                List<WebElement> list = new ArrayList<>();
+                WebElement monthlyBundlesLable = findLabelCell(myTariffTable(), "-  Monthly bundles");
+                List<WebElement> allowances = monthlyBundlesLable.findElements(By.xpath(".//parent::tr[1]//following::tr"));
+                for (WebElement familyPerk : allowances) {
+                    if (familyPerk.getText().trim().contains("Family perk - ")) {
+                        list.add(familyPerk);
+                    }
+                }
+                return list;
+            }
+
+            public String getFamilyPerkHelpIconText() {
+                try {
+                    WebElement icon = getFamilyPerkStack().get(0).findElement(By.tagName("a"));
+                    WebElement image = icon.findElement(By.tagName("img"));
+                    String js = image.getAttribute("onmouseover");
+                    //hover(image);
+                    executeJs(js, image);
+                    Thread.sleep(1000);
+                    WebElement div = getDriver().findElement(By.cssSelector("div[id='WzBoDy']"));
+                    return div.getText().trim();
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+                return null;
             }
         }
     }
@@ -253,14 +279,15 @@ public class MyPersonalInformationPage extends BasePage {
         private static myAlertSection instance;
         @FindBy(xpath = "//b[contains(text(),'My alerts')]/ancestor::p/following-sibling::div[1]/table")
         WebElement myAlertSection;
+        TableControlBase tableControlBase = new TableControlBase(myAlertSection);
+        @FindBy(xpath = "//span[contains(text(),'overdue')]")
+        WebElement overDueAlert;
 
         public static myAlertSection getInstance() {
             if (instance == null)
                 return new myAlertSection();
             return instance;
         }
-
-        TableControlBase tableControlBase = new TableControlBase(myAlertSection);
 
         public String getAlertMessageByText(String text) {
             return (getTextOfElement(tableControlBase.getLinkByText(text)));
@@ -289,10 +316,6 @@ public class MyPersonalInformationPage extends BasePage {
             click(tableControlBase.getLinkByText(text));
         }
 
-
-        @FindBy(xpath = "//span[contains(text(),'overdue')]")
-        WebElement overDueAlert;
-
         public String getAlertMessagebForOverDuePayment() {
             return (getTextOfElement(overDueAlert));
         }
@@ -303,15 +326,13 @@ public class MyPersonalInformationPage extends BasePage {
         private static myAccountSection instance;
         @FindBy(xpath = "//b[contains(text(),'My account')]/ancestor::p/following-sibling::div[1]/table")
         WebElement myAccountTable;
+        TableControlBase tableControlBase = new TableControlBase(myAccountTable);
 
         public static myAccountSection getInstance() {
             if (instance == null)
                 return new myAccountSection();
             return instance;
         }
-
-        TableControlBase tableControlBase = new TableControlBase(myAccountTable);
-
 
         public void clickViewOrChangeMyAccountDetails() {
             tableControlBase.clickLinkByText("View or change my account details");
@@ -323,15 +344,13 @@ public class MyPersonalInformationPage extends BasePage {
         private static MyBillsAndPaymentsSection instance;
         @FindBy(xpath = "//b[contains(text(),'My bills and payments')]/ancestor::p/following-sibling::div[1]/table")
         WebElement myBillsandPaymentstable;
+        TableControlBase tableControlBase = new TableControlBase(myBillsandPaymentstable);
 
         public static MyBillsAndPaymentsSection getInstance() {
             if (instance == null)
                 return new MyBillsAndPaymentsSection();
             return instance;
         }
-
-        TableControlBase tableControlBase = new TableControlBase(myBillsandPaymentstable);
-
 
         public void clickViewDetailsOfMyBillsAndPayments() {
             tableControlBase.clickLinkByText("View details of my bills and payments");
@@ -340,6 +359,7 @@ public class MyPersonalInformationPage extends BasePage {
         public void verifyTheMyBillsAndPaymentsPage() {
             Assert.assertEquals(MyPersonalInformationPage.getInstance().getHeader(), "My bills and payments");
         }
+
         public void clickViewDetailsOfMyCLubCardPoints() {
             tableControlBase.clickLinkByText("View details of my Clubcard points");
         }

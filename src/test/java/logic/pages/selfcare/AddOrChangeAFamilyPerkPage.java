@@ -110,10 +110,10 @@ public class AddOrChangeAFamilyPerkPage extends BasePage {
 
         public String getTextsRow(String column, int index){
             WebElement tableRow = allowanceTable().findElements(By.tagName("tr")).get(index);
-            if (column == "Current allowance"){
+            if (column.equalsIgnoreCase("Current allowance")){
                 return tableRow.findElement(By.xpath(".//td[2]")).getText().trim();
             }
-            else if (column == "New allowance"){
+            else if (column.equalsIgnoreCase("New allowance")){
                 return tableRow.findElement(By.xpath(".//td[3]")).getText().trim();
             }
             else {

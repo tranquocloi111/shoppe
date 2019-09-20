@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
@@ -299,5 +300,20 @@ public class BasePage {
         click(getDriver().findElement(By.xpath("//a[@id='BackBtn']")));
     }
 
+    public void hover(WebElement element){
+        Actions action = new Actions(getDriver());
+        scrollToElement(element);
+        action.moveToElement(element).build().perform();
+    }
+
+    public  void hoverOffset(WebElement element, int offsetX, int offsetY){
+        Actions action = new Actions(getDriver());
+        action.moveToElement(element, offsetX, offsetY).build().perform();
+    }
+
+    public void executeJs(String mouseOverScript, WebElement hoverElement){
+        ((JavascriptExecutor) getDriver()).executeScript(mouseOverScript,
+                hoverElement);
+    }
     //endregion
 }

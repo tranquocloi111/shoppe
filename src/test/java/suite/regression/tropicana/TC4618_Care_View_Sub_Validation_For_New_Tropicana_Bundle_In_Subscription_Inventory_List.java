@@ -11,6 +11,7 @@ import logic.pages.care.find.ServiceOrdersContentPage;
 import logic.pages.care.find.SubscriptionContentPage;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
@@ -25,7 +26,7 @@ public class TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscri
     private String subscription1;
     private String subscription2;
 
-    @Test(enabled = true, description = "TC4618 SC - Care-VIEW-SUB- Validation for new Tropicana bundle in subscription inventory list", groups = "Tropicana")
+    @Test(enabled = true, description = "TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscription_Inventory_List", groups = "Tropicana")
     public void TC4618Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscription_Inventory_List(){
         test.get().info("Step 1 :  Create a Customer has 2 Subscription that has Tropicana bundle and has no Tropicana");
         OWSActions owsActions = new OWSActions();
@@ -60,24 +61,28 @@ public class TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscri
         test.get().info("Step 8 : Load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue("Mobile Ref 2");
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subscription2 + " Mobile Ref 2");
 
         test.get().info("Step 9 : Validate new Tropicana bundle added in subscription inventory list");
         validateNewTropicanaBundle();
+        verifyNewTropicanaBundleInDB();
     }
 
     private void validateNewTropicanaBundle(){
         HashMap<String,String> bonus = new HashMap<String,String>();
         bonus.put("Product Code","BUNDLER - [250MB-FDATA-0-FC]");
         bonus.put("Type","Bundle");
-        bonus.put("Description","BUNDLER - [250MB-FDATA-0-FC]");
+        bonus.put("Description","Discount Bundle Recurring - [Family perk - 250MB per month]");
         SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage otherProductsGrid = SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance();
-        otherProductsGrid.getOtherProduct(bonus);
+        Assert.assertEquals(1, otherProductsGrid.getNumberOfOtherProductsByProduct(bonus));
     }
 
     private void verifyNewTropicanaBundleInDB(){
         List bundle = CommonActions.getBundleByCustomerId(customerNumber);
-
-
+        Assert.assertEquals(((HashMap) bundle.get(0)).get("MPN"), subscription2);
+        Assert.assertEquals(((HashMap) bundle.get(0)).get("BUNDLEGROUPCODE"), "DOUBLE_DATA");
+        Assert.assertEquals(((HashMap) bundle.get(0)).get("BUNDLECODE"), "250MB-FDATA-0-FC");
+        Assert.assertEquals(((HashMap) bundle.get(0)).get("BUNDLEDESCR"), "Family perk - 250MB per month");
+        Assert.assertEquals(((HashMap) bundle.get(0)).get("BUNDLEGROUPTYPE"), "BONUS");
     }
 }

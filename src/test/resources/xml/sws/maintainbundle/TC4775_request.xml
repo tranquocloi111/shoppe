@@ -11,7 +11,7 @@
           <sel:bundleAction actionType="ADD">
             <sel:group>BONUS</sel:group>
             <sel:groupCode>DOUBLE_DATA</sel:groupCode>
-            <sel:bundleCode>250MB-4GDATA2-0-FC</sel:bundleCode>
+            <sel:bundleCode>250MB-FDATA-0-FC</sel:bundleCode>
           </sel:bundleAction>
           <sel:bundleAction actionType="REMOVE">
             <sel:group>ONEOFF</sel:group>

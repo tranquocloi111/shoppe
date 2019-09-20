@@ -247,6 +247,27 @@
           </bundleGroup>
           <restrictedBundleGroup>
             <group>BONUS</group>
+            <groupCode>BBGTEST</groupCode>
+            <descr>Bonus Bundle Group - Test</descr>
+            <minQuantity>0</minQuantity>
+            <maxQuantity>1</maxQuantity>
+            <bundle charge="3.0"
+                    code="250MB-4GTUDATA-0300-NC"
+                    descr="One-off NC data 4G - 250MB"
+                    group="BONUS" selected="false">
+              <serviceFeatures>
+                <serviceFeature type="4G Service">ON</serviceFeature>
+              </serviceFeatures>
+              <allowances>
+                <allowance>
+                  <allowanceType>MB</allowanceType>
+                  <totalAllowance>250.0</totalAllowance>
+                </allowance>
+              </allowances>
+            </bundle>
+          </restrictedBundleGroup>
+          <restrictedBundleGroup>
+            <group>BONUS</group>
             <groupCode>DOUBLE_DATA</groupCode>
             <descr>Double Data</descr>
             <minQuantity>0</minQuantity>

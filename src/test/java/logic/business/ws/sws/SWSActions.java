@@ -80,21 +80,6 @@ public class SWSActions extends BaseWs {
         return response;
     }
 
-    public Xml submitGetSubscriptionSummaryRequest(String customerNumber, String subscriptionNumber, boolean isFlag){
-        request = new Xml(new File(GET_INVALID_SUBSCRIPTION_SUMMARY__REQUEST));
-        request.setTextByTagName("sel:accountNumber", customerNumber);
-        request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);
-        if (isFlag)
-            request.setTextByTagName("sel:includeInactiveSubscriptionFlag", "true");
-        else
-            request.setTextByTagName("sel:includeInactiveSubscriptionFlag", "false");
-
-        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
-        Log.info("Response: " + response.toString());
-
-        return response;
-    }
-
     public Xml submitGetUsageSummaryRequest(String customerNumber){
         return submitGetByCustomerNumberRequest(GET_USAGE_SUMMARY_REQUEST, customerNumber);
     }

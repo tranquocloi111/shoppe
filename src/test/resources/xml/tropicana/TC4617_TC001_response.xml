@@ -33,8 +33,10 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="5.0" code="500MB-TUDATA-0500-FC" descr="One-off data 500MB" group="ONEOFF" numberSelected="0" selected="false">
-              <serviceFeatures/>
+            <bundle charge="5.0" code="500MB-4GTUDATA-0500-FC" descr="One-off FC data 4G - 500MB" group="ONEOFF" numberSelected="0" selected="false">
+              <serviceFeatures>
+                <serviceFeature type="4G Service">ON</serviceFeature>
+              </serviceFeatures>
               <allowances>
                 <allowance>
                   <allowanceType>MB</allowanceType>
@@ -42,10 +44,8 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="5.0" code="500MB-4GTUDATA-0500-FC" descr="One-off FC data 4G - 500MB" group="ONEOFF" numberSelected="0" selected="false">
-              <serviceFeatures>
-                <serviceFeature type="4G Service">ON</serviceFeature>
-              </serviceFeatures>
+            <bundle charge="5.0" code="500MB-TUDATA-0500-FC" descr="One-off data 500MB" group="ONEOFF" numberSelected="0" selected="false">
+              <serviceFeatures/>
               <allowances>
                 <allowance>
                   <allowanceType>MB</allowanceType>
@@ -112,19 +112,35 @@
           </bundleGroup>
           <bundleGroup>
             <group>ADDITIONAL</group>
-            <groupCode>STANDARDDATAFC</groupCode>
-            <descr>Standard Data Bundles</descr>
+            <groupCode>2GBDATA</groupCode>
+            <descr>2GB Data bundles</descr>
             <minQuantity>0</minQuantity>
-            <maxQuantity>2</maxQuantity>
-            <bundle charge="5.0" code="500MB-DATA-500-FC" descr="Monthly 500MB data allowance" group="ADDITIONAL" selected="false">
+            <maxQuantity>1</maxQuantity>
+            <bundle charge="0.0" code="2GB-DATA-0-FC" descr="Monthly 2GB inclusive data allowance" group="ADDITIONAL" selected="false">
               <serviceFeatures/>
               <allowances>
                 <allowance>
                   <allowanceType>MB</allowanceType>
-                  <totalAllowance>500.0</totalAllowance>
+                  <totalAllowance>2048.0</totalAllowance>
                 </allowance>
               </allowances>
             </bundle>
+            <bundle charge="10.0" code="3GB-DATA-1000-FC" descr="Monthly 3GB data allowance (upgrade from 2GB)" group="ADDITIONAL" selected="false">
+              <serviceFeatures/>
+              <allowances>
+                <allowance>
+                  <allowanceType>MB</allowanceType>
+                  <totalAllowance>3072.0</totalAllowance>
+                </allowance>
+              </allowances>
+            </bundle>
+          </bundleGroup>
+          <bundleGroup>
+            <group>ADDITIONAL</group>
+            <groupCode>STANDARDDATAFC</groupCode>
+            <descr>Standard Data Bundles</descr>
+            <minQuantity>0</minQuantity>
+            <maxQuantity>2</maxQuantity>
             <bundle charge="5.0" code="250MB-DATA-250-FC" descr="Monthly 250MB data allowance - 4G" group="ADDITIONAL" selected="false">
               <serviceFeatures>
                 <serviceFeature type="4G Service">ON</serviceFeature>
@@ -133,6 +149,15 @@
                 <allowance>
                   <allowanceType>MB</allowanceType>
                   <totalAllowance>250.0</totalAllowance>
+                </allowance>
+              </allowances>
+            </bundle>
+            <bundle charge="5.0" code="500MB-DATA-500-FC" descr="Monthly 500MB data allowance" group="ADDITIONAL" selected="false">
+              <serviceFeatures/>
+              <allowances>
+                <allowance>
+                  <allowanceType>MB</allowanceType>
+                  <totalAllowance>500.0</totalAllowance>
                 </allowance>
               </allowances>
             </bundle>

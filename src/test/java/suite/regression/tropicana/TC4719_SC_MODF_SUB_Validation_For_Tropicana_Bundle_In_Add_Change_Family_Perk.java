@@ -23,7 +23,7 @@ import java.sql.Date;
 import java.util.List;
 
 public class TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Family_Perk extends BaseTest {
-    private String customerNumber = "15758";
+    private String customerNumber;
     private Date newStartDate;
     private String username;
     private String password;
@@ -31,11 +31,11 @@ public class TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Fa
     String subscription2;
     String serviceOrderId;
 
-    @Test(enabled = true, description = "TC4719 SC-MODF-SUB - Validation for Tropicana bundle in Add/Change Family Perk page", groups = "Tropicana")
+    @Test(enabled = true, description = "TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Family_Perk", groups = "Tropicana")
     public void TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Family_Perk() {
         test.get().info("Step 1 : Create a customer subscription related tariff linked with a Tropicana bundle group");
         OWSActions owsActions = new OWSActions();
-        String path = "\\src\\test\\resources\\xml\\tropicana\\TC4682_request.xml";
+        String path = "src\\test\\resources\\xml\\tropicana\\TC4682_request.xml";
         owsActions.createGeneralCustomerOrder(path);;
 
         test.get().info("Step 2 : Create New Billing Group");
@@ -63,12 +63,6 @@ public class TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Fa
         String selfCarepath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
         swsActions.submitMaintainBundleRequest(selfCarepath, customerNumber, subscription2);
 
-        test.get().info("Step 7 : Submit Provision Service Job");
-        List<WebElement> serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderBySubAndType(subscription2, "Change Bundle"));
-        serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByElementServiceOrders(serviceOrder);
-        BaseTest.updateThePDateAndBillDateForSO(serviceOrderId);
-        RemoteJobHelper.getInstance().runProvisionSevicesJob();
-
         test.get().info("Step 8 : Login to self care");
         username = owsActions.username;
         password = owsActions.password;
@@ -89,37 +83,33 @@ public class TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Fa
 
         test.get().info("Step 14 : Verify mobile phone info is correct");
         AddOrChangeAFamilyPerkPage.InfoPage infoPage = AddOrChangeAFamilyPerkPage.InfoPage.getInstance();
-        Assert.assertEquals(subscription1 + " - FC Mobile 1", infoPage.getMobilePhoneNumber());
+        Assert.assertEquals(subscription2 + " - Mobile Ref 2", infoPage.getMobilePhoneNumber());
         Assert.assertEquals("£10 Tariff 12 Month Contract", infoPage.getTariff());
-        Assert.assertEquals("500 mins, 5000 texts (FC)", infoPage.getMonthlyAllowance());
-        Assert.assertTrue(infoPage.getMonthlyBundles().isEmpty());
+        Assert.assertEquals(infoPage.getMonthlyBundles(), "Monthly 250MB data allowance - 4G");
 
         test.get().info("Step 15 : Verify expected warning message displayed");
-        String message = String.format("Your changes will take effect from %s.", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy"));
+        String message = "Your changes will apply immediately.";//String.format("Your changes will take effect from %s.", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy"));
         Assert.assertEquals(message, AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getWarningMessage());
 
         test.get().info("Step 17 : Verify Tropicana bundle is included in Current Allowance as expected");
-        Assert.assertEquals("650", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 1));
-        Assert.assertEquals("500", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 1));
-        Assert.assertEquals("5000", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 2));
-        Assert.assertEquals("5000", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 2));
-        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 3));
-        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 3));
-        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 4));
-        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 4));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 1));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 1));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 2));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 2));
+        Assert.assertEquals("500", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 3));
+        Assert.assertEquals("500", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 3));
+
 
         test.get().info("Step 18 : Select a New Family Perk bundle then observe the New Allowance");
-        AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().selectBundlesByName("Family perk - 250MB per month");
+        AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().selectBundlesByName("Family perk - 250MB per month - 4G");
 
         test.get().info("Step 19 : The new allowance is being current allowance plus selected  family perk bundle");
-        Assert.assertEquals("650", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 1));
-        Assert.assertEquals("500", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 1));
-        Assert.assertEquals("5000", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 2));
-        Assert.assertEquals("5000", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 2));
-        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 3));
-        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 3));
-        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 4));
-        Assert.assertEquals("250", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 4));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 1));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 1));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 2));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 2));
+        Assert.assertEquals("500", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 3));
+        Assert.assertEquals("750", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 3));
 
     }
 }
