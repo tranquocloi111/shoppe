@@ -21,7 +21,6 @@ public class DetailsContentPage extends BasePage {
         public String getBillingGroup() {
             return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Billing Group:')]/following-sibling::td[1]")));
         }
-
         public void changeBillNotification(String text) {
             selectDropBoxByVisibelText(parent.findElement(By.xpath(".//td[contains(text(),'Bill Notification:')]/following-sibling::td[1]")), text);
         }
@@ -31,6 +30,13 @@ public class DetailsContentPage extends BasePage {
         public String getBillStyle() {
             return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Bill Style:')]/following-sibling::td[1]"))).split(" ")[0];
         }
+        public String getBillNotification(){
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Bill Notification:')]/following-sibling::td[1]"))).split(" ")[0];
+        }
+        public void changeBillStyle(String text) {
+            parent.findElement(By.xpath(".//td[contains(text(),'Bill Style:')]/following-sibling::td[1]")).sendKeys(text);
+        }
+
     }
 
     public static class PaymentInformationPage extends DetailsContentPage {
@@ -77,7 +83,6 @@ public class DetailsContentPage extends BasePage {
             return getTextOfElement(tableControlBase.findCellByLabelText("Credit Card Expiry Month:"));
         }
     }
-
 
     public static class AddressInformationPage extends DetailsContentPage {
         private static AddressInformationPage instance = new AddressInformationPage();

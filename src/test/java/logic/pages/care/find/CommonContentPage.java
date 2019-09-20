@@ -82,6 +82,10 @@ public class CommonContentPage extends BasePage {
         public int getNumberOfSubscription(HashMap<String, String> subscriptions) {
             return table.findRowsByColumns(subscriptions).size();
         }
+        public String getStatusOfSubscription(String subscriptionNumber){
+            return table.getRowByContainsColumnNameAndCellValue(status, subscriptionNumber).getText();
+
+        }
     }
 
     public static class CustomerSummarySectionPage extends CommonContentPage {

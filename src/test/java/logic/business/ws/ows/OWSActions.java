@@ -40,7 +40,7 @@ public class OWSActions extends BaseWs {
     private static final String TC1358_CREATE_ORDER = "src\\test\\resources\\xml\\ows\\TC1358_createOrder.xml";
     private static final String GET_CONTRACT = "src\\test\\resources\\xml\\commonrequest\\GetContractRequest.xml";
     private static final String Online_CC_CUSTOMER_WITH_FC_2_BUNDLES_AND_NK2720 = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_2_bundles_and_NK2720.xml";
-    private static final String CUSTOMER_WITH_2_SUBSCRIPTIONS = "src\\test\\resources\\xml\\sws\\getaccount\\TC32125_createOrder.xml";
+    private static final String CUSTOMER_WITH_2_SUBSCRIPTIONS = "src\\test\\resources\\xml\\ows\\customer_with_2_subscriptions_order.xml";
     private static final String ONLINES_CC_CUSTOMER_WITH_FC_1_BUNDLE_AND_NK2720 = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_1_bundle_and_NK2720.xml";
     private static final String CUSTOMER_WITH_FC_1_BUNDLE_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\customer_with_FC_1_bundle_and_simonly.xml";
     private static final String ONLINES_CC_customer_with_2_FC_family_perk_NK2720 = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_2_FC_family_perk_NK2720.xml";
@@ -50,6 +50,7 @@ public class OWSActions extends BaseWs {
     private static final String CUSTOMER_WITH_3_SUBSCRIPTION = "src\\test\\resources\\xml\\ows\\care_CSA_customer_with_3_subscriptions.xml";
     private static final String ONLINE_CC_CUSTOMER_WITH_2_FC_1_BUNDLE_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_2_FC_1_bundles_and_simonly.xml";
     private static final String ONLINE_CC_CUSTOMER_WITH_FC_1_BUNDLE_OF_SB_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only.xml";
+    private static final String CC_CUSTOMER_WITH_FC_CORRECT_EXPIRY_DATE = "src\\test\\resources\\xml\\ows\\cc_customer_with_FC_1_SB_and_expiry_date_correct.xml";
     //endregion
 
 
@@ -422,6 +423,10 @@ public class OWSActions extends BaseWs {
 
     public void createAnOnlineCCCustomerWithFC1BundleOfSBAndSimonly() {
         createGeneralCustomerOrder(ONLINE_CC_CUSTOMER_WITH_FC_1_BUNDLE_OF_SB_AND_SIMONLY);
+    }
+
+    public void createACCCustomerWithFCCorrectExpiryDate(){
+        createGeneralCustomerOrder(CC_CUSTOMER_WITH_FC_CORRECT_EXPIRY_DATE);
     }
 
     //endregion
