@@ -28,7 +28,7 @@ public class TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_B
     private String subscription2;
     private String serviceOrderId;
 
-    @Test(enabled = true, description = "TC5024 SC-MODF-SUB - Validation for current bundle in Change Safety Buffer", groups = "Tropicana")
+    @Test(enabled = true, description = "TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_Buffer", groups = "Tropicana")
     public void TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_Buffer(){
         test.get().info("Step 1 : Create a Customer has 2 Subscription that has Tropicana bundle and has no Tropicana");
         OWSActions owsActions = new OWSActions();

@@ -26,7 +26,7 @@ public class TC5005_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Safe
     private String subscription1;
     private String serviceOrderId;
 
-    @Test(enabled = true, description = "TC 5005 Care-MODF-SUB- Validation for Bonus bundle in Change Safety Buffer", groups = "tropicana")
+    @Test(enabled = true, description = "TC5004_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Family_Perk", groups = "tropicana")
     public void TC5005_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Safety_Buffer(){
         test.get().info("Step 1 : Create a customer subscription related tariff linked with a Tropicana bundle group");
         String path = "\\src\\test\\resources\\xml\\tropicana\\TC4617_TC001_request.xml";

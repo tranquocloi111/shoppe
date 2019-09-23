@@ -32,7 +32,7 @@ public class TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundl
     private String subscription2;
 
 
-    @Test(enabled = true, description = "TC4682 SC - Validation for Tropicana bundle changing in Monthly Bundle", groups = "Tropicana")
+    @Test(enabled = true, description = "TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundle", groups = "Tropicana")
     public void TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundle(){
         test.get().info("Step 1 : Create a Customer has 2 Subscription that has Tropicana bundle and has no Tropicana");
         OWSActions owsActions = new OWSActions();
@@ -104,16 +104,16 @@ public class TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundl
         test.get().info("Step 17 : Verify  new monthly bundle and there's an equivalent Tropicana bundle be identified");
         monthlyBundle.unSelectBundlesByName("Monthly 250MB data allowance - 4G");
         monthlyBundle.selectBundlesByName("Monthly 250MB data allowance - 4G");
-        Assert.assertEquals("As you’re enrolled to our bonus offer, your bonus bundle will be changed to match your monthly bundle.\nYour new Bonus bundle: One-off NC data 4G - 250MB",  monthlyBundle.getMonthlyBundleErrorMessage());
+        Assert.assertEquals(monthlyBundle.getMonthlyBundleErrorMessage(), "As you're enrolled to our Bonus offer, your Bonus bundle will be changed to match your monthly bundle.\nYour new Bonus bundle: One-off NC data 4G - 250MB");
 
         test.get().info("Step 18 : Verify new monthly bundle and there's NO equivalent Tropicana bundle be identified");
         monthlyBundle.unSelectBundlesByName("Monthly 250MB data allowance - 4G");
         monthlyBundle.selectBundlesByName("Monthly 500MB data allowance");
-        Assert.assertEquals("Warning : Your subscription is enrolled for a Bonus bundle. We cannot find a Bonus bundle to match your selected monthly bundle. Please review your selection.", monthlyBundle.getMonthlyBundleErrorMessage());
+        Assert.assertEquals(monthlyBundle.getMonthlyBundleErrorMessage(), "This number is entitled to have a Bonus Bundle. We're sorry, we don't have a Bonus Bundle to match your tariff.");
 
         test.get().info("Step 19 : Verify Select 2 new monthly bundles");
         monthlyBundle.selectBundlesByName("Monthly 250MB data allowance - 4G");
-        Assert.assertEquals("Warning : You have selected multiple monthly bundles. This will prevent retention of your bonus bundle.", monthlyBundle.getMonthlyBundleErrorMessage());
+        Assert.assertEquals(monthlyBundle.getMonthlyBundleErrorMessage(), "You've chosen more than one monthly bundle. This will cancel your Bonus Bundle. Please check and try again.");
     }
 
     private void VerifyMonthlyBundlesAddChangeOrRemovePageResultIsCorrect(){
@@ -163,8 +163,6 @@ public class TC4682_SC_Validation_For_Tropicana_Bundle_Changing_In_Monthly_Bundl
         AddOrChangeAFamilyPerkPage.InfoPage infoPage = AddOrChangeAFamilyPerkPage.InfoPage.getInstance();
         Assert.assertEquals(subscription2 + " - Mobile Ref 2", infoPage.getMobilePhoneNumber());
         Assert.assertEquals("£10 Tariff 12 Month Contract", infoPage.getTariff());
-        Assert.assertEquals("500 mins, 5000 texts (FC)", infoPage.getMonthlyAllowance());
-        Assert.assertTrue(infoPage.getThisMonthAllowanceExpiryDate().startsWith(Parser.parseDateFormate(Date.valueOf(TimeStamp.TodayMinus1Day().toLocalDate().plusMonths(1)),"dd/MM/yyyy")));
         Assert.assertEquals("£2.50", infoPage.getMonthlySafetyBuffer());
 
         MonthlyBundlesAddChangeOrRemovePage monthlyBundle = MonthlyBundlesAddChangeOrRemovePage.getInstance();

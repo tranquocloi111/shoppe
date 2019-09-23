@@ -1,17 +1,17 @@
 ﻿<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
   <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <createOrder correlationId="" type="NEW" xmlns="http://order.telco.hsntech.com">
+    <createOrder type="NEW" xmlns="http://order.telco.hsntech.com">
       <account xmlns="">
         <contact>
           <title>Mr</title>
-          <firstName></firstName>
-          <lastName></lastName>
+          <firstName>Test</firstName>
+          <lastName>Name</lastName>
           <telephoneNumbers defaultContact="daytime">
             <daytime>0398403850</daytime>
             <evening>0208619999</evening>
             <mobile>02086999990</mobile>
           </telephoneNumbers>
-          <emailAddress></emailAddress>
+          <emailAddress>un77976511845@hsntech.com</emailAddress>
           <birthDate>1975-01-01</birthDate>
         </contact>
         <billingAddress>
@@ -24,7 +24,7 @@
           <startDate>1980-08-08</startDate>
         </billingAddress>
         <accountDetail>
-          <username></username>
+          <username>un77976511845</username>
           <password>password3</password>
           <securityQuestion>Mothers maiden name?</securityQuestion>
           <securityAnswer>smith</securityAnswer>
@@ -37,7 +37,7 @@
               <cardName>CardName</cardName>
               <cardNumber>5105105105105100</cardNumber>
               <cardType>MC</cardType>
-               <cardExpiryDate>1230</cardExpiryDate>
+              <cardExpiryDate>1230</cardExpiryDate>
               <cardStartDate>0110</cardStartDate>
               <cvv>123</cvv>
             </creditCard>
@@ -61,39 +61,34 @@
           <device productCode="SIM-ONLY">
             <deliveryMethod>DELIVER</deliveryMethod>
           </device>
-          <discBundle productCode="02000-SB-A" bundleGroup="SB-GRP-A">
+          <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
           <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
-            <deliveryMethod>INHAND</deliveryMethod>
-          </discBundle>
-          <discBundle productCode="250MB-FDATA-0-FC" bundleGroup="FAMILYPERK-FC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>
         <orderItem dealSKU="DEAL-INHAND" id="2">
           <serviceRef reference="Mobile Ref 2"/>
-          <tariff productCode="AUTO-FC12-1000-500SO">
+          <tariff productCode="AUTO1-FC12-1000-500SO">
             <deliveryMethod>INHAND</deliveryMethod>
           </tariff>
           <device productCode="SIM-ONLY">
             <deliveryMethod>DELIVER</deliveryMethod>
           </device>
-          <discBundle productCode="02000-SB-A" bundleGroup="SB-GRP-A">
+          <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
           <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
-          <discBundle productCode="150-FMIN-0-FC" bundleGroup="FAMILYPERK-FC">
-            <deliveryMethod>INHAND</deliveryMethod>
-          </discBundle>
         </orderItem>
+
         <paymentRequest>
           <cardName>CardName</cardName>
           <cardNumber>5105105105105100</cardNumber>
           <cardType>MC</cardType>
-           <cardExpiryDate>1230</cardExpiryDate>
+          <cardExpiryDate>1230</cardExpiryDate>
           <cardStartDate>0110</cardStartDate>
           <cvv>123</cvv>
         </paymentRequest>
