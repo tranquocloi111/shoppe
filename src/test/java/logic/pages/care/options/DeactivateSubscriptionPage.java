@@ -14,7 +14,8 @@ import org.openqa.selenium.support.FindBy;
 public class DeactivateSubscriptionPage extends ServiceOrdersPage {
     public static class DeactivateSubscription extends DeactivateSubscriptionPage {
         private static DeactivateSubscription instance = new DeactivateSubscription();
-        public static DeactivateSubscription getInstance(){
+
+        public static DeactivateSubscription getInstance() {
             return new DeactivateSubscription();
         }
 
@@ -29,7 +30,7 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
         WebElement deactivationDate;
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Deactivation Time:')]/following-sibling::td//input")
         WebElement deactivationTime;
-        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Deactivation Reason:')]/following-sibling::td//input")
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Deactivation Reason:')]/following-sibling::td//select")
         WebElement deactivationReason;
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Notes:')]/following-sibling::td//textarea")
         WebElement deactivationNotes;
@@ -37,20 +38,21 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
         WebElement ckSubscription;
 
         public void setDeactivationDate() {
-            String sDeactivationDate =  Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT4);
+            String sDeactivationDate = Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT4);
             enterValueByLabel(deactivationDate, sDeactivationDate);
         }
 
-        public void selectDeactiveBySubscription(String subNo)
-        {
-            String xpath=String.format("//td[contains(text(),'%s')]//input[@type='checkbox']",subNo);
+        public void selectDeactiveBySubscription(String subNo) {
+            String xpath = String.format("//td[contains(text(),'%s')]//input[@type='checkbox']", subNo);
+            waitUntilElementClickable(getDriver().findElement(By.xpath(xpath)));
             click(getDriver().findElement(By.xpath(xpath)));
         }
+
         public void setNotes(String text) {
             deactivationNotes.sendKeys(text);
         }
 
-        public void deactivateLastActiveSubscription(){
+        public void deactivateLastActiveSubscription() {
             setDeactivationDate();
             setNotes("Deactivate Last Active Subscription on the Account");
             clickNextButton();
@@ -59,17 +61,22 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
             clickReturnToCustomer();
         }
 
-        public void selectTheSubscriptionToBeDeactivated(String subscription){
+        public void selectTheSubscriptionToBeDeactivated(String subscription) {
             WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", subscription)));
             WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
             click(checkbox);
         }
+
+        public void enterDeactiveReason(String text) {
+            selectByVisibleText(deactivationReason,text);
+        }
     }
 
-    public static class ConfirmDeactivatingSubscription extends DeactivateSubscriptionPage{
+    public static class ConfirmDeactivatingSubscription extends DeactivateSubscriptionPage {
         private static ConfirmDeactivatingSubscription instance = new ConfirmDeactivatingSubscription();
-        public static ConfirmDeactivatingSubscription getInstance(){
-            if(instance == null){
+
+        public static ConfirmDeactivatingSubscription getInstance() {
+            if (instance == null) {
                 return new ConfirmDeactivatingSubscription();
             }
             return instance;
@@ -81,16 +88,18 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
         @FindBy(xpath = "//td[@class='descError']")
         WebElement lblConfirmMessage;
 
-        public boolean verifyConfirmDeactivatingSubscriptionIsDisplay(){
+        public boolean verifyConfirmDeactivatingSubscriptionIsDisplay() {
             return isElementPresent(lblConfirmDeactivatingSubscription);
         }
-        public String getConfirmDeactivatingSubscription(){
+
+        public String getConfirmDeactivatingSubscription() {
             return getTextOfElement(lblConfirmMessage);
         }
 
+
     }
 
-    public static class DeactivateSubscriptionRefundDetails extends DeactivateSubscriptionPage{
+    public static class DeactivateSubscriptionRefundDetails extends DeactivateSubscriptionPage {
         private static DeactivateSubscriptionRefundDetails instance = new DeactivateSubscriptionRefundDetails();
         @FindBy(xpath = "//input[@value='New Card Details']")
         WebElement btnNewCardDetails;
@@ -112,7 +121,8 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
         public void clickDeactivateSubscriptionNextButton() {
             click(btnNextCardDetails);
         }
-        public boolean verifyDeactivateSubscriptionRefundDetailsSectionIsDisplay(){
+
+        public boolean verifyDeactivateSubscriptionRefundDetailsSectionIsDisplay() {
             return isElementPresent(lblDeactivateSubscriptionRefundDetails);
         }
     }

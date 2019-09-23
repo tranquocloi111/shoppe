@@ -18,13 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MyPersonalInformationPage extends BasePage {
+    @FindBy(id = "header")
+    WebElement header;
+
     //private static MyPersonalInformationPage instance;
     public static MyPersonalInformationPage getInstance() {
         return new MyPersonalInformationPage();
     }
 
-    @FindBy(id = "header")
-    WebElement header;
 
     public String getHeader() {
         waitUntilElementVisible(header);
@@ -32,15 +33,14 @@ public class MyPersonalInformationPage extends BasePage {
     }
 
     public static class MyPreviousOrdersPage extends MyPersonalInformationPage {
+        @FindBy(xpath = "//b[contains(text(),'My previous orders and contract')]/ancestor::table[1]/following-sibling::div//table")
+        WebElement myPreviousOrdersContracttable;
+        TableControlBase tableControlBase = new TableControlBase(myPreviousOrdersContracttable);
+
         //private static MyPreviousOrdersPage instance;
         public static MyPreviousOrdersPage getInstance() {
             return new MyPreviousOrdersPage();
         }
-
-        @FindBy(xpath = "//b[contains(text(),'My previous orders and contract')]/ancestor::table[1]/following-sibling::div//table")
-        WebElement myPreviousOrdersContracttable;
-
-        TableControlBase tableControlBase = new TableControlBase(myPreviousOrdersContracttable);
 
         public void clickViewByIndex(int index) {
             click(myPreviousOrdersContracttable.findElement(By.xpath(".//tr[" + index + "]")).findElement(By.linkText("View")));
@@ -48,12 +48,13 @@ public class MyPersonalInformationPage extends BasePage {
     }
 
     public static class MyTariffPage extends MyPersonalInformationPage {
+        @FindBy(xpath = "//a[@href='/orderentry/ShowAllSubscriptions.do']")
+        WebElement myTariffDetails;
+
         public static MyTariffPage getInstance() {
             return new MyTariffPage();
         }
 
-        @FindBy(xpath = "//a[@href='/orderentry/ShowAllSubscriptions.do']")
-        WebElement myTariffDetails;
 
         public void clickViewOrChangeMyTariffDetailsLink() {
             click(myTariffDetails);
@@ -61,6 +62,10 @@ public class MyPersonalInformationPage extends BasePage {
 
         public static class MyTariffDetailsPage extends MyTariffPage {
             static String serviceRefName;
+            @FindBy(xpath = "//label[text()='Roaming']//ancestor::td[1]//following-sibling::td")
+            WebElement roamingCell;
+            @FindBy(xpath = "//a[@id='SaveBtn']")
+            WebElement savePhoneUserNameBtn;
 
             public static MyTariffDetailsPage getInstance(String name) {
                 serviceRefName = name;
@@ -188,15 +193,13 @@ public class MyPersonalInformationPage extends BasePage {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Monthly bundles"));
             }
 
+
             @FindBy(xpath = "//td[contains(text(),'Monthly bundles')]//ancestor::tr[1]//following-sibling::tr[1]//td[@class='fieldvalue']")
             WebElement secondMontlyBundle;
 
             public String getSecondMonthlyBundles() {
                 return getTextOfElement(secondMontlyBundle);
             }
-
-            @FindBy(xpath = "//label[text()='Roaming']//ancestor::td[1]//following-sibling::td")
-            WebElement roamingCell;
 
             public String getRoaming() {
                 return getTextOfElement(roamingCell);
@@ -252,20 +255,19 @@ public class MyPersonalInformationPage extends BasePage {
                 enterValueByLabel(tableControlBase.findControlCellByLabel("Description", 1).findElement(By.tagName("input")), value);
             }
 
-            @FindBy(xpath = "//a[@id='SaveBtn']")
-            WebElement savePhoneUserNameBtn;
-
             public void clickSavePhoneUserNameBtn() {
                 savePhoneUserNameBtn.click();
             }
+
 
             public void setCreditAgreementSelectByVisibleText(String text) {
                 WebElement el = myTariffTable().findElement(By.xpath("..//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
                 selectByVisibleText(el, text);
             }
+
             public void savePDFFile(String CCANo, String CreditAgreements, String customerNumber) {
 
-                String ccaType= null;
+                String ccaType = null;
                 switch (CreditAgreements) {
                     case "Your Credit Agreement":
                         ccaType = "CCA_DOCUMENT";
@@ -281,10 +283,49 @@ public class MyPersonalInformationPage extends BasePage {
                         break;
                 }
                 WebElement el = myTariffTable().findElement(By.xpath("//a[@id='viewAgreementButton']"));
-                String fileName= String.format("%s_%s_%s_mobile1.pdf", customerNumber, RandomCharacter.getRandomNumericString(9), "31927");
+                String fileName = String.format("%s_%s_%s_mobile1.pdf", customerNumber, RandomCharacter.getRandomNumericString(9), "31927");
                 String url = Config.getProp("selfCareUrl") + String.format("/ShowAgreementDocument.do?agreementNumber=%s&documentType=%s", CCANo, ccaType);
-                MiscHelper.saveFileFromWebRequest(el,url,fileName);
+                MiscHelper.saveFileFromWebRequest(el, url, fileName);
             }
+
+            public List<WebElement> getFamilyPerkStack() {
+                List<WebElement> list = new ArrayList<>();
+                WebElement monthlyBundlesLable = findLabelCell(myTariffTable(), "-  Monthly bundles");
+                List<WebElement> allowances = monthlyBundlesLable.findElements(By.xpath(".//parent::tr[1]//following::tr"));
+                for (WebElement familyPerk : allowances) {
+                    if (familyPerk.getText().trim().contains("Family perk - ")) {
+                        list.add(familyPerk);
+                    }
+                }
+                return list;
+            }
+
+            public String getFamilyPerkHelpIconText() {
+                try {
+                    WebElement icon = getFamilyPerkStack().get(0).findElement(By.tagName("a"));
+                    WebElement image = icon.findElement(By.tagName("img"));
+                    String js = image.getAttribute("onmouseover");
+                    //hover(image);
+                    executeJs(js, image);
+                    Thread.sleep(1000);
+                    WebElement div = getDriver().findElement(By.cssSelector("div[id='WzBoDy']"));
+                    return div.getText().trim();
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+                return null;
+            }
+        }
+
+        public String getErrorMssgDialog() {
+            return super.getTextComfirmDialog();
+        }
+
+        @FindBy(xpath = "//span[contains(text(),'INACTIVE')]//ancestor::tr[1]//following-sibling::tr[4]//a[@id='addBundleBtn']")
+        WebElement addOrChangeAFamilyPerkOfInacitveSubscriptionBtn;
+
+        public void clickAddOrChangeAFamilyPerkOfInacitveSubscription() {
+            clickWithOutWait(addOrChangeAFamilyPerkOfInacitveSubscriptionBtn);
         }
 
     }
@@ -293,14 +334,15 @@ public class MyPersonalInformationPage extends BasePage {
         private static myAlertSection instance;
         @FindBy(xpath = "//b[contains(text(),'My alerts')]/ancestor::p/following-sibling::div[1]/table")
         WebElement myAlertSection;
+        TableControlBase tableControlBase = new TableControlBase(myAlertSection);
+        @FindBy(xpath = "//span[contains(text(),'overdue')]")
+        WebElement overDueAlert;
 
         public static myAlertSection getInstance() {
             if (instance == null)
                 return new myAlertSection();
             return instance;
         }
-
-        TableControlBase tableControlBase = new TableControlBase(myAlertSection);
 
         public String getAlertMessageByText(String text) {
             return (getTextOfElement(tableControlBase.getLinkByText(text)));
@@ -330,9 +372,6 @@ public class MyPersonalInformationPage extends BasePage {
         }
 
 
-        @FindBy(xpath = "//span[contains(text(),'overdue')]")
-        WebElement overDueAlert;
-
         public String getAlertMessagebForOverDuePayment() {
             return (getTextOfElement(overDueAlert));
         }
@@ -343,14 +382,13 @@ public class MyPersonalInformationPage extends BasePage {
         private static myAccountSection instance;
         @FindBy(xpath = "//b[contains(text(),'My account')]/ancestor::p/following-sibling::div[1]/table")
         WebElement myAccountTable;
+        TableControlBase tableControlBase = new TableControlBase(myAccountTable);
 
         public static myAccountSection getInstance() {
             if (instance == null)
                 return new myAccountSection();
             return instance;
         }
-
-        TableControlBase tableControlBase = new TableControlBase(myAccountTable);
 
 
         public void clickViewOrChangeMyAccountDetails() {
@@ -363,15 +401,13 @@ public class MyPersonalInformationPage extends BasePage {
         private static MyBillsAndPaymentsSection instance;
         @FindBy(xpath = "//b[contains(text(),'My bills and payments')]/ancestor::p/following-sibling::div[1]/table")
         WebElement myBillsandPaymentstable;
+        TableControlBase tableControlBase = new TableControlBase(myBillsandPaymentstable);
 
         public static MyBillsAndPaymentsSection getInstance() {
             if (instance == null)
                 return new MyBillsAndPaymentsSection();
             return instance;
         }
-
-        TableControlBase tableControlBase = new TableControlBase(myBillsandPaymentstable);
-
 
         public void clickViewDetailsOfMyBillsAndPayments() {
             tableControlBase.clickLinkByText("View details of my bills and payments");

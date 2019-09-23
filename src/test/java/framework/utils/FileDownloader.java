@@ -13,10 +13,19 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebElement;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.IOException;
+import java.net.Authenticator;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.Set;
 
 
@@ -27,7 +36,7 @@ public class FileDownloader {
     private boolean mimicWebDriverCookieState = true;
     private int httpStatusOfLastDownloadAttempt = 0;
 
-    public FileDownloader(String localDownloadPath){
+    public FileDownloader(String localDownloadPath) {
         this.localDownloadPath = localDownloadPath;
     }
 
@@ -130,8 +139,9 @@ public class FileDownloader {
      * @throws NullPointerException
      */
     private String downloader(WebElement element, String fileToDownloadLocation, String pdfFile) throws IOException, NullPointerException, URISyntaxException {
-        if (fileToDownloadLocation.trim().equals("")) throw new NullPointerException("The element you have specified does not link to anything!");
 
+
+        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2,SSLv3");
         URL fileToDownload = new URL(fileToDownloadLocation);
         File downloadedFile = new File(this.localDownloadPath + pdfFile);
         if (downloadedFile.canWrite() == false) downloadedFile.setWritable(true);
@@ -157,7 +167,27 @@ public class FileDownloader {
         String downloadedFileAbsolutePath = downloadedFile.getAbsolutePath();
         Log.info("File downloaded to '" + downloadedFileAbsolutePath + "'");
 
+
         return downloadedFileAbsolutePath;
+
     }
+
+    private TrustManager[] get_trust_mgr() {
+        TrustManager[] certs = new TrustManager[]{
+                new X509TrustManager() {
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                    public void checkClientTrusted(X509Certificate[] certs, String t) {
+                    }
+
+                    public void checkServerTrusted(X509Certificate[] certs, String t) {
+                    }
+                }
+        };
+        return certs;
+    }
+
 
 }

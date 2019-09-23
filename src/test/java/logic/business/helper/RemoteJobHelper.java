@@ -262,4 +262,9 @@ public class RemoteJobHelper {
 
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
+    public void  waitForTopUpFile(String fileName){
+        currentMaxJobId = getMaxRemoteJobId();
+        waitForRemoteJobComplete(currentMaxJobId,  "%" + fileName);
+    }
+
 }

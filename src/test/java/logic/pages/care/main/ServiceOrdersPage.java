@@ -636,7 +636,7 @@ public class ServiceOrdersPage extends BasePage {
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Packaged Bundle:')]/following-sibling::td")
         WebElement packagedBundle;
 
-        @FindBy(className = "PanelList")
+        @FindBy(xpath = ".//table[@class='PanelList']")
         WebElement currentBundleTable;
         TableControlBase table = new TableControlBase(currentBundleTable);
 
@@ -658,6 +658,14 @@ public class ServiceOrdersPage extends BasePage {
 
         public boolean isBonusBundleDisplayed(String cellValue){
             return getTextOfElement(table.getRowByColumnNameAndCellValue(BUNDLE_GROUP, cellValue)).isEmpty();
+        }
+
+        public String getCellValueByIndex(int index){
+           return table.getRecordByIndex(index).getText();
+        }
+
+        public int getNumberOfCurrentBundleByBundleGroup(HashMap<String, String> bundleGroup) {
+            return table.findRowsByColumns(bundleGroup).size();
         }
     }
     public static class ConfigureSubscription extends ServiceOrdersPage {
