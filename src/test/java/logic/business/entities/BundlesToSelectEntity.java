@@ -18,7 +18,7 @@ public class BundlesToSelectEntity {
                 "3G data - 2GB - £7.50 per Month (Recurring)",
                 "3G data - 1GB - £5.00 per Month (Recurring)"};
     }
-    
+
     public static String [] getNCBundleToSelect(){
         return new String[]{"Monthly data bundle - 500MB (Capped) - £5.00 per Month (Recurring)",
                 "Monthly data bundle - 1GB (Capped) - £7.50 per Month (Recurring)",};

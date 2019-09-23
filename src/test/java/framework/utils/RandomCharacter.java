@@ -30,6 +30,18 @@ public class RandomCharacter {
         }
         return null;
 	}
+
+    //Get random numeric characters except 0
+    public static String getRandomNumericStringExceptZero(int length)  {
+        try {
+            String charset = "123456789";
+            charset = RandomStringUtils.random(length, charset.toCharArray());
+            return charset;
+        }catch(Exception ex){
+            Log.error(ex.getMessage());
+        }
+        return null;
+    }
 	
 	//Get random alphanumeric characters
 	public static String getRandomAlphaNumericString(int length)  {

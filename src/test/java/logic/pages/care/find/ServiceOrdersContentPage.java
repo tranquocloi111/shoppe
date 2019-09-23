@@ -74,4 +74,8 @@ public class ServiceOrdersContentPage extends BasePage {
     public String getServiceOrderIdByIndex(int index) {
         return tableControlBase.getCellValueByColumnNameAndRowIndex(index + 1, "Id");
     }
+    public String getServiceOrderidByType(String type)
+    {
+        return getTextOfElement(tableControlBase.getRowByColumnNameAndCellValue(type, type).findElement(By.tagName("a")));
+    }
 }

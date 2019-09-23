@@ -26,7 +26,6 @@ public class LoginPage extends BasePage {
             btnOk.click();
             waitUntilElementVisible(btnFindNow);
         }
-        waitForPageLoadComplete(90);
     }
 
     public void navigateToLoginPage(){

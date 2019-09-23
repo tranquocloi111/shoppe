@@ -172,6 +172,8 @@ public class SubscriptionContentPage extends BasePage {
             public void clickProductCode(String productCode) {
                 click(otherProductsGridTable.findElement(By.xpath(".//td//a[contains(text(),'" + productCode + "')]")));
             }
+
+
         }
 
         public static class SubscriptionFeatureSectionPage extends SubscriptionDetailsPage {

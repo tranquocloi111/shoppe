@@ -65,13 +65,13 @@ public class BasePage {
         element.sendKeys(val);
     }
 
-    protected void enterValueByJs(WebElement element, String val){
+    protected void enterValueByJs(WebElement element, String val) {
         setClearInputValue(element);
-        ((JavascriptExecutor)getDriver()).executeAsyncScript("arguments[0].value='"+val+"'", element);
+        ((JavascriptExecutor) getDriver()).executeAsyncScript("arguments[0].value='" + val + "'", element);
     }
 
-    protected void setClearInputValue(WebElement element){
-        ((JavascriptExecutor)getDriver()).executeAsyncScript("arguments[0].value=''", element);
+    protected void setClearInputValue(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeAsyncScript("arguments[0].value=''", element);
     }
 
     protected WebElement getCell(WebElement tbl, int row, int col) {
@@ -98,6 +98,10 @@ public class BasePage {
     public void click(WebElement element) {
         element.click();
         waitForPageLoadComplete(90);
+    }
+
+    public void clickWithOutWait(WebElement element) {
+        element.click();
     }
 
     protected void clickByJs(WebElement element) {
@@ -257,8 +261,8 @@ public class BasePage {
         getDriver().switchTo().alert().dismiss();
     }
 
-    public void getTextComfirmDialog() {
-        getDriver().switchTo().alert().getText();
+    public String getTextComfirmDialog() {
+        return getDriver().switchTo().alert().getText();
     }
 
     public void clickSubmitBtn() {
@@ -291,29 +295,46 @@ public class BasePage {
     public void waitUntilElementClickable(WebElement ele) {
         WdManager.getWait().until(ExpectedConditions.elementToBeClickable(ele));
     }
-    public String getCurrentUrl()
-    {
-       return getDriver().getCurrentUrl();
+
+    public String getCurrentUrl() {
+        return getDriver().getCurrentUrl();
     }
 
     public void clickBackBtn() {
         click(getDriver().findElement(By.xpath("//a[@id='BackBtn']")));
     }
 
-    public void hover(WebElement element){
+
+    public void clickSaveBtn() {
+        click(getDriver().findElement(By.xpath("//a[@id='SaveBtn']")));
+    }
+
+    public WebElement getMssgBoxByIndex(int index) {
+        String xpath = String.format("//div[@class='msg-box'][%s]", index);
+        return getDriver().findElement(By.xpath("//div[@class='msg-box'][1]"));
+    }
+
+    public void selectRadioButtonByText(WebElement element, String text) {
+        String xpath = String.format("//input[ @value='%s' and @type='radio']", text);
+        click(element.findElement(By.xpath(xpath)));
+    }
+
+    public void hover(WebElement element) {
         Actions action = new Actions(getDriver());
         scrollToElement(element);
         action.moveToElement(element).build().perform();
     }
 
-    public  void hoverOffset(WebElement element, int offsetX, int offsetY){
+    public void hoverOffset(WebElement element, int offsetX, int offsetY) {
         Actions action = new Actions(getDriver());
         action.moveToElement(element, offsetX, offsetY).build().perform();
     }
 
-    public void executeJs(String mouseOverScript, WebElement hoverElement){
+    public void executeJs(String mouseOverScript, WebElement hoverElement) {
         ((JavascriptExecutor) getDriver()).executeScript(mouseOverScript,
                 hoverElement);
+
     }
     //endregion
 }
+

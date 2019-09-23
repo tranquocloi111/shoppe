@@ -1,6 +1,9 @@
 package logic.pages.selfcare;
 
+import framework.config.Config;
 import framework.utils.Log;
+import framework.utils.RandomCharacter;
+import logic.business.helper.MiscHelper;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
@@ -22,6 +25,7 @@ public class MyPersonalInformationPage extends BasePage {
     public static MyPersonalInformationPage getInstance() {
         return new MyPersonalInformationPage();
     }
+
 
     public String getHeader() {
         waitUntilElementVisible(header);
@@ -51,13 +55,13 @@ public class MyPersonalInformationPage extends BasePage {
             return new MyTariffPage();
         }
 
+
         public void clickViewOrChangeMyTariffDetailsLink() {
             click(myTariffDetails);
         }
 
         public static class MyTariffDetailsPage extends MyTariffPage {
             static String serviceRefName;
-            TableControlBase tableControlBase = new TableControlBase(myTariffTable());
             @FindBy(xpath = "//label[text()='Roaming']//ancestor::td[1]//following-sibling::td")
             WebElement roamingCell;
             @FindBy(xpath = "//a[@id='SaveBtn']")
@@ -67,6 +71,8 @@ public class MyPersonalInformationPage extends BasePage {
                 serviceRefName = name;
                 return new MyTariffDetailsPage();
             }
+
+            TableControlBase tableControlBase = new TableControlBase(myTariffTable());
 
             private WebElement myTariffTable() {
                 return getDriver().findElement(By.xpath("//form//input[@value='" + serviceRefName + "']//ancestor::table[1]"));
@@ -187,6 +193,14 @@ public class MyPersonalInformationPage extends BasePage {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Monthly bundles"));
             }
 
+
+            @FindBy(xpath = "//td[contains(text(),'Monthly bundles')]//ancestor::tr[1]//following-sibling::tr[1]//td[@class='fieldvalue']")
+            WebElement secondMontlyBundle;
+
+            public String getSecondMonthlyBundles() {
+                return getTextOfElement(secondMontlyBundle);
+            }
+
             public String getRoaming() {
                 return getTextOfElement(roamingCell);
             }
@@ -245,6 +259,35 @@ public class MyPersonalInformationPage extends BasePage {
                 savePhoneUserNameBtn.click();
             }
 
+
+            public void setCreditAgreementSelectByVisibleText(String text) {
+                WebElement el = myTariffTable().findElement(By.xpath("..//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
+                selectByVisibleText(el, text);
+            }
+
+            public void savePDFFile(String CCANo, String CreditAgreements, String customerNumber) {
+
+                String ccaType = null;
+                switch (CreditAgreements) {
+                    case "Your Credit Agreement":
+                        ccaType = "CCA_DOCUMENT";
+                        break;
+                    case "Your statement to date":
+                        ccaType = "ACCOUNT_STATEMENT";
+                        break;
+                    case "What you've paid and your remaining balance":
+                        ccaType = "CCD_STATEMENT";
+                        break;
+                    case "Your annual statement":
+                        ccaType = "PERIODIC_STATEMENT";
+                        break;
+                }
+                WebElement el = myTariffTable().findElement(By.xpath("//a[@id='viewAgreementButton']"));
+                String fileName = String.format("%s_%s_%s_mobile1.pdf", customerNumber, RandomCharacter.getRandomNumericString(9), "31927");
+                String url = Config.getProp("selfCareUrl") + String.format("/ShowAgreementDocument.do?agreementNumber=%s&documentType=%s", CCANo, ccaType);
+                MiscHelper.saveFileFromWebRequest(el, url, fileName);
+            }
+
             public List<WebElement> getFamilyPerkStack() {
                 List<WebElement> list = new ArrayList<>();
                 WebElement monthlyBundlesLable = findLabelCell(myTariffTable(), "-  Monthly bundles");
@@ -273,6 +316,18 @@ public class MyPersonalInformationPage extends BasePage {
                 return null;
             }
         }
+
+        public String getErrorMssgDialog() {
+            return super.getTextComfirmDialog();
+        }
+
+        @FindBy(xpath = "//span[contains(text(),'INACTIVE')]//ancestor::tr[1]//following-sibling::tr[4]//a[@id='addBundleBtn']")
+        WebElement addOrChangeAFamilyPerkOfInacitveSubscriptionBtn;
+
+        public void clickAddOrChangeAFamilyPerkOfInacitveSubscription() {
+            clickWithOutWait(addOrChangeAFamilyPerkOfInacitveSubscriptionBtn);
+        }
+
     }
 
     public static class myAlertSection extends MyPersonalInformationPage {
@@ -316,6 +371,7 @@ public class MyPersonalInformationPage extends BasePage {
             click(tableControlBase.getLinkByText(text));
         }
 
+
         public String getAlertMessagebForOverDuePayment() {
             return (getTextOfElement(overDueAlert));
         }
@@ -333,6 +389,7 @@ public class MyPersonalInformationPage extends BasePage {
                 return new myAccountSection();
             return instance;
         }
+
 
         public void clickViewOrChangeMyAccountDetails() {
             tableControlBase.clickLinkByText("View or change my account details");

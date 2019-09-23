@@ -154,18 +154,33 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
         click(btnBack);
     }
 
+
+    @FindBy(xpath = "//label[contains(text(),'Mobile phone number')]//ancestor::td[1]//following-sibling::td")
+    WebElement infoPhoneNumber;
+    @FindBy(xpath = "//label[contains(text(),'Tariff')]//ancestor::td[1]//following-sibling::td")
+    WebElement infoTariff;
+    @FindBy(xpath = "//label[contains(text(),'Monthly allowance')]//ancestor::td[1]//following-sibling::td")
+    WebElement infoMonthlyAllowance;
+    @FindBy(xpath = "//label[contains(text(),'Monthly safety buffer')]//ancestor::td[1]//following-sibling::td")
+    WebElement infoMonthSafetyBuffer;
+    @FindBy(xpath = "//label[contains(text(),'This month’s allowance expiry date')]//ancestor::td[1]//following-sibling::td")
+    WebElement infoThisMonthAllowanceExpiryDate;
+
     public String getMobilePhoneNumber() {
         table = new TableControlBase(infoTable);
         return getTextOfElement(table.findCellByLabelText("Mobile phone number"));
     }
+
     public String getTariff() {
         table = new TableControlBase(infoTable);
         return getTextOfElement(table.findCellByLabelText("Tariff"));
     }
+
     public String getMonthlyAllowance() {
         table = new TableControlBase(infoTable);
         return getTextOfElement(table.findCellByLabelText("Monthly allowance"));
     }
+
     public String getMonthlySafetyBuffer() {
         table = new TableControlBase(infoTable);
         return getTextOfElement(table.findCellByLabelText("Monthly safety buffer"));
@@ -185,21 +200,26 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
     public String getCurrentBundleDescriptionByCellValue(String value, int index) {
         table = new TableControlBase(currentBundlesTable);
         WebElement row = table.getRowByCellValue(value);
-        return row.findElement(By.xpath(".//following-sibling::td["+index+"]")).getText();
+        return row.findElement(By.xpath(".//following-sibling::td[" + index + "]")).getText();
     }
 
-    public  boolean isBonusBundleDisplay(String value){
+    public boolean isBonusBundleDisplay(String value) {
         table = new TableControlBase(currentBundlesTable);
         WebElement row = table.getRowByCellValue(value);
         return isElementPresent(row);
     }
 
-    public String getMonthlyBundleErrorMessage(){
-        return  getTextOfElement(monthlyBundleErrorMessage);
+    public String getMonthlyBundleErrorMessage() {
+        return getTextOfElement(monthlyBundleErrorMessage);
     }
 
-    public boolean isMonthlyBundleErrorMessageDisplay(){
+    public boolean isMonthlyBundleErrorMessageDisplay() {
         return isElementPresent(monthlyBundleErrorMessage);
     }
+
+    public String getTotalPrice() {
+        return getDriver().findElement(By.tagName("body")).findElement(By.id("BundleGrp0_Subtotal")).getText().trim();
+    }
+
 }
 
