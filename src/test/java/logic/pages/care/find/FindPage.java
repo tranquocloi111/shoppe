@@ -28,12 +28,12 @@ public class FindPage extends BasePage {
             enterValueByLabel(tblFindDetail, p.getKey(), p.getValue());
         }
         btnFindNow.click();
-        waitForPageLoadComplete(90);
+        waitForPageLoadComplete(60);
     }
 
     public void openCustomerByIndex(int index) {
         click(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));
-        waitForPageLoadComplete(90);
+        waitForPageLoadComplete(60);
     }
     public boolean IsCustomerDiplayedByIndex(int index) {
         return isElementPresent(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));

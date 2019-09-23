@@ -102,9 +102,9 @@ public class OWSActions extends BaseWs {
     private void setOrderRef() {
         orderRef = request.getTextByXpath("//orderDetail//@orderRef");
     }
-    private void setEmail()
-    {
-        email= request.getTextByTagName("emailAddress");
+
+    private void setEmail() {
+        email = request.getTextByTagName("emailAddress");
     }
     //endregion
 
@@ -128,7 +128,6 @@ public class OWSActions extends BaseWs {
 
         return response;
     }
-
 
 
     public Xml getSubscription(String orderIdNo, String reference) {
@@ -231,7 +230,7 @@ public class OWSActions extends BaseWs {
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 
-    public void createOrderAndSignAgreementByUI(){
+    public void createOrderAndSignAgreementByUI() {
         request = new Xml(new File(TC29699_CREATE_ORDER));
         request.setTextByTagName(commonModMap);
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
@@ -241,7 +240,7 @@ public class OWSActions extends BaseWs {
         AgreementWrapperPage.getInstance().signAgreementViaUI(1);
 
         request.setTextByXpath("//createOrder//@correlationId", response.getTextByXpath("//createOrderResponse//@correlationId"));
-        request.setAttributeTextByXpath("//orderDetail","orderId",response.getTextByTagName("orderId"));
+        request.setAttributeTextByXpath("//orderDetail", "orderId", response.getTextByTagName("orderId"));
         request.setTextByXpath("//verification//@termsAndConditionsAccepted", "true");
         request.setTextByXpath("//verification//@acceptAgreement", "true");
 
@@ -274,6 +273,8 @@ public class OWSActions extends BaseWs {
         Log.info("Account number:" + customerNo);
         setOrderIdNo();
         Log.info("OrderId number:" + orderIdNo);
+        setUsername();
+        setPassword();
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 
@@ -362,11 +363,11 @@ public class OWSActions extends BaseWs {
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 
-    public void createACCCustomerWith1FCSubscriptions(String path, String mpn){
+    public String createACCCustomerWith1FCSubscriptions(String path) {
         request = new Xml(new File(path));
-        String subNo = RandomCharacter.getRandomNumericString(9)+"10";
+        String subNo = RandomCharacter.getRandomNumericString(9) + "10";
         request.setTextByTagName(commonModMap);
-        request.setTextByTagName("serviceRef",mpn);
+        request.setTextByTagName("serviceRef", subNo);
         request.setTextByTagName("billGroupId", "2");
 
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
@@ -377,8 +378,10 @@ public class OWSActions extends BaseWs {
         Log.info("OrderId number:" + orderIdNo);
         setUsername();
         setPassword();
+        setOrderIdNo();
         setFullName();
         checkAsyncProcessIsCompleted(orderIdNo);
+        return subNo;
     }
 
     public void createAnOnlinesCCCustomerWithFC2BundlesAndNK2720() {
@@ -425,8 +428,36 @@ public class OWSActions extends BaseWs {
         createGeneralCustomerOrder(ONLINE_CC_CUSTOMER_WITH_FC_1_BUNDLE_OF_SB_AND_SIMONLY);
     }
 
-    public void createACCCustomerWithFCCorrectExpiryDate(){
+    public void createACCCustomerWithFCCorrectExpiryDate() {
         createGeneralCustomerOrder(CC_CUSTOMER_WITH_FC_CORRECT_EXPIRY_DATE);
+    }
+
+    public void upgradeFC3AndAcceptUpgrade(String customerNumber, String subno3) {
+        String path = "src\\test\\resources\\xml\\selfcare\\modifysubscription\\TC31927_upgrade";
+        request = new Xml(new File(path));
+        request.setTextByXpath("//account//@accountNumber", customerNumber);
+        request.setTextByTagName("serviceRef", subno3);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        String agreementSigningUrl = response.getTextByTagName("URL");
+        AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
+        AgreementWrapperPage.getInstance().signAgreementViaUI(1);
+        Log.info(response.toString());
+        setOrderIdNo();
+
+
+        path = "src\\test\\resources\\xml\\selfcare\\modifysubscription\\TC31927_accept";
+        String correlation = response.getTextByXpath("//createOrderResponse//@correlationId");
+        request = new Xml(new File(path));
+        request.setTextByXpath("//account//@accountNumber", customerNumber);
+        request.setTextByTagName("serviceRef", subno3);
+        request.setTextByXpath("//orderDetail//@orderId", orderIdNo);
+        request.setTextByXpath("//createOrder//@correlationId", correlation);
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info(response.toString());
+        setOrderIdNo();
+        checkAsyncProcessIsCompleted(orderIdNo);
+
     }
 
     //endregion

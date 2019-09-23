@@ -207,5 +207,11 @@ public class SelfCareTestBase extends BasePage {
     public void verifyMonthlyBundleDisplayed() {
         Assert.assertEquals("Monthly bundles - Add, change or remove", MyPersonalInformationPage.getInstance().getHeader());
     }
+    public void verifyAddASaftyBufferSafetyBufferPage() {
+        Assert.assertEquals("Add a safety buffer", MyPersonalInformationPage.getInstance().getHeader());
+    }
+    public void verifyChangeMySafetyBufferPage() {
+        Assert.assertEquals("Change my safety buffer", MyPersonalInformationPage.getInstance().getHeader());
+    }
 }
 

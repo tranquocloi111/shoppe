@@ -31,9 +31,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 /*Tran Quoc Loi
-SelfCareTestBase
-MyTariffDetailsPage
-ServiceOrdersPage
  */
 public class TC31892_Service_has_been_restricted_all_bars_are_visible extends BaseTest {
 

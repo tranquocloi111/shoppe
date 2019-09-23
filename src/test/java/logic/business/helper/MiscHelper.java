@@ -1,19 +1,32 @@
 package logic.business.helper;
 
+import framework.utils.FileDownloader;
+import framework.utils.Log;
 import framework.utils.RandomCharacter;
 import logic.business.db.OracleDB;
 import logic.utils.Common;
-import framework.utils.FileDownloader;
-import framework.utils.Log;
 import org.openqa.selenium.WebElement;
 
+import javax.imageio.ImageIO;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Authenticator;
+import java.net.URL;
+import java.net.URLConnection;
+import java.security.cert.X509Certificate;
 import java.time.LocalDateTime;
-import java.util.Random;
 import java.util.concurrent.Callable;
 
 public class MiscHelper {
 
-    public static boolean executeFuncntion(int maxTryTimes, Callable<Boolean> func, int interval )  {
+    public static boolean executeFuncntion(int maxTryTimes, Callable<Boolean> func, int interval) {
         try {
             while (maxTryTimes > 0) {
                 if (func.call()) {
@@ -24,17 +37,17 @@ public class MiscHelper {
                 //Thread.Sleep(interval * 1000);
                 waitForSeconds(1500 * interval);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.error(ex.getMessage());
         }
         return false;
     }
 
-    public static void waitForSeconds(int milliseconds){
+    public static void waitForSeconds(int milliseconds) {
         LocalDateTime now = LocalDateTime.now();
         int endtime = now.plusSeconds(milliseconds).getSecond();
         int current = 0;
-        do{
+        do {
             current = LocalDateTime.now().getSecond();
         }
         while (endtime > current);
@@ -66,18 +79,76 @@ public class MiscHelper {
 
     }
 
-    public static void saveFileFromWebRequest(WebElement element, String url, String pdfFile){
+    public static void saveFileFromWebRequest(WebElement element, String url, String pdfFile) {
         Common.createUserDir("QA_Project");
-        String localDownloadPath = System.getProperty("user.home")+"\\Desktop\\QA_Project\\";
+        String localDownloadPath = System.getProperty("user.home") + "\\Desktop\\QA_Project\\";
         FileDownloader fileDownloader = new FileDownloader(localDownloadPath);
         try {
             fileDownloader.downloadFile(element, url, pdfFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
-    public static String RandomStringF9(){
+    public static String RandomStringF9() {
         return RandomCharacter.getRandomNumericString(9);
     }
+
+    public static void saveImage(String imageUrl, String destinationFile) {
+
+        // Create a new trust manager that trust all certificates
+        TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                         return new X509Certificate[0];
+                    }
+
+                    public void checkClientTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+
+                    public void checkServerTrusted(
+                            java.security.cert.X509Certificate[] certs, String authType) {
+                    }
+                }
+        };
+
+// Activate the new trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Exception e) {
+        }
+
+        try {
+            destinationFile=Common.getFolderLogFilePath()+destinationFile;
+            URL url = new URL(imageUrl);
+            Authenticator.setDefault(new MyAuthenticator("un292108730@hsntech.com", "Password10"));
+            URLConnection connection = url.openConnection();
+            InputStream is = connection.getInputStream();
+            FileOutputStream fos = new FileOutputStream(new File(destinationFile));
+            int length = -1;
+            byte[] buffer = new byte[1024];// buffer for portion of data from connection
+            while ((length = is.read(buffer)) > -1) {
+                fos.write(buffer, 0, length);
+            }
+            fos.close();
+            is.close();
+        } catch (Exception e) {
+        }
+
+    }
+    static class MyAuthenticator extends Authenticator {
+        private String username, password;
+
+        public MyAuthenticator(String user, String pass) {
+            username = user;
+            password = pass;
+        }
+    }
+
 }
+
+

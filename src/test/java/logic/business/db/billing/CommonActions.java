@@ -8,7 +8,10 @@ import logic.business.helper.FTPHelper;
 import logic.business.helper.MiscHelper;
 import logic.pages.care.find.PaymentPage;
 import logic.utils.Parser;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,17 +97,17 @@ public class CommonActions extends OracleDB {
         return result;
     }
 
-    public static boolean isBonusBundleExisting(){
-     String sql = "SELECT bg.*\n" +
-             "FROM   (SELECT dp.discountplanid\n" +
-             "           ,dpp.propvalchar || ' - ' || dp.Descr descr\n" +
-             "           ,dp.rowversion\n" +
-             "     FROM   discountplan         dp\n" +
-             "           ,discountplanproperty dpp\n" +
-             "     WHERE dp.discountmethod IN ('BONUSBUNDGRP')\n" +
-             "     AND    dp.discountplanid = dpp.discountplanid\n" +
-             "     AND    dpp.propertykey = 'DBUNDGRPCODE') bg -- VW_BUNDLEGRP in dev\n" +
-             "    -- WHERE bg.discountplanid = iCode";
+    public static boolean isBonusBundleExisting() {
+        String sql = "SELECT bg.*\n" +
+                "FROM   (SELECT dp.discountplanid\n" +
+                "           ,dpp.propvalchar || ' - ' || dp.Descr descr\n" +
+                "           ,dp.rowversion\n" +
+                "     FROM   discountplan         dp\n" +
+                "           ,discountplanproperty dpp\n" +
+                "     WHERE dp.discountmethod IN ('BONUSBUNDGRP')\n" +
+                "     AND    dp.discountplanid = dpp.discountplanid\n" +
+                "     AND    dpp.propertykey = 'DBUNDGRPCODE') bg -- VW_BUNDLEGRP in dev\n" +
+                "    -- WHERE bg.discountplanid = iCode";
 
         List list = OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
         return list.size() > 0;
@@ -137,6 +140,7 @@ public class CommonActions extends OracleDB {
         }
         return null;
     }
+
     public static List<String> getSMSIsSent(String serviceOrder, String description) {
         description = '%' + description + '%';
         String sql = String.format("select posttransactionid from hitransactionevent where hitransactionid=%s and DESCR like '%s'", serviceOrder, description);
@@ -166,9 +170,44 @@ public class CommonActions extends OracleDB {
     }
 
     public static List getBundleByCustomerId(String customerId) {
-        String sql = "SELECT * FROM VW_GETBUNDLE WHERE ROOTBUID = " + customerId + " and LEVL = 'Current'" ;
+        String sql = "SELECT * FROM VW_GETBUNDLE WHERE ROOTBUID = " + customerId + " and LEVL = 'Current'";
         return OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
     }
+
+    public static String getResponse(String query, String subNo) {
+        try {
+            String sql = String.format("{Call %s(?,?)}", query);
+            Connection connection = OracleDB.SetToNonOEDatabase().createConnection();
+            CallableStatement cstmt = OracleDB.SetToNonOEDatabase().callableStatement();
+            cstmt = connection.prepareCall(sql);
+            cstmt.setString("1", subNo);
+            cstmt.registerOutParameter("2", Types.CLOB);
+            cstmt.executeQuery();
+            Clob text = cstmt.getClob("2");
+            return clobToString(text);
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String clobToString(final Clob clob) throws IOException, SQLException {
+        final StringBuilder str = new StringBuilder();
+        String string;
+
+        if (clob != null) {
+            try (BufferedReader bufferRead = new BufferedReader(clob.getCharacterStream())) {
+                while ((string = bufferRead.readLine()) != null) {
+                    str.append(string);
+                }
+            }
+        }
+
+        return str.toString();
+    }
+
+
 
 
     public static void main(String[] args) throws InterruptedException, IOException {
