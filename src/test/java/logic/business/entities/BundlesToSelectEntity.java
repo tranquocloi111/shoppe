@@ -18,7 +18,7 @@ public class BundlesToSelectEntity {
                 "3G data - 2GB - £7.50 per Month (Recurring)",
                 "3G data - 1GB - £5.00 per Month (Recurring)"};
     }
-    
+
     public static String [] getNCBundleToSelect(){
         return new String[]{"Monthly data bundle - 500MB (Capped) - £5.00 per Month (Recurring)",
                 "Monthly data bundle - 1GB (Capped) - £7.50 per Month (Recurring)",};
@@ -59,6 +59,12 @@ public class BundlesToSelectEntity {
                 "Monthly 1GB data allowance - £7.50 per Month (Recurring)",
                 "Monthly 250MB data allowance - 4G - £5.00 per Month (Recurring)"
 
+        };
+    }
+
+    public static String[] getBonusBundles(){
+        return new String[]{
+                "Family perk - 250MB per month - £0.00 per Month (Expiring in 61 day/s). Remaining: 250 MB"
         };
     }
 }

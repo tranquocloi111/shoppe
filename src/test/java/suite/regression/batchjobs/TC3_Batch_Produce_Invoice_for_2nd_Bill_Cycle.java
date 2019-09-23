@@ -39,7 +39,7 @@ public class TC3_Batch_Produce_Invoice_for_2nd_Bill_Cycle extends BaseTest {
     String discountGroupCodeOfMobileRef2;
 
 
-    @Test(enabled = true, description = "TC3 BATCH Produce Invoice for 2nd Bill Cycle", groups = "BillRun")
+    @Test(enabled = true, description = "TC3_Batch_Produce_Invoice_for_2nd_Bill_Cycle", groups = "BillRun")
     public void TC3_Batch_Produce_Invoice_for_2nd_Bill_Cycle(){
         test.get().info("Step 1 : Create a CC customer with order");
         OWSActions owsActions = new OWSActions();

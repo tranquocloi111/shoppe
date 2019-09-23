@@ -27,7 +27,7 @@ public class TC4617_TC003_WS_02_Customer_Has_1_Subscription_That_Has_2_Permitted
     private Date newStartDate;
     private String serviceOrderId;
 
-    @Test(enabled = true, description = "TC4617 SCWS-Get Bundle- Validation for new Bonus Bundle Group and its bundles in response", groups = "Tropicana")
+    @Test(enabled = true, description = "TC4617_TC003_WS_02_Customer_Has_1_Subscription_That_Has_2_Permitted_And_Additional_Bundle_With_Different_Free_Type", groups = "Tropicana")
     public void TC4719_SCWS_Get_Bundle_Validation_For_New_Bonus_Bundle_Group_And_Its_Bundles_In_Response() {
         test.get().info("Step 1 : Create a Customer has 1 Subscription that has 2 Permitted/Additional Bundle (Bonus Bundle Group associated with tariff)");
         String path = "src\\test\\resources\\xml\\tropicana\\TC4617_TC003_request.xml";

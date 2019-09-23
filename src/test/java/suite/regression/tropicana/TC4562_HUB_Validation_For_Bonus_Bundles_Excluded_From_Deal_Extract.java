@@ -27,16 +27,19 @@ import java.sql.Date;
 import java.util.List;
 
 public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract extends BaseTest {
-    String customerNumber;
-    Date newStartDate;
-    String subscription1;
+    private String customerNumber;
+    private Date newStartDate;
+    private String username;
+    private String password;
+    private String subscription1;
+    private String subscription2;
 
     //OF_04 - Deal Extract Changes
     @Test(enabled = true, description = "TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract", groups = "Tropicana")
     public void TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract() {
-        test.get().info("Step 1 : Create a customer with NC and device");
+        test.get().info("Step 1 : Create a Customer has 2 Subscription that has Tropicana bundle and has no Tropicana");
         OWSActions owsActions = new OWSActions();
-        String path = "src\\test\\resources\\xml\\tropicana\\TC4562_request.xml";
+        String path = "src\\test\\resources\\xml\\tropicana\\TC4682_request.xml";
         owsActions.createGeneralCustomerOrder(path);
 
         test.get().info("Step 2 : Create New Billing Group");
@@ -49,39 +52,40 @@ public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract 
         customerNumber = owsActions.customerNo;
         BaseTest.setBillGroupForCustomer(customerNumber);
 
-        test.get().info("Step 5 : Update Customer Start Date");
+        test.get().info("Step 4 : Update Customer Start Date");
         newStartDate = TimeStamp.TodayMinus15Days();
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
 
-        test.get().info("Step 6 : Get Subscription Number");
+        test.get().info("Step 5 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
+        subscription2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
         test.get().info("Step 7 : Submit DoDealXMLExtract and DealCatalogueExtract Job");
         RemoteJobHelper.getInstance().runDoDealXMLExtractJob();
         RemoteJobHelper.getInstance().runDealCatalogueExtractJob();
 
         test.get().info("Step 8 : Open extracted XML file and validate the existence of  bundles under Permitted Bundle Group. ");
-        VerifyDealXMLExtractFile(false, "productCode=\"BONUS\"");
-        VerifyDealXMLExtractFile(true, "productCode=\"00250-SB-A\"");
-        VerifyDealCatalogueExtractFile(false, "productCode=\"BONUS\"");
-        VerifyDealCatalogueExtractFile(true, "productCode=\"00250-SB-A\"");
+        VerifyDealXMLExtractFile(false, "productCode=\"DOUBLE_DATA\"");
+        VerifyDealXMLExtractFile(true, "productCode=\"250MB-DATA-250-FC\"");
+        VerifyDealCatalogueExtractFile(false, "productCode=\"DOUBLE_DATA\"");
+        VerifyDealCatalogueExtractFile(true, "productCode=\"250MB-DATA-250-FC\"");
 
         test.get().info("Step 9 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();
         String selfCare = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
-        swsActions.submitMaintainBundleRequest(selfCare, customerNumber, subscription1);
+        swsActions.submitMaintainBundleRequest(selfCare, customerNumber, subscription2);
 
         test.get().info("Step 7 : Submit DoDealXMLExtract and DealCatalogueExtract Job");
         RemoteJobHelper.getInstance().runDoDealXMLExtractJob();
         RemoteJobHelper.getInstance().runDealCatalogueExtractJob();
 
         test.get().info("Step 12 : Open extracted XML file and validate the existence of  bundles under Permitted Bundle Group.");
-        VerifyDealXMLExtractFile(false, "productCode=\"BONUS\"");
-        VerifyDealXMLExtractFile(true, "productCode=\"NC24-4500-3000-IP-S\"");
-        VerifyDealCatalogueExtractFile(false, "productCode=\"BONUS\"");
-        VerifyDealCatalogueExtractFile(true, "productCode=\"NC24-4500-3000-IP-S\"");
+        VerifyDealXMLExtractFile(false, "productCode=\"DOUBLE_DATA\"");
+        VerifyDealXMLExtractFile(true, "productCode=\"250MB-DATA-250-FC\"");
+        VerifyDealCatalogueExtractFile(false, "productCode=\"DOUBLE_DATA\"");
+        VerifyDealCatalogueExtractFile(true, "productCode=\"250MB-DATA-250-FC\"");
     }
 
     private String getXmlFile(int jobId, String jobDescr) {

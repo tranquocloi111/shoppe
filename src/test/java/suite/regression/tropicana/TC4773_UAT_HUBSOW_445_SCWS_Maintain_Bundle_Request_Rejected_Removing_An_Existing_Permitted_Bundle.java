@@ -41,34 +41,30 @@ public class TC4773_UAT_HUBSOW_445_SCWS_Maintain_Bundle_Request_Rejected_Removin
         customerNumber = owsActions.customerNo;
         BaseTest.setBillGroupForCustomer(customerNumber);
 
-//        test.get().info("Step 5 : Update Customer Start Date");
-//        newStartDate = TimeStamp.TodayMinus15Days();
-//        CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
-
-        test.get().info("Step 6: Get Subscription Number");
+        test.get().info("Step 5: Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
         subscription2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
-        test.get().info("Step 7 : Add Bonus Bundle to Subscription");
+        test.get().info("Step 6 : Add Bonus Bundle to Subscription");
         SWSActions swsActions = new SWSActions();
         String selfCarePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
         swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription2);
 
-        test.get().info("Step 9 : Add Bonus Bundle to Subscription And remove Family Perk");
+        test.get().info("Step 7 : Add Bonus Bundle to Subscription And remove Family Perk");
         selfCarePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4773_001_request.xml";
         Xml xml = swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription2);
 
-        test.get().info("Step 10 : Verify Request rejected if same request contain  add a Bonus Bundle Group and Remove a Family Perk  in the same Request");
+        test.get().info("Step 8 : Verify Request rejected if same request contain  add a Bonus Bundle Group and Remove a Family Perk  in the same Request");
         Assert.assertEquals("UBE_002", xml.getTextByTagName("code"));
         Assert.assertEquals("Invalid mix of bundle types in request", xml.getTextByTagName("description"));
 
-        test.get().info("Step 11 : Add Bonus Bundle to Subscription And remove Permitted Perk");
+        test.get().info("Step 9 : Add Bonus Bundle to Subscription And remove Permitted Perk");
         selfCarePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4773_002_request.xml";
         swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription2);
 
-        test.get().info("Step 12 : Verify Request rejected if same request contain add a Bonus Bundle Group and Remove a Permitted Bundle Group  in the same Request");
+        test.get().info("Step 10 : Verify Request rejected if same request contain add a Bonus Bundle Group and Remove a Permitted Bundle Group  in the same Request");
         Assert.assertEquals("UBE_002", xml.getTextByTagName("code"));
         Assert.assertEquals("Invalid mix of bundle types in request", xml.getTextByTagName("description"));
 

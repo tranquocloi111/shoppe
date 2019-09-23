@@ -125,6 +125,19 @@ public class CareTestBase extends BasePage {
 
     }
 
+    public void checkFamilyPerkBundleToolTip(String[] bundles) {
+        String expectTooltip;
+        String actualTooltip;
+        for (String bundle : bundles) {
+            int endIndex = bundle.lastIndexOf((" - £"));
+            String bundleSubstr = bundle.substring(0, endIndex);
+            expectTooltip = String.format("Additional Information\n%s\nFair Usage Warning =\nFair Usage Limit =\nNext Allocation = None", bundleSubstr);
+            actualTooltip = ServiceOrdersPage.ChangeBundle.getInstance().bundleToolTip(bundle);
+            Assert.assertEquals(expectTooltip, actualTooltip);
+        }
+
+    }
+
     public String verifyServiceOrderCompleteScreenHasProvisionWaitMessage() {
         String provisionWaitStatusMessage = String.format("*** Service Order has been set to Status of Provision Wait, and is due to be processed on %s ***", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), "dd/MM/yyyy"));
         Assert.assertEquals(provisionWaitStatusMessage, ServiceOrdersPage.ServiceOrderComplete.getInstance().getMessage());

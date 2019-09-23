@@ -99,7 +99,6 @@ public class TC4719_SC_MODF_SUB_Validation_For_Tropicana_Bundle_In_Add_Change_Fa
         Assert.assertEquals("500", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 3));
         Assert.assertEquals("500", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 3));
 
-
         test.get().info("Step 18 : Select a New Family Perk bundle then observe the New Allowance");
         AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().selectBundlesByName("Family perk - 250MB per month - 4G");
 

@@ -221,9 +221,28 @@ public class RemoteJobHelper {
     }
 
     public void runDoDealXMLExtractJob() {
+        ResultSet resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
+        try {
+            for (int i = 0; i < 120; i++) {
+                if (resultSet.isBeforeFirst()) {
+                    break;
+                } else {
+                    resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
+                }
+                Thread.sleep(2000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        int billRunInvocationId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(resultSet, "brinvocationid")));
+        Log.info("InvocationId:" + billRunInvocationId);
+
         currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs("DoDealXMLExtract.sh -e $HUB_SID -J", currentMaxJobId,"Deal XML Extract");
-        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
+        submitRemoteJobs(String.format("DoDealXMLExtract.sh -i %s -e $HUB_SID", billRunInvocationId), currentMaxJobId, "Deal XML Extract");
+        waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
     }
 
     public void runDealCatalogueExtractJob() {

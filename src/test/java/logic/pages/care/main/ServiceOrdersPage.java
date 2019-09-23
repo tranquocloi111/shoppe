@@ -432,6 +432,9 @@ public class ServiceOrdersPage extends BasePage {
         @FindBy(xpath = "//td[contains(text(),'When to apply change?:')]/following-sibling::td//span")
         WebElement lblWhenToApplyChangeText;
 
+        @FindBy(xpath = "//td[contains(.,'Double Data')]")
+        WebElement lblBonusBundle;
+
         public static ChangeBundle getInstance() {
             if (instance == null)
                 return new ChangeBundle();
@@ -514,6 +517,10 @@ public class ServiceOrdersPage extends BasePage {
                 }
             }
         }
+
+        public boolean isBonusBundle(){
+            return isElementPresent(lblBonusBundle);
+        }
     }
 
     public static class ConfirmChangeBundle extends ServiceOrdersPage {
@@ -554,6 +561,9 @@ public class ServiceOrdersPage extends BasePage {
         @FindBy(xpath = "//td[contains(text(),'Effective:')]/following-sibling::td//span")
         WebElement effective;
 
+        @FindBy(xpath = "//td[@class='descError']")
+        WebElement lblErrorEmssage;
+
         public String getSubscriptionNumber() {
             return getTextOfElement(subscriptionNumber);
         }
@@ -592,6 +602,10 @@ public class ServiceOrdersPage extends BasePage {
 
         public String getBundleInfo(String name){
             return getTextOfElement(getDriver().findElement(By.xpath("//td[contains(text(),'"+name+"')]/following-sibling::td//span")));
+        }
+
+        public String getErrorMessage(){
+            return  getTextOfElement(lblErrorEmssage);
         }
 
     }

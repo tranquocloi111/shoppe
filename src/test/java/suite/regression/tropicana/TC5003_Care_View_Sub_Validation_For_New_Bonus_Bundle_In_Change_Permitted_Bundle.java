@@ -23,7 +23,7 @@ import java.sql.Date;
 import java.util.List;
 
 public class TC5003_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Permitted_Bundle extends BaseTest {
-    private String customerNumber = "15758";
+    private String customerNumber = "12031";
     private String subscription2;
     private String serviceOrderId;
 
@@ -68,55 +68,26 @@ public class TC5003_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Perm
         Assert.assertEquals("£10 Tariff 12 Month Contract", ServiceOrdersPage.ChangeBundle.getInstance().getCurrentTariff());
         Assert.assertEquals("Bundle - 500 mins, 5000 texts (FC)", ServiceOrdersPage.ChangeBundle.getInstance().getPackagedBundle());
         Assert.assertEquals("Next Bill Date", ServiceOrdersPage.ChangeBundle.getInstance().getWhenToApplyChangeText());
-        Assert.assertTrue(ServiceOrdersPage.ChangeBundle.getInstance().bundleExists(BundlesToSelectEntity.getStandardDataBundles()));
-        CareTestBase.page().checkBundleToolTip(BundlesToSelectEntity.getStandardDataBundles());
+        Assert.assertTrue(ServiceOrdersPage.ChangeBundle.getInstance().bundleExists(BundlesToSelectEntity.getBonusBundles()));
+        CareTestBase.page().checkFamilyPerkBundleToolTip(BundlesToSelectEntity.getBonusBundles());
 
-        test.get().info("Step 15 : Select a new Permitted bundle that has an Equivalent Bonus bundle");
-        ServiceOrdersPage.ChangeBundle.getInstance().selectBundlesByName(BundlesToSelectEntity.getFCBundleToSelect(),"Monthly 250MB data allowance - 4G - £5.00 per Month (Recurring)");
+        test.get().info("Step 15 : Select a new Permitted bundle that has no an Equivalent Bonus bundle");
+        ServiceOrdersPage.ChangeBundle.getInstance().selectBundlesByName(BundlesToSelectEntity.getStandardDataBundles(),"Monthly 500MB data allowance - £5.00 per Month (Recurring)");
         CareTestBase.page().clickNextButton();
 
         test.get().info("Step 16 : Observe the Bundles Before and Bundles After");
-        Assert.assertEquals(fcSubText, ServiceOrdersPage.ConfirmChangeBundle.getInstance().getSubscriptionNumber());
-        Assert.assertEquals(expectNextBillDate, ServiceOrdersPage.ConfirmChangeBundle.getInstance().getNextBillDateForThisAccount());
-        Assert.assertEquals("FC1-0750-150SO £7.50 SIM Only Tariff 1 Month Contract {£7.50}", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getCurrentTariff());
-        Assert.assertEquals("Bundle - 500 mins, 5000 texts (FC)", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getPackagedBundle());
+        ServiceOrdersPage.ConfirmChangeBundle confirmChangeBundle = ServiceOrdersPage.ConfirmChangeBundle.getInstance();
+        Assert.assertEquals(confirmChangeBundle.getErrorMessage(), "This number is entitled to have a Bonus Bundle. We're sorry, we don't have a Bonus Bundle to match your tariff.");
+        Assert.assertEquals(fcSubText, confirmChangeBundle.getSubscriptionNumber());
+        Assert.assertEquals(expectNextBillDate, confirmChangeBundle.getNextBillDateForThisAccount());
+        Assert.assertEquals("AUTO-FC12-1000-500SO £10 Tariff 12 Month Contract {£10.00}", confirmChangeBundle.getCurrentTariff());
+        Assert.assertEquals("Bundle - 500 mins, 5000 texts (FC)", confirmChangeBundle.getPackagedBundle());
 
-        Assert.assertEquals("No Current Recurring Bundles", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getInfoBefore());
-        Assert.assertEquals("£0.00 per month", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getTotalRecurringBundleChargeBefore());
+        Assert.assertEquals("£5.00 per month", confirmChangeBundle.getTotalRecurringBundleChargeBefore());
 
-        Assert.assertEquals("£5.00 per month", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getTotalRecurringBundleChargeAfter());
-        Assert.assertEquals(String.format("£5.00 per Month (Recurring).Valid from %s.", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy")), ServiceOrdersPage.ConfirmChangeBundle.getInstance().getBundleInfo("3G data   -   1GB:"));
-        Assert.assertEquals("Increase of £5.00 per month", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getRecurringBundlesChargeDifference());
-        Assert.assertEquals(Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy"), ServiceOrdersPage.ConfirmChangeBundle.getInstance().getEffective());
-
-        test.get().info("Step 17 : Click next button to service order complete screen");
-        CareTestBase.page().clickNextButton();
-
-        test.get().info("Step 18 : Verify service order complete screen has provision wait message");
-        CareTestBase.page().verifyServiceOrderCompleteScreenHasProvisionWaitMessage();
-
-        test.get().info("Step 19 : Click return to customer button on service order complete screen");
-        CareTestBase.page().clickReturnToCustomer();
-
-        test.get().info("Step 20 : Select change bundle from RHS actions");
-        MenuPage.RightMenuPage.getInstance().clickChangeBundleLink();
-
-        test.get().info("Step 15 : Select a new Permitted bundle that has NO Equivalent Bonus bundle");
-        ServiceOrdersPage.ChangeBundle.getInstance().selectBundlesByName(BundlesToSelectEntity.getFCBundleToSelect(),"data - 250MB - £0.00 per Month (Recurring)");
-        CareTestBase.page().clickNextButton();
-
-        test.get().info("Step 16 : Observe the Bundles Before and Bundles After");
-        Assert.assertEquals(fcSubText, ServiceOrdersPage.ConfirmChangeBundle.getInstance().getSubscriptionNumber());
-        Assert.assertEquals(expectNextBillDate, ServiceOrdersPage.ConfirmChangeBundle.getInstance().getNextBillDateForThisAccount());
-        Assert.assertEquals("FC1-0750-150SO £7.50 SIM Only Tariff 1 Month Contract {£7.50}", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getCurrentTariff());
-        Assert.assertEquals("Bundle - 150 mins, 5000 texts (FC)", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getPackagedBundle());
-
-        Assert.assertEquals("No Current Recurring Bundles", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getInfoBefore());
-        Assert.assertEquals("£0.00 per month", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getTotalRecurringBundleChargeBefore());
-
-        Assert.assertEquals("£5.00 per month", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getTotalRecurringBundleChargeAfter());
-        Assert.assertEquals(String.format("£5.00 per Month (Recurring).Valid from %s.", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy")), ServiceOrdersPage.ConfirmChangeBundle.getInstance().getBundleInfo("3G data   -   1GB:"));
-        Assert.assertEquals("Increase of £5.00 per month", ServiceOrdersPage.ConfirmChangeBundle.getInstance().getRecurringBundlesChargeDifference());
-        Assert.assertEquals(Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy"), ServiceOrdersPage.ConfirmChangeBundle.getInstance().getEffective());
+        Assert.assertEquals("£10.00 per month", confirmChangeBundle.getTotalRecurringBundleChargeAfter());
+        Assert.assertEquals(String.format("£5.00 per Month (Recurring).Valid from %s.", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy")), confirmChangeBundle.getBundleInfo("Monthly 500MB data allowance:"));
+        Assert.assertEquals("Increase of £5.00 per month", confirmChangeBundle.getRecurringBundlesChargeDifference());
+        Assert.assertEquals(Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"dd/MM/yyyy"), confirmChangeBundle.getEffective());
     }
 }

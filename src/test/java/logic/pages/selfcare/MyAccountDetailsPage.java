@@ -158,6 +158,9 @@ public class MyAccountDetailsPage extends BasePage {
             return getTextOfSelectedOption(table.findCellByLabelText("Bill notification method"));
         }
 
+        public String getBusinessName() {
+            return getTextOfElement(table.findCellByLabelText("Business name:"));
+        }
 
     }
     public static class clubCardDetailsSection extends MyAccountDetailsPage {

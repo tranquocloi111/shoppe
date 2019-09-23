@@ -8,9 +8,11 @@ import logic.business.ws.sws.SWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.ServiceOrdersContentPage;
+import logic.pages.selfcare.AddOrChangeAFamilyPerkPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
@@ -28,11 +30,11 @@ public class TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_B
     private String subscription2;
     private String serviceOrderId;
 
-    @Test(enabled = true, description = "TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_Buffer", groups = "Tropicana")
+    @Test(enabled = false, description = "TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_Buffer", groups = "Tropicana")
     public void TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_Buffer(){
         test.get().info("Step 1 : Create a Customer has 2 Subscription that has Tropicana bundle and has no Tropicana");
         OWSActions owsActions = new OWSActions();
-        String path = "\\src\\test\\resources\\xml\\tropicana\\TC4682_request.xml";
+        String path = "src\\test\\resources\\xml\\tropicana\\TC4682_request.xml";
         owsActions.createGeneralCustomerOrder(path);
 
         test.get().info("Step 2 : Create New Billing Group");
@@ -60,12 +62,6 @@ public class TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_B
         String selfCarePath = "src\\test\\resources\\xml\\sws\\maintainbundle\\TC4682_request.xml";
         swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription2);
 
-        test.get().info("Step 8 : Submit Provision Wait");
-        List<WebElement> serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderBySubAndType(subscription2, "Change Bundle"));
-        serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByElementServiceOrders(serviceOrder);
-        BaseTest.updateThePDateAndBillDateForSO(serviceOrderId);
-        RemoteJobHelper.getInstance().runProvisionSevicesJob();
-
         test.get().info("Step 9 : Login to self care");
         username = owsActions.username;
         password = owsActions.password;
@@ -81,10 +77,16 @@ public class TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_B
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
         test.get().info("Step 13 : Click add or change bundle button for monthly bundle without tropicana");
-        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobile1Tariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1");
+        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobile1Tariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 2");
         mobile1Tariff.clickChangeMySafetyBufferBtn();
 
         test.get().info("Step 14 : Validate the the Current Allowance");
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 1));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 1));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 2));
+        Assert.assertEquals("0", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 2));
+        Assert.assertEquals("500", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("Current allowance", 3));
+        Assert.assertEquals("500", AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance().getTextsRow("New allowance", 3));
 
         test.get().info("Step 15 : Navigate to Add/Change Family Perk page");
         mobile1Tariff.clickAddOrChangeAFamilyPerkBtn();
