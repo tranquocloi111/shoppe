@@ -12,6 +12,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -80,11 +81,21 @@ public class MiscHelper {
     }
 
     public static void saveFileFromWebRequest(WebElement element, String url, String pdfFile) {
-        Common.createUserDir("QA_Project");
-        String localDownloadPath = System.getProperty("user.home") + "\\Desktop\\QA_Project\\";
+        String localDownloadPath = Common.getFolderLogFilePath();
         FileDownloader fileDownloader = new FileDownloader(localDownloadPath);
         try {
             fileDownloader.downloadFile(element, url, pdfFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void saveFileFromWebRequest(String url, String pdfFile) {
+        String localDownloadPath = Common.getFolderLogFilePath();
+        FileDownloader fileDownloader = new FileDownloader(localDownloadPath);
+        try {
+            Common.convertInputStreamToPdfFile(fileDownloader.downloadFile(url), localDownloadPath + pdfFile);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -145,7 +145,7 @@ public class OWSActions extends BaseWs {
     }
 
     public String getOrderMpnByReference(String reference) {
-        return response.getTextByXpath(String.format("//orderItem//serviceRef[@reference='%s']", reference));
+        return response.getNodeValueByXpath(String.format("//orderItem//serviceRef[@reference='%s']", reference), "reference");
     }
 
     public String getCreditAgreementNumberByReference(String reference) {

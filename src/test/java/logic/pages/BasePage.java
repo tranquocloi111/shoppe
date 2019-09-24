@@ -1,5 +1,6 @@
 package logic.pages;
 
+import framework.utils.Log;
 import framework.wdm.WdManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -26,15 +27,19 @@ public class BasePage {
                 if (!availableWindows.isEmpty()) {
                     for (String windowId : availableWindows) {
                         if (getDriver().switchTo().window(windowId).getTitle().equals(title)) {
+                            getDriver().manage().window().maximize();
+                            Thread.sleep(2000);
                             return true;
                         }
                     }
                 }
             } catch (Throwable ex) {
                 getDriver().switchTo().window(title);
+
             }
         } else {
             getDriver().switchTo().window(title);
+            getDriver().manage().window().maximize();
         }
         return false;
     }
@@ -198,10 +203,15 @@ public class BasePage {
 
     public boolean isElementPresent(WebElement element) {
         try {
+            waitUntilVisible(element);
             return element.isDisplayed();
         } catch (Throwable e) {
             return false;
         }
+    }
+
+    public static void waitUntilVisible(WebElement ele) {
+        WdManager.getWait().until(ExpectedConditions.visibilityOf(ele));
     }
 
     public String findValueByLabel(WebElement element, String label) {

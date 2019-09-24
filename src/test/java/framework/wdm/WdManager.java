@@ -61,8 +61,8 @@ public class WdManager {
             dismissWD();
         }
         wdm.set(driver);
-        waitManager.set(new WebDriverWait(wdm.get(), 180));
-        ajaxEle.set(new AjaxElementLocatorFactory(wdm.get(), 180));
+        waitManager.set(new WebDriverWait(wdm.get(), 30));
+        ajaxEle.set(new AjaxElementLocatorFactory(wdm.get(), 30));
     }
 
     /**

@@ -37,26 +37,25 @@ public class TC31967_View_Credit_Agreement_Documents_CCA_Document_Statement_of_A
         OWSActions owsActions = new OWSActions();
         owsActions.createOrderAndSignAgreementByUI(path, 4);
 
-        customerNumber = owsActions.customerNo;
-
         test.get().info("create new billing group");
         createNewBillingGroup();
+
         test.get().info("update bill group payment collection date to 10 day later ");
         updateBillGroupPaymentCollectionDateTo10DaysLater();
+
         test.get().info("set bill group for customer");
+        customerNumber = owsActions.customerNo;
         setBillGroupForCustomer(customerNumber);
+
         test.get().info("update start date for customer");
         CommonActions.updateCustomerStartDate(customerNumber, TimeStamp.TodayMinus1MonthMinus20Day());
 
         test.get().info("get all FC subscription number and ccaNO");
-        owsActions.getSubscription(owsActions.orderIdNo, "Mobile FC 1");
-        subno1 = owsActions.serviceRef;
-        owsActions.getSubscription(owsActions.orderIdNo, "Mobile FC 2");
-        subno2 = owsActions.serviceRef;
-        owsActions.getSubscription(owsActions.orderIdNo, "Mobile FC 3");
-        subno3 = owsActions.serviceRef;
-        owsActions.getSubscription(owsActions.orderIdNo, "Mobile FC 4");
-        subno4 = owsActions.serviceRef;
+        owsActions.getOrder(owsActions.orderIdNo);
+        subno1 = owsActions.getOrderMpnByReference(1);//owsActions.getOrderMpnByReference("Mobile FC 1");s
+        subno2 = owsActions.getOrderMpnByReference(2);//owsActions.getOrderMpnByReference("Mobile FC 2");
+        subno3 = owsActions.getOrderMpnByReference(3);//owsActions.getOrderMpnByReference("Mobile FC 3");
+        subno4 = owsActions.getOrderMpnByReference(4);//owsActions.getOrderMpnByReference("Mobile FC 4");
 
          cCANo1 = owsActions.getCreditAgreementNumberByReference("Mobile FC 1");
          cCANo2 = owsActions.getCreditAgreementNumberByReference("Mobile FC 2");
@@ -75,11 +74,11 @@ public class TC31967_View_Credit_Agreement_Documents_CCA_Document_Statement_of_A
         CreditAgreementsContentPage.CreditAgreementsGridPage.CADetailClass caDetailNo3 = CreditAgreementsContentPage.CreditAgreementsGridPage.getInstance().getCADetailBySubscription(subno3);
          cCANo3 = caDetailNo3.agreementNumber();
 
-        test.get().info("deactive FC 4 Subscription");
+        test.get().info("Deactivate FC 4 Subscription");
         deactiveFC4Subscription();
 
         test.get().info("Login in to selfcare");
-        SelfCareTestBase.page().LoginIntoSelfCarePage("un292108730@hsntech.com","Password10",customerNumber);
+        SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username,owsActions.password,customerNumber);
         verifyStatementToDatePDFOfFC1();
     }
 
@@ -100,7 +99,7 @@ public class TC31967_View_Credit_Agreement_Documents_CCA_Document_Statement_of_A
     {
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile FC 1").setCreditAgreementSelectByVisibleText("Your statement to date");
-        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile FC 1").savePDFFile(cCANo1,"Your statement to date",customerNumber);
+        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile FC 1").savePDFFile(cCANo1,"Your statement to date", customerNumber);
     }
 
 }

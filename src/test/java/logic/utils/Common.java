@@ -258,6 +258,42 @@ public class Common {
         return  "_" + LocalTime.now().format(formatter);
     }
 
+
+    public static void convertInputStreamToPdfFile(InputStream inputStream, String path){
+        OutputStream outputStream = null;
+        try {
+            // write the inputStream to a FileOutputStream
+            outputStream = new FileOutputStream(new File(path));
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+
+            System.out.println("Done!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
     public static void main(String[] args) throws InterruptedException, IOException {
         String zipFilePath = "C:\\Users\\vuq\\Documents\\TM_HUB_DEAL_Onlines_20190816.XML.zip";
 

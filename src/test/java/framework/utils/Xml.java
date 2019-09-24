@@ -1,9 +1,6 @@
 package framework.utils;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -121,6 +118,20 @@ public class Xml {
     public String getTextByXpath(String tagName, int index) {
         NodeList nodes = getElementsByXpath(tagName);
         return nodes.item(index).getTextContent();
+    }
+
+    public String getNodeValueByXpath(String tagName, String attributeName) {
+        NodeList nodes = getElementsByXpath(tagName);
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node node = nodes.item(i);
+            if (node.hasAttributes()) {
+                Attr attr = (Attr) node.getAttributes().getNamedItem(attributeName);
+                if (attr != null) {
+                    return attr.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     public void setAttributeTextAllNodesByXpath(String tagName, String attributeName, String value){

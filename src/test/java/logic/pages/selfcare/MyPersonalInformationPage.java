@@ -6,13 +6,14 @@ import framework.utils.RandomCharacter;
 import logic.business.helper.MiscHelper;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
+import logic.utils.Common;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,10 +63,21 @@ public class MyPersonalInformationPage extends BasePage {
 
         public static class MyTariffDetailsPage extends MyTariffPage {
             static String serviceRefName;
+
             @FindBy(xpath = "//label[text()='Roaming']//ancestor::td[1]//following-sibling::td")
             WebElement roamingCell;
+
             @FindBy(xpath = "//a[@id='SaveBtn']")
             WebElement savePhoneUserNameBtn;
+
+            @FindBy(xpath = "//td[contains(text(),'Monthly bundles')]//ancestor::tr[1]//following-sibling::tr[1]//td[@class='fieldvalue']")
+            WebElement secondMontlyBundle;
+
+            @FindBy(xpath = "//a[@id='viewAgreementButton']")
+            WebElement viewAgreementButton;
+
+            @FindBy(id = "plugin")
+            WebElement embeddedPdfForm;
 
             public static MyTariffDetailsPage getInstance(String name) {
                 serviceRefName = name;
@@ -193,10 +205,6 @@ public class MyPersonalInformationPage extends BasePage {
                 return getTextOfElement(tableControlBase.findCellByLabelText("Monthly bundles"));
             }
 
-
-            @FindBy(xpath = "//td[contains(text(),'Monthly bundles')]//ancestor::tr[1]//following-sibling::tr[1]//td[@class='fieldvalue']")
-            WebElement secondMontlyBundle;
-
             public String getSecondMonthlyBundles() {
                 return getTextOfElement(secondMontlyBundle);
             }
@@ -282,10 +290,14 @@ public class MyPersonalInformationPage extends BasePage {
                         ccaType = "PERIODIC_STATEMENT";
                         break;
                 }
-                WebElement el = myTariffTable().findElement(By.xpath("//a[@id='viewAgreementButton']"));
-                String fileName = String.format("%s_%s_%s_mobile1.pdf", customerNumber, RandomCharacter.getRandomNumericString(9), "31927");
-                String url = Config.getProp("selfCareUrl") + String.format("/ShowAgreementDocument.do?agreementNumber=%s&documentType=%s", CCANo, ccaType);
-                MiscHelper.saveFileFromWebRequest(el, url, fileName);
+
+                click(viewAgreementButton);
+                String parent = getCurrentUrl();
+                switchWindow("Your Agreement", false);
+                String fileName = String.format("%s_%s_%s_mobile1.pdf", customerNumber, RandomCharacter.getRandomNumericString(9), customerNumber);
+                String url = embeddedPdfForm.getAttribute("src");
+                MiscHelper.saveFileFromWebRequest(url, fileName);
+                switchWindow(parent, false);
             }
 
             public List<WebElement> getFamilyPerkStack() {
