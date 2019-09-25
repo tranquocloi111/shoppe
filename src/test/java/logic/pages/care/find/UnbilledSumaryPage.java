@@ -36,11 +36,10 @@ public class UnbilledSumaryPage extends BasePage {
     {
         click(findNowBtn);
     }
-    public void saveFileFromWebRequest(String customerNumber){
+    public void saveFileFromWebRequest(String customerNumber, String imgFile){
         WebElement img= getDriver().findElement(By.xpath("//img[@id='imgUsage']"));
         String link=img.getAttribute("src");
-        String imgFile =Common.getFolderLogFilePath()+String.format("TC31962_%s_HubNet.jpg", customerNumber);
-        MiscHelper.saveImage(link,imgFile);
+        MiscHelper.saveFileFromWebRequest(link,imgFile);
     }
 }
 

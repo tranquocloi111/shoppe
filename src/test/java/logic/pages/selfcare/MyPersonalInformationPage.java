@@ -1,21 +1,18 @@
 package logic.pages.selfcare;
 
-import framework.config.Config;
 import framework.utils.Log;
-import framework.utils.RandomCharacter;
 import logic.business.helper.MiscHelper;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
-import logic.utils.Common;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.testng.Assert;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MyPersonalInformationPage extends BasePage {
@@ -63,6 +60,10 @@ public class MyPersonalInformationPage extends BasePage {
 
         public static class MyTariffDetailsPage extends MyTariffPage {
             static String serviceRefName;
+
+            public static MyTariffDetailsPage getInstance() {
+                return new MyTariffDetailsPage();
+            }
 
             @FindBy(xpath = "//label[text()='Roaming']//ancestor::td[1]//following-sibling::td")
             WebElement roamingCell;
@@ -272,31 +273,21 @@ public class MyPersonalInformationPage extends BasePage {
                 WebElement el = myTariffTable().findElement(By.xpath("..//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
                 selectByVisibleText(el, text);
             }
+            public List<WebElement> getListViewAgreementBtn()
+            {
+                return getDriver().findElements(By.xpath("//a[@id='viewAgreementButton']"));
+            }
+            public void clickViewAgreementButton(int index)
+            {
+                click(getListViewAgreementBtn().get(index));
+            }
 
-            public void savePDFFile(String CCANo, String CreditAgreements, String customerNumber) {
-
-                String ccaType = null;
-                switch (CreditAgreements) {
-                    case "Your Credit Agreement":
-                        ccaType = "CCA_DOCUMENT";
-                        break;
-                    case "Your statement to date":
-                        ccaType = "ACCOUNT_STATEMENT";
-                        break;
-                    case "What you've paid and your remaining balance":
-                        ccaType = "CCD_STATEMENT";
-                        break;
-                    case "Your annual statement":
-                        ccaType = "PERIODIC_STATEMENT";
-                        break;
-                }
-
-                click(viewAgreementButton);
-                String parent = getCurrentUrl();
+            public void savePDFFile(  String fileName) {
+                String parent = getTitle();
                 switchWindow("Your Agreement", false);
-                String fileName = String.format("%s_%s_%s_mobile1.pdf", customerNumber, RandomCharacter.getRandomNumericString(9), customerNumber);
                 String url = embeddedPdfForm.getAttribute("src");
                 MiscHelper.saveFileFromWebRequest(url, fileName);
+
                 switchWindow(parent, false);
             }
 
@@ -327,19 +318,29 @@ public class MyPersonalInformationPage extends BasePage {
                 }
                 return null;
             }
+            public String getErrorMssgDialog() {
+                return super.getTextComfirmDialog();
+            }
+
+            @FindBy(xpath = "//span[contains(text(),'INACTIVE')]//ancestor::tr[1]//following-sibling::tr[4]//a[@id='addBundleBtn']")
+            WebElement addOrChangeAFamilyPerkOfInacitveSubscriptionBtn;
+
+            public void clickAddOrChangeAFamilyPerkOfInacitveSubscription() {
+                clickWithOutWait(addOrChangeAFamilyPerkOfInacitveSubscriptionBtn);
+            }
+            public WebElement getInactiveSubscriptionTable(String reference)
+            {
+                String xpath=String.format("//td[contains(text(),'%s')]//ancestor::table[1]",reference);
+                return getDriver().findElement(By.xpath(xpath));
+            }
+            public List<WebElement> getListCreditAgreementSelect()
+            {
+                return getDriver().findElements(By.xpath("//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
+            }
+            public void setCreditAgreementSelectByVisibleTextForInactiveSubscription(String text,int index) {
+                selectByVisibleText(getListCreditAgreementSelect().get(index), text);
+            }
         }
-
-        public String getErrorMssgDialog() {
-            return super.getTextComfirmDialog();
-        }
-
-        @FindBy(xpath = "//span[contains(text(),'INACTIVE')]//ancestor::tr[1]//following-sibling::tr[4]//a[@id='addBundleBtn']")
-        WebElement addOrChangeAFamilyPerkOfInacitveSubscriptionBtn;
-
-        public void clickAddOrChangeAFamilyPerkOfInacitveSubscription() {
-            clickWithOutWait(addOrChangeAFamilyPerkOfInacitveSubscriptionBtn);
-        }
-
     }
 
     public static class myAlertSection extends MyPersonalInformationPage {

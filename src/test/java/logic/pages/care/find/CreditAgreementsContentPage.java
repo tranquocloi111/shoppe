@@ -31,7 +31,9 @@ public class CreditAgreementsContentPage extends BasePage {
         TableControlBase table = new TableControlBase(creditAgreementsTable);
 
         public void clickExpandButtonOfCABySubscription(String value){
-            click(table.getRowByContainsColumnNameAndCellValue(subscription, value).findElement(By.tagName("img")));
+            WebElement el=table.getRowByContainsColumnNameAndCellValue(subscription, value).findElement(By.tagName("img"));
+            waitUntilElementClickable(el);
+            click(el);
         }
 
         public CADetailClass getCADetailBySubscription(String value){

@@ -144,11 +144,11 @@ public class SelfCareTestBase extends BasePage {
         List<String> GRGSMSFileName = OracleDB.SetToNonOEDatabase().executeQueryReturnListString(sql);
         String firstResult = GRGSMSFileName.get(0);
         String value = firstResult.substring(firstResult.indexOf("=") + 1).replace("}", "");
-        String sftpFilePath = Config.getProp("cdrFolder");
-        sftpFilePath = sftpFilePath.replace("Feed/a2aInterface/fileinbox", "ftp/tesgrg/fileoutbox");
+        String sftpFilePath = Config.getProp("CDRSFTPFolder");
+        sftpFilePath = sftpFilePath.replace("fileinbox", "tesgrg/fileoutbox/");
         String localPath = Common.getFolderLogFilePath();
-        FTPHelper.getInstance().downLoadFromDisk( sftpFilePath,value,localPath);
-        Log.info("TM_HUB_SMSRQST file:" + localPath);
+        SFTPHelper.getInstance().downloadFileFromRemoteServerToLocal(localPath, sftpFilePath+value);
+        Log.info("TM_HUB_SMSRQST file:" + localPath+value);
         return localPath + value;
     }
 

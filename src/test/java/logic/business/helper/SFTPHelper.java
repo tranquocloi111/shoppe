@@ -18,7 +18,7 @@ public class SFTPHelper extends SFTP {
         try {
             Assert.assertTrue(sftp.connect(host, 22, userName));
             sftp.downloadFile(remotePath, localPath);
-            Log.info(localPath);
+            Log.info(localPath+remotePath);
         } catch (Exception ex) {
             System.out.print(ex);
         }

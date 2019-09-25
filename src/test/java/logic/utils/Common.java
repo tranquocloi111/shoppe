@@ -2,6 +2,9 @@ package logic.utils;
 
 import framework.utils.Log;
 import framework.utils.Xml;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.text.PDFTextStripperByArea;
 
 import java.io.*;
 import java.time.LocalTime;
@@ -73,7 +76,8 @@ public class Common {
         }
         return d;
     }
-    public static   List<String>  compareFiles(String fileExpected, String fileActual, String removeString) {
+
+    public static List<String> compareFiles(String fileExpected, String fileActual, String removeString) {
         BufferedReader br1 = null;
         BufferedReader br2 = null;
         String sCurrentLine;
@@ -83,15 +87,17 @@ public class Common {
             br1 = new BufferedReader(new FileReader(fileExpected));
             br2 = new BufferedReader(new FileReader(fileActual));
             while ((sCurrentLine = br1.readLine()) != null) {
-               if(!sCurrentLine.contains(removeString)){
-                list1.add(sCurrentLine);}
+                if (!sCurrentLine.contains(removeString)) {
+                    list1.add(sCurrentLine);
+                }
             }
             while ((sCurrentLine = br2.readLine()) != null) {
-                if(!sCurrentLine.contains(removeString)){
-                list2.add(sCurrentLine);}
+                if (!sCurrentLine.contains(removeString)) {
+                    list2.add(sCurrentLine);
+                }
             }
-        }catch (Exception ex)
-        {}
+        } catch (Exception ex) {
+        }
         List<String> tmpList = new ArrayList<String>(list1);
         tmpList.removeAll(list2);
         return tmpList;
@@ -119,6 +125,7 @@ public class Common {
         }
         return null;
     }
+
 
     public static void writeFile(String value, String filename) {
         BufferedWriter writer = null;
@@ -198,9 +205,10 @@ public class Common {
         } catch (Exception ex) {
         }
     }
+
     public static void waitForFileDelete(int timeOut, String fileName) {
         try {
-             File file = new File(fileName);
+            File file = new File(fileName);
             for (int i = 0; i <= timeOut; i++) {
                 if (!file.exists()) {
                     break;
@@ -218,7 +226,7 @@ public class Common {
         String zippedFile = "";
         File dir = new File(destDir);
         // create output directory if it doesn't exist
-        if(!dir.exists()) dir.mkdirs();
+        if (!dir.exists()) dir.mkdirs();
         FileInputStream fis;
         //buffer for read and write data to file
         byte[] buffer = new byte[1024];
@@ -226,10 +234,10 @@ public class Common {
             fis = new FileInputStream(zipFilePath);
             ZipInputStream zis = new ZipInputStream(fis);
             ZipEntry ze = zis.getNextEntry();
-            while(ze != null){
+            while (ze != null) {
                 String fileName = ze.getName();
                 File newFile = new File(destDir + File.separator + fileName);
-                System.out.println("Unzipping to "+newFile.getAbsolutePath());
+                System.out.println("Unzipping to " + newFile.getAbsolutePath());
                 zippedFile = newFile.getAbsolutePath();
                 //create directories for sub directories in zip
                 new File(newFile.getParent()).mkdirs();
@@ -250,16 +258,16 @@ public class Common {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return  zippedFile;
+        return zippedFile;
     }
 
-    public static String getCurrentLocalTime(){
+    public static String getCurrentLocalTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH_mm_ss");
-        return  "_" + LocalTime.now().format(formatter);
+        return "_" + LocalTime.now().format(formatter);
     }
 
 
-    public static void convertInputStreamToPdfFile(InputStream inputStream, String path){
+    public static void convertInputStreamToPdfFile(InputStream inputStream, String path) {
         OutputStream outputStream = null;
         try {
             // write the inputStream to a FileOutputStream
@@ -294,6 +302,30 @@ public class Common {
         }
     }
 
+    public static List<String> readPDFFileToString(String filePath) {
+        List<String> list = new ArrayList<>();
+        try {
+
+            PDDocument document = PDDocument.load((new File(filePath)));
+            document.getClass();
+
+            if (!document.isEncrypted()) {
+                PDFTextStripper tStripper = new PDFTextStripper();
+                tStripper.setSortByPosition(true);
+                String pdfFileInText = tStripper.getText(document);
+
+                String lines[] = pdfFileInText.split("\\r\\n");
+                for (String line : lines) {
+                    list.add(line);
+                }
+                return list;
+            }
+        } catch (Exception ex) {
+
+        }
+        return null;
+    }
+
     public static void main(String[] args) throws InterruptedException, IOException {
         String zipFilePath = "C:\\Users\\vuq\\Documents\\TM_HUB_DEAL_Onlines_20190816.XML.zip";
 
@@ -307,4 +339,5 @@ public class Common {
         System.out.println(xml.toString().contains("productCode=\"NC24-4500-3000-IP-S\""));
 
     }
+
 }
