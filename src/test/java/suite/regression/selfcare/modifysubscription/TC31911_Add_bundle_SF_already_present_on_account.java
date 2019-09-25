@@ -32,9 +32,7 @@ import java.util.List;
 
 public class TC31911_Add_bundle_SF_already_present_on_account extends BaseTest {
     /*
-     *
      * Tran Quoc Loi
-     * Commonaction
      * */
 
     String mpn;
