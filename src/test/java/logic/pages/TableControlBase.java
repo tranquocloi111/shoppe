@@ -431,5 +431,15 @@ public class TableControlBase extends BasePage {
         return element.findElements(By.tagName("tr"));
     }
 
+    public WebElement getCellByTagLabel(String label) {
+        try {
+            String xpath = String.format(".//label[contains(text(),'%s')]//ancestor::td[1]//following-sibling::td", label);
+            WebElement row = element.findElement(By.xpath(xpath));
+            return row;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
 }

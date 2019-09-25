@@ -345,6 +345,15 @@ public class BasePage {
                 hoverElement);
 
     }
+
+    public void closeCurrentBrowser()
+    {
+        getDriver().close();
+    }
+    public String getTitle()
+    {
+       return getDriver().getTitle();
+    }
     //endregion
 }
 

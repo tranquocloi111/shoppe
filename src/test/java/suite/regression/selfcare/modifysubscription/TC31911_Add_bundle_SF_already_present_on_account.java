@@ -31,11 +31,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TC31911_Add_bundle_SF_already_present_on_account extends BaseTest {
-/*
-*
-* Tran Quoc Loi
-* Commonaction
-* */
+    /*
+     *
+     * Tran Quoc Loi
+     * Commonaction
+     * */
 
     String mpn;
     String serviceOrder;
@@ -127,7 +127,7 @@ public class TC31911_Add_bundle_SF_already_present_on_account extends BaseTest {
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
 
         test.get().info("verify  SOA returns response as expected");
-        String outPut=CommonActions.getResponse("GETRESPONSE",mpn);
+        String outPut = CommonActions.getResponse("GETRESPONSE", mpn);
         Assert.assertTrue(outPut.contains("<responseCode>901</responseCode>"));
         Assert.assertTrue(outPut.contains("<responseCodeDescription>4G already present</responseCodeDescription>"));
         test.get().info("verify summary information is correct");
@@ -170,7 +170,7 @@ public class TC31911_Add_bundle_SF_already_present_on_account extends BaseTest {
     }
 
     private void verifyOneServiceOrderIsProvisionWait() {
-         serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrderidByType("Change Bundle");
+        serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrderidByType("Change Bundle");
         List<HashMap<String, String>> expectedSeriverOrder = ServiceOrderEntity.dataServiceOrderProvisionWaitChangeBundle(serviceOrder, mpn);
         Assert.assertEquals(ServiceOrdersContentPage.getInstance().getNumberOfServiceOrders(expectedSeriverOrder), 1);
 
