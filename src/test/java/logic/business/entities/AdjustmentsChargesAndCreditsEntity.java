@@ -10,7 +10,6 @@ import java.util.List;
 
 public class AdjustmentsChargesAndCreditsEntity {
 
-
     public static List<HashMap<String, String>> getTransferPaymentAdjustmentProducts(Date date) {
         List<HashMap<String, String>> listAdjustmentProducts = new ArrayList<>();
         HashMap<String, String> adjustmentProduct1 = new HashMap<String, String>();
@@ -29,4 +28,5 @@ public class AdjustmentsChargesAndCreditsEntity {
 
         return listAdjustmentProducts;
     }
+
 }

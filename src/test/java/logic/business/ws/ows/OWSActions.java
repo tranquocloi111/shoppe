@@ -457,7 +457,43 @@ public class OWSActions extends BaseWs {
         Log.info(response.toString());
         setOrderIdNo();
         checkAsyncProcessIsCompleted(orderIdNo);
+    }
 
+    public Xml createNewOrderWithExistCustomer(String path, String customerNo) {
+        request = new Xml(new File(path));
+        request.setTextByXpath("//account//@accountNumber", customerNo);
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+        //setCustomerNo();
+        //Log.info("Account number:" + customerNo);
+        //setOrderIdNo();
+        //Log.info("OrderId number:" + orderIdNo);
+        checkAsyncProcessIsCompleted(orderIdNo);
+        return response;
+    }
+
+    public void upgradeOrder(String path, String ecceptPath, String customerNumber, String subNo) {
+        request = new Xml(new File(path));
+        request.setTextByXpath("//account//@accountNumber", customerNumber);
+        request.setTextByTagName("serviceRef", subNo);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        String agreementSigningUrl = response.getTextByTagName("URL");
+        AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
+        AgreementWrapperPage.getInstance().signAgreementViaUI(1);
+        Log.info(response.toString());
+        setOrderIdNo();
+
+        String correlation = response.getTextByXpath("//createOrderResponse//@correlationId");
+        request = new Xml(new File(ecceptPath));
+        request.setTextByXpath("//account//@accountNumber", customerNumber);
+        request.setTextByTagName("serviceRef", subNo);
+        request.setTextByXpath("//orderDetail//@orderId", orderIdNo);
+        request.setTextByXpath("//createOrder//@correlationId", correlation);
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info(response.toString());
+        setOrderIdNo();
+        checkAsyncProcessIsCompleted(orderIdNo);
     }
 
     //endregion

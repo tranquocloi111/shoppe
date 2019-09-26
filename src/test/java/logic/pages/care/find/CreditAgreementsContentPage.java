@@ -46,6 +46,9 @@ public class CreditAgreementsContentPage extends BasePage {
             return table.getRowsCount() - 4;
         }
 
+        public List<List<String>> getAllValueCreditAgreement() {
+            return table.getAllCellValue();
+        }
 
         public class CADetailClass extends CreditAgreementsGridPage {
             WebElement parent;

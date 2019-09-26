@@ -70,6 +70,18 @@ public class CareTestBase extends BasePage {
         findPage.openCustomerByIndex(1);
     }
 
+    public void loadCustomerInHubNetWithoutOpenCustomer(String customerId) {
+        loginPage.navigateToLoginPage();
+        loginPage.login(userName, passWord);
+
+        findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
+    }
+
+    public void reLoadCustomerInHubNetWithoutOpenCustomer(String customerId) {
+        MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
+        findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
+    }
+
     public void clickApplyBtn() {
         DetailsContentPage.AddressInformationPage.getInstance().clickApplyBtn();
     }

@@ -84,35 +84,39 @@ public class MyPersonalInformationPage extends BasePage {
                 return new MyTariffDetailsPage();
             }
 
-            TableControlBase tableControlBase = new TableControlBase(myTariffTable());
 
             private WebElement myTariffTable() {
                 return getDriver().findElement(By.xpath("//form//input[@value='" + serviceRefName + "']//ancestor::table[1]"));
             }
 
+            private WebElement myTariffDeactivateTable() {
+                return getDriver().findElement(By.xpath("//form//td[contains(.,'" + serviceRefName + "')]//ancestor::table[1]"));
+            }
+
+
             public String getDescription() {
-                return getValueOfElement(tableControlBase.findControlCellByLabel("Description", 1).findElement(By.tagName("input")));
+                return getValueOfElement(validTableControlBase().findControlCellByLabel("Description", 1).findElement(By.tagName("input")));
             }
 
             public String getMobilePhoneNumber() {
-                return getTextOfElement(tableControlBase.findControlCellByLabel("Mobile phone number", 1));
+                return getTextOfElement(validTableControlBase().findControlCellByLabel("Mobile phone number", 1));
             }
 
             public boolean hasSaveButton() {
-                return findLinkButtonText(tableControlBase.findControlCellByLabel("Description", 1), "Save") != null;
+                return findLinkButtonText(validTableControlBase().findControlCellByLabel("Description", 1), "Save") != null;
             }
 
             public String getTariff() {
-                return getTextOfElement(tableControlBase.findControlCellByLabel("Tariff", 1));
+                return getTextOfElement(validTableControlBase().findControlCellByLabel("Tariff", 1));
             }
 
             public String getStatus() {
-                return getTextOfElement(tableControlBase.findControlCellByLabel("Status", 1));
+                return getTextOfElement(validTableControlBase().findControlCellByLabel("Status", 1));
             }
 
             public String getSafetyBuffer() {
                 try {
-                    BufferedReader reader = new BufferedReader(new StringReader(getTextOfElement(tableControlBase.findControlCellByLabel("Safety buffer", 1))));
+                    BufferedReader reader = new BufferedReader(new StringReader(getTextOfElement(validTableControlBase().findControlCellByLabel("Safety buffer", 1))));
                     return reader.readLine();
                 } catch (Exception ex) {
                     Log.error(ex.getMessage());
@@ -121,11 +125,11 @@ public class MyPersonalInformationPage extends BasePage {
             }
 
             public boolean hasChangeMySafetyBufferButton() {
-                return findLinkButtonText(tableControlBase.findControlCellByLabel("Safety buffer", 1), "Change my safety buffer") != null;
+                return findLinkButtonText(validTableControlBase().findControlCellByLabel("Safety buffer", 1), "Change my safety buffer") != null;
             }
 
             public boolean hasAddOrChangeABundleButton() {
-                return findLinkButtonText(myTariffTable(), "Add or change a bundle") != null;
+                return findLinkButtonText(validTable(), "Add or change a bundle") != null;
             }
 
             public boolean hasAddOrChangeAFamilyPerkButton() {
@@ -133,35 +137,47 @@ public class MyPersonalInformationPage extends BasePage {
             }
 
             public boolean hasAddOrViewOneoffBundlesButton() {
-                return findLinkButtonText(myTariffTable(), "Add or view one-off bundles") != null;
+                return findLinkButtonText(validTable(), "Add or view one-off bundles") != null;
             }
 
             public boolean hasUpdateButton() {
-                return findLinkButtonText(tableControlBase.findControlCellByLabel("Parental controls and favourite numbers", 1), "Update") != null;
+                return findLinkButtonText(validTableControlBase().findControlCellByLabel("Parental controls and favourite numbers", 1), "Update") != null;
             }
 
             private WebElement addOrChangeAFamilyPerkBtn() {
-                return findLinkButtonText(myTariffTable(), "Add or change a Family perk");
+                return findLinkButtonText(validTable(), "Add or change a Family Perk");
             }
 
             public void clickAddOrChangeAFamilyPerkBtn() {
-                click(addOrChangeAFamilyPerkBtn());
+                clickWithOutWait(addOrChangeAFamilyPerkBtn());
             }
 
             private WebElement addOrChangeABundleButton() {
-                return findLinkButtonText(myTariffTable(), "Add or change a bundle");
+                return findLinkButtonText(validTable(), "Add or change a bundle");
             }
 
             private WebElement changeMySafetyBufferBtn() {
-                return findLinkButtonText(myTariffTable(), "Change my safety buffer");
+                return findLinkButtonText(validTable(), "Change my safety buffer");
             }
 
             private WebElement addASafetyBufferBtn() {
-                return findLinkButtonText(myTariffTable(), "Add a safety buffer");
+                return findLinkButtonText(validTable(), "Add a safety buffer");
+            }
+
+            private WebElement addOrChangeAPerkBtn() {
+                return findLinkButtonText(validTable(), "Add or change a Perk");
+            }
+
+            private WebElement addOrViewOneOffBundles() {
+                return findLinkButtonText(validTable(), "Add or view one-off bundles");
             }
 
             public void clickAddOrChangeABundleButton() {
                 click(addOrChangeABundleButton());
+            }
+
+            public void clickAddOrViewOneOffBundlesButton() {
+                click(addOrViewOneOffBundles());
             }
 
             public void clickChangeMySafetyBufferBtn() {
@@ -170,6 +186,10 @@ public class MyPersonalInformationPage extends BasePage {
 
             public void clickAddASafetyBufferBtn() {
                 click(addASafetyBufferBtn());
+            }
+
+            public void clickAddOrChangeAPerkBtn() {
+                clickWithOutWait(addOrChangeAPerkBtn());
             }
 
             private WebElement findLinkButtonText(WebElement controlCell, String text) {
@@ -187,7 +207,7 @@ public class MyPersonalInformationPage extends BasePage {
 
             public List<String> familyPerkStack() {
                 List<String> list = new ArrayList<>();
-                WebElement monthlyBundlesLable = findLabelCell(myTariffTable(), "-  Monthly bundles");
+                WebElement monthlyBundlesLable = findLabelCell(validTable(), "-  Monthly bundles");
                 List<WebElement> allowances = monthlyBundlesLable.findElements(By.xpath(".//parent::tr[1]//following::tr"));
                 for (WebElement familyPerk : allowances) {
                     if (familyPerk.getText().trim().contains("Family perk - ")) {
@@ -198,11 +218,11 @@ public class MyPersonalInformationPage extends BasePage {
             }
 
             public String getMonthlyAllowance() {
-                return getTextOfElement(tableControlBase.findCellByLabelText("Monthly allowance"));
+                return getTextOfElement(validTableControlBase().findCellByLabelText("Monthly allowance"));
             }
 
             public String getMonthlyBundles() {
-                return getTextOfElement(tableControlBase.findCellByLabelText("Monthly bundles"));
+                return getTextOfElement(validTableControlBase().findCellByLabelText("Monthly bundles"));
             }
 
             public String getSecondMonthlyBundles() {
@@ -214,11 +234,11 @@ public class MyPersonalInformationPage extends BasePage {
             }
 
             public String getDataCapAbroad() {
-                return getTextOfElement(tableControlBase.findCellByLabelText("£40 data cap abroad"));
+                return getTextOfElement(validTableControlBase().findCellByLabelText("£40 data cap abroad"));
             }
 
             public boolean isDataCapAbroadRed() {
-                return tableControlBase.findCellByLabelText("£40 data cap abroad").findElement(By.tagName("a")).getAttribute("style").contains("red");
+                return validTableControlBase().findCellByLabelText("£40 data cap abroad").findElement(By.tagName("a")).getAttribute("style").contains("red");
             }
 
             public String getHelpIntructionByIndex(int index) {
@@ -230,27 +250,27 @@ public class MyPersonalInformationPage extends BasePage {
             }
 
             public String getHighUsage() {
-                return getTextOfElement(tableControlBase.findCellByLabelText("High usage").findElement(By.tagName("span")));
+                return getTextOfElement(validTableControlBase().findCellByLabelText("High usage").findElement(By.tagName("span")));
             }
 
             public String getCustomer() {
-                return getTextOfElement(tableControlBase.findCellByLabelText("Customer").findElement(By.tagName("span")));
+                return getTextOfElement(validTableControlBase().findCellByLabelText("Customer").findElement(By.tagName("span")));
             }
 
             public String getUnpaidBill() {
-                return getTextOfElement(tableControlBase.findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
+                return getTextOfElement(validTableControlBase().findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
             }
 
             public String getFraud() {
-                return getTextOfElement(tableControlBase.findCellByLabelText("Fraud").findElement(By.tagName("span")));
+                return getTextOfElement(validTableControlBase().findCellByLabelText("Fraud").findElement(By.tagName("span")));
             }
 
             public void clickDataCapAbroad() {
-                click(tableControlBase.findCellByLabelText("£40 data cap abroad").findElement(By.tagName("span")));
+                click(validTableControlBase().findCellByLabelText("£40 data cap abroad").findElement(By.tagName("span")));
             }
 
             public void clickUnPaidLink() {
-                click(tableControlBase.findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
+                click(validTableControlBase().findCellByLabelText("Unpaid bill").findElement(By.tagName("a")));
             }
 
             public String getUnPaidToolTip() {
@@ -260,7 +280,7 @@ public class MyPersonalInformationPage extends BasePage {
             }
 
             public void updateDescription(String value) {
-                enterValueByLabel(tableControlBase.findControlCellByLabel("Description", 1).findElement(By.tagName("input")), value);
+                enterValueByLabel(validTableControlBase().findControlCellByLabel("Description", 1).findElement(By.tagName("input")), value);
             }
 
             public void clickSavePhoneUserNameBtn() {
@@ -269,7 +289,7 @@ public class MyPersonalInformationPage extends BasePage {
 
 
             public void setCreditAgreementSelectByVisibleText(String text) {
-                WebElement el = myTariffTable().findElement(By.xpath("..//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
+                WebElement el = validTable().findElement(By.xpath("..//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
                 selectByVisibleText(el, text);
             }
 
@@ -302,7 +322,7 @@ public class MyPersonalInformationPage extends BasePage {
 
             public List<WebElement> getFamilyPerkStack() {
                 List<WebElement> list = new ArrayList<>();
-                WebElement monthlyBundlesLable = findLabelCell(myTariffTable(), "-  Monthly bundles");
+                WebElement monthlyBundlesLable = findLabelCell(validTable(), "-  Monthly bundles");
                 List<WebElement> allowances = monthlyBundlesLable.findElements(By.xpath(".//parent::tr[1]//following::tr"));
                 for (WebElement familyPerk : allowances) {
                     if (familyPerk.getText().trim().contains("Family perk - ")) {
@@ -326,6 +346,33 @@ public class MyPersonalInformationPage extends BasePage {
                     System.out.println(ex.getMessage());
                 }
                 return null;
+            }
+
+            public String getPopupMessageOfPerk(){
+                return getTextComfirmDialog();
+            }
+
+            private WebElement validTable(){
+                WebElement table = null;
+                try {
+                    if (isElementPresent(myTariffTable()))
+                        table = myTariffTable();
+                }catch (Exception ex){
+                    table = myTariffDeactivateTable();
+                }
+
+               return table;
+            }
+
+            private TableControlBase validTableControlBase(){
+                WebElement table = null;
+                try {
+                    if (isElementPresent(myTariffTable()))
+                        table = myTariffTable();
+                }catch (Exception ex){
+                    table = myTariffDeactivateTable();
+                }
+                return new TableControlBase(table);
             }
         }
 

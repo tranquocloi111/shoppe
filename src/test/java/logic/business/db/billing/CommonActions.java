@@ -207,11 +207,50 @@ public class CommonActions extends OracleDB {
         return str.toString();
     }
 
+    public static void updateCustomerAccessRoleToNone(){
+        String sql = "delete from objectrole where roleid = 147 and clientobjectid  = 585";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
 
+    public static void updateCustomerAccessRoleToReadWrite(){
+        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES(585,147,'N','Y','Y','Y','Y', 0)";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
 
+    public static boolean checkCustomerAccessRole(){
+        try {
+            String sql = "select count(*) as quality from objectrole where roleid = 147 and clientobjectid = 585 ";
+            return OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "quality").toString().equalsIgnoreCase("1");
+
+        }catch (Exception ex){
+            Log.info(ex.getMessage());
+        }
+        return false;
+    }
+
+    public static void updateChangeCustomerTypeAccessRoleToNone(){
+        String sql = "delete from objectrole where roleid = 147 and clientobjectid  = 546";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
+
+    public static void updateChangeCustomerTypeAccessRoleToReadWrite(){
+        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES(546,147,'N','Y','Y','Y','Y', 0)";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
+
+    public static boolean checkChangeCustomerTypeAccessRole(){
+        try {
+            String sql = "select count(*) as quality from objectrole where roleid = 147 and clientobjectid = 546 ";
+            return OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "quality").toString().equalsIgnoreCase("1");
+
+        }catch (Exception ex){
+            Log.info(ex.getMessage());
+        }
+        return false;
+    }
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        System.out.println(getBundleByCustomerId("1007"));
+        System.out.println(checkCustomerAccessRole());
     }
 
 }

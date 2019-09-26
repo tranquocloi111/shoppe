@@ -15,6 +15,7 @@ import framework.wdm.WDFactory;
 import framework.wdm.WdManager;
 import logic.business.db.OracleDB;
 import logic.business.db.billing.BillingActions;
+import logic.business.db.billing.CommonActions;
 import logic.business.entities.DiscountBundleEntity;
 import logic.business.helper.FTPHelper;
 import logic.business.helper.RemoteJobHelper;
@@ -228,6 +229,26 @@ public class BaseTest {
 
     protected static void waitLoadCDRJobComplete(){
         RemoteJobHelper.getInstance().waitLoadCDRJobComplete();
+    }
+
+    protected void updateNoneAccessBusinessCustomers(){
+        if (CommonActions.checkCustomerAccessRole())
+            CommonActions.updateCustomerAccessRoleToNone();
+    }
+
+    protected void updateReadWriteAccessBusinessCustomers(){
+        if (!CommonActions.checkCustomerAccessRole())
+            CommonActions.updateCustomerAccessRoleToReadWrite();
+    }
+
+    protected void updateNoneAccessChangeTypeCustomer(){
+        if (CommonActions.checkChangeCustomerTypeAccessRole())
+            CommonActions.updateChangeCustomerTypeAccessRoleToNone();
+    }
+
+    protected void updateReadWriteAccessChangeTypeCustomer(){
+        if (!CommonActions.checkChangeCustomerTypeAccessRole())
+            CommonActions.updateChangeCustomerTypeAccessRoleToReadWrite();
     }
     //end region
 

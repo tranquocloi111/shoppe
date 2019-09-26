@@ -318,7 +318,7 @@ public class TableControlBase extends BasePage {
                 String cellValue = (String) mapElement.getValue();
                 columnIndex = getColumnIndex(columnName);
                 String elementText = el.findElements(By.tagName("td")).get(columnIndex).getText();
-                if (elementText.equals(cellValue) && !isFail) {
+                if (elementText.equalsIgnoreCase(cellValue) && !isFail) {
                     flag = true;
                     isFail = false;
                 } else {
@@ -332,7 +332,6 @@ public class TableControlBase extends BasePage {
                 column.add(elm);
             }
         }
-
         return column;
     }
 
@@ -431,5 +430,18 @@ public class TableControlBase extends BasePage {
         return element.findElements(By.tagName("tr"));
     }
 
+    public List<List<String>> getAllCellValue() {
+        List<List<String>> hashMapList = new ArrayList<>();
+        List<WebElement> body = getBody();
+        for (int i = 1; i < body.size(); i++) {
+            List<String> list = new ArrayList<>();
+            List<WebElement> td = body.get(i).findElements(By.tagName("td"));
+            for (int y = 0; y < td.size(); y ++) {
+                    list.add(td.get(y).getText());
+            }
+            hashMapList.add(list);
+        }
+        return hashMapList;
+    }
 
 }

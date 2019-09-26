@@ -79,7 +79,7 @@ public class TC2192_Process_Continuous_Credit_Card_Payment_Requests extends Base
         MenuPage.LeftMenuPage.getInstance().clickPaymentsLink();
 
         String refNo = PaymentDetailPage.paymentConentGrid.getInstance().getRefNoByType("Credit Card Payment");
-        HashMap<String, String> paymentEnity = PaymentGridEntity.getPaymentEnity("Credit Card Payment", "£10.00");
+        HashMap<String, String> paymentEnity = PaymentGridEntity.getPaymentEntity("Credit Card Payment", "£10.00");
         Assert.assertEquals(PaymentDetailPage.paymentConentGrid.getInstance().getNumberPaymentRecord(paymentEnity), 1);
 
 

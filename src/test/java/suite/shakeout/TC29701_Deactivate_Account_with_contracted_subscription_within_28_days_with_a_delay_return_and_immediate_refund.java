@@ -47,11 +47,9 @@ public class TC29701_Deactivate_Account_with_contracted_subscription_within_28_d
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.RightMenuPage.getInstance().clickDeactivateAccountLink();
 
-        //Deactivate Account With A Delay Return And Immediate Refund
         test.get().info("Step 6 : Deactivate Account With A Delay Return And Immediate Refund");
         ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateAccountWithADelayReturnAndImmediateRefund();
-
-        //Verify Deactivate Account So Is In Provision Wait
+        
         test.get().info("Step 7 : Verify Deactivate Account So Is In Provision Wait");
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
         List<WebElement> serviceOrder = ServiceOrdersContentPage.getInstance().getServiceOrders(ServiceOrderEntity.dataServiceOrderDataForDeactivateAccount().get(0));

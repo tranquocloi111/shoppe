@@ -17,11 +17,23 @@ import java.util.List;
 
 public class ServiceOrdersPage extends BasePage {
 
+    public static ServiceOrdersPage getInstance(){
+        return new ServiceOrdersPage();
+    }
+
     @FindBy(xpath = "//input[@name='PostCmdBtn_NEXT']")
     protected WebElement btnNext;
 
     @FindBy(xpath = "//input[@name='PostCmdBtn_CANCEL']")
     protected WebElement btnDelete;
+
+    public void clickNextButton(){
+        clickNextBtn();
+    }
+
+    public void clickDeleteButton(){
+        clickWithOutWait(btnDelete);
+    }
 
     public static class DeactivateSubscriptionPage extends ServiceOrdersPage {
         private static DeactivateSubscriptionPage instance = new DeactivateSubscriptionPage();
@@ -93,6 +105,14 @@ public class ServiceOrdersPage extends BasePage {
             enterValueByLabel(returnsAndEtcPage.returnReferenceNoCtl, "1234567890");
             clickNextBtn();
 
+            clickNextBtn();
+            clickReturnToCustomer();
+        }
+
+        public void deactivateSubscriptionWithoutEtc() {
+            click(ckSubscription);
+            enterValueByLabel(deactivationNotes, "Regression Automation");
+            clickNextBtn();
             clickNextBtn();
             clickReturnToCustomer();
         }
@@ -715,10 +735,6 @@ public class ServiceOrdersPage extends BasePage {
         public void enterNote(String noteValue) {
             enterValueByLabel(note, noteValue);
         }
-    }
-
-    public void clickNextButton(){
-        clickNextBtn();
     }
 
 }

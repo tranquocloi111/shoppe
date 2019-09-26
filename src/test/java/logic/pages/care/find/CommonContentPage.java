@@ -84,7 +84,19 @@ public class CommonContentPage extends BasePage {
         }
         public String getStatusOfSubscription(String subscriptionNumber){
             return table.getRowByContainsColumnNameAndCellValue(status, subscriptionNumber).getText();
+        }
 
+        public void clickSubscriptionNumberByStatus(String status){
+            try {
+                click(getDriver().findElement(By.xpath("//td[a[.='"+status+"' and @class='informationBoxRow1']]//parent::tr//td[1]//a")));
+            }catch (Exception ex){
+                click(getDriver().findElement(By.xpath("//td[.='"+status+"']//parent::tr//td[1]//a")));
+            }
+
+        }
+
+        public List<List<String>> getAllValueSubscription() {
+            return table.getAllCellValue();
         }
     }
 
@@ -118,9 +130,26 @@ public class CommonContentPage extends BasePage {
         public String getCustomerSummaryStartDate() {
             return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Start Date:')]/following-sibling::td[1]")));
         }
+
         public String getAmountBalance() {
             return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Account Balance:')]/following-sibling::td[1]")));
         }
+
+        public String getCustomerType() {
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Customer Type:')]/following-sibling::td[1]")));
+        }
     }
 
+    public static class RecentCustomersPage extends CommonContentPage{
+        public static RecentCustomersPage getIntance(){
+            return new RecentCustomersPage();
+        }
+
+        @FindBy(xpath = "//a[@class='RecentCust']")
+        List<WebElement> recentCustomerList;
+
+        public String getFirstRecentCustomer(){
+            return   recentCustomerList.get(0).getAttribute("title");
+        }
+    }
 }

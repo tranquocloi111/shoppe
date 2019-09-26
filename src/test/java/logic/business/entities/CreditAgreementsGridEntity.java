@@ -19,4 +19,14 @@ public class CreditAgreementsGridEntity {
         return creditAgreement;
     }
 
+    public static HashMap<String, String> getCreditAgreementGird(String balance, String status) {
+        HashMap<String, String> creditAgreement = new HashMap<String, String>();
+        creditAgreement.put("Start Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        creditAgreement.put("Description", "Credit Agreement");
+        creditAgreement.put("Balance", balance);
+        creditAgreement.put("Status", status);
+
+        return creditAgreement;
+    }
+
 }

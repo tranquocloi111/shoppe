@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <sel:getContractSummaryRequest>
+      <sel:externalSystemId>ADMIN</sel:externalSystemId>
+      <sel:subscriptionNumber>$subscriptionNumber$</sel:subscriptionNumber>
+    </sel:getContractSummaryRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

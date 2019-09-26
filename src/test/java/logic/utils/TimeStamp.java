@@ -213,4 +213,10 @@ public class TimeStamp {
     public static Date TodayMinus1MonthMinus20Day() {
         return Date.valueOf(LocalDate.now().minusMonths(1).minusDays(20));
     }
+
+    public static long todayPlus1MonthMinusToday() {
+        LocalDate day1 = LocalDate.now();
+        LocalDate day2 = LocalDate.now().plusMonths(1);
+        return Math.abs(ChronoUnit.DAYS.between(day2, day1));
+    }
 }

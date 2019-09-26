@@ -118,6 +118,7 @@ public class TasksContentPage extends BasePage {
 
             @FindBy(xpath = "//td[contains(text(),'ReDS status authorisation:')]/following-sibling::td[1]")
             WebElement lblReDSStatusAuthorisation;
+
             @FindBy(xpath = "//td[contains(text(),'ReDS response Date:')]/following-sibling::td[1]")
             WebElement lblReDSRespondDate;
 
@@ -167,6 +168,21 @@ public class TasksContentPage extends BasePage {
 
             @FindBy(xpath = "//td[contains(text(),'ReDS Authorisation Number:')]/following-sibling::td[1]")
             WebElement lblRedSAuthorisationNumber;
+
+            @FindBy(xpath = "//td[contains(text(),'Tariff Product Code:')]/following-sibling::td[1]")
+            WebElement lblTariffProductCode;
+
+            @FindBy(xpath = "//td[contains(text(),'Service Order Start Date:')]/following-sibling::td[1]")
+            WebElement lblServiceOrderStartDate;
+
+            @FindBy(xpath = "//td[contains(text(),'ETC Override Amount:')]/following-sibling::td[1]")
+            WebElement lblETCOverrideAmount;
+
+            @FindBy(xpath = "//td[starts-with(normalize-space(text()),'ETC Amount:')]/following-sibling::td[1]")
+            WebElement lblETCAmount;
+
+            @FindBy(xpath = "//td[starts-with(normalize-space(text()),'Service No:')]/following-sibling::td[1]")
+            WebElement lblServiceNo;
 
             @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Details')]/../../..//following-sibling::div[1]//table")
             WebElement detailTable;
@@ -252,18 +268,20 @@ public class TasksContentPage extends BasePage {
                 return getTextOfElement(tableControlBase.getCellByLabel("ReDS response Date:"));
             }
 
-
             public String getCustomerName() {
                 return getTextOfElement(lblCustomerName);
             }
+
             public String getCustomerID()
             {
                 return  getTextOfElement(lblHUBCustomerID);
             }
+
             public String getHierarchyMbr()
             {
                 return  getTextOfElement(lblHierarchyMbr);
             }
+
             public String getInvoiceNumber()
             {
                 return  getTextOfElement(lblInvoiceNumber);
@@ -278,38 +296,66 @@ public class TasksContentPage extends BasePage {
             {
                 return  getTextOfElement(lblHubRejectionCode);
             }
+
             public String getReceiptID()
             {
                 return  getTextOfElement(lblReceiptID);
             }
+
             public String getRedCode()
             {
                 return  getTextOfElement(lblRedCode);
             }
+
             public String getRedSAuthorisationNumber()
             {
                 return  getTextOfElement(lblRedSAuthorisationNumber);
             }
+
             public String getServiceOrderStatus() {
                 return getTextOfElement(tableControlBase.getCellByLabel("Service Order Status:"));
             }
             public String getDDIReference() {
                 return getTextOfElement(tableControlBase.getCellByLabel("DDI Reference:"));
             }
+
             public String getCreditCardExpiryMonth() {
                 return getTextOfElement(tableControlBase.getCellByLabel("Credit Card Expiry Month:"));
             }
+
             public String getCreditCardSecurityCode() {
                 return getTextOfElement(tableControlBase.getCellByLabel("Credit Card Security Code:"));
             }
             public String getCreditCardHolderName() {
                 return getTextOfElement(tableControlBase.getCellByLabel("Credit Card Holder Name:"));
             }
+
             public String getNewPaymentMethod() {
                 return getTextOfElement(tableControlBase.getCellByLabel("New Payment Method:"));
             }
+
             public String getCardType() {
                 return getTextOfElement(tableControlBase.getCellByLabel("Card Type:"));
+            }
+
+            public String getTariffProductCode(){
+                return getTextOfElement(lblTariffProductCode);
+            }
+
+            public String getServiceOrderStartDate(){
+                return getTextOfElement(lblServiceOrderStartDate);
+            }
+
+            public String getETCOverrideAmount(){
+                return getTextOfElement(lblETCOverrideAmount);
+            }
+
+            public String getETCAmount(){
+                return getTextOfElement(lblETCAmount);
+            }
+
+            public String getServiceNo(){
+                return getTextOfElement(lblServiceNo);
             }
         }
     }

@@ -203,7 +203,6 @@ public class BasePage {
 
     public boolean isElementPresent(WebElement element) {
         try {
-            waitUntilVisible(element);
             return element.isDisplayed();
         } catch (Throwable e) {
             return false;

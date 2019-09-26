@@ -1,0 +1,46 @@
+﻿<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <S:Body>
+    <getContractSummaryResponse xmlns="http://selfcare.telco.hsntech.com" xmlns:ns2="http://wsdl.hsntech.com">
+      <return>
+        <account>
+          <accountNumber>$accountNumber$</accountNumber>
+          <accountName>Mr $accountName$</accountName>
+          <startDate>$accountstartDate$+10:00</startDate>
+          <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+        </account>
+        <tariff>
+          <subscriptionNumber>$subscriptionNumber$</subscriptionNumber>
+          <startDate>$tariffstartDate$T00:00:00.000+10:00</startDate>
+          <endDate>$tariffendDate$T00:00:00.000+10:00</endDate>
+          <etc>460</etc>
+          <monthlyCharge>20</monthlyCharge>
+        </tariff>
+        <devices>
+          <device>
+            <agreementNumber>$agreementNumber$</agreementNumber>
+            <make>HTC</make>
+            <model>Desire HD</model>
+          </device>
+        </devices>
+        <peripherals/>
+        <agreements>
+          <agreement>
+            <agreementNumber>$agreementNumber$</agreementNumber>
+            <dealType>AUSTANDARD</dealType>
+            <agreementPhases>1</agreementPhases>
+            <description>Credit Agreement</description>
+            <startDate>$agreementstartDate$T00:00:00.000+10:00</startDate>
+            <endDate>$agreementendDate$T00:00:00.000+10:00</endDate>
+            <outstandingBalance>384</outstandingBalance>
+            <agreementMonths>24</agreementMonths>
+            <monthlyCharge>16</monthlyCharge>
+            <agreementMonthsTotal>24</agreementMonthsTotal>
+            <agreementValue>384</agreementValue>
+            <monthlyChargePaid>0</monthlyChargePaid>
+            <otherPayments>0</otherPayments>
+          </agreement>
+        </agreements>
+      </return>
+    </getContractSummaryResponse>
+  </S:Body>
+</S:Envelope>

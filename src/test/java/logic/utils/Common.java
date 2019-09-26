@@ -6,14 +6,14 @@ import framework.utils.Xml;
 import java.io.*;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Common {
+    //Function to get random number
+    private static Random getrandom = new Random();
+
     public static String splitSignatureCode(String imgUrl) {
         return imgUrl.split("uniqueCode=")[1];
     }
@@ -73,7 +73,8 @@ public class Common {
         }
         return d;
     }
-    public static   List<String>  compareFiles(String fileExpected, String fileActual, String removeString) {
+
+    public static List<String> compareFiles(String fileExpected, String fileActual, String removeString) {
         BufferedReader br1 = null;
         BufferedReader br2 = null;
         String sCurrentLine;
@@ -83,15 +84,17 @@ public class Common {
             br1 = new BufferedReader(new FileReader(fileExpected));
             br2 = new BufferedReader(new FileReader(fileActual));
             while ((sCurrentLine = br1.readLine()) != null) {
-               if(!sCurrentLine.contains(removeString)){
-                list1.add(sCurrentLine);}
+                if (!sCurrentLine.contains(removeString)) {
+                    list1.add(sCurrentLine);
+                }
             }
             while ((sCurrentLine = br2.readLine()) != null) {
-                if(!sCurrentLine.contains(removeString)){
-                list2.add(sCurrentLine);}
+                if (!sCurrentLine.contains(removeString)) {
+                    list2.add(sCurrentLine);
+                }
             }
-        }catch (Exception ex)
-        {}
+        } catch (Exception ex) {
+        }
         List<String> tmpList = new ArrayList<String>(list1);
         tmpList.removeAll(list2);
         return tmpList;
@@ -138,7 +141,6 @@ public class Common {
         }
     }
 
-
     public static String saveXmlFile(String fileName, String xmlValue) {
         String path = System.getProperty("user.home") + "\\Desktop\\QA_Project\\";
         if (!new File(path).exists())
@@ -155,9 +157,6 @@ public class Common {
 
         return (path + fileName);
     }
-
-    //Function to get random number
-    private static Random getrandom = new Random();
 
     public static int getRandomNumber(int min, int max) {
         return getrandom.nextInt(max - min) + min;
@@ -198,9 +197,10 @@ public class Common {
         } catch (Exception ex) {
         }
     }
+
     public static void waitForFileDelete(int timeOut, String fileName) {
         try {
-             File file = new File(fileName);
+            File file = new File(fileName);
             for (int i = 0; i <= timeOut; i++) {
                 if (!file.exists()) {
                     break;
@@ -218,7 +218,7 @@ public class Common {
         String zippedFile = "";
         File dir = new File(destDir);
         // create output directory if it doesn't exist
-        if(!dir.exists()) dir.mkdirs();
+        if (!dir.exists()) dir.mkdirs();
         FileInputStream fis;
         //buffer for read and write data to file
         byte[] buffer = new byte[1024];
@@ -226,10 +226,10 @@ public class Common {
             fis = new FileInputStream(zipFilePath);
             ZipInputStream zis = new ZipInputStream(fis);
             ZipEntry ze = zis.getNextEntry();
-            while(ze != null){
+            while (ze != null) {
                 String fileName = ze.getName();
                 File newFile = new File(destDir + File.separator + fileName);
-                System.out.println("Unzipping to "+newFile.getAbsolutePath());
+                System.out.println("Unzipping to " + newFile.getAbsolutePath());
                 zippedFile = newFile.getAbsolutePath();
                 //create directories for sub directories in zip
                 new File(newFile.getParent()).mkdirs();
@@ -250,16 +250,16 @@ public class Common {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return  zippedFile;
+        return zippedFile;
     }
 
-    public static String getCurrentLocalTime(){
+    public static String getCurrentLocalTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH_mm_ss");
-        return  "_" + LocalTime.now().format(formatter);
+        return "_" + LocalTime.now().format(formatter);
     }
 
 
-    public static void convertInputStreamToPdfFile(InputStream inputStream, String path){
+    public static void convertInputStreamToPdfFile(InputStream inputStream, String path) {
         OutputStream outputStream = null;
         try {
             // write the inputStream to a FileOutputStream
@@ -294,17 +294,20 @@ public class Common {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException, IOException {
-        String zipFilePath = "C:\\Users\\vuq\\Documents\\TM_HUB_DEAL_Onlines_20190816.XML.zip";
+    public static int compareList(List<List<String>> actual, List<String> expected) {
+        boolean flg = false;
+        int count = 0;
+        for (int i = 0; i < actual.size(); i++) {
+            for (int k = 0; k < expected.size(); k++) {
+                if (actual.get(i).contains(expected.get(k)))
+                    flg = true;
+                else
+                    flg = false;
+            }
+            if (flg)
+                count++;
+        }
 
-        String destDir = "/Users/pankaj/output";
-
-        unzip(zipFilePath, getFolderLogFilePath());
-
-        String file = getFolderLogFilePath() + "\\TM_HUB_DEAL_Onlines_20190816_232112.XML";
-        Xml xml = new Xml(new File(file));
-
-        System.out.println(xml.toString().contains("productCode=\"NC24-4500-3000-IP-S\""));
-
+        return count;
     }
 }

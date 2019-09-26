@@ -18,6 +18,9 @@ public class FindPage extends BasePage {
     @FindBy(xpath = "/html/body/div[2]/table/tbody/tr[1]/td[2]/div[2]/table/tbody/tr/td[1]/div/div[1]/table")
     WebElement tblResult;
 
+    @FindBy(xpath = "//a[@class='informationBoxRow1']")
+    WebElement lblName;
+
     private static FindPage instance = new FindPage();
     public static FindPage getInstance(){
         return  new FindPage();
@@ -43,6 +46,14 @@ public class FindPage extends BasePage {
         MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
         findCustomer(new Pair<String, String>("Customer Number", customerNumber));
         openCustomerByIndex(index);
+    }
+
+    public String getUnderGoValue(){
+        return lblName.getCssValue("text-decoration");
+    }
+
+    public boolean isUnderGoPresent(){
+        return isElementPresent(lblName);
     }
 
 }

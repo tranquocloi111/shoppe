@@ -3,6 +3,7 @@ package logic.business.entities;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 
+import java.util.Date;
 import java.util.HashMap;
 
 public class CreditAgreementPaymentsEntiy {

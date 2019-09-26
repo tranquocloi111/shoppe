@@ -28,14 +28,8 @@ public class Parser {
                 .toLocalDate();
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        Date newStartDate = TimeStamp.TodayMinus15Days();
-        System.out.println(parseDateFormate(newStartDate,"ddMMyyyy"));
-    }
-
     public static Float parseToInt(String s){
         return Float.parseFloat(s);
     }
-
 
 }

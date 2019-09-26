@@ -71,6 +71,10 @@ public class LiveBillEstimateContentPage extends BasePage {
                     public void expand(){
                         click(adjustmentHeaderRow.findElement(By.tagName("a")));
                     }
+
+                    public List<List<String>> getAllValueAdjustmentsOrders() {
+                        return tableControlBase.getAllCellValue();
+                    }
                 }
 
             }

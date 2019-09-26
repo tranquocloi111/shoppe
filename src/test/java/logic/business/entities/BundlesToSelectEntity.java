@@ -67,4 +67,15 @@ public class BundlesToSelectEntity {
                 "Family perk - 250MB per month - £0.00 per Month (Expiring in 61 day/s). Remaining: 250 MB"
         };
     }
+
+    public static String[] getFamilyPerkBundles(){
+        return new String[]{
+                "Family perk - 150 Mins per month - £0.00 per Month (Recurring)",
+                "Family perk - 250MB per month - £0.00 per Month (Recurring)",
+                "Family perk - 500 Tesco Mobile only minutes per month - £0.00 per Month (Recurring)",
+                "Family perk - 500MB per month - 4G - £0.00 per Month (Recurring)",
+                "Family perk - 250MB per month - 4G - £0.00 per Month (Recurring)"
+        };
+    }
+
 }
