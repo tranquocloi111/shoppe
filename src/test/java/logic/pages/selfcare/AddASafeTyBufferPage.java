@@ -14,8 +14,7 @@ public class AddASafeTyBufferPage extends BasePage {
     }
 
     WebElement infoBox = super.getMssgBoxByIndex(1);
-    @FindBy(xpath = "//div[contains(text(),'Choose your new safety buffer')]/table")
-    WebElement msgBoxChangeOrRemoveYourSafetyBuffer;
+
     @FindBy(xpath = "//div[contains(text(),'Choose your new safety buffer')]/table")
     WebElement msgBoxWhenWouldYouWantToChangeBuffer;
 
@@ -29,7 +28,10 @@ public class AddASafeTyBufferPage extends BasePage {
     @FindBy(xpath = "//b[contains(text(),'Add a safety buffer')]//ancestor::p//following-sibling::div[1]")
     WebElement addASafetyBufferMsgBox;
 
-    public List<WebElement> getGreyPanelByIndex() {
+    @FindBy(xpath = "//b[contains(text(),'Confirming your changes')]//ancestor::div[1]/table[1]")
+    WebElement comfirmingYourChangesBox;
+
+    public List<WebElement> getGreyPanelList() {
         return getDriver().findElements(By.xpath("//div[@class='grey-panel']"));
     }
 
@@ -45,19 +47,42 @@ public class AddASafeTyBufferPage extends BasePage {
         return getTextOfElement(infoNextAllowanceDate);
     }
 
-    public String getThirdPartyMssg()
-    {
-        List<WebElement> greyPanelList = getGreyPanelByIndex();
-        return getTextOfElement(greyPanelList.get(1).findElement(By.tagName("a")));
+    public String getThirdPartyMssg() {
+        List<WebElement> greyPanelList = getGreyPanelList();
+        return getTextOfElement(greyPanelList.get(0).findElement(By.tagName("a")));
     }
 
-    public boolean isLinkHasAThirdPartyTermAndConditionPage()
-    {
-        List<WebElement> greyPanelList = getGreyPanelByIndex();
-        return greyPanelList.get(1).findElement(By.tagName("a")).getAttribute("href").equalsIgnoreCase("http://www.tescomobile.com/safetybuffer");
+    public boolean isLinkHasAThirdPartyTermAndConditionPage() {
+        List<WebElement> greyPanelList = getGreyPanelList();
+        return greyPanelList.get(0).findElement(By.tagName("a")).getAttribute("href").equalsIgnoreCase("http://www.tescomobile.com/safetybuffer");
     }
 
+    public boolean areAllItemsSafetyBuffer() {
+        List<WebElement> labelList = addASafetyBufferMsgBox.findElements(By.tagName("label"));
+        boolean flag = true;
+        for (WebElement el : labelList) {
+            if (!el.getText().contains("safety buffer")) {
+                flag = false;
+            }
+        }
+        return flag;
+    }
 
+    public String getSelectSafetyBufferMessage() {
+        return getTextOfElement(addASafetyBufferMsgBox.findElement(By.tagName("Strong")));
+    }
+    public String getPreviousSafetyBuffer() {
+        TableControlBase tableControlBase= new TableControlBase(comfirmingYourChangesBox);
+       return getTextOfElement(tableControlBase.getCellByTagLabel("Previous safety buffer"));
+    }
+    public String getNewSafetyBuffer() {
+        TableControlBase tableControlBase= new TableControlBase(comfirmingYourChangesBox);
+        return getTextOfElement(tableControlBase.getCellByTagLabel("New safety buffer"));
+    }
 
+    public void selectSafetyBuffer(String name) {
+        WebElement checkbox = findCheckBox(addASafetyBufferMsgBox, name);
+        checkbox.click();
+    }
 
 }

@@ -97,7 +97,7 @@ public class ChangeMySafetyBufferPage extends BasePage {
     }
     public void selectSafetyBuffer(String name) {
         WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);
-         checkbox.click();
+        checkbox.click();
     }
     public boolean isWhenWouldLikeToChangeMethodEnable(String name) {
         WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);

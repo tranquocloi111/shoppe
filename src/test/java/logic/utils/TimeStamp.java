@@ -213,10 +213,76 @@ public class TimeStamp {
     public static Date TodayMinus1MonthMinus20Day() {
         return Date.valueOf(LocalDate.now().minusMonths(1).minusDays(20));
     }
-
     public static long todayPlus1MonthMinusToday() {
         LocalDate day1 = LocalDate.now();
         LocalDate day2 = LocalDate.now().plusMonths(1);
         return Math.abs(ChronoUnit.DAYS.between(day2, day1));
+    }
+    public static Date TodayPlus10Days() {
+        return Date.valueOf(LocalDate.now().plusDays(10));
+    }
+    public static Date TodayPlus3Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(3));
+    }
+    public static Date TodayPlus4Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(4));
+    }
+    public static Date TodayPlus5Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(5));
+    }
+    public static Date TodayPlus6Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(6));
+    }
+    public static Date TodayPlus7Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(7));
+    }
+    public static Date TodayPlus8Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(8));
+    }
+    public static Date TodayPlus10Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(10));
+    }
+    public static Date TodayPlus9Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(9));
+    }
+    public static Date TodayPlus11Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(11));
+    }
+    public static Date TodayPlus12Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(12));
+    }
+    public static Date TodayPlus13Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(13));
+    }
+    public static Date TodayPlus14Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(14));
+    }
+    public static Date TodayPlus15Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(15));
+    }
+    public static Date TodayPlus16Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(16));
+    }
+    public static Date TodayPlus17Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(17));
+    }
+    public static Date TodayPlus18Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(18));
+    }
+    public static Date TodayPlus19Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(19));
+    }
+    public static Date TodayPlus20Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(20));
+    }
+    public static Date TodayPlus21Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(21));
+    }
+
+    public static Date TodayPlus22Month() {
+        return Date.valueOf(LocalDate.now().plusMonths(22));
+    }
+    public static Date TodayPlusDayAndMonth(int day,int month) {
+        return Date.valueOf(LocalDate.now().plusDays(day).plusMonths(month));
     }
 }

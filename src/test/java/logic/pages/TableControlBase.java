@@ -420,7 +420,6 @@ public class TableControlBase extends BasePage {
             return null;
     }
 
-
     public WebElement findCellByLabelText(String text) {
         String xpath = String.format(".//td[contains(text(),'%s')]//following-sibling::td", text);
         return element.findElement(By.xpath(xpath));
@@ -429,7 +428,6 @@ public class TableControlBase extends BasePage {
     public List<WebElement> getAllRows() {
         return element.findElements(By.tagName("tr"));
     }
-
     public List<List<String>> getAllCellValue() {
         List<List<String>> hashMapList = new ArrayList<>();
         List<WebElement> body = getBody();
@@ -444,4 +442,13 @@ public class TableControlBase extends BasePage {
         return hashMapList;
     }
 
+    public WebElement getCellByTagLabel(String label) {
+        try {
+            String xpath = String.format(".//label[contains(text(),'%s')]//ancestor::td[1]//following-sibling::td", label);
+            WebElement row = element.findElement(By.xpath(xpath));
+            return row;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

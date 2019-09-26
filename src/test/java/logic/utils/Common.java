@@ -1,8 +1,8 @@
 package logic.utils;
 
 import framework.utils.Log;
-import framework.utils.Xml;
-
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.*;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -122,6 +122,7 @@ public class Common {
         }
         return null;
     }
+
 
     public static void writeFile(String value, String filename) {
         BufferedWriter writer = null;
@@ -294,6 +295,29 @@ public class Common {
         }
     }
 
+    public static List<String> readPDFFileToString(String filePath) {
+        List<String> list = new ArrayList<>();
+        try {
+
+            PDDocument document = PDDocument.load((new File(filePath)));
+            document.getClass();
+
+            if (!document.isEncrypted()) {
+                PDFTextStripper tStripper = new PDFTextStripper();
+                tStripper.setSortByPosition(true);
+                String pdfFileInText = tStripper.getText(document);
+
+                String lines[] = pdfFileInText.split("\\r\\n");
+                for (String line : lines) {
+                    list.add(line);
+                }
+                return list;
+            }
+        } catch (Exception ex) {
+
+        }
+        return null;
+    }
     public static int compareList(List<List<String>> actual, List<String> expected) {
         boolean flg = false;
         int count = 0;
@@ -307,7 +331,6 @@ public class Common {
             if (flg)
                 count++;
         }
-
         return count;
     }
 }
