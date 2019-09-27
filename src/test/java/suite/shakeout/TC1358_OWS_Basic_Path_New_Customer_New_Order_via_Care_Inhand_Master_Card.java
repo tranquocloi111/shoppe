@@ -61,7 +61,7 @@ public class TC1358_OWS_Basic_Path_New_Customer_New_Order_via_Care_Inhand_Master
         Assert.assertEquals(3, SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().getNumberOfOtherProducts(OtherProductEntiy.dataForOtherProductHTCWILDFIRE()));
 
         test.get().info("Step 11 : Verify the details of HTC WILDFIRE XXX 60");
-        SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().clickProductCode("HTC-WILDFIRE-XXX-60");
+        SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().clickProductCodeByProductCode("HTC-WILDFIRE-XXX-60");
         Assert.assertTrue(Integer.parseInt(SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getHUbInternalId()) > 0);
         Assert.assertEquals("137695587771463", SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getIMEI());
         Assert.assertEquals(owsActions.subscriptionNumber, SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getReference());

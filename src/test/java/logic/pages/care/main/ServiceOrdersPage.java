@@ -12,12 +12,13 @@ import org.testng.Assert;
 import framework.wdm.Browser;
 import framework.wdm.WdManager;
 import logic.pages.TableControlBase;
+
 import java.util.HashMap;
 import java.util.List;
 
 public class ServiceOrdersPage extends BasePage {
 
-    public static ServiceOrdersPage getInstance(){
+    public static ServiceOrdersPage getInstance() {
         return new ServiceOrdersPage();
     }
 
@@ -27,11 +28,11 @@ public class ServiceOrdersPage extends BasePage {
     @FindBy(xpath = "//input[@name='PostCmdBtn_CANCEL']")
     protected WebElement btnDelete;
 
-    public void clickNextButton(){
+    public void clickNextButton() {
         clickNextBtn();
     }
 
-    public void clickDeleteButton(){
+    public void clickDeleteButton() {
         clickWithOutWait(btnDelete);
     }
 
@@ -205,7 +206,6 @@ public class ServiceOrdersPage extends BasePage {
         WebElement notesCtl;
 
 
-
         public static ReturnsAndEtcPage getInstance() {
             if (instance == null)
                 return new ReturnsAndEtcPage();
@@ -240,10 +240,10 @@ public class ServiceOrdersPage extends BasePage {
             }
             return null;
         }
-        public void selectWaiveETCReasonByIndexAndValue(int index,String value)
-        {
-            List<WebElement> elementList= getDriver().findElements(By.xpath("//td[contains(text(),'Waive ETC Reason:')]"));
-            selectByVisibleText(elementList.get(index).findElement(By.xpath("..//following-sibling::td[1]//select")),value);
+
+        public void selectWaiveETCReasonByIndexAndValue(int index, String value) {
+            List<WebElement> elementList = getDriver().findElements(By.xpath("//td[contains(text(),'Waive ETC Reason:')]"));
+            selectByVisibleText(elementList.get(index).findElement(By.xpath("..//following-sibling::td[1]//select")), value);
         }
     }
 
@@ -328,7 +328,7 @@ public class ServiceOrdersPage extends BasePage {
         public static ConfirmFundsTransfer getInstance() {
             if (instance == null)
                 return new ConfirmFundsTransfer();
-            return  new ConfirmFundsTransfer();
+            return new ConfirmFundsTransfer();
         }
 
         public HashMap<String, String> getConfirmFundsTransfer() {
@@ -437,8 +437,9 @@ public class ServiceOrdersPage extends BasePage {
             selectByVisibleText(ddSubscriptionNumber, subNo);
             clickNextBtn();
         }
+
         public String getSubscription() {
-           return getTextOfSelectedOption(ddSubscriptionNumber);
+            return getTextOfSelectedOption(ddSubscriptionNumber);
         }
     }
 
@@ -465,7 +466,7 @@ public class ServiceOrdersPage extends BasePage {
         public static ChangeBundle getInstance() {
             if (instance == null)
                 return new ChangeBundle();
-            return  new ChangeBundle();
+            return new ChangeBundle();
         }
 
         public String getSubscriptionNumber() {
@@ -499,8 +500,8 @@ public class ServiceOrdersPage extends BasePage {
                 for (WebElement cell : tdCells) {
                     if (cell.getText().equalsIgnoreCase(bundle))
                         System.out.println("cell.getText().trim() : " + cell.getText().trim());
-                        matchCount++;
-                        break;
+                    matchCount++;
+                    break;
                 }
             }
             if (bundles.length == matchCount)
@@ -529,12 +530,12 @@ public class ServiceOrdersPage extends BasePage {
             return null;
         }
 
-        public void clickNextButton(){
+        public void clickNextButton() {
             clickNextBtn();
         }
 
-        public void selectBundlesByName(String[] names, String value){
-            for (String name : names){
+        public void selectBundlesByName(String[] names, String value) {
+            for (String name : names) {
                 WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", name)));
                 WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
                 if (name.equalsIgnoreCase(value)) {
@@ -545,14 +546,25 @@ public class ServiceOrdersPage extends BasePage {
             }
         }
 
-        public boolean isBonusBundle(){
+        public void selectBundlesByName(String value) {
+
+            WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", value)));
+            WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
+            if (checkbox.getAttribute("checked") != "true") {
+                click(checkbox);
+            }
+        }
+
+
+        public boolean isBonusBundle() {
             return isElementPresent(lblBonusBundle);
         }
     }
 
     public static class ConfirmChangeBundle extends ServiceOrdersPage {
         private static ConfirmChangeBundle instance = new ConfirmChangeBundle();
-        public static ConfirmChangeBundle getInstance(){
+
+        public static ConfirmChangeBundle getInstance() {
             if (instance == null)
                 return new ConfirmChangeBundle();
             return new ConfirmChangeBundle();
@@ -627,21 +639,23 @@ public class ServiceOrdersPage extends BasePage {
             return getTextOfElement(effective);
         }
 
-        public String getBundleInfo(String name){
-            return getTextOfElement(getDriver().findElement(By.xpath("//td[contains(text(),'"+name+"')]/following-sibling::td//span")));
+        public String getBundleInfo(String name) {
+            return getTextOfElement(getDriver().findElement(By.xpath("//td[contains(text(),'" + name + "')]/following-sibling::td//span")));
         }
 
-        public String getErrorMessage(){
-            return  getTextOfElement(lblErrorEmssage);
+        public String getErrorMessage() {
+            return getTextOfElement(lblErrorEmssage);
         }
 
     }
 
-    public static class ServiceOrderComplete extends ServiceOrdersPage{
+    public static class ServiceOrderComplete extends ServiceOrdersPage {
         private static ServiceOrderComplete instance = new ServiceOrderComplete();
-        public static ServiceOrderComplete getInstance(){
+
+        public static ServiceOrderComplete getInstance() {
             return new ServiceOrderComplete();
         }
+
         @FindBy(xpath = ".//td[@class='instuctionalTextHighLight']")
         WebElement message;
 
@@ -651,10 +665,10 @@ public class ServiceOrdersPage extends BasePage {
 
     }
 
-    public static class  AddOneOffBundle extends  ServiceOrdersPage {
+    public static class AddOneOffBundle extends ServiceOrdersPage {
         final static String BUNDLE_GROUP = "Bundle Group";
 
-        public static AddOneOffBundle getInstance(){
+        public static AddOneOffBundle getInstance() {
             return new AddOneOffBundle();
         }
 
@@ -674,34 +688,35 @@ public class ServiceOrdersPage extends BasePage {
         WebElement currentBundleTable;
         TableControlBase table = new TableControlBase(currentBundleTable);
 
-        public String getSubscriptionNumber(){
+        public String getSubscriptionNumber() {
             return getTextOfElement(subscriptionNumber);
         }
 
-        public String getNextBillDateForThisAccount(){
+        public String getNextBillDateForThisAccount() {
             return getTextOfElement(nextBillDateForThisAccount);
         }
 
-        public String getCurrentTariff(){
+        public String getCurrentTariff() {
             return getTextOfElement(currentTariff);
         }
 
-        public String getPackagedBundle(){
+        public String getPackagedBundle() {
             return getTextOfElement(packagedBundle);
         }
 
-        public boolean isBonusBundleDisplayed(String cellValue){
+        public boolean isBonusBundleDisplayed(String cellValue) {
             return getTextOfElement(table.getRowByColumnNameAndCellValue(BUNDLE_GROUP, cellValue)).isEmpty();
         }
 
-        public String getCellValueByIndex(int index){
-           return table.getRecordByIndex(index).getText();
+        public String getCellValueByIndex(int index) {
+            return table.getRecordByIndex(index).getText();
         }
 
         public int getNumberOfCurrentBundleByBundleGroup(HashMap<String, String> bundleGroup) {
             return table.findRowsByColumns(bundleGroup).size();
         }
     }
+
     public static class ConfigureSubscription extends ServiceOrdersPage {
         private static ConfigureSubscription instance = new ConfigureSubscription();
 

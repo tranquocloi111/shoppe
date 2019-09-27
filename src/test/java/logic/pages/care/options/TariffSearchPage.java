@@ -1,5 +1,6 @@
 package logic.pages.care.options;
 
+import logic.business.entities.TariffSearchCriteriaEnity;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
@@ -13,8 +14,7 @@ import java.util.HashMap;
  * Date: 13/09/2019
  */
 public class TariffSearchPage extends BasePage {
-    private static TariffSearchPage instance = new TariffSearchPage();
-    public static TariffSearchPage getInstance(){
+    public static TariffSearchPage getInstance() {
         return new TariffSearchPage();
     }
 
@@ -44,29 +44,112 @@ public class TariffSearchPage extends BasePage {
 
     @FindBy(xpath = "//table[@id='tblSearchCriteria']//input[@name='btnfind']")
     private WebElement btnFind;
+    @FindBy(xpath = "//table[@id='tblSearchCriteria']")
+    private WebElement criteriaFilterTable;
 
     @FindBy(xpath = "//table[@id='gridTariff']")
     private WebElement tableTariff;
 
     TableControlBase table = new TableControlBase(tableTariff);
 
-    private int getNumberTariffRecord(HashMap<String,String> payment)
-    {
+    private int getNumberTariffRecord(HashMap<String, String> payment) {
         return table.findRowsByColumns(payment).size();
     }
 
-    private void clickTariffByTariffCode(String tariffCode) {
+    public void clickTariffByTariffCode(String tariffCode) {
         table.getRowByColumnNameAndCellValue("Tariff Code", tariffCode).findElement(By.tagName("a")).click();
     }
-    private void clickFindButton(){
+
+    private void clickFindButton() {
         btnFind.click();
     }
 
-    public void selectTariffByCode(String tariffCode){
+    public void selectTariffByCode(String tariffCode) {
         String currentWindow = getDriver().getTitle();
         switchWindow("Tariff Search", false);
         clickTariffByTariffCode(tariffCode);
         switchWindow(currentWindow, false);
+    }
+
+    public void selectTheFilterCriteria(String criteria, String value) {
+        TableControlBase tableControlBase = new TableControlBase(criteriaFilterTable);
+        if (value == null) {
+            selectByVisibleText(tableControlBase.findCellByLabelText(criteria).findElement(By.tagName("select")), "");
+        } else {
+            selectByVisibleText(tableControlBase.getCellByLabel(criteria).findElement(By.tagName("select")), value);
+        }
+    }
+
+    public void selectBillingType(String text) {
+        if (text == null) {
+            text = "";
+        }
+        selectByVisibleText(cboBillingType, text);
+    }
+
+    public void selectTariffType(String text) {
+        if (text == null) {
+            text = "";
+        }
+        selectByVisibleText(cboTariffType, text);
+    }
+
+    public void selectMonthlyRental(String text) {
+        if (text == null) {
+            text = "";
+        }
+        selectByVisibleText(cboMonthlyRental, text);
+    }
+
+    public void selectSpecialTariff(String text) {
+        if (text == null) {
+            text = "";
+        }
+        selectByVisibleText(cboSpecialTariff, text);
+    }
+
+    public void selectContactPeriod(String text) {
+        if (text == null) {
+            text = "";
+        }
+        selectByVisibleText(cboContractPeriod, text);
+    }
+
+    public void selectETC(String text) {
+        if (text == null) {
+            text = "";
+        }
+        selectByVisibleText(cboEarlyTerminationCharge, text);
+    }
+
+    public void selectLastDateExpired(String text) {
+        if (text == null) {
+            text = "";
+        }
+        selectByVisibleText(cboLastSaleDateExpired, text);
+    }
+
+    public void selectStaffTariff(String text) {
+        if (text == null) {
+            text = "";
+        }
+        selectByVisibleText(cboStaffTariff, text);
+    }
+
+    public void searchTariffByCriteria(TariffSearchCriteriaEnity enity) {
+        selectBillingType(enity.getBillingType());
+        selectTariffType(enity.getTariffType());
+        selectMonthlyRental(enity.getMonthlyRental());
+        selectSpecialTariff(enity.getMonthlyRental());
+        selectContactPeriod(enity.getContractPeriod());
+        selectETC(enity.getEarlyTerminationCharge());
+        selectLastDateExpired(enity.getEarlyTerminationCharge());
+        selectStaffTariff(enity.getStaffTariff());
+        clickFindButton();
+    }
+    public void clickNextBtn()
+    {
+        super.clickNextBtn();
     }
 
 }

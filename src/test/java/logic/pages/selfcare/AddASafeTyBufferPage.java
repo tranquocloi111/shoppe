@@ -84,5 +84,8 @@ public class AddASafeTyBufferPage extends BasePage {
         WebElement checkbox = findCheckBox(addASafetyBufferMsgBox, name);
         checkbox.click();
     }
-
+    public String calculateNextAllowanceDate()
+    {
+        return super.getNextAllowanceDate();
+    }
 }

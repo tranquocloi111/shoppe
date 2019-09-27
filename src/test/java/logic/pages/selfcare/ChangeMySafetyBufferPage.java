@@ -87,6 +87,11 @@ public class ChangeMySafetyBufferPage extends BasePage {
         return checkbox.isSelected();
     }
 
+    public boolean IsSaftyBufferExisted(String name) {
+        WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);
+        return checkbox.isDisplayed();
+    }
+
     public boolean IsSaftyBufferEnable(String name) {
         WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);
         return checkbox.isEnabled();
@@ -103,6 +108,10 @@ public class ChangeMySafetyBufferPage extends BasePage {
         WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);
         return checkbox.isEnabled();
     }
+    public boolean isWhenWouldLikeToChangeMethodExist(String name) {
+        WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);
+        return checkbox.isDisplayed();
+    }
 
     @FindBy(xpath = "//span[@id='waitLabelabel']")
     WebElement waitLabelLabel;
@@ -112,5 +121,9 @@ public class ChangeMySafetyBufferPage extends BasePage {
     public String getComfirmMessage()
     {
         return getTextOfElement(comfirmWhenLabel)+"\r\n"+getTextOfElement(waitLabelLabel);
+    }
+    public String calculateNextAllowanceDate()
+    {
+       return super.getNextAllowanceDate();
     }
 }
