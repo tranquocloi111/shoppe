@@ -54,7 +54,7 @@ public class TC32065_Basic_Path_Billing_Detail_Invoice_Stype_with_Itemised exten
 
         test.get().info("Build expected response data");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        String tempFilePath = "src\\test\\resources\\xml\\sws\\getaccountdetails\\TC32067_response.xml";
+        String tempFilePath = "src\\test\\resources\\xml\\sws\\getaccountdetails\\TC32065_response.xml";
         String expectedResponse = selfCareWSTestBase.buildCustomerDetailsResponseData(tempFilePath, customerNumber, addressee, subscriptionNumber, email, billingGroupName);
 
         test.get().info("Verify get account detail response");
@@ -71,8 +71,8 @@ public class TC32065_Basic_Path_Billing_Detail_Invoice_Stype_with_Itemised exten
 
     private void editBillingDetailInvoiceStyleValue(String billStyle){
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
-        DetailsContentPage.BillingInformationSectionPage.getInstance().clickEditBtnByIndex(0);
-        DetailsContentPage.BillingInformationSectionPage.getInstance().changeBillNotification(billStyle);
+        DetailsContentPage.BillingInformationSectionPage.getInstance().clickEditBtnBySection("Billing Information");
+        DetailsContentPage.BillingInformationSectionPage.getInstance().changeBillStyle(billStyle);
         DetailsContentPage.BillingInformationSectionPage.getInstance().clickApplyBtn();
     }
 }

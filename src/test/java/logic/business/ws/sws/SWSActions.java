@@ -4,6 +4,8 @@ import framework.utils.Log;
 import framework.utils.Soap;
 import framework.utils.Xml;
 import logic.business.ws.BaseWs;
+import logic.utils.Common;
+import logic.utils.XmlUtils;
 
 import java.io.File;
 
@@ -18,6 +20,7 @@ public class SWSActions extends BaseWs {
     private static final String GET_USAGE_SUMMARY_REQUEST = "src\\test\\resources\\xml\\sws\\getusage\\Get_Usage_Summary_Request.xml";
     private static final String GET_CONTRACT_SUMMARY_REQUEST = "src\\test\\resources\\xml\\sws\\getcontract\\Get_Contract_Summary_Request.xml";
     private static final String GET_ACCOUNT_DETAIL_REQUEST = "src\\test\\resources\\xml\\sws\\getaccountdetails\\Get_Account_Detail_Request.xml";
+    private static final String GET_ACCOUNT_DETAIL_BY_SUBS_REQUEST = "src\\test\\resources\\xml\\sws\\getaccountdetails\\Get_Account_Detail_By_Subs_Request.xml";
 
     //endregion
 
@@ -70,21 +73,6 @@ public class SWSActions extends BaseWs {
     public Xml submitGetSubscriptionSummaryRequestByCusNumber(String customerNumber, boolean isFlag){
         request = new Xml(new File(GETSUBSCRIPTIONSUMMARYREQUEST));
         request.setTextByTagName("sel:accountNumber", customerNumber);
-        if (isFlag)
-            request.setTextByTagName("sel:includeInactiveSubscriptionFlag", "true");
-        else
-            request.setTextByTagName("sel:includeInactiveSubscriptionFlag", "false");
-
-        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
-        Log.info("Response: " + response.toString());
-
-        return response;
-    }
-
-    public Xml submitGetSubscriptionSummaryRequest(String customerNumber, String subscriptionNumber, boolean isFlag){
-        request = new Xml(new File(GET_INVALID_SUBSCRIPTION_SUMMARY__REQUEST));
-        request.setTextByTagName("sel:accountNumber", customerNumber);
-        request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);
         if (isFlag)
             request.setTextByTagName("sel:includeInactiveSubscriptionFlag", "true");
         else
@@ -151,5 +139,47 @@ public class SWSActions extends BaseWs {
 
         return response;
     }
+
+
+    public Xml submitGetAccountSummaryRequest(String filePath, String customerNumber){
+        request = new Xml(new File(filePath));
+        request.setTextByTagName("sel:accountNumber", customerNumber);
+
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
+
+    public Xml submitAccountSummaryWithFlagRequest(String requestFilePath, String accountNumber, String flag){
+        request = new Xml(new File(requestFilePath));
+        request.setTextByTagName("sel:accountNumber", accountNumber);
+        request.setTextByTagName("sel:includeInactiveSubscriptionFlag", flag);
+
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
+
+    public Xml submitGetAccountSummaryWithSubsRequest(String requestFilePath, String subscriptionNumber){
+        request = new Xml(new File(requestFilePath));
+        request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);
+
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
+
+    public Xml submitGetAccountDetailsBySubsRequest(String subscriptionNumber){
+        request = new Xml(new File(GET_ACCOUNT_DETAIL_BY_SUBS_REQUEST));
+        request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
+
 }
 

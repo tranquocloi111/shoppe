@@ -4,6 +4,7 @@
       <accountDetail>
         <customerDetail>
           <accountNumber>$accountNumber$</accountNumber>
+          <accountType>RESIDENTIAL</accountType>
           <title>Mr</title>
           <firstName>$firstName$</firstName>
           <lastName>$lastName$</lastName>

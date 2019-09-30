@@ -2,6 +2,8 @@ package logic.pages;
 
 import framework.utils.Log;
 import framework.wdm.WdManager;
+import logic.utils.Parser;
+import logic.utils.TimeStamp;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -352,6 +354,19 @@ public class BasePage {
     public String getTitle()
     {
        return getDriver().getTitle();
+    }
+    public String getNextAllowanceDate()
+    {
+        String date = Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_IN_PDF);
+        int day = Integer.parseInt(date.substring(0,2));
+        if (day>=23)
+        {
+            return "23/"+Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),TimeStamp.DATE_FORMAT_IN_PDF3);
+        }
+        else
+        {
+            return  "23/"+Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),TimeStamp.DATE_FORMAT_IN_PDF3);
+        }
     }
     //endregion
 }

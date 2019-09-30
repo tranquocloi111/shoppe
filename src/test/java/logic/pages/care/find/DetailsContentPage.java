@@ -34,7 +34,7 @@ public class DetailsContentPage extends BasePage {
             return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Bill Notification:')]/following-sibling::td[1]"))).split(" ")[0];
         }
         public void changeBillStyle(String text) {
-            parent.findElement(By.xpath(".//td[contains(text(),'Bill Style:')]/following-sibling::td[1]")).sendKeys(text);
+            selectDropBoxByVisibelText(parent.findElement(By.xpath(".//td[contains(text(),'Bill Style:')]/following-sibling::td[1]")), text);
         }
 
     }

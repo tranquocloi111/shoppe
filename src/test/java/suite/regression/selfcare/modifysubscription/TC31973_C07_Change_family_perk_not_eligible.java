@@ -1,10 +1,8 @@
 package suite.regression.selfcare.modifysubscription;
 
 import logic.business.ws.ows.OWSActions;
-import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
-import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.options.DeactivateSubscriptionPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import org.testng.Assert;
@@ -67,8 +65,8 @@ public class TC31973_C07_Change_family_perk_not_eligible extends BaseTest {
             }
 
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().selectDeactiveBySubscription(sub);
-        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().enterDeactiveReason(reason);
+        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().selectDeactivateBySubscription(sub);
+        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().enterDeactivateReason(reason);
         DeactivateSubscriptionPage.DeactivateSubscription.getInstance().clickNextButton();
         DeactivateSubscriptionPage.DeactivateSubscription.getInstance().clickNextButton();
         DeactivateSubscriptionPage.DeactivateSubscription.getInstance().clickReturnToCustomer();

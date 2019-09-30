@@ -2,12 +2,9 @@ package suite.regression.selfcare.modifysubscription;
 
 import framework.utils.RandomCharacter;
 import logic.business.db.billing.CommonActions;
-import logic.business.helper.MiscHelper;
 import logic.business.ws.ows.OWSActions;
-import logic.pages.agreement.AgreementWrapperPage;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CreditAgreementsContentPage;
-import logic.pages.care.find.ServiceOrdersContentPage;
 import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.options.DeactivateSubscriptionPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
@@ -20,7 +17,6 @@ import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 import suite.regression.selfcare.SelfCareTestBase;
 
-import java.io.File;
 import java.util.List;
 
 public class TC31967_View_Credit_Agreement_Documents_CCA_Document_Statement_of_Account extends BaseTest {
@@ -99,7 +95,7 @@ public class TC31967_View_Credit_Agreement_Documents_CCA_Document_Statement_of_A
 
     public void deactiveFC4Subscription() {
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().selectDeactiveBySubscription(subno4);
+        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().selectDeactivateBySubscription(subno4);
         DeactivateSubscriptionPage.DeactivateSubscription.getInstance().clickNextButton();
 
         ServiceOrdersPage.ReturnsAndEtcPage.getInstance().selectWaiveETCReasonByIndexAndValue(0, "Goodwill Gesture");

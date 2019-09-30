@@ -287,7 +287,7 @@ public class CareTestBase extends BasePage {
 
     public static void deactivateSubscription(String subscription){
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().selectTheSubscriptionToBeDeactivated(subscription);
+        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().selectDeactivateBySubscription(subscription);
         DeactivateSubscriptionPage.DeactivateSubscription.getInstance().clickNextButton();
 
         String warningMessage = String.format("Subscription %s will be deactivated and cannot be undone. Are you sure? Select 'Next' to confirm.", subscription.split(" ")[0]);
@@ -296,11 +296,13 @@ public class CareTestBase extends BasePage {
 
         String serviceCompletedMessage = "*** Deactivation Performed Immediately as Deactivate Date was past ***";
         Assert.assertEquals(serviceCompletedMessage, ServiceOrdersPage.ServiceOrderComplete.getInstance().getMessage());
+
+        ServiceOrdersPage.ServiceOrderComplete.getInstance().clickReturnToCustomer();
     }
 
     public static void verifySubscriptionStatus(String subscription, String expectedStatus){
-        MenuPage.LeftMenuPage.getInstance().clickSummaryLink();
-        String actualStatus = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusOfSubscription(subscription);
+        MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
+        String actualStatus = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subscription);
         Assert.assertEquals(expectedStatus, actualStatus);
     }
 }

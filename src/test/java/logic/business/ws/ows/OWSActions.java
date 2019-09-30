@@ -501,6 +501,21 @@ public class OWSActions extends BaseWs {
         createGeneralCustomerOrder(ONLINES_DD_CUSTOMER_WITH_FC_2_BUNDLES);
     }
 
+    public void createGeneralCustomerWithRequestFile(String path) {
+        request = new Xml(new File(path));
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+        setCustomerNo();
+        Log.info("Account number:" + customerNo);
+        setOrderIdNo();
+        Log.info("OrderId number:" + orderIdNo);
+        setUsername();
+        setPassword();
+        setFirstName();
+        setLastName();
+        setFullName();
+        checkAsyncProcessIsCompleted(orderIdNo);
+    }
     //endregion
 
 }

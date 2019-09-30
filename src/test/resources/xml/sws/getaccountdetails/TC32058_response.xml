@@ -4,6 +4,7 @@
       <accountDetail>
         <customerDetail>
           <accountNumber>$accountNumber$</accountNumber>
+          <accountType>RESIDENTIAL</accountType>
           <title>Mr</title>
           <firstName>$firstName$</firstName>
           <lastName>$lastName$</lastName>
@@ -22,12 +23,11 @@
           </phoneNumber>
         </customerDetail>
         <addressDetail>
-          <buildingIdentifer>$buildingIdentifer$</buildingIdentifer>
+          <buildingIdentifer>$buildingIdentifier$</buildingIdentifer>
           <addressLine1>$addressLine1$</addressLine1>
           <town>LONDON</town>
           <country>United Kingdom</country>
           <postcode>E10AA</postcode>
-          <pafKey>3075103S0X</pafKey>
         </addressDetail>
         <paymentDetail ongoingPaymentMethod="CARD">
           <creditCard>

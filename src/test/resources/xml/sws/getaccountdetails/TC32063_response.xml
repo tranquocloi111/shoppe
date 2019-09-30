@@ -4,6 +4,7 @@
       <accountDetail>
         <customerDetail>
           <accountNumber>$accountNumber$</accountNumber>
+          <accountType>RESIDENTIAL</accountType>
           <title>Mr</title>
           <firstName>$firstName$</firstName>
           <lastName>$lastName$</lastName>
@@ -13,7 +14,7 @@
           <billingDetail>
             <BillingGroup>$BillingGroup$</BillingGroup>
             <InvoiceStyle>SUMMARY</InvoiceStyle>
-            <InvoiceNotification>SMS</InvoiceNotification>
+            <InvoiceNotification>EMAIL</InvoiceNotification>
           </billingDetail>
           <phoneNumber preferredContact="DAYTIME">
             <daytime>0398403850</daytime>
@@ -33,8 +34,8 @@
           <creditCard>
             <cardName>$cardName$</cardName>
             <cardNumber>************5100</cardNumber>
-            <cardType>MC</cardType>
-            <cardExpireDate>2022-12-31+11:00</cardExpireDate>
+            <cardType>VI</cardType>
+            <cardExpireDate>2030-12-31+11:00</cardExpireDate>
           </creditCard>
         </paymentDetail>
       </accountDetail>

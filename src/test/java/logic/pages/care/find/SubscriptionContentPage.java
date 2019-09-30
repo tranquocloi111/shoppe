@@ -65,6 +65,8 @@ public class SubscriptionContentPage extends BasePage {
 
             @FindBy(xpath = "//td[contains(text(),'Upgrade Order Reference:')]//following-sibling::td[1]")
             WebElement lblUpgradeOrderReference;
+            @FindBy(xpath = "//td[contains(text(),'Flexible Cap Amount:')]//following-sibling::td[1]")
+            WebElement lblFlexibleCapAmount;
 
             public String getSubscriptionNumber() {
                 return getTextOfElement(lblSubscriptionNumber);
@@ -125,6 +127,18 @@ public class SubscriptionContentPage extends BasePage {
             public String getUpgradeOrderReference() {
                 return getTextOfElement(lblUpgradeOrderReference);
             }
+
+            public String getFlexibleCapAmount() {
+                return getTextOfElement(lblFlexibleCapAmount);
+            }
+
+            @FindBy(xpath = "//td[contains(text(),'Flexible Cap Amount:')]//following-sibling::td//img")
+            WebElement flexibleCapAmountToolTip;
+
+            public String getFlexibleCapToolTip() {
+                hover(flexibleCapAmountToolTip);
+                return getDriver().findElement(By.xpath("//body/div[last()]")).getText();
+            }
         }
 
         public static class OtherProductsGridSectionPage extends SubscriptionDetailsPage {
@@ -169,12 +183,18 @@ public class SubscriptionContentPage extends BasePage {
                 return table.findRowsByColumns(otherProduct).size();
             }
 
-            public void clickProductCode(String productCode) {
-                click(otherProductsGridTable.findElement(By.xpath(".//td//a[contains(text(),'" + productCode + "')]")));
+
+            public void clickProductCodeByProductCode(String productCode) {
+                List<WebElement> aList = otherProductsGridTable.findElements(By.tagName("a"));
+                for (WebElement el : aList) {
+                    if (el.getText().replace(" ", "").equalsIgnoreCase(productCode.replace(" ", ""))) {
+                        el.click();
+                        break;
+                    }
+                }
             }
-
-
         }
+
 
         public static class SubscriptionFeatureSectionPage extends SubscriptionDetailsPage {
             private static SubscriptionFeatureSectionPage instance = new SubscriptionFeatureSectionPage();
@@ -190,7 +210,9 @@ public class SubscriptionContentPage extends BasePage {
             @FindBy(xpath = "//td[contains(text(),'Barring Status:')]//following-sibling::td[1]")
             WebElement lblBarringStatus;
 
-            public String getServiceFeature() { return getTextOfElement(lblServiceFeature); }
+            public String getServiceFeature() {
+                return getTextOfElement(lblServiceFeature);
+            }
 
             public String getBarring() {
                 return getTextOfElement(lblBarring);
