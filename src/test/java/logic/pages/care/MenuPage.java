@@ -167,6 +167,10 @@ public class MenuPage extends BasePage {
             clickLinkByName("Change Customer Type");
         }
 
+        public void clickChangePaymentDetailsLink() {
+            clickLinkByName("Change Payment Details");
+        }
+
     }
 
     public static class BreadCrumbPage extends MenuPage {

@@ -29,6 +29,7 @@ public class TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off
     private String subscription2;
     private String serviceOrderId;
 
+    //should add sub without bonus
     @Test(enabled = true, description = "TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off_Bundle", groups = "tropicana")
     public void TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off_Bundle(){
         test.get().info("Step 1 : Create a customer subscription related tariff linked with a Tropicana bundle group");

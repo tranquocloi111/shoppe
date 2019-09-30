@@ -51,6 +51,7 @@ public class OWSActions extends BaseWs {
     private static final String ONLINE_CC_CUSTOMER_WITH_2_FC_1_BUNDLE_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_2_FC_1_bundles_and_simonly.xml";
     private static final String ONLINE_CC_CUSTOMER_WITH_FC_1_BUNDLE_OF_SB_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only.xml";
     private static final String CC_CUSTOMER_WITH_FC_CORRECT_EXPIRY_DATE = "src\\test\\resources\\xml\\ows\\cc_customer_with_FC_1_SB_and_expiry_date_correct.xml";
+    private static final String ONLINES_DD_CUSTOMER_WITH_FC_2_BUNDLES = "src\\test\\resources\\xml\\commonrequest\\onlines_DD_customer_with_FC_2_bundles_and_NK2720";
     //endregion
 
 
@@ -494,6 +495,10 @@ public class OWSActions extends BaseWs {
         Log.info(response.toString());
         setOrderIdNo();
         checkAsyncProcessIsCompleted(orderIdNo);
+    }
+
+    public void createAnOnlinesDDCustomerWithFC2BundlesAndNK2720(){
+        createGeneralCustomerOrder(ONLINES_DD_CUSTOMER_WITH_FC_2_BUNDLES);
     }
 
     //endregion

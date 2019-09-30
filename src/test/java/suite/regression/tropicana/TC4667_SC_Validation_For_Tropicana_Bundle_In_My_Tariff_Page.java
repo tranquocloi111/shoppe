@@ -30,6 +30,7 @@ public class TC4667_SC_Validation_For_Tropicana_Bundle_In_My_Tariff_Page extends
     String subscription2;
     String serviceOrderId;
 
+    //3 data type
     @Test(enabled = true, description = "TC4667_SC_Validation_For_Tropicana_Bundle_In_My_Tariff_Page", groups = "Tropicana")
     public void TC4667_SC_Validation_For_Tropicana_Bundle_In_My_Tariff_Page() {
         test.get().info("Step 1 : Create a customer has Subscription with Tropicana bundle");

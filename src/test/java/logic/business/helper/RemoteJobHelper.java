@@ -221,28 +221,31 @@ public class RemoteJobHelper {
     }
 
     public void runDoDealXMLExtractJob() {
-        ResultSet resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
-        try {
-            for (int i = 0; i < 120; i++) {
-                if (resultSet.isBeforeFirst()) {
-                    break;
-                } else {
-                    resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
-                }
-                Thread.sleep(2000);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        ResultSet resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
+//        try {
+//            for (int i = 0; i < 120; i++) {
+//                if (resultSet.isBeforeFirst()) {
+//                    break;
+//                } else {
+//                    resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
+//                }
+//                Thread.sleep(2000);
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
-        int billRunInvocationId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(resultSet, "brinvocationid")));
-        Log.info("InvocationId:" + billRunInvocationId);
-
+//        int billRunInvocationId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(resultSet, "brinvocationid")));
+//        Log.info("InvocationId:" + billRunInvocationId);
+//
+//        currentMaxJobId = getMaxRemoteJobId();
+//        submitRemoteJobs(String.format("DoDealXMLExtract.sh -i %s -e $HUB_SID", billRunInvocationId), currentMaxJobId, "Deal XML Extract");
+//        waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
         currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs(String.format("DoDealXMLExtract.sh -i %s -e $HUB_SID", billRunInvocationId), currentMaxJobId, "Deal XML Extract");
-        waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
+        submitRemoteJobs("DoDealXMLExtract.sh -e $HUB_SID", currentMaxJobId,"Deal XML Extract");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
     }
 
     public void runDealCatalogueExtractJob() {
@@ -281,9 +284,15 @@ public class RemoteJobHelper {
 
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
+
     public void  waitForTopUpFile(String fileName){
         currentMaxJobId = getMaxRemoteJobId();
         waitForRemoteJobComplete(currentMaxJobId,  "%" + fileName);
     }
 
+    public void runDirectDebitBatchJobToCreatePayments(){
+        int currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("Subdirectdebit2.sh -e $HUB_SID -S", currentMaxJobId, "Process Direct Debit - Create Payments");
+        waitForRemoteJobComplete(currentMaxJobId, "Process Direct Debit - Create Payments");
+    }
 }

@@ -27,6 +27,7 @@ public class TC5003_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Perm
     private String subscription2;
     private String serviceOrderId;
 
+    //add mins and text
     @Test(enabled = true, description = "TC5003_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Permitted_Bundle", groups = "tropicana")
     public void TC5003_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Permitted_Bundle(){
         test.get().info("Step 1 : Create a customer subscription related tariff linked with a Bonus bundle group");

@@ -1,5 +1,6 @@
 package logic.business.db.billing;
 
+import framework.config.Config;
 import framework.utils.Log;
 import logic.business.db.OracleDB;
 import logic.business.entities.PaymentGatewayEnity;
@@ -208,18 +209,18 @@ public class CommonActions extends OracleDB {
     }
 
     public static void updateCustomerAccessRoleToNone(){
-        String sql = "delete from objectrole where roleid = 147 and clientobjectid  = 585";
+        String sql = "delete from objectrole where roleid = 147 and clientobjectid  =  " + Config.getProp("businessclientobjectid");
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
     public static void updateCustomerAccessRoleToReadWrite(){
-        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES(585,147,'N','Y','Y','Y','Y', 0)";
+        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES("+Config.getProp("businessclientobjectid")+",147,'N','Y','Y','Y','Y', 0)";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
     public static boolean checkCustomerAccessRole(){
         try {
-            String sql = "select count(*) as quality from objectrole where roleid = 147 and clientobjectid = 585 ";
+            String sql = "select count(*) as quality from objectrole where roleid = 147 and clientobjectid = " + Config.getProp("businessclientobjectid");
             return OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "quality").toString().equalsIgnoreCase("1");
 
         }catch (Exception ex){
@@ -229,24 +230,37 @@ public class CommonActions extends OracleDB {
     }
 
     public static void updateChangeCustomerTypeAccessRoleToNone(){
-        String sql = "delete from objectrole where roleid = 147 and clientobjectid  = 546";
+        String sql = "delete from objectrole where roleid = 147 and clientobjectid  =  " + Config.getProp("customertypeclientobjectid");
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
     public static void updateChangeCustomerTypeAccessRoleToReadWrite(){
-        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES(546,147,'N','Y','Y','Y','Y', 0)";
+        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES("+ Config.getProp("customertypeclientobjectid")+",147,'N','Y','Y','Y','Y', 0) ";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
     public static boolean checkChangeCustomerTypeAccessRole(){
         try {
-            String sql = "select count(*) as quality from objectrole where roleid = 147 and clientobjectid = 546 ";
+            String sql = "select count(*) as quality from objectrole where roleid = 147 and clientobjectid =  " + Config.getProp("customertypeclientobjectid");
             return OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "quality").toString().equalsIgnoreCase("1");
 
         }catch (Exception ex){
             Log.info(ex.getMessage());
         }
         return false;
+    }
+
+    public static void updateDueDateInvoice(String date, String invoiceId){
+        String sql = "UPDATE invoice SET datedue = '"+date+"' WHERE documentnbr = '"+invoiceId+"'  ";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
+
+    public static void updateCustomerDDIDetailsInDatabase(String dateStart, String hmbrid, String DDIReference){
+        String sql = String.format("update hmbrproperty set propvalchar='A' where propertykey='DDISTAT' and hmbrid=%s", hmbrid);
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+        sql = String.format("update hmbrproperty set propvalchar='%s', datestart= '"+dateStart+"' where propertykey='DDIREF' and hmbrid=%s", DDIReference, hmbrid);
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {

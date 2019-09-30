@@ -22,6 +22,7 @@ import logic.business.helper.RemoteJobHelper;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.InvoicesContentPage;
+import logic.pages.care.find.ServiceOrdersContentPage;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.CapabilityType;
@@ -249,6 +250,12 @@ public class BaseTest {
     protected void updateReadWriteAccessChangeTypeCustomer(){
         if (!CommonActions.checkChangeCustomerTypeAccessRole())
             CommonActions.updateChangeCustomerTypeAccessRoleToReadWrite();
+    }
+
+    protected void openServiceOrderDetailsForSendDDIToBACSItem(){
+       MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+       ServiceOrdersContentPage serviceOrders =  ServiceOrdersContentPage.getInstance();
+        serviceOrders.clickServiceOrderByType("Send DDI to BACS");
     }
     //end region
 

@@ -23,11 +23,11 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TC3796_005_Existing_Customer_Convert_From_Consumer_To_Business_Account_And_Add_Subscriptions_In_Ows extends BaseTest {
+public class TC3796_005_Existing_Consumer_Customer_Add_Subscriptions_With_Account_Type_Business_In_Ows extends BaseTest {
     private String customerNumber = "10170";
 
-    @Test(enabled = true, description = "TC3796_005_Existing_Customer_Convert_From_Consumer_To_Business_Account_And_Add_Subscriptions_In_Ows", groups = "SOHO")
-    public void TC3796_005_Existing_Customer_Convert_From_Consumer_To_Business_Account_And_Add_Subscriptions_In_Ows() {
+    @Test(enabled = true, description = "TC3796_005_Existing_Consumer_Customer_Add_Subscriptions_With_Account_Type_Business_In_Ows", groups = "SOHO")
+    public void TC3796_005_Existing_Consumer_Customer_Add_Subscriptions_With_Account_Type_Business_In_Ows() {
         test.get().info("Step 1 : Create a Customer with RESIDENTIAL type");
         OWSActions owsActions = new OWSActions();
         String path = "src\\test\\resources\\xml\\soho\\TC3796_002_request_residential_type.xml";
