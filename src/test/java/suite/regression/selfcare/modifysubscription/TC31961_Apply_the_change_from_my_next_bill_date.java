@@ -57,7 +57,7 @@ public class TC31961_Apply_the_change_from_my_next_bill_date extends BaseTest {
         test.get().info("verify add a safety buffer");
         SelfCareTestBase.page().verifyAddASaftyBufferSafetyBufferPage();
         Assert.assertEquals(AddASafeTyBufferPage.getInstance().getMobilePhoneNumber(), subno + " - FC Mobile 1");
-        Assert.assertEquals(AddASafeTyBufferPage.getInstance().getInfoNextAllowanceDate(), "23/" + Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT_IN_PDF3));
+        Assert.assertEquals(AddASafeTyBufferPage.getInstance().getInfoNextAllowanceDate(), AddASafeTyBufferPage.getInstance().calculateNextAllowanceDate());
         Assert.assertEquals(AddASafeTyBufferPage.getInstance().getThirdPartyMssg(), "Find out more about safety buffers.");
         Assert.assertTrue(AddASafeTyBufferPage.getInstance().isLinkHasAThirdPartyTermAndConditionPage());
 

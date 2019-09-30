@@ -34,64 +34,64 @@ public class TC31962_Change_Flexible_Cap_immediate_Decrease extends BaseTest {
     @Test(enabled = true, description = "TC31962 change flexible cap immediate decrease", groups = "SelfCare")
     public void TC31962_Change_Flexible_Cap_immediate_Decrease() {
 
-//        test.get().info("Create a CC customer");
-//        String path = "src\\test\\resources\\xml\\selfcare\\modifysubscription\\TC31962_createOrder";
-//        OWSActions owsActions = new OWSActions();
-//        owsActions.createGeneralCustomerOrder(path);
-//        owsActions.getSubscription(owsActions.orderIdNo, "FC Mobile 1");
-        String customerNumber ="13198";// owsActions.customerNo;
-        String subno ="07370078300";// owsActions.serviceRef;
+        test.get().info("Create a CC customer");
+        String path = "src\\test\\resources\\xml\\selfcare\\modifysubscription\\TC31962_createOrder";
+        OWSActions owsActions = new OWSActions();
+        owsActions.createGeneralCustomerOrder(path);
+        owsActions.getSubscription(owsActions.orderIdNo, "FC Mobile 1");
+        String customerNumber = owsActions.customerNo;
+        String subno = owsActions.serviceRef;
 
 
-//        test.get().info(" Login SelfCare  ");
-//        SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, "password1", customerNumber);
-//
-//        test.get().info("verify my tariff details page is displayed");
-//        MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
-//        SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
-//
-//        test.get().info("click add a safety buffer");
-//        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("FC Mobile 1").clickChangeMySafetyBufferBtn();
-//
-//        test.get().info("verify add a safety buffer");
-//        ChangeMySafetyBufferPage.getInstance().selectASafetyBufferByCode("20");
-//
-//        test.get().info("verify decrease warning message is displayed");
-//        String mssg = "Your safety buffer will decrease from your next bill date, you cannot decrease it immediately.";
-//        Assert.assertEquals(mssg, ChangeMySafetyBufferPage.getInstance().getDescreaseWarningMessage());
-//
-//        test.get().info("verify confirming your changes displayes correct result");
-//        Assert.assertEquals("£40.00", ChangeMySafetyBufferPage.getInstance().getPreviousSafetyBuffer());
-//        Assert.assertEquals("£20.00", ChangeMySafetyBufferPage.getInstance().getNewSafetyBuffer());
-//        ChangeMySafetyBufferPage.getInstance().clickSaveBtn();
+        test.get().info(" Login SelfCare  ");
+        SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, "password1", customerNumber);
+
+        test.get().info("verify my tariff details page is displayed");
+        MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
+        SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
+
+        test.get().info("click add a safety buffer");
+        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("FC Mobile 1").clickChangeMySafetyBufferBtn();
+
+        test.get().info("verify add a safety buffer");
+        ChangeMySafetyBufferPage.getInstance().selectASafetyBufferByCode("20");
+
+        test.get().info("verify decrease warning message is displayed");
+        String mssg = "Your safety buffer will decrease from your next bill date, you cannot decrease it immediately.";
+        Assert.assertEquals(mssg, ChangeMySafetyBufferPage.getInstance().getDescreaseWarningMessage());
+
+        test.get().info("verify confirming your changes displayes correct result");
+        Assert.assertEquals("£40.00", ChangeMySafetyBufferPage.getInstance().getPreviousSafetyBuffer());
+        Assert.assertEquals("£20.00", ChangeMySafetyBufferPage.getInstance().getNewSafetyBuffer());
+        ChangeMySafetyBufferPage.getInstance().clickSaveBtn();
 
         test.get().info("load user in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
 
-//        test.get().info("access the service order item");
-//        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
-//
-//        test.get().info("verify service order status is provision wait");
-//        HashMap<String, String> serviceOrder = ServiceOrderEntity.dataServiceOrderForChangePassword("Change Bundle", "Provision Wait");
-//        Assert.assertEquals(ServiceOrdersContentPage.getInstance().getNumberOfServiceOrders(serviceOrder), 1);
-//        String soID = ServiceOrdersContentPage.getInstance().getServiceOrderidByType("Change Bundle");
-//
-//        test.get().info("update th PDate and BillDate for provision wait SO");
-//        BillingActions.getInstance().updateThePDateAndBillDateForChangeBundle(soID);
-//
-//        test.get().info("submit the do provision services batch job");
-//        RemoteJobHelper.getInstance().runProvisionSevicesJob();
-//        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
-//
-//
-//        test.get().info("access the service order item");
-//        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
-//
-//        test.get().info("verify service order status is completed task");
-//        serviceOrder = ServiceOrderEntity.dataServiceOrderForChangePassword("Change Bundle", "Completed Task");
-//        Assert.assertEquals(ServiceOrdersContentPage.getInstance().getNumberOfServiceOrders(serviceOrder), 1);
-//
+        test.get().info("access the service order item");
+        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+
+        test.get().info("verify service order status is provision wait");
+        HashMap<String, String> serviceOrder = ServiceOrderEntity.dataServiceOrderForChangePassword("Change Bundle", "Provision Wait");
+        Assert.assertEquals(ServiceOrdersContentPage.getInstance().getNumberOfServiceOrders(serviceOrder), 1);
+        String soID = ServiceOrdersContentPage.getInstance().getServiceOrderidByType("Change Bundle");
+
+        test.get().info("update th PDate and BillDate for provision wait SO");
+        BillingActions.getInstance().updateThePDateAndBillDateForChangeBundle(soID);
+
+        test.get().info("submit the do provision services batch job");
+        RemoteJobHelper.getInstance().runProvisionSevicesJob();
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+
+
+        test.get().info("access the service order item");
+        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
+
+        test.get().info("verify service order status is completed task");
+        serviceOrder = ServiceOrderEntity.dataServiceOrderForChangePassword("Change Bundle", "Completed Task");
+        Assert.assertEquals(ServiceOrdersContentPage.getInstance().getNumberOfServiceOrders(serviceOrder), 1);
+
 
         test.get().info("access the subscription page");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();

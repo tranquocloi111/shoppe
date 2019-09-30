@@ -78,4 +78,15 @@ public class ServiceOrdersContentPage extends BasePage {
     {
         return getTextOfElement(tableControlBase.getRowByColumnNameAndCellValue(type, type).findElement(By.tagName("a")));
     }
+    public void clickNextBtn()
+    {
+        super.clickNextBtn();
+    }
+
+    @FindBy(xpath = "//input[@value='...']")
+    WebElement newTariffSearchBtn;
+    public void clicknewTariffSearchBtn()
+    {
+        click(newTariffSearchBtn);
+    }
 }
