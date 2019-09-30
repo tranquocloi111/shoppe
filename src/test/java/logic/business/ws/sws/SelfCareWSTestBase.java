@@ -87,6 +87,7 @@ public class SelfCareWSTestBase extends BaseWs {
     public String buildResponseData(String sampleFile, Date startDate,Date nextBillDate, String customerNumber, String subscriptionNumber){
         String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
         String sNextBillDate = Parser.parseDateFormate(nextBillDate, TimeStamp.DateFormatXml());
+        String sNewStartDate = Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DateFormatXml());
 
         String accountName = "Mr " + CareTestBase.getCustomerName();
 
@@ -94,7 +95,8 @@ public class SelfCareWSTestBase extends BaseWs {
                 .replace("$accountName$", accountName)
                 .replace("$startDate$", sStartDate)
                 .replace("$nextBillDate$", sNextBillDate)
-                .replace("$subscriptionNumber$", subscriptionNumber);
+                .replace("$subscriptionNumber$", subscriptionNumber)
+                .replace("$newStartDate$", sNewStartDate);
 
         return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
     }
@@ -103,7 +105,7 @@ public class SelfCareWSTestBase extends BaseWs {
         String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
         String sSubStartDate = Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT_XML);
         String sBufStartDate = "";
-        String sEndDate = Parser.parseDateFormate(TimeStamp.TodayMinus16DaysAdd2Months(), TimeStamp.DateFormatXml());
+//        String sEndDate = Parser.parseDateFormate(TimeStamp.TodayMinus16DaysAdd2Months(), TimeStamp.DateFormatXml());
         String sNextBillDate = Parser.parseDateFormate(nextBillDate, TimeStamp.DateFormatXml());
         String SNextScheduledRefill = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
         String subscriptionFC = "INVALID";
@@ -113,9 +115,62 @@ public class SelfCareWSTestBase extends BaseWs {
 
 
         for (String subscription : subscriptionNumberList) {
-            if (subscription.contains("Mobile FC")) {
+            if (subscription.endsWith("Mobile FC")) {
                 subscriptionFC = subscription.split(" ")[0];
-            } else if (subscription.contains("Mobile NC")) {
+            } else if (subscription.endsWith("Mobile NC")) {
+                subscriptionNC = subscription.split(" ")[0];
+            }else{
+                subscription3 = subscription.split(" ")[0];
+            }
+        }
+
+        String XmlValue = Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
+                .replace("$accountName$", accountName)
+                .replace("$subscriptionNumberFC$", subscriptionFC)
+                .replace("$startDate$", sStartDate)
+                .replace("$nextBillDate$", sNextBillDate)
+                .replace("$nextScheduledRefill$", SNextScheduledRefill)
+                .replace("$subscriptionNumberNC$", subscriptionNC)
+                .replace("$subscriptionNumber3$", subscription3)
+                    .replace("$subStartDate$", sSubStartDate)
+                .replace("$timeZone$", TimeStamp.TimeZone());
+
+        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(XmlValue)));
+    }
+
+    public String buildCustomerDetailsResponseData(String tempFilePath, String customerNumber, String addressee,String MPNNumber,String email, String billingGroupName){
+        String firstName = addressee.split(" ")[0];
+        String lastName = addressee.split(" ")[1];
+
+        String XmlValue = Common.readFile(tempFilePath).replace("$accountNumber$", customerNumber)
+                .replace("$firstName$", firstName)
+                .replace("$lastName$", lastName)
+                .replace("$mainSubscription$", MPNNumber)
+                .replace("$email$", email)
+                .replace("$BillingGroup$", billingGroupName)
+                .replace("$cardName$", addressee);
+
+        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(XmlValue)));
+    }
+
+    public String buildResponseData(String sampleFile, Date startDate, Date endDate, Date nextBillDate, String customerNumber, List<String> subscriptionNumberList){
+        String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
+        String sEndDate = Parser.parseDateFormate(endDate, TimeStamp.DateFormatXml());
+        String sSubStartDate = Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT_XML);
+        String sBufStartDate = "";
+//        String sEndDate = Parser.parseDateFormate(TimeStamp.TodayMinus16DaysAdd2Months(), TimeStamp.DateFormatXml());
+        String sNextBillDate = Parser.parseDateFormate(nextBillDate, TimeStamp.DateFormatXml());
+        String SNextScheduledRefill = Parser.parseDateFormate(TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.DateFormatXml());
+        String subscriptionFC = "INVALID";
+        String subscriptionNC = "INVALID";
+        String subscription3 = "INVALID";
+        String accountName = "Mr " + CareTestBase.getCustomerName();
+
+
+        for (String subscription : subscriptionNumberList) {
+            if (subscription.endsWith("Mobile FC")) {
+                subscriptionFC = subscription.split(" ")[0];
+            } else if (subscription.endsWith("Mobile NC")) {
                 subscriptionNC = subscription.split(" ")[0];
             }else{
                 subscription3 = subscription.split(" ")[0];
@@ -133,21 +188,6 @@ public class SelfCareWSTestBase extends BaseWs {
                 .replace("$subscriptionNumber3$", subscription3)
                 .replace("$subStartDate$", sSubStartDate)
                 .replace("$timeZone$", TimeStamp.TimeZone());
-
-        return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(XmlValue)));
-    }
-
-    public String buildCustomerDetailsResponseData(String tempFilePath, String customerNumber, String addressee,String MPNNumber,String email, String billingGroupName){
-        String firstName = addressee.split(" ")[0];
-        String lastName = addressee.split(" ")[1];
-
-        String XmlValue = Common.readFile(tempFilePath).replace("$accountNumber$", customerNumber)
-                .replace("$firstName$", firstName)
-                .replace("$lastName$", lastName)
-                .replace("$mainSubscription$", MPNNumber)
-                .replace("$email$", email)
-                .replace("$BillingGroup$", billingGroupName)
-                .replace("$cardName$", addressee);
 
         return Common.saveXmlFile(customerNumber + "_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(XmlValue)));
     }

@@ -23,7 +23,7 @@ import java.util.List;
 
 public class TC30432_Transfer_amount_to_Credit_Agreement_subscription_deactivated_within_Trial_Period  extends BaseTest {
 
-    @Test(enabled = false, description = "TC30432_Transfer_amount_to_Credit_Agreement_subscription_deactivated_within_Trial_Period", groups = "Smoke")
+    @Test(enabled = true, description = "TC30432_Transfer_amount_to_Credit_Agreement_subscription_deactivated_within_Trial_Period", groups = "Smoke")
     public void TC30432_Transfer_amount_to_Credit_Agreement_subscription_deactivated_within_Trial_Period(){
         test.get().info("Step 1 : Create a customer with FC and device");
         OWSActions owsActions = new OWSActions();

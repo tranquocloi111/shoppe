@@ -42,7 +42,7 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
             enterValueByLabel(deactivationDate, sDeactivationDate);
         }
 
-        public void selectDeactiveBySubscription(String subNo) {
+        public void selectDeactivateBySubscription(String subNo) {
             String xpath = String.format("//td[contains(text(),'%s')]//input[@type='checkbox']", subNo);
             waitUntilElementClickable(getDriver().findElement(By.xpath(xpath)));
             click(getDriver().findElement(By.xpath(xpath)));
@@ -61,13 +61,7 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
             clickReturnToCustomer();
         }
 
-        public void selectTheSubscriptionToBeDeactivated(String subscription) {
-            WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", subscription)));
-            WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
-            click(checkbox);
-        }
-
-        public void enterDeactiveReason(String text) {
+        public void enterDeactivateReason(String text) {
             selectByVisibleText(deactivationReason,text);
         }
     }

@@ -14,11 +14,11 @@ import suite.BaseTest;
 public class TC32084_Exception_Path_2c_Subscription_not_found_SC_002 extends BaseTest {
     @Test(enabled = true, description = "TC32084_Exception Path 2c Subscription not found SC 002", groups = "SelfCareWS")
     public void TC32084_Exception_Path_2c_Subscription_not_found_SC_002(){
-        String invalidAccountNumber= "125698745200";
+        String invalidSubscription= "125698745200";
 
         test.get().info("Submit get account detail request");
         SWSActions swsActions = new SWSActions();
-        Xml response = swsActions.submitGetAccountDetailsRequest(invalidAccountNumber);
+        Xml response = swsActions.submitGetAccountDetailsBySubsRequest(invalidSubscription);
 
         test.get().info("Verify fault response data");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();

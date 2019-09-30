@@ -1,6 +1,7 @@
 package framework.utils;
 
 import org.w3c.dom.*;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -31,6 +32,18 @@ public class Xml {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             this.doc = docBuilder.parse(file);
         } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+            this.doc = null;
+        }
+    }
+
+    public Xml (String xmlString){
+        try{
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            InputSource inputSource = new InputSource(new StringReader(xmlString));
+            this.doc = docBuilder.parse(inputSource);
+        }catch (ParserConfigurationException | SAXException | IOException e){
             e.printStackTrace();
             this.doc = null;
         }

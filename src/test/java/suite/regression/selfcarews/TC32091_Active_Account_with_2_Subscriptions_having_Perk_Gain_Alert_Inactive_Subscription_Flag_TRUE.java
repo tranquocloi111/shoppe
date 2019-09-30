@@ -16,6 +16,7 @@ import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,37 +56,46 @@ public class TC32091_Active_Account_with_2_Subscriptions_having_Perk_Gain_Alert_
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Get All Subscriptions Number");
-        getAllSubscriptionNumber(owsActions);
+        getAllSubscriptionNumber();
 
         test.get().info("Verify Customer Start Date and Billing Group are updated successfully");
         CareTestBase.page().verifyCustomerStartDateAndBillingGroupAreUpdatedSuccessfully(newStartDate);
 
-        test.get().info("Deactive NC subscription");
-        CareTestBase.deactivateSubscription(NC2Subscription);
+        test.get().info("Deactivate NC subscription");
+        CareTestBase.deactivateSubscription(NC2Subscription + "  Mobile NC 2");
+
+        test.get().info("Reload customer");
+        CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
+
+        test.get().info("Verify NC Subscription status is inactive");
+        CareTestBase.verifySubscriptionStatus(NC2Subscription, "Inactive");
         //==============================================================================
         test.get().info("Submit get account summary request");
         SWSActions swsActions = new SWSActions();
         String getAccountSummaryRequest = "src\\test\\resources\\xml\\sws\\getaccount\\Get_Account_Summary_Admin_Request.xml";
-        Xml response = swsActions.submitGetByCustomerNumberRequest(getAccountSummaryRequest, customerNumber);
+        Xml response = swsActions.submitAccountSummaryWithFlagRequest(getAccountSummaryRequest, customerNumber, "true");
         //==============================================================================
-        test.get().info("Open details content for customer");
-        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
-
         test.get().info("Build account summary response");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getaccount\\TC32091_response.xml";
-        String expectedResponseFile = "";
-        ////////NOT IMPLEMENTED YET
+        String expectedResponseFile = selfCareWSTestBase.buildResponseData(sampleResponseFile, newStartDate,TimeStamp.Today(), TimeStamp.TodayPlus1Month(), customerNumber,subscriptionNumberList);
 
         test.get().info("Verify get account summary response");
         selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponseFile, response);
 
     }
 
-    private void getAllSubscriptionNumber(OWSActions owsActions){
-        FCSubscription = owsActions.getOrderMpnByReference("Mobile FC");
-        NCSubscription = owsActions.getOrderMpnByReference("Mobile NC");
-        NC2Subscription = owsActions.getOrderMpnByReference("Mobile NC2");
+    private void getAllSubscriptionNumber(){
+        subscriptionNumberList = CareTestBase.getAllSubscription();
+        for (String subscription : subscriptionNumberList) {
+            if (subscription.endsWith("Mobile FC")) {
+                FCSubscription = subscription.split(" ")[0];
+            } else if (subscription.endsWith("Mobile NC")) {
+                NCSubscription = subscription.split(" ")[0];
+            }else {
+                NC2Subscription = subscription.split(" ")[0];
+            }
+        }
     }
 
 

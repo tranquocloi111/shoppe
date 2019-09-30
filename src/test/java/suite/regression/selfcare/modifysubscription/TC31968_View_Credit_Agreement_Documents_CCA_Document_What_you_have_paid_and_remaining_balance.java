@@ -95,7 +95,7 @@ public class TC31968_View_Credit_Agreement_Documents_CCA_Document_What_you_have_
 
     public void deactiveFC4Subscription() {
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().selectDeactiveBySubscription(subno4);
+        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().selectDeactivateBySubscription(subno4);
         DeactivateSubscriptionPage.DeactivateSubscription.getInstance().clickNextButton();
 
         ServiceOrdersPage.ReturnsAndEtcPage.getInstance().selectWaiveETCReasonByIndexAndValue(0, "Goodwill Gesture");
