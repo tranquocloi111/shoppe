@@ -70,8 +70,8 @@ public class TC32066_Basic_Path_Billing_Detail_Invoice_Stype_with_Summary extend
 
     private void editBillingDetailInvoiceStyleValue(String billStyle){
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
-        DetailsContentPage.BillingInformationSectionPage.getInstance().clickEditBtnByIndex(0);
-        DetailsContentPage.BillingInformationSectionPage.getInstance().changeBillNotification(billStyle);
+        DetailsContentPage.BillingInformationSectionPage.getInstance().clickEditBtnBySection("Billing Information");
+        DetailsContentPage.BillingInformationSectionPage.getInstance().changeBillStyle(billStyle);
         DetailsContentPage.BillingInformationSectionPage.getInstance().clickApplyBtn();
     }
 }

@@ -1,5 +1,6 @@
 package suite.regression.selfcarews;
 
+import framework.utils.RandomCharacter;
 import framework.utils.Xml;
 import logic.business.db.billing.BillingActions;
 import logic.business.ws.ows.OWSActions;
@@ -70,7 +71,7 @@ public class TC32058_Basic_Path_getAccountDetail_Address_contains_Address_Line_1
                 .replace("$mainSubscription$", subscriptionNumber)
                 .replace("$email$", emailAddress)
                 .replace("$BillingGroup$", billingGroupName)
-                .replace("$buildingIdentifer$", buildingIdentifier)
+                .replace("$buildingIdentifier$", buildingIdentifier)
                 .replace("$addressLine1$", addressLine1)
                 .replace("$cardName$", firstName + " " + lastName);
 
@@ -84,25 +85,25 @@ public class TC32058_Basic_Path_getAccountDetail_Address_contains_Address_Line_1
     }
 
     private void createACCCustomerWithAddressLine1(){
-        addressLine1 = "address Line1" + randomNumberAndString();
-        buildingIdentifier = randomNumberAndString();
-        firstName = "first" + randomNumberAndString();
-        lastName = "last" + randomNumberAndString();
-        emailAddress = String.format("mail%s@hstch.com", randomNumberAndString());
-        username = String.format("un%s@hstch.com", randomNumberAndString());
+        addressLine1 = "address Line1" + RandomCharacter.getRandomNumericString(8);
+        buildingIdentifier = RandomCharacter.getRandomNumericString(8);
+        firstName = "first" + RandomCharacter.getRandomNumericString(9);
+        lastName = "last" + RandomCharacter.getRandomNumericString(9);
+        emailAddress = String.format("mail%s@hsntch.com", RandomCharacter.getRandomNumericString(9));
+        username = String.format("un%s@hsntech.com", RandomCharacter.getRandomNumericString(9));
 
         String tempFilePath = "src\\test\\resources\\xml\\ows\\TC32058_createOrder.xml";
         String xmlRequest = Common.readFile(tempFilePath)
                 .replace("$firstName$", firstName)
                 .replace("$lastName$", lastName)
                 .replace("$emailAddress$", emailAddress)
-                .replace("$buildingIdentifer$", buildingIdentifier)
+                .replace("$buildingIdentifier$", buildingIdentifier)
                 .replace("$addressLine1$", addressLine1)
                 .replace("$username$", username);
         String requestFile =  Common.saveXmlFile(username + "_request.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(xmlRequest)));
 
         OWSActions owsActions = new OWSActions();
-        owsActions.createGeneralCustomerOrder(requestFile);
+        owsActions.createGeneralCustomerWithRequestFile(requestFile);
         customerNumber = owsActions.customerNo;
         orderId = owsActions.orderIdNo;
 

@@ -6,6 +6,7 @@ import logic.business.ws.ows.OWSActions;
 import logic.business.ws.sws.SWSActions;
 import logic.business.ws.sws.SelfCareWSTestBase;
 import logic.pages.care.MenuPage;
+import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.DetailsContentPage;
 import logic.pages.care.find.SubscriptionContentPage;
 import org.testng.Assert;
@@ -79,6 +80,6 @@ public class TC32045_Alternative_Path_1a_Active_master_Subscription_NC extends B
 
     private void getSubscriptionNumber(){
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subscriptionNumber = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
+        subscriptionNumber = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue(" Mobile NC");
     }
 }

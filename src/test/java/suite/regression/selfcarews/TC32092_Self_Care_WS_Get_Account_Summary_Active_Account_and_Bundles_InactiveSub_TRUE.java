@@ -51,32 +51,39 @@ public class TC32092_Self_Care_WS_Get_Account_Summary_Active_Account_and_Bundles
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Get All Subscriptions Number");
-        getAllSubscriptionNumber(owsActions);
+        getAllSubscriptionNumber();
         //=============================================================================
         String deactivateReason = "Customer Cancelled";
 
-        test.get().info("Deactive NC subscription");
-        CareTestBase.deactivateSubscription(NCSubscription);
+        test.get().info("Deactivate NC subscription");
+        CareTestBase.deactivateSubscription(NCSubscription + "  Mobile NC");
 
         test.get().info("Verify NC Subscription status is inactive");
         CareTestBase.verifySubscriptionStatus(NCSubscription, "Inactive");
 
         test.get().info("Submit Get Account Summary Request to SelfCare WS");
         SWSActions swsActions = new SWSActions();
-        Xml response = swsActions.submitGetAccountSummaryRequest(customerNumber);
+        String getAccountSummaryRequest = "src\\test\\resources\\xml\\sws\\getaccount\\Get_Account_Summary_Admin_Request.xml";
+        Xml response = swsActions.submitAccountSummaryWithFlagRequest(getAccountSummaryRequest, customerNumber, "true");
 
         test.get().info("Build Expected Account Summary Response Data");
         String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getaccount\\TC32092_response.xml";
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        String expectedResponseFile = selfCareWSTestBase.buildResponseData(sampleResponseFile, newStartDate, TimeStamp.TodayMinus15DaysAdd1Month(), customerNumber, subscriptionNumberList);
+        String expectedResponseFile = selfCareWSTestBase.buildResponseData(sampleResponseFile, newStartDate,TimeStamp.Today(), TimeStamp.TodayPlus1Month(), customerNumber, subscriptionNumberList);
 
         test.get().info("Verify Get Account Summary Response");
         selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponseFile, response);
 
     }
 
-    private void getAllSubscriptionNumber(OWSActions owsActions){
-        FCSubscription = owsActions.getOrderMpnByReference("Mobile FC");
-        NCSubscription = owsActions.getOrderMpnByReference("Mobile NC");
+    private void getAllSubscriptionNumber(){
+        subscriptionNumberList = CareTestBase.getAllSubscription();
+        for (String subscription : subscriptionNumberList) {
+            if (subscription.endsWith("Mobile FC")) {
+                FCSubscription = subscription.split(" ")[0];
+            } else if (subscription.endsWith("Mobile NC")) {
+                NCSubscription = subscription.split(" ")[0];
+            }
+        }
     }
 }
