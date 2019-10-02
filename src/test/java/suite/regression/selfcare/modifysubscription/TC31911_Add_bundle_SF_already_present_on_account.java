@@ -40,22 +40,22 @@ public class TC31911_Add_bundle_SF_already_present_on_account extends BaseTest {
 
     @Test(enabled = true, description = "TC31911 add bundle SF already present on account", groups = "SelfCare")
     public void TC31911_Add_bundle_SF_already_present_on_account() {
-        test.get().info("Create a CC customer with no bundle and sim only");
+        test.get().info("Step 1: Create a CC customer with no bundle and sim only");
         String path = "src\\test\\resources\\xml\\selfcare\\modifysubscription\\TC31911_createOrder";
         OWSActions owsActions = new OWSActions();
         mpn = owsActions.createACCCustomerWith1FCSubscriptions(path);
         String customerNumber = owsActions.customerNo;
 
 
-        test.get().info("create new billing group");
+        test.get().info("Step 2: create new billing group");
         createNewBillingGroup();
-        test.get().info("update bill group payment collection date to 10 day later ");
+        test.get().info("Step 3: update bill group payment collection date to 10 day later ");
         updateBillGroupPaymentCollectionDateTo10DaysLater();
-        test.get().info("set bill group for customer");
+        test.get().info("Step 4: set bill group for customer");
         setBillGroupForCustomer(customerNumber);
-        test.get().info("update start date for customer");
+        test.get().info("Step 5: update start date for customer");
         CommonActions.updateCustomerStartDate(customerNumber, TimeStamp.TodayMinus20Days());
-        test.get().info("Load customer in hub net ");
+        test.get().info("Step 6: Load customer in hub net ");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         HashMap<String, String> expectedSub = SubscriptionEntity.dataForFullSummarySubscriptions(TimeStamp.TodayMinus20Days(),
@@ -67,28 +67,28 @@ public class TC31911_Add_bundle_SF_already_present_on_account extends BaseTest {
         Assert.assertEquals(SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getServiceFeature(), "4G Service=ON");
 
 
-        test.get().info("Login in to selfcare");
+        test.get().info("Step 7: Login in to selfcare");
         SelfCareTestBase.page().LoginIntoSelfCarePageWithOutPin(owsActions.username, owsActions.password, customerNumber);
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
-        test.get().info("Access the tariff detail page");
+        test.get().info("Step 8: Access the tariff detail page");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
-        test.get().info("verify detail screen");
+        test.get().info("Step 9: verify detail screen");
         verifyDetailsScreen();
 
-        test.get().info("click add or change a bundle button");
+        test.get().info("Step 10: click add or change a bundle button");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1").clickAddOrChangeABundleButton();
 
-        test.get().info("verify monthly bundle displayed");
+        test.get().info("Step 11: verify monthly bundle displayed");
         SelfCareTestBase.page().verifyMonthlyBundleDisplayed();
         MonthlyBundlesAddChangeOrRemovePage.getInstance().selectBundlesByName();
 
-        test.get().info("select 3GB 4G data bunble and save changes");
+        test.get().info("Step 12: select 3GB 4G data bunble and save changes");
         select3GB4GDataBundlesAndSaveChanges();
 
-        test.get().info("verify successfull message");
+        test.get().info("Step 13: verify successfull message");
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
         List<String> successMssg = SelfCareTestBase.page().successfulMessageStack();
         Assert.assertEquals(successMssg.get(0), "Thanks, the bundle changes you’ve made have been successful.");
@@ -102,35 +102,37 @@ public class TC31911_Add_bundle_SF_already_present_on_account extends BaseTest {
         Assert.assertEquals(String.format("4G data - 3GB   PENDING activation  as of  %s", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT_IN_PDF)), expectedResult.trim());
 
 
-        test.get().info("Load  user in hub net");
+        test.get().info("Step 14: Load  user in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("Go to service order page");
+        test.get().info("Step 15: Go to service order page");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
         verifyOneServiceOrderIsProvisionWait();
 
-        test.get().info("Run provision services job");
+        test.get().info("Step 16: Run provision services job");
         updateThePDateAndBillDateForChangeBundleForSo(serviceOrder);
         RemoteJobHelper.getInstance().runProvisionSevicesJob();
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
 
-        test.get().info("refresh the customer");
+        test.get().info("Step 17: refresh the customer");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
 
-        test.get().info("Go to service order page");
+        test.get().info("Step 18: Go to service order page");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
         verifyOneServiceOrderIsCompleteTask();
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
 
-        test.get().info("verify  SOA returns response as expected");
+        test.get().info("Step 19: verify  SOA returns response as expected");
         String outPut = CommonActions.getResponse("GETRESPONSE", mpn);
         Assert.assertTrue(outPut.contains("<responseCode>901</responseCode>"));
         Assert.assertTrue(outPut.contains("<responseCodeDescription>4G already present</responseCodeDescription>"));
-        test.get().info("verify summary information is correct");
+
+        test.get().info("Step 20: verify summary information is correct");
         verifySummaryInformationIsCorrect();
-        test.get().info("Open subscription details and 4G service is on");
+
+        test.get().info("Step 21: Open subscription details and 4G service is on");
         openSubscriptionDetailsAnd4GServiceIsOn();
 
 

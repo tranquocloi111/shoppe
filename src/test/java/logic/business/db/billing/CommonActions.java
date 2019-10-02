@@ -209,58 +209,58 @@ public class CommonActions extends OracleDB {
         return str.toString();
     }
 
-    public static void updateCustomerAccessRoleToNone(){
+    public static void updateCustomerAccessRoleToNone() {
         String sql = "delete from objectrole where roleid = 147 and clientobjectid  =  " + Config.getProp("businessclientobjectid");
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
-    public static void updateCustomerAccessRoleToReadWrite(){
-        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES("+Config.getProp("businessclientobjectid")+",147,'N','Y','Y','Y','Y', 0)";
+    public static void updateCustomerAccessRoleToReadWrite() {
+        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES(" + Config.getProp("businessclientobjectid") + ",147,'N','Y','Y','Y','Y', 0)";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
-    public static boolean checkCustomerAccessRole(){
+    public static boolean checkCustomerAccessRole() {
         try {
             String sql = "select count(*) as quality from objectrole where roleid = 147 and clientobjectid = " + Config.getProp("businessclientobjectid");
             return OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "quality").toString().equalsIgnoreCase("1");
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.info(ex.getMessage());
         }
         return false;
     }
 
-    public static void updateChangeCustomerTypeAccessRoleToNone(){
+    public static void updateChangeCustomerTypeAccessRoleToNone() {
         String sql = "delete from objectrole where roleid = 147 and clientobjectid  =  " + Config.getProp("customertypeclientobjectid");
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
-    public static void updateChangeCustomerTypeAccessRoleToReadWrite(){
-        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES("+ Config.getProp("customertypeclientobjectid")+",147,'N','Y','Y','Y','Y', 0) ";
+    public static void updateChangeCustomerTypeAccessRoleToReadWrite() {
+        String sql = "INSERT INTO objectrole (CLIENTOBJECTID, ROLEID,INCLUDEFLG,SELFLG,INSFLG,UPDFLG,DELFLG,ROWVERSION ) VALUES(" + Config.getProp("customertypeclientobjectid") + ",147,'N','Y','Y','Y','Y', 0) ";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
-    public static boolean checkChangeCustomerTypeAccessRole(){
+    public static boolean checkChangeCustomerTypeAccessRole() {
         try {
             String sql = "select count(*) as quality from objectrole where roleid = 147 and clientobjectid =  " + Config.getProp("customertypeclientobjectid");
             return OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "quality").toString().equalsIgnoreCase("1");
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.info(ex.getMessage());
         }
         return false;
     }
 
-    public static void updateDueDateInvoice(String date, String invoiceId){
-        String sql = "UPDATE invoice SET datedue = '"+date+"' WHERE documentnbr = '"+invoiceId+"'  ";
+    public static void updateDueDateInvoice(String date, String invoiceId) {
+        String sql = "UPDATE invoice SET datedue = '" + date + "' WHERE documentnbr = '" + invoiceId + "'  ";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
-    public static void updateCustomerDDIDetailsInDatabase(String dateStart, String hmbrid, String DDIReference){
+    public static void updateCustomerDDIDetailsInDatabase(String dateStart, String hmbrid, String DDIReference) {
         String sql = String.format("update hmbrproperty set propvalchar='A' where propertykey='DDISTAT' and hmbrid=%s", hmbrid);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
 
-        sql = String.format("update hmbrproperty set propvalchar='%s', datestart= '"+dateStart+"' where propertykey='DDIREF' and hmbrid=%s", DDIReference, hmbrid);
+        sql = String.format("update hmbrproperty set propvalchar='%s', datestart= '" + dateStart + "' where propertykey='DDIREF' and hmbrid=%s", DDIReference, hmbrid);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
@@ -289,15 +289,31 @@ public class CommonActions extends OracleDB {
        }
     }
 
-    public static void updateCreditCardDateToPast(String hmbrid){
+    public static void updateCreditCardDateToPast(String hmbrid) {
         String propvaldate = Parser.parseDateFormate(Date.valueOf(TimeStamp.Today().toLocalDate().minusYears(1)), "dd/MMM/yyyy");
         String propvalnumber[] = Parser.parseDateFormate(Date.valueOf(TimeStamp.Today().toLocalDate().minusYears(1)), "dd/MM/yyyy").split("/");
-        String sql = "UPDATE  hmbrproperty  set propvaldate = '"+propvaldate+"' where propertykey like 'CCED' and hmbrid = '" + hmbrid + "' ";
+        String sql = "UPDATE  hmbrproperty  set propvaldate = '" + propvaldate + "' where propertykey like 'CCED' and hmbrid = '" + hmbrid + "' ";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
-        sql = "UPDATE hmbrproperty  set propvalnumber = '"+propvalnumber[1]+"' where propertykey like 'CCEM' and hmbrid = '" + hmbrid + "' ";
+        sql = "UPDATE hmbrproperty  set propvalnumber = '" + propvalnumber[1] + "' where propertykey like 'CCEM' and hmbrid = '" + hmbrid + "' ";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
-        sql = "UPDATE hmbrproperty  set propvalnumber = '"+propvalnumber[2]+"' where propertykey like 'CCEY' and hmbrid = '" + hmbrid + "' ";
+        sql = "UPDATE hmbrproperty  set propvalnumber = '" + propvalnumber[2] + "' where propertykey like 'CCEY' and hmbrid = '" + hmbrid + "' ";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
+    public static  String getReportUniqueId() {
+        String id;
+        String sql = " select ReportRunID.NEXTVAL from dual";
+        try {
+            id = OracleDB.SetToNonOEDatabase().executeQueryReturnListString(sql).get(0);
+            id=id.substring(id.indexOf("=")+1,id.length()-1);
+            for (int i=0;i<4;i++)
+            {
+                id="0"+id;
+            }
+            return id;
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+        return null;
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {

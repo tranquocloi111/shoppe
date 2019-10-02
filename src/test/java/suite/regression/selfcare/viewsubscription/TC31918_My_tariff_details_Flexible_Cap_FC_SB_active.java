@@ -18,7 +18,7 @@ public class TC31918_My_tariff_details_Flexible_Cap_FC_SB_active extends BaseTes
 
     @Test(enabled = true, description = "TC31918 my tariff details flexible cap FC SB acctive", groups = "SelfCare")
     public void TC31918_My_tariff_details_Flexible_Cap_FC_SB_active() {
-        test.get().info(" Create a CC customer");
+        test.get().info("Step 1: Create a CC customer");
         String path = "src\\test\\resources\\xml\\selfcare\\viewsubscription\\TC31918_createOrderRequest";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
@@ -26,14 +26,14 @@ public class TC31918_My_tariff_details_Flexible_Cap_FC_SB_active extends BaseTes
         String customerNumber = owsActions.customerNo;
         subno = owsActions.getOrderMpnByReference("FC Mobile 1");
 
-        test.get().info(" Create a CC customer");
+        test.get().info("Step 2:Login in to selfcare");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
 
-        test.get().info("access my tariff details page ");
+        test.get().info("Step 3: access my tariff details page ");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
-        test.get().info("verify subscription details");
+        test.get().info("Step 4: verify subscription details");
         verifySubscriptionDetails();
 
     }

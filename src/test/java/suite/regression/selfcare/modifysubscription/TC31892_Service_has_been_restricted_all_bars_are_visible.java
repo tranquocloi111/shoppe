@@ -38,7 +38,7 @@ public class TC31892_Service_has_been_restricted_all_bars_are_visible extends Ba
     @Test(enabled = true, description = "TC331892 service has been restricted all bars are visible", groups = "SelfCare")
     public void TC31892_Service_has_been_restricted_all_bars_are_visible()
     {
-        test.get().info("Create a CC customer with no bundle and sim only");
+        test.get().info("Step 1: Create a CC customer with no bundle and sim only");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_NC_no_bundle_and_sim_only";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
@@ -46,54 +46,54 @@ public class TC31892_Service_has_been_restricted_all_bars_are_visible extends Ba
         String customerNumber= owsActions.customerNo;
         String subNo1 = owsActions.serviceRef;
 
-        test.get().info("Create new billing group from to day minus 20 days");
+        test.get().info("Step 2: Create new billing group from to day minus 20 days");
         createNewBillingGroupToMinus20days();
 
-        test.get().info("update bill group payment collection date to 10 dáy later");
+        test.get().info("Step 3: update bill group payment collection date to 10 dáy later");
         updateBillGroupPaymentCollectionDateTo10DaysLater();
 
-        test.get().info("set billing group for customer");
+        test.get().info("Step 4: set billing group for customer");
         setBillGroupForCustomer(customerNumber);
 
-        test.get().info("update customer start date");
+        test.get().info("Step 5: update customer start date");
         CommonActions.updateCustomerStartDate(customerNumber, TimeStamp.TodayMinus15Days());
 
-        test.get().info("load customer in hub net");
+        test.get().info("Step 6: load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("generate the cdr file then upload to server");
+        test.get().info("Step 7: generate the cdr file then upload to server");
         generateCDRFileFromTemplateThenUploadToServer(subNo1);
         BaseTest.waitLoadCDRJobComplete();
 
-        test.get().info("Turn on all bars in Barring and Roaming options");
+        test.get().info("Step 8: Turn on all bars in Barring and Roaming options");
         turnOnAllBarsInBarringAndRoamingOptions();
 
-        test.get().info("Open the first subscription details content for first subscription");
+        test.get().info("Step 9: Open the first subscription details content for first subscription");
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
 
-        test.get().info("Verify all bars are turned on");
+        test.get().info("Step 10: Verify all bars are turned on");
         String actualStatus=SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getBarringStatus();
         Assert.assertEquals(actualStatus,"Capped Excess=OFF, Fraud=ON, Treatment=ON, Customer=ON, HighUsage=ON");
 
-        test.get().info("Login to self care");
+        test.get().info("Step 11: Login to self care");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username,owsActions.password,customerNumber);
 
-        test.get().info("Verify the message customers service has been restricted is displayed");
+        test.get().info("Step 12: Verify the message customers service has been restricted is displayed");
         MyPersonalInformationPage.myAlertSection.getInstance().isMssgDisplayed("Your service has been restricted. Click here for more options.");
         MyPersonalInformationPage.myAlertSection.getInstance().clickAlertMessageByText("Your service has been restricted. Click here for more options.");
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
-        test.get().info("Verify all bar messages in my tariff page");
+        test.get().info("Step 13: Verify all bar messages in my tariff page");
         verifyAllBarMessageInMyTariffPage();
 
-        test.get().info("click 40 data cap abroad link");
+        test.get().info("Step 14: click 40 data cap abroad link");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile NC 1").clickDataCapAbroad();
 
-        test.get().info("verify accept data charges of more than 40 while abroad page open");
+        test.get().info("Step 15: verify accept data charges of more than 40 while abroad page open");
         SelfCareTestBase.page().verifyAcceptDataChargesOfMoreThan40WhileAbroadPageOpen();
         SelfCareTestBase.page().clickBackBtn();
 
-        test.get().info("verify unpaid link available");
+        test.get().info("Step 16: verify unpaid link available");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile NC 1").clickUnPaidLink();
         SelfCareTestBase.page().verifyMakeAOneOffPayment();
 
@@ -101,11 +101,11 @@ public class TC31892_Service_has_been_restricted_all_bars_are_visible extends Ba
     public void generateCDRFileFromTemplateThenUploadToServer(String subNo1){
         String filePath = "src\\test\\resources\\txt\\care\\TM_DRAS_CDR_20150106170007";
         String cdrFileString = Common.readFile(filePath);
-        String fileName= Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT2)+ RandomCharacter.getRandomNumericString(6);
-        fileName= Common.getFolderLogFilePath()+"TM_DRAS_CDR_" + fileName + ".txt";
+        String fileName= TimeStamp.TodayMinus1HourReturnFullFormat();
         cdrFileString=cdrFileString.replace("20150106170007",fileName)
                         .replace("07847469610",subNo1)
                         .replace("04/01/2015",Parser.parseDateFormate(TimeStamp.TodayMinus2Days(),TimeStamp.DATE_FORMAT4));
+        fileName= Common.getFolderLogFilePath()+"TM_DRAS_CDR_" + fileName + ".txt";
         Common.writeFile(cdrFileString,fileName);
         String remotePath= Config.getProp("CDRSFTPFolder");
         SFTPHelper.getInstance().upFileFromLocalToRemoteServer(fileName,remotePath);

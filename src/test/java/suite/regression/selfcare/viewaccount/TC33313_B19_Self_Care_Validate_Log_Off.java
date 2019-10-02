@@ -12,21 +12,21 @@ public class TC33313_B19_Self_Care_Validate_Log_Off extends BaseTest {
 
     @Test(enabled = true, description = "TC33313 self care validate log off", groups = "SelfCare")
     public void TC33313_B19_Self_Care_Validate_Log_Off() {
-        test.get().info("Create a CC customer with no bundle and sim only");
+        test.get().info("Step 1: Create a CC customer with no bundle and sim only");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_NC_no_bundle_and_sim_only";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         String customerNumber = owsActions.customerNo;
 
 
-        test.get().info("Login in to selfcare page");
+        test.get().info("Step 2: Login in to selfcare page");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
-        test.get().info("Click log off");
+        test.get().info("Step 3: Click log off");
         SelfCareTestBase.page().clickLogOffLink();
 
-        test.get().info("verify browser url is correct");
+        test.get().info("Step 4: verify browser url is correct");
         String url = "https://www.tescomobile.com/my-account-logout";
         Assert.assertEquals(SelfCareTestBase.page().getCurrentUrl(),url);
 

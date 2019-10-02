@@ -3,12 +3,11 @@ package logic.utils;
 import framework.config.Config;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Hours;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class TimeStamp {
@@ -17,6 +16,7 @@ public class TimeStamp {
     public final static String DATE_FORMAT2 = "yyyyMMdd";
     public final static String DATE_FORMAT3 = "dd-MMM-yy";
     public final static String DATE_FORMAT4 = "dd/MM/yyyy";
+    public final static String DATE_FORMAT5 = "yyyyMMdd HH mm";
     public final static String DATE_FORMAT_IN_PDF = "dd/MM/yyyy";
     public final static String DATE_FORMAT_IN_PDF2 = "dd-MMM-yyyy";
     public final static String DATE_FORMAT_IN_PDF3 = "MM/yyyy";
@@ -161,6 +161,7 @@ public class TimeStamp {
         return Date.valueOf(String.valueOf(LocalDateTime.now().minusHours(1).toLocalDate()));
     }
 
+
     public static String DateFormatXml() {
         return DATE_FORMAT_XML + Config.getProp("timeZone");
     }
@@ -296,6 +297,19 @@ public class TimeStamp {
         LocalDate day1 = LocalDate.now();
         LocalDate day2 = date.toLocalDate();
         return ChronoUnit.DAYS.between(day2, day1);
+    }
+
+    public static Date TodayMinusDayAndMonth(int day,int month) {
+        return Date.valueOf(LocalDate.now().minusDays(day).minusMonths(month));
+    }
+    public static String TodayMinus1HourReturnFullFormat() {
+        LocalDateTime now = LocalDateTime.now().minusHours(1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
+        String formatDateTime = now.format(formatter);
+
+        return formatDateTime;
     }
 
 }
