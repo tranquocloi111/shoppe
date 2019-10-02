@@ -26,7 +26,7 @@ public class TC2010_Self_Care_View_Account_Information_method extends BaseTest {
 
     @Test(enabled = true, description = "TC2010 Self Care view account infomation method ", groups = "SelfCare")
     public void TC2010_Self_Care_View_Account_Information_method() {
-        test.get().info("Create a CC customer with no bundle and sim only");
+        test.get().info("Step 1: Create a CC customer with no bundle and sim only");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_NC_no_bundle_and_sim_only";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
@@ -39,32 +39,32 @@ public class TC2010_Self_Care_View_Account_Information_method extends BaseTest {
         userName = owsActions.username;
 
 
-        test.get().info("Load user in hub net");
+        test.get().info("Step 2: Load user in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("get expect result in hub");
+        test.get().info("Step 3: get expect result in hub");
         getExpectResultsInHub();
 
-        test.get().info("Login to selfcare");
+        test.get().info("Step 4: Login to selfcare");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
-        test.get().info("Click view or change my account details in my account block");
+        test.get().info("Step 5: Click view or change my account details in my account block");
         SelfCareTestBase.page().viewOrChangeMyAccountDetails();
 
-        test.get().info("verify personal block is correct");
+        test.get().info("Step 6: verify personal block is correct");
         verifyPersonalDetailsBlockIsCorrect();
 
-        test.get().info("verify contact detail block is correct");
+        test.get().info("Step 7: verify contact detail block is correct");
         verifyContacdetailsBlockIsCorrect();
 
-        test.get().info("verify security block is correct");
+        test.get().info("Step 8: verify security block is correct");
         verifySecurityBlockIsCorrect();
 
-        test.get().info("verify cub card block is correct");
+        test.get().info("Step 9: verify cub card block is correct");
         verifyClubCardBlockIsCorrect();
 
-        test.get().info("verify address detail block is correct");
+        test.get().info("Step 10: verify address detail block is correct");
         verifyBillingAddressDetailBlockIsCorrect();
 
 

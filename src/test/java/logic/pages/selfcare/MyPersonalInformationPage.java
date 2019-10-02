@@ -293,16 +293,16 @@ public class MyPersonalInformationPage extends BasePage {
                 WebElement el = validTable().findElement(By.xpath("..//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
                 selectByVisibleText(el, text);
             }
-            public List<WebElement> getListViewAgreementBtn()
-            {
+
+            public List<WebElement> getListViewAgreementBtn() {
                 return getDriver().findElements(By.xpath("//a[@id='viewAgreementButton']"));
             }
-            public void clickViewAgreementButton(int index)
-            {
+
+            public void clickViewAgreementButton(int index) {
                 click(getListViewAgreementBtn().get(index));
             }
 
-            public void savePDFFile(  String fileName) {
+            public void savePDFFile(String fileName) {
                 String parent = getTitle();
                 switchWindow("Your Agreement", false);
                 String url = embeddedPdfForm.getAttribute("src");
@@ -339,55 +339,62 @@ public class MyPersonalInformationPage extends BasePage {
                 return null;
             }
 
-            public String getPopupMessageOfPerk(){
+            public String getPopupMessageOfPerk() {
                 return getTextComfirmDialog();
             }
 
-            private WebElement validTable(){
+            private WebElement validTable() {
                 WebElement table = null;
                 try {
                     if (isElementPresent(myTariffTable()))
                         table = myTariffTable();
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     table = myTariffDeactivateTable();
                 }
 
-               return table;
+                return table;
             }
 
-            private TableControlBase validTableControlBase(){
+            private TableControlBase validTableControlBase() {
                 WebElement table = null;
                 try {
                     if (isElementPresent(myTariffTable()))
                         table = myTariffTable();
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     table = myTariffDeactivateTable();
                 }
                 return new TableControlBase(table);
             }
         }
-            public String getErrorMssgDialog() {
-                return super.getTextComfirmDialog();
-            }
-            @FindBy(xpath = "//span[contains(text(),'INACTIVE')]//ancestor::tr[1]//following-sibling::tr[4]//a[@id='addBundleBtn']")
-            WebElement addOrChangeAFamilyPerkOfInacitveSubscriptionBtn;
 
-            public void clickAddOrChangeAFamilyPerkOfInacitveSubscription() {
-                clickWithOutWait(addOrChangeAFamilyPerkOfInacitveSubscriptionBtn);
-            }
-            public WebElement getInactiveSubscriptionTable(String reference)
-            {
-                String xpath=String.format("//td[contains(text(),'%s')]//ancestor::table[1]",reference);
-                return getDriver().findElement(By.xpath(xpath));
-            }
-            public List<WebElement> getListCreditAgreementSelect()
-            {
-                return getDriver().findElements(By.xpath("//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
-            }
-            public void setCreditAgreementSelectByVisibleTextForInactiveSubscription(String text,int index) {
-                selectByVisibleText(getListCreditAgreementSelect().get(index), text);
-            }
+        public String getErrorMssgDialog() {
+            return super.getTextComfirmDialog();
         }
+
+        @FindBy(xpath = "//span[contains(text(),'INACTIVE')]//ancestor::tr[1]//following-sibling::tr[4]//a[@id='addBundleBtn']")
+        WebElement addOrChangeAFamilyPerkOfInacitveSubscriptionBtn;
+
+        public void clickAddOrChangeAFamilyPerkOfInacitveSubscription() {
+            clickWithOutWait(addOrChangeAFamilyPerkOfInacitveSubscriptionBtn);
+        }
+
+        public WebElement getInactiveSubscriptionTable(String reference) {
+            String xpath = String.format("//td[contains(text(),'%s')]//ancestor::table[1]", reference);
+            return getDriver().findElement(By.xpath(xpath));
+        }
+
+        public List<WebElement> getListCreditAgreementSelect() {
+            return getDriver().findElements(By.xpath("//label[contains(text(),'Credit Agreements')]//ancestor::td[1]//following-sibling::td/div/div[2]/select"));
+        }
+
+        public void setCreditAgreementSelectByVisibleTextForInactiveSubscription(String text, int index) {
+            selectByVisibleText(getListCreditAgreementSelect().get(index), text);
+        }
+
+        public void clickViewMyUsageDetailsSinceMyLastBillLink() {
+            clickLinkByText("View my usage details since my last bill");
+        }
+    }
 
     public static class myAlertSection extends MyPersonalInformationPage {
         private static myAlertSection instance;

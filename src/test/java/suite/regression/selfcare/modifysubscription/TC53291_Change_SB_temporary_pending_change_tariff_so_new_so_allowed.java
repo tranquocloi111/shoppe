@@ -35,7 +35,7 @@ public class TC53291_Change_SB_temporary_pending_change_tariff_so_new_so_allowed
     @Test(enabled = true, description = "TC53286 chaneg SB Immdiate pending change Tariff SO new SO rejected", groups = "SelfCare")
     public void TC53286_Change_SB_Immediate_Pending_Change_Tariff_SO_New_SO_rejected() {
 
-        test.get().info("Create a CC customer");
+        test.get().info("Step 1: Create a CC customer");
         String path = "src\\test\\resources\\xml\\selfcare\\modifysubscription\\TC53291_createOrder";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
@@ -44,95 +44,92 @@ public class TC53291_Change_SB_temporary_pending_change_tariff_so_new_so_allowed
         sub=owsActions.serviceRef;
         serviceOrder=owsActions.orderIdNo;
 
-
         //Change a customer tariff amd the Service Order Status is PWAIT
-        test.get().info("load user in hub net");
+        test.get().info("Step 2: load user in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-
-
-        test.get().info("select change tariff from RHS actions");
+        test.get().info("Step 3: select change tariff from RHS actions");
         MenuPage.RightMenuPage.getInstance().clickChangeTariffLink();
 
-        test.get().info("select subscription from drop down");
+        test.get().info("Step 4: select subscription from drop down");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
 
-        test.get().info("open the search tariff window");
+        test.get().info("Step 5: open the search tariff window");
         String title= ServiceOrdersContentPage.getInstance().getTitle();
         ServiceOrdersContentPage.getInstance().clicknewTariffSearchBtn();
         ServiceOrdersContentPage.getInstance().switchWindow("Tariff Search",false);
 
-        test.get().info("Search tariff by specified criteria");
+        test.get().info("Step 6: Search tariFff by specified criteria");
         TariffSearchCriteriaEnity tariffSearchCriteriaEnity=new TariffSearchCriteriaEnity();
         tariffSearchCriteriaEnity.setBillingType("Flexible Cap");
         tariffSearchCriteriaEnity.setContractPeriod("24");
         TariffSearchPage.getInstance().searchTariffByCriteria(tariffSearchCriteriaEnity);
 
-        test.get().info("Select Tariff by code then click next button");
+        test.get().info("Step 7: Select Tariff by code then click next button");
         TariffSearchPage.getInstance().clickTariffByTariffCode("FC24-2000-500");
         ServiceOrdersContentPage.getInstance().switchWindow(title,false);
 
-        test.get().info("click next button on change tariff wizad");
+        test.get().info("Step 8: click next button on change tariff wizad");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
 
-        test.get().info("select specified bundles on change bundle screen then click then next button");
+        test.get().info("Step 9: select specified bundles on change bundle screen then click then next button");
         ServiceOrdersPage.ChangeBundle.getInstance().selectBundlesByName("£30 safety buffer" );
         ServiceOrdersContentPage.getInstance().clickNextBtn();
 
-        test.get().info("finish change bundle wizard then back to customer");
+        test.get().info("Step 10: finish change bundle wizard then back to customer");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
         ServiceOrdersContentPage.getInstance().clickReturnToCustomer();
 
-        test.get().info("Login in to selfcare");
+        test.get().info("Step 11: Login in to selfcare");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username,owsActions.password,customerNumber);
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
-        test.get().info("access my tariff detail screen");
+        test.get().info("Step 12: access my tariff detail screen");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
-        test.get().info("click safety buffer ");
+        test.get().info("Step 13: click safety buffer ");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile FC").clickChangeMySafetyBufferBtn();
         SelfCareTestBase.page().verifyChangeMySafetyBufferPage();
 
-        test.get().info("verify A Panel With A Message Regarding The FC SB Option");
+        test.get().info("Step 14: verify A Panel With A Message Regarding The FC SB Option");
         verifyAPanelWithAMessageRegardingTheFCSBOption();
 
-        test.get().info("verify a panel for selecting FC amount");
+        test.get().info("Step 15: verify a panel for selecting FC amount");
         verifyThePanelForSelectingFCAmount();
 
-        test.get().info("verify a panel for selecting when to apply the change");
+        test.get().info("Step 16: verify a panel for selecting when to apply the change");
         verifyThePanelForSelectingWhenToApplyToChange();
 
-        test.get().info("select a safety buffer is more than existing SB");
+        test.get().info("Step 17: select a safety buffer is more than existing SB");
         ChangeMySafetyBufferPage.getInstance().selectSafetyBuffer("£40 safety buffer");
 
-        test.get().info("verify a panel for selecting when to apply the change");
+        test.get().info("Step 18: verify a panel for selecting when to apply the change");
         verifyThePanelForSelectingWhenToApplyToChangeAgain();
 
-        test.get().info("verify confirm message");
+        test.get().info("Step 19: verify confirm message");
         verifyConfirmMssg();
 
-        test.get().info("click save changes in change my safety buffer page");
+        test.get().info("Step 20: click save changes in change my safety buffer page");
         ChangeMySafetyBufferPage.getInstance().clickSaveBtn();
 
-        test.get().info("My tariff detail page displayed with successfull message");
+        test.get().info("Step 21: My tariff detail page displayed with successfull message");
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
         List<String> listMssg= SelfCareTestBase.page().successfulMessageStack();
         Assert.assertEquals(listMssg.get(0),"You’ve successfully changed your safety buffer.");
 
-        test.get().info("load user in hub net");
+        test.get().info("Step 22: load user in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
 
-        test.get().info("open the service order content for customer");
+        test.get().info("Step 23: open the service order content for customer");
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
 
-        test.get().info("verify add safety buffer service order status is completed");
+        test.get().info("Step 24: verify add safety buffer service order status is completed");
         HashMap<String, String> expectedServiceOrder = ServiceOrderEntity.dataServiceOrderForChangePassword("Change Bundle", "Completed Task");
         Assert.assertEquals(ServiceOrdersContentPage.getInstance().getNumberOfServiceOrders(expectedServiceOrder), 1);
 
-        test.get().info("verify service order detail page");
+        test.get().info("Step 25: verify service order detail page");
         ServiceOrdersContentPage.getInstance().clickServiceOrderByType("Change Bundle");
         Assert.assertEquals(sub +" Mobile FC", TasksContentPage.TaskPage.DetailsPage.getInstance().getSubscriptionNumber());
         Assert.assertEquals("£40 safety buffer;",TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
@@ -142,22 +139,22 @@ public class TC53291_Change_SB_temporary_pending_change_tariff_so_new_so_allowed
 
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
 
-        test.get().info("open the subscription content for customer");
+        test.get().info("Step 26: open the subscription content for customer");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
 
-        test.get().info("open the first subscription");
+        test.get().info("Step 27: open the first subscription");
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
 
-        test.get().info("open  FC safety buffer detail page");
+        test.get().info("Step 28:open  FC safety buffer detail page");
         SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance().clickProductCodeByProductCode("FLEXCAP - [02000-SB-A]");
 
-        test.get().info("verify inventory id detail page");
+        test.get().info("Step 29: verify inventory id detail page");
         verifyInventoryidDetailPage();
 
-        test.get().info("verify invproperty table for the new flexible cap bundle");
+        test.get().info("Step 30: verify invproperty table for the new flexible cap bundle");
         verifyInvpropertyTableForTheNewFlexibleCapBundle();
 
-        test.get().info("verify CLOB and all details for thí CPIT transaction");
+        test.get().info("Step 31: verify CLOB and all details for thí CPIT transaction");
         verifyCLOBAndAllDetailsForThisCPITransaction();
     }
 

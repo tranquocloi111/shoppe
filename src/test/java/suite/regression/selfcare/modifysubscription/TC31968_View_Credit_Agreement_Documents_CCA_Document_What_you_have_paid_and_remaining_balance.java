@@ -32,25 +32,25 @@ public class TC31968_View_Credit_Agreement_Documents_CCA_Document_What_you_have_
 
     @Test(enabled = true, description = "TC331967 view credit agreement documents CCA document statement of account", groups = "SelfCare")
     public void TC31967_View_Credit_Agreement_Documents_CCA_Document_Statement_of_Account() {
-        test.get().info("Create a CC customer");
+        test.get().info("Step 1: Create a CC customer");
         String path = "src\\test\\resources\\xml\\selfcare\\modifysubscription\\TC31927_createOrder";
         OWSActions owsActions = new OWSActions();
         owsActions.createOrderAndSignAgreementByUI(path, 4);
 
-        test.get().info("create new billing group");
+        test.get().info("Step 2: create new billing group");
         createNewBillingGroup();
 
-        test.get().info("update bill group payment collection date to 10 day later ");
+        test.get().info("Step 3: update bill group payment collection date to 10 day later ");
         updateBillGroupPaymentCollectionDateTo10DaysLater();
 
-        test.get().info("set bill group for customer");
+        test.get().info("Step 4: set bill group for customer");
         customerNumber = owsActions.customerNo;
         setBillGroupForCustomer(customerNumber);
 
-        test.get().info("update start date for customer");
+        test.get().info("Step 5: update start date for customer");
         CommonActions.updateCustomerStartDate(customerNumber, TimeStamp.TodayMinus1MonthMinus20Day());
 
-        test.get().info("get all FC subscription number and ccaNO");
+        test.get().info("Step 6: get all FC subscription number and ccaNO");
         owsActions.getOrder(owsActions.orderIdNo);
         subno1 = owsActions.getOrderMpnByReference(1);
         subno2 = owsActions.getOrderMpnByReference(2);
@@ -61,35 +61,35 @@ public class TC31968_View_Credit_Agreement_Documents_CCA_Document_What_you_have_
         cCANo2 = owsActions.getCreditAgreementNumberByReference("Mobile FC 2");
         cCANo4 = owsActions.getCreditAgreementNumberByReference("Mobile FC 4");
 
-        test.get().info("Upgrade FC 3 and accept upgrade");
+        test.get().info("Step 9: Upgrade FC 3 and accept upgrade");
         owsActions.upgradeFC3AndAcceptUpgrade(customerNumber, subno3);
 
-        test.get().info("Load customer in hub net");
+        test.get().info("Step 10: Load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("get CCA  no for new upgraded credit agreement of mobile FC3");
+        test.get().info("Step 11: get CCA  no for new upgraded credit agreement of mobile FC3");
         MenuPage.LeftMenuPage.getInstance().clickCreditAgreementsItem();
 
         CreditAgreementsContentPage.CreditAgreementsGridPage.getInstance().clickExpandButtonOfCABySubscription(subno3);
         CreditAgreementsContentPage.CreditAgreementsGridPage.CADetailClass caDetailNo3 = CreditAgreementsContentPage.CreditAgreementsGridPage.getInstance().getCADetailBySubscription(subno3);
         cCANo3 = caDetailNo3.agreementNumber();
 
-        test.get().info("Deactivate FC 4 Subscription");
+        test.get().info("Step 12: Deactivate FC 4 Subscription");
         deactiveFC4Subscription();
 
-        test.get().info("Login in to selfcare");
+        test.get().info("Step 13: Login in to selfcare");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
 
-        test.get().info("verify the statement to date pdf of FC1");
+        test.get().info("Step 14: verify the statement to date pdf of FC1");
         verifyStatementToDatePDFOfFC1();
 
-        test.get().info("verify the statement to date pdf of FC2");
+        test.get().info("Step 15: verify the statement to date pdf of FC2");
         verifyStatementToDatePDFOfFC2();
 
-        test.get().info("verify the statement to date pdf of FC3");
+        test.get().info("Step 16: verify the statement to date pdf of FC3");
         verifyStatementToDatePDFOfFC3();
 
-        test.get().info("verify the statement to date pdf of FC4");
+        test.get().info("Step 17: verify the statement to date pdf of FC4");
         verifyStatementToDatePDFOfFC4();
     }
 

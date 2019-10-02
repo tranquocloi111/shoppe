@@ -28,22 +28,22 @@ public class TC31921_Self_Care_Update_Subscription_details extends BaseTest {
         String customerNumber= owsActions.customerNo;
 
 
-        test.get().info("Step 5: Login SelfCare  ");
+        test.get().info("Step 2: Login SelfCare  ");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, owsActions.customerNo);
 
-        test.get().info("verify my tariff details page is displayed");
+        test.get().info("Step 3: verify my tariff details page is displayed");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
-        test.get().info("update description and click save button");
+        test.get().info("Step 4:update description and click save button");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1").updateDescription("EditUserName");
 
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1").clickSavePhoneUserNameBtn();
 
-        test.get().info("Load customer in hub net");
+        test.get().info("Step 5:Load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("verify phone username in hub net");
+        test.get().info("Step 6 :verify phone username in hub net");
         Assert.assertEquals(CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberAndNameByIndex(1).split(" ")[1],"EditUserName");
 
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);

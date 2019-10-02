@@ -5,11 +5,14 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FTP Connection
  * Upload and download file from server
  * Date : 04/12/2018
+ *
  * @author : Quyen Vu
  */
 
@@ -36,10 +39,10 @@ public class FTP {
             e.printStackTrace();
         }
 
-        return ftp ;
+        return ftp;
     }
 
-    public  boolean uploadFile(String path, String fileName, InputStream input) {
+    public boolean uploadFile(String path, String fileName, InputStream input) {
         boolean success = false;
         FTPClient ftp = setUpConnection();
         try {
@@ -68,7 +71,7 @@ public class FTP {
         return success;
     }
 
-    public  boolean downLoadFile(String remotePath, String fileName, String localPath) {
+    public boolean downLoadFile(String remotePath, String fileName, String localPath) {
         boolean success = false;
         FTPClient ftp = setUpConnection();
         try {
@@ -80,9 +83,9 @@ public class FTP {
             }
             ftp.changeWorkingDirectory(remotePath);
             FTPFile[] fs = ftp.listFiles();
-            for(FTPFile ff:fs){
-                if(ff.getName().equals(fileName)){
-                    File localFile = new File(localPath+"/"+ff.getName());
+            for (FTPFile ff : fs) {
+                if (ff.getName().equals(fileName)) {
+                    File localFile = new File(localPath + "/" + ff.getName());
                     OutputStream is = new FileOutputStream(localFile);
                     ftp.retrieveFile(ff.getName(), is);
                     is.close();
@@ -102,5 +105,22 @@ public class FTP {
             }
         }
         return success;
+    }
+
+    public List<String> getAllFileName(String remotePath) {
+        FTPClient ftp = setUpConnection();
+        List<String> fileName = new ArrayList<>();
+        try {
+            ftp.changeWorkingDirectory(remotePath);
+            FTPFile[] fs = ftp.listFiles();
+            for (FTPFile ff : fs) {
+                fileName.add(ff.getName());
+            }
+            ftp.logout();
+        } catch (Exception ex) {
+
+        }
+        return fileName;
+
     }
 }

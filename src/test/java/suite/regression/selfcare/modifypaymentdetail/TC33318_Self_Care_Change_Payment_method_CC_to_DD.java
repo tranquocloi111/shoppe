@@ -27,7 +27,7 @@ public class TC33318_Self_Care_Change_Payment_method_CC_to_DD extends BaseTest {
     @Test(enabled = true, description = "TC33318 self care change payment details CC to DD", groups = "SelfCare")
     public void TC33318_Self_Care_Change_Payment_method_CC_to_DD() {
 
-        test.get().info(" create an online cc customer");
+        test.get().info("Step 1: create an online cc customer");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_2_bundles_and_NK2720";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrderForChangePassword(path);
@@ -36,23 +36,23 @@ public class TC33318_Self_Care_Change_Payment_method_CC_to_DD extends BaseTest {
         String fullName = owsActions.fullName;
 
 
-        test.get().info("update the backdate for payment");
+        test.get().info("Step 2: update the backdate for payment");
         super.backDateThePaymentMethodStartDateToTodayMinus1Day(customerNumber);
 
-        test.get().info("Load user in the hub Net");
+        test.get().info("Step 3: Load user in the hub Net");
         CareTestBase.page().loadCustomerInHubNet(owsActions.customerNo);
 
-        test.get().info("Verify payment method start date has been back dated");
+        test.get().info("Step 4: Verify payment method start date has been back dated");
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         String expectedPaymentMethod = String.format("Credit Card ( %s )", Parser.parseDateFormate(TimeStamp.TodayMinus1Day(), TimeStamp.DATE_FORMAT));
         Assert.assertEquals(expectedPaymentMethod, DetailsContentPage.PaymentInformationPage.getInstance().getPaymentMethod());
 
-        test.get().info("Login to selfcare page");
+        test.get().info("Step 5: Login to selfcare page");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
 
-        test.get().info("access change payment detail page verify correct current payment detail");
+        test.get().info("Step 6: access change payment detail page verify correct current payment detail");
         SelfCareTestBase.page().clickChangeMyPaymentDetails();
         SelfCareTestBase.page().verifyMyPaymentDetail();
 
@@ -64,7 +64,7 @@ public class TC33318_Self_Care_Change_Payment_method_CC_to_DD extends BaseTest {
         Assert.assertEquals("LONDON", MyPaymentDetailsPage.CurrentPaymentDetailsSection.getInstance().getTown());
         Assert.assertEquals("E10AA", MyPaymentDetailsPage.CurrentPaymentDetailsSection.getInstance().getPostCode());
 
-        test.get().info("Input the card detail and click continue button");
+        test.get().info("Step 7: Input the card detail and click continue button");
         PaymentInfoEnity paymentInfoEnity = new PaymentInfoEnity();
         paymentInfoEnity.setPaymentMethod("Direct Debit");
         paymentInfoEnity.setdbankAccountHolderName("Self Care Test");
@@ -74,16 +74,16 @@ public class TC33318_Self_Care_Change_Payment_method_CC_to_DD extends BaseTest {
         MyPaymentDetailsPage.NewPaymentDetailsSection.getInstance().inputNewPaymentDetail(paymentInfoEnity);
         MyPaymentDetailsPage.CurrentPaymentDetailsSection.getInstance().clickContinueBtn();
 
-        test.get().info("verify my personal information page is displayed ");
+        test.get().info("Step 8: verify my personal information page is displayed ");
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
         String expectedMssg = "Your payment details have been successfully changed.";
         Assert.assertEquals(SelfCareTestBase.page().successfulMessageStack().get(0), expectedMssg);
 
-        test.get().info("Load user in the hub care");
+        test.get().info("Step 9: Load user in the hub care");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
 
-        test.get().info("verify payment infomation have been updated successfully");
+        test.get().info("Step 10: verify payment infomation have been updated successfully");
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         expectedPaymentMethod = String.format("Direct Debit ( %s )", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
         Assert.assertEquals(DetailsContentPage.PaymentInformationPage.getInstance().getPaymentMethod(),expectedPaymentMethod);
@@ -93,32 +93,32 @@ public class TC33318_Self_Care_Change_Payment_method_CC_to_DD extends BaseTest {
         Assert.assertEquals(DetailsContentPage.PaymentInformationPage.getInstance().getDDIReference(),"");
         Assert.assertEquals(DetailsContentPage.PaymentInformationPage.getInstance().getDDIStatus(),"");
 
-        test.get().info("run submit send DDI request Job");
+        test.get().info("Step 11: run submit send DDI request Job");
         RemoteJobHelper.getInstance().submitSendDDIRequestJob();
 
-        test.get().info("verify DDI status change to inactive");
+        test.get().info("Step 12: verify DDI status change to inactive");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         Assert.assertEquals(DetailsContentPage.PaymentInformationPage.getInstance().getDDIStatus(),"Inactive");
 
-        test.get().info("Open service order details for send DDI to BACS item");
+        test.get().info("Step 13: Open service order details for send DDI to BACS item");
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
         ServiceOrdersContentPage.getInstance().clickServiceOrderByType("Send DDI to BACS");
 
-        test.get().info("Verify service order status is sent and DDI Reference has value");
+        test.get().info("Step 14: Verify service order status is sent and DDI Reference has value");
         Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getServiceOrderStatus(), "Sent");
         String dDIReference = TasksContentPage.TaskPage.DetailsPage.getInstance().getDDIReference();
         Assert.assertNotEquals(dDIReference, "");
 
-        test.get().info("update customer DDI details in database");
+        test.get().info("Step 15: update customer DDI details in database");
         super.updateCustomerDDIDetailsInDatabase(dDIReference,BillingActions.getHmbrid(customerNumber),TimeStamp.Today().toString());
 
-        test.get().info("reload customer in hub net");
+        test.get().info("Step 16: reload customer in hub net");
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
 
-        test.get().info("Verify DDI information is correct");
+        test.get().info("Step 17: Verify DDI information is correct");
         String newDate =Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT).toString();
         String exptedDDIReference=String.format("%s ( %s )",dDIReference,newDate);
 

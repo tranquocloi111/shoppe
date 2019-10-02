@@ -24,7 +24,7 @@ public class TC31932_Self_Care_View_My_tariff extends BaseTest {
 
     @Test(enabled = true, description = "TC31932 self care view my tariff", groups = "SelfCare")
     public void TC31932_Self_Care_View_My_tariff() {
-        test.get().info("Create a CC customer with no bundle and sim only");
+        test.get().info("Step 1: Create a CC customer with no bundle and sim only");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_NC_no_bundle_and_sim_only";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
@@ -32,22 +32,22 @@ public class TC31932_Self_Care_View_My_tariff extends BaseTest {
         String customerNumber = owsActions.customerNo;
         userName = owsActions.username;
 
-        test.get().info("Load user in the hub net");
+        test.get().info("Step 2: Load user in the hub net");
         CareTestBase.page().loadCustomerInHubNet(owsActions.customerNo);
         subNo = CommonContentPage.CustomerSummarySectionPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberByIndex(1);
 
 
-        test.get().info("Login in to selfcare page");
+        test.get().info("Step 3: Login in to selfcare page");
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, owsActions.password, customerNumber);
 
-        test.get().info("Access the view or change my tariff detail link");
+        test.get().info("Step 4: Access the view or change my tariff detail link");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
-        test.get().info("Verify my tariff details other information is correct");
+        test.get().info("Step 5: Verify my tariff details other information is correct");
         verifyMyTariffDetailsOtherInformationIsCorrect();
 
-        test.get().info("Verify page tool tip is correct");
+        test.get().info("Step 6: Verify page tool tip is correct");
         verifyPageToolTip();
 
 

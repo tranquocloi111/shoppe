@@ -318,6 +318,8 @@ public class TableControlBase extends BasePage {
                 String cellValue = (String) mapElement.getValue();
                 columnIndex = getColumnIndex(columnName);
                 String elementText = el.findElements(By.tagName("td")).get(columnIndex).getText();
+                elementText=elementText.replace(" ","");
+                cellValue=cellValue.replace(" ","");
                 if (elementText.equalsIgnoreCase(cellValue) && !isFail) {
                     flag = true;
                     isFail = false;
