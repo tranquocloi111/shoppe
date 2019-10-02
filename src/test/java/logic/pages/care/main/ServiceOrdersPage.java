@@ -28,12 +28,19 @@ public class ServiceOrdersPage extends BasePage {
     @FindBy(xpath = "//input[@name='PostCmdBtn_CANCEL']")
     protected WebElement btnDelete;
 
+    @FindBy(name = "PostCmdBtn_BACK")
+    protected WebElement btnPre;
+
     public void clickNextButton() {
         clickNextBtn();
     }
 
     public void clickDeleteButton() {
         clickWithOutWait(btnDelete);
+    }
+
+    public void clickPreButton() {
+        click(btnPre);
     }
 
     public static class DeactivateSubscriptionPage extends ServiceOrdersPage {
@@ -705,7 +712,11 @@ public class ServiceOrdersPage extends BasePage {
         }
 
         public boolean isBonusBundleDisplayed(String cellValue) {
-            return getTextOfElement(table.getRowByColumnNameAndCellValue(BUNDLE_GROUP, cellValue)).isEmpty();
+            try {
+                return getTextOfElement(table.getRowByColumnNameAndCellValue(BUNDLE_GROUP, cellValue)).isEmpty();
+            }catch (Exception ex){
+                return false;
+            }
         }
 
         public String getCellValueByIndex(int index) {

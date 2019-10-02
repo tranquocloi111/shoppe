@@ -67,7 +67,9 @@ public class InvoicesContentPage extends BasePage {
         return getTextOfElement(element);
     }
 
-
+    public List<List<String>> getAllValueOfInvocie(){
+        return table.getAllCellValue();
+    }
 
     public static class InvoiceDetailsContentPage extends InvoicesContentPage{
 

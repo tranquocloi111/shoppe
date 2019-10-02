@@ -1,6 +1,5 @@
 package suite.regression.soho;
 
-import logic.business.db.billing.CommonActions;
 import logic.business.entities.BundlesToSelectEntity;
 import logic.business.entities.OtherProductEntiy;
 import logic.business.ws.ows.OWSActions;
@@ -10,7 +9,6 @@ import logic.pages.care.find.SubscriptionContentPage;
 import logic.pages.care.find.SummaryContentsPage;
 import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.options.ChangeBundlePage;
-import logic.pages.care.options.ChangeSafetyBufferPage;
 import logic.pages.care.options.ConfirmChangeBundlePage;
 import logic.pages.selfcare.MonthlyBundlesAddChangeOrRemovePage;
 import logic.pages.selfcare.MyPersonalInformationPage;
@@ -24,9 +22,8 @@ import suite.regression.selfcare.SelfCareTestBase;
 
 import java.sql.Date;
 import java.util.HashMap;
-import java.util.List;
 
-public class TC5023_003_SelfCare_Validation_For_Amend_The_Self_Care_Business_Customer_Service extends BaseTest{
+public class TC5023_004_Consumer_Customer_That_Has_Family_Perk_Bundle extends BaseTest{
     private String customerNumber = "9671";
     private Date newStartDate;
     private String username;
@@ -34,11 +31,11 @@ public class TC5023_003_SelfCare_Validation_For_Amend_The_Self_Care_Business_Cus
     private String subNo1;
     private String subNo2;
 
-    @Test(enabled = true, description = "TC5023_003_SelfCare_Validation_For_Amend_The_Self_Care_Business_Customer_Service", groups = "Soho")
-    public void TC5023_003_SelfCare_Validation_For_Amend_The_Self_Care_Business_Customer_Service() {
-        test.get().info("Step 1 :  Business customer that has multi subs, one of them is Inactivated");
+    @Test(enabled = true, description = "TC5023_004_Consumer_Customer_That_Has_Family_Perk_Bundle", groups = "Soho")
+    public void TC5023_004_Consumer_Customer_That_Has_Family_Perk_Bundle() {
+        test.get().info("Step 1 :  Consumer customer that has family perk");
         OWSActions owsActions = new OWSActions();
-        String path = "src\\test\\resources\\xml\\soho\\TC5023_001_request_business_type.xml";
+        String path = "src\\test\\resources\\xml\\soho\\TC5023_002_request_residential_type.xml";
         owsActions.createGeneralCustomerOrder(path);
 
         test.get().info("Step 2 : Create New Billing Group");
@@ -56,13 +53,6 @@ public class TC5023_003_SelfCare_Validation_For_Amend_The_Self_Care_Business_Cus
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         subNo1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile 1");
         subNo2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile 2");
-
-        test.get().info("Step 7 : Verify color and information of business information tab ");
-        MenuPage.LeftMenuPage.getInstance().clickSummaryLink();
-        SummaryContentsPage.BusinessInformationPage business = SummaryContentsPage.BusinessInformationPage.getInstance();
-        verifyInformationColorBoxHeaderBusiness();
-        Assert.assertTrue(business.isBusinessPresent());
-        Assert.assertEquals(business.getBusinessName(), "Tom Cruise");
 
         test.get().info("Step 8 : Add Family Perk Bundle");
         changeFamilyPerkBundle();
@@ -83,16 +73,16 @@ public class TC5023_003_SelfCare_Validation_For_Amend_The_Self_Care_Business_Cus
         mobile2Tariff.clickAddOrChangeABundleButton();
 
         MonthlyBundlesAddChangeOrRemovePage monthlyBundle = MonthlyBundlesAddChangeOrRemovePage.getInstance();
-        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 1), "Family perk - 150 Mins per month");
-        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 2), "150");
-        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 5), "£0.00");
+        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Family perk", 1), "Family perk - 150 Mins per month");
+        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Family perk", 2), "150");
+        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Family perk", 5), "£0.00");
 
         test.get().info("Step 12 : Click on the button Add or View One Off Bundle button");
         mobile2Tariff.clickBackBtn();
         mobile2Tariff.clickAddOrViewOneOffBundlesButton();
-        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 1), "Family perk - 150 Mins per month");
-        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 2), "150");
-        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 5), "£0.00");
+        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Family perk", 1), "Family perk - 150 Mins per month");
+        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Family perk", 2), "150");
+        Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Family perk", 5), "£0.00");
     }
 
     private void verifyInformationColorBoxHeaderBusiness(){

@@ -26,10 +26,9 @@ import java.util.List;
 
 public class TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off_Bundle extends BaseTest {
     private String customerNumber;
+    private String subscription1;
     private String subscription2;
-    private String serviceOrderId;
 
-    //should add sub without bonus
     @Test(enabled = true, description = "TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off_Bundle", groups = "tropicana")
     public void TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off_Bundle(){
         test.get().info("Step 1 : Create a customer subscription related tariff linked with a Tropicana bundle group");
@@ -50,6 +49,7 @@ public class TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off
         test.get().info("Step 5 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         List<String> subList = getAllSubscriptionsNumber();
+        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
         subscription2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
         test.get().info("Step 6 : Add Bonus Bundle to Subscription");
@@ -64,17 +64,25 @@ public class TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off
         String fcSubText = Common.findValueOfStream(subList, "Mobile Ref 2");
         ServiceOrdersPage.SelectSubscription.getInstance().selectSubscription(fcSubText, "Add One-off Bundle");
 
-        test.get().info("Step 8 : Observe the Current Bundle section");
-        verifyCurrentBundleSection();
+        test.get().info("Step 8 : Observe the Current Bundle section with bonus");
+        verifyCurrentBonusBundleSection();
+
+        test.get().info("Step 9 : Select FC mobile to Add One-off Bundle");
+        fcSubText = Common.findValueOfStream(subList, "Mobile Ref 1");
+        ServiceOrdersPage.SelectSubscription.getInstance().selectSubscription(fcSubText, "Add One-off Bundle");
+
+        test.get().info("Step 10 : Observe the Current Bundle section without bonus");
+        verifyCurrentWithoutBonusBundleSection();
     }
 
-    private void verifyCurrentBundleSection(){
+    private void verifyCurrentBonusBundleSection(){
         ServiceOrdersPage.AddOneOffBundle addOneOffBundle = ServiceOrdersPage.AddOneOffBundle.getInstance();
         Assert.assertEquals(addOneOffBundle.getSubscriptionNumber(), subscription2 + " Mobile Ref 2");
-        Assert.assertEquals(addOneOffBundle.getNextBillDateForThisAccount(), Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT4) + " (30 days from today)");
+        Assert.assertEquals(addOneOffBundle.getNextBillDateForThisAccount(), Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT4) + " ("+TimeStamp.todayPlus1MonthMinusToday()+" days from today)");
         Assert.assertEquals(addOneOffBundle.getCurrentTariff(),"£10 Tariff 12 Month Contract");
         Assert.assertEquals(addOneOffBundle.getPackagedBundle(), "Bundle - 500 mins, 5000 texts (FC)");
         Assert.assertEquals(addOneOffBundle.getCellValueByIndex(3),"Double Data  0  1  Family perk - 250MB per month  250MB  N/A  N/A  £0.00 ");
+        addOneOffBundle.clickPreButton();
     }
 
     private List<String> getAllSubscriptionsNumber(){
@@ -85,5 +93,14 @@ public class TC5000_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Add_One_off
             subscriptionNumberList.add(subNo);
         }
         return subscriptionNumberList;
+    }
+
+    private void verifyCurrentWithoutBonusBundleSection(){
+        ServiceOrdersPage.AddOneOffBundle addOneOffBundle = ServiceOrdersPage.AddOneOffBundle.getInstance();
+        Assert.assertEquals(addOneOffBundle.getSubscriptionNumber(), subscription1 + " Mobile Ref 1");
+        Assert.assertEquals(addOneOffBundle.getNextBillDateForThisAccount(), Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT4) + " ("+TimeStamp.todayPlus1MonthMinusToday()+" days from today)");
+        Assert.assertEquals(addOneOffBundle.getCurrentTariff(),"£10 Tariff 12 Month Contract");
+        Assert.assertEquals(addOneOffBundle.getPackagedBundle(), "Bundle - 500 mins, 5000 texts (FC)");
+        Assert.assertFalse(addOneOffBundle.isBonusBundleDisplayed("Double Data"));
     }
 }

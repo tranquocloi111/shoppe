@@ -23,6 +23,7 @@ import java.util.List;
 
 public class TC5006_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Sweetener extends BaseTest {
     private String customerNumber = "15758";
+    private String subscription1;
     private String subscription2;
 
     @Test(enabled = true, description = "TC5006_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Sweetener", groups = "tropicana")
@@ -45,6 +46,7 @@ public class TC5006_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Swee
         test.get().info("Step 5 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         List<String> subList = CareTestBase.getAllSubscriptionsNumber();
+        subscription1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 1");
         subscription2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
         test.get().info("Step 6 : Add Bonus Bundle to Subscription");
@@ -66,5 +68,19 @@ public class TC5006_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Swee
         Assert.assertEquals(expectNextBillDate, changeBundle.getNextBillDateForThisAccount());
         Assert.assertEquals( changeBundle.getCurrentTariff(), "£10 Tariff 12 Month Contract");
         Assert.assertFalse(changeBundle.isBonusBundle());
+        changeBundle.clickPreButton();
+
+        test.get().info("Step 9 : Select FC mobile to Change Sweetener bundle");
+        fcSubText = Common.findValueOfStream(subList, "Mobile Ref 1");
+        ServiceOrdersPage.SelectSubscription.getInstance().selectSubscription(fcSubText, "Change Sweetener");
+
+        test.get().info("Step 10 : Observe the Current Bundle section");
+        changeBundle = ServiceOrdersPage.ChangeBundle.getInstance();
+        Assert.assertEquals(fcSubText, changeBundle.getSubscriptionNumber());
+        expectNextBillDate = String.format("%s (%s days from today)", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),TimeStamp.DATE_FORMAT_IN_PDF), TimeStamp.TodayPlus1MonthMinusToday());
+        Assert.assertEquals(expectNextBillDate, changeBundle.getNextBillDateForThisAccount());
+        Assert.assertEquals( changeBundle.getCurrentTariff(), "£10 Tariff 12 Month Contract");
+        Assert.assertFalse(changeBundle.isBonusBundle());
+        changeBundle.clickPreButton();
     }
 }

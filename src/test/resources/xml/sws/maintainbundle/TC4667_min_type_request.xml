@@ -10,7 +10,7 @@
           <sel:bundleAction actionType="ADD">
             <sel:group>BONUS</sel:group>
             <sel:groupCode>TPDoubleData</sel:groupCode>
-            <sel:bundleCode>250MB-DATA-0-FC</sel:bundleCode>
+            <sel:bundleCode>250-SWMIN-0-FC</sel:bundleCode>
           </sel:bundleAction>
         </sel:bundleActions>
       </sel:maintainBundleAction>

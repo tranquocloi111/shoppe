@@ -70,9 +70,9 @@ public class TC29701_Deactivate_Account_with_contracted_subscription_within_28_d
         serviceOrderId = ServiceOrdersContentPage.getInstance().getServiceOrderIdByElementServiceOrders(serviceOrder);
 
         test.get().info("Step 9 : Run refill job");
-        RemoteJobHelper.getInstance().submitDoRefillBcJob(TimeStamp.Today());
-        RemoteJobHelper.getInstance().submitDoRefillNcJob(TimeStamp.Today());
-        RemoteJobHelper.getInstance().submitDoBundleRenewJob(TimeStamp.Today());
+        submitDoRefillBCJob();
+        submitDoRefillNCJob();
+        submitDoBundleRenewJob();
 
         test.get().info("Step 10 : Update customer end date");
         Date endDate = TimeStamp.TodayMinus2Days();
@@ -121,10 +121,10 @@ public class TC29701_Deactivate_Account_with_contracted_subscription_within_28_d
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 16 : Submit draft bill run");
-        RemoteJobHelper.getInstance().submitDraftBillRun();
+        submitDraftBillRun();
 
         test.get().info("Step 17 : Submit confirm bill run");
-        RemoteJobHelper.getInstance().submitConfirmBillRun();
+        submitConfirmBillRun();
 
         test.get().info("Step 18 : Verify an invoice was created");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();

@@ -83,6 +83,36 @@
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>
+        <orderItem dealSKU="DEAL-INHAND" id="3">
+          <serviceRef reference="Mobile Ref 3"/>
+          <tariff productCode="AUTO1-FC12-1000-500SO">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </tariff>
+          <device productCode="SIM-ONLY">
+            <deliveryMethod>DELIVER</deliveryMethod>
+          </device>
+          <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+          <discBundle productCode="250-SWMIN-0-FC" bundleGroup="Auto-250-SWMin-0-FC">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+        </orderItem>
+        <orderItem dealSKU="DEAL-INHAND" id="4">
+          <serviceRef reference="Mobile Ref 4"/>
+          <tariff productCode="AUTO1-FC12-1000-500SO">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </tariff>
+          <device productCode="SIM-ONLY">
+            <deliveryMethod>DELIVER</deliveryMethod>
+          </device>
+          <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+          <discBundle productCode="250-SWTXT-0-NC" bundleGroup="Auto-250-SWMin-0-FC">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+        </orderItem>
         <paymentRequest>
           <cardName>CardName</cardName>
           <cardNumber>5105105105105100</cardNumber>

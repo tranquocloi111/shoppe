@@ -89,4 +89,8 @@ public class ServiceOrdersContentPage extends BasePage {
     {
         click(newTariffSearchBtn);
     }
+
+    public List<List<String>> getAllValueOfServiceOrder(){
+        return  tableControlBase.getAllCellValue();
+    }
 }

@@ -9,6 +9,7 @@ import logic.business.helper.FTPHelper;
 import logic.business.helper.MiscHelper;
 import logic.pages.care.find.PaymentPage;
 import logic.utils.Parser;
+import logic.utils.TimeStamp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -260,6 +261,42 @@ public class CommonActions extends OracleDB {
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
 
         sql = String.format("update hmbrproperty set propvalchar='%s', datestart= '"+dateStart+"' where propertykey='DDIREF' and hmbrid=%s", DDIReference, hmbrid);
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
+
+    public static String getFileNameByInvoiceNumber(String invoiceNumber){
+        String sql = "select invoiceid from invoice where documentnbr = '"+invoiceNumber+"'";
+        String invoiceId = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "invoiceid").toString() ;
+
+        sql = "select ddbatchid from ddtrans  where invoiceid = '"+invoiceId+"'";
+        String ddbatchid = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "ddbatchid").toString() ;
+
+        sql = "select filename from ddbatch  where ddbatchid=  " + ddbatchid;
+        String fileName = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "filename").toString() ;
+        return fileName;
+    }
+
+    public static void isFileProcessInboundNonXmlProcessed(String fileName){
+        String sql = "select count(*) as quality from remotejob where jobdescr like 'Process inbound non-xml file : "+fileName+"' ";
+        boolean isFlg;
+       try {
+           do{
+               isFlg = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "quality").toString().equalsIgnoreCase("1");
+               Thread.sleep(3000);
+           }while (isFlg == false);
+       }catch (Exception ex){
+
+       }
+    }
+
+    public static void updateCreditCardDateToPast(String hmbrid){
+        String propvaldate = Parser.parseDateFormate(Date.valueOf(TimeStamp.Today().toLocalDate().minusYears(1)), "dd/MMM/yyyy");
+        String propvalnumber[] = Parser.parseDateFormate(Date.valueOf(TimeStamp.Today().toLocalDate().minusYears(1)), "dd/MM/yyyy").split("/");
+        String sql = "UPDATE  hmbrproperty  set propvaldate = '"+propvaldate+"' where propertykey like 'CCED' and hmbrid = '" + hmbrid + "' ";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+        sql = "UPDATE hmbrproperty  set propvalnumber = '"+propvalnumber[1]+"' where propertykey like 'CCEM' and hmbrid = '" + hmbrid + "' ";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+        sql = "UPDATE hmbrproperty  set propvalnumber = '"+propvalnumber[2]+"' where propertykey like 'CCEY' and hmbrid = '" + hmbrid + "' ";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 

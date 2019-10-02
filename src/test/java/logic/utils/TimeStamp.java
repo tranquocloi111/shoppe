@@ -285,4 +285,17 @@ public class TimeStamp {
     public static Date TodayPlusDayAndMonth(int day,int month) {
         return Date.valueOf(LocalDate.now().plusDays(day).plusMonths(month));
     }
+
+    public static long todayMinusTodayMinusMonth(int month) {
+        LocalDate day1 = LocalDate.now();
+        LocalDate day2 = LocalDate.now().minusMonths(month);
+        return ChronoUnit.DAYS.between(day2, day1);
+    }
+
+    public static long todayMinusTodayMinusDate(Date date) {
+        LocalDate day1 = LocalDate.now();
+        LocalDate day2 = date.toLocalDate();
+        return ChronoUnit.DAYS.between(day2, day1);
+    }
+
 }

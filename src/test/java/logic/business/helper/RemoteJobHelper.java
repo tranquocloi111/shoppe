@@ -221,31 +221,12 @@ public class RemoteJobHelper {
     }
 
     public void runDoDealXMLExtractJob() {
-//        ResultSet resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
-//        try {
-//            for (int i = 0; i < 120; i++) {
-//                if (resultSet.isBeforeFirst()) {
-//                    break;
-//                } else {
-//                    resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
-//                }
-//                Thread.sleep(2000);
-//            }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
-//        int billRunInvocationId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(resultSet, "brinvocationid")));
-//        Log.info("InvocationId:" + billRunInvocationId);
-//
-//        currentMaxJobId = getMaxRemoteJobId();
-//        submitRemoteJobs(String.format("DoDealXMLExtract.sh -i %s -e $HUB_SID", billRunInvocationId), currentMaxJobId, "Deal XML Extract");
-//        waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
+        ResultSet resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select max(reportrunid)+1 as ABC from reportrun  ");
+        int reportrunId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(resultSet, "ABC")));
+        Log.info("reportrunId:" + reportrunId);
         currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs("DoDealXMLExtract.sh -e $HUB_SID", currentMaxJobId,"Deal XML Extract");
-        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
+        submitRemoteJob(String.format("DoDealXMLExtract.sh -i 0000%s -e $HUB_SID", reportrunId), "Deal XML Extract");
+        waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
     }
 
     public void runDealCatalogueExtractJob() {
@@ -294,5 +275,21 @@ public class RemoteJobHelper {
         int currentMaxJobId = getMaxRemoteJobId();
         submitRemoteJobs("Subdirectdebit2.sh -e $HUB_SID -S", currentMaxJobId, "Process Direct Debit - Create Payments");
         waitForRemoteJobComplete(currentMaxJobId, "Process Direct Debit - Create Payments");
+    }
+
+    public void  waitEncryptFileComplete(){
+        currentMaxJobId = getMaxRemoteJobId();
+        waitForRemoteJobComplete(currentMaxJobId, "Encrypt usage file");
+    }
+
+    public void  waitForLoadFile(String fileName){
+        currentMaxJobId = getMaxRemoteJobId();
+        waitForRemoteJobComplete(currentMaxJobId,  "Process inbound non-xml file : " + fileName);
+    }
+
+    public void submitDoUsageRemoteJob(){
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("DoUsage.sh -e $HUB_SID -L N -A N -R N -C Y -S", currentMaxJobId, "Usage Processing");
+        waitForRemoteJobComplete(currentMaxJobId, "Usage Processing");
     }
 }

@@ -116,9 +116,11 @@ public class BaseTest {
     protected static void createNewBillingGroup() {
         BillingActions.getInstance().createNewBillingGroup(0, true, -1);
     }
+
     protected static void createNewBillingGroupToMinus15days() {
         BillingActions.getInstance().createNewBillingGroup(-15, true, -1);
     }
+
     protected static void createNewBillingGroupToMinus20days() {
         BillingActions.getInstance().createNewBillingGroup(-20, true, -1);
     }
@@ -135,6 +137,11 @@ public class BaseTest {
     protected static void updateThePDateAndBillDateForSO(String serviceOrderId){
         BillingActions.getInstance().updateThePdateForSo(serviceOrderId);
         BillingActions.getInstance().updateTheBillDateForSo(serviceOrderId);
+    }
+
+    protected static void createNewBillingGroupToMinusMonth(int month) {
+        int day = Integer.parseInt(String.valueOf(TimeStamp.todayMinusTodayMinusMonth(month)));
+        BillingActions.getInstance().createNewBillingGroup(-day, true, -1);
     }
 
     protected static void verifyFCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef){
@@ -256,6 +263,22 @@ public class BaseTest {
        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
        ServiceOrdersContentPage serviceOrders =  ServiceOrdersContentPage.getInstance();
         serviceOrders.clickServiceOrderByType("Send DDI to BACS");
+    }
+
+    protected Date updateBillRunCalendarRunDatesToRunFirstBillRun(Date date){
+        String sql = "update billruncalendar set rundate=trunc(SYSDATE -5) where rundate=trunc(SYSDATE) and billinggroupid <> " + BillingActions.tempBillingGroupHeader.getKey();
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+        sql = "update billruncalendar set asatdate=trunc(SYSDATE -5) where asatdate=trunc(SYSDATE-1) and billinggroupid <> " + BillingActions.tempBillingGroupHeader.getKey();
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+        sql = "update billruncalendar set rundate=trunc(SYSDATE + 1) where rundate=trunc(SYSDATE) and billinggroupid = " + BillingActions.tempBillingGroupHeader.getKey();
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+        sql = String.format("update billruncalendar set rundate=trunc(SYSDATE) where rundate=trunc(SYSDATE - %s) and billinggroupid=%s", TimeStamp.todayMinusTodayMinusDate(date), BillingActions.tempBillingGroupHeader.getKey());
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+        return TimeStamp.TodayMinus1MonthMinus1Day();
     }
     //end region
 

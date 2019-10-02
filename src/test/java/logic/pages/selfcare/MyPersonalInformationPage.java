@@ -365,6 +365,34 @@ public class MyPersonalInformationPage extends BasePage {
                 }
                 return new TableControlBase(table);
             }
+
+            public List<WebElement> getLoyaltyStack() {
+                List<WebElement> list = new ArrayList<>();
+                WebElement monthlyBundlesLable = findLabelCell(validTable(), "-  Monthly bundles");
+                List<WebElement> allowances = monthlyBundlesLable.findElements(By.xpath(".//parent::tr[1]//following::tr"));
+                for (WebElement familyPerk : allowances) {
+                    if (familyPerk.getText().trim().contains("Loyalty Bundle - ")) {
+                        list.add(familyPerk);
+                    }
+                }
+                return list;
+            }
+
+            public String getLoyaltyHelpIconText(int index) {
+                try {
+                    WebElement icon = getLoyaltyStack().get(index).findElement(By.tagName("a"));
+                    WebElement image = icon.findElement(By.tagName("img"));
+                    String js = image.getAttribute("onmouseover");
+                    //hover(image);
+                    executeJs(js, image);
+                    Thread.sleep(1000);
+                    WebElement div = getDriver().findElement(By.cssSelector("div[id='WzBoDy']"));
+                    return div.getText().trim();
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+                return null;
+            }
         }
             public String getErrorMssgDialog() {
                 return super.getTextComfirmDialog();

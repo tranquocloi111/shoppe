@@ -113,7 +113,7 @@ public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract 
             String text = String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "text"));
             List<String> lines = IOUtils.readLines(new StringReader(text));
 
-            String ftpFile = Config.getProp("cdrFolder").replace("Feed/a2aInterface/fileinbox", "ftp/insight/fileoutbox");
+            String ftpFile = Config.getProp("CDRSFTPFolder").replace("fileinbox", "insight/fileoutbox");
             String localFile = Common.getFolderLogFilePath();
             BaseTest.downLoadFile(ftpFile, "", localFile);
             Log.info("TM_HUB_DEAL_Onlines.zip file:" + localFile);

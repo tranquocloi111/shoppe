@@ -1,0 +1,19 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <sel:maintainBundleRequest>
+      <sel:maintainBundleAction effective="IMMEDIATE" acceptWarning="false">
+        <sel:externalSystemId>NETCALL</sel:externalSystemId>
+        <sel:accountNumber>$accountNumber$</sel:accountNumber>
+        <sel:subscriptionNumber>$subscriptionNumber$</sel:subscriptionNumber>
+        <sel:bundleActions>
+          <sel:bundleAction actionType="ADD">
+            <sel:group>BONUS</sel:group>
+            <sel:groupCode>TPDoubleData</sel:groupCode>
+            <sel:bundleCode>250-SWTXT-0-NC</sel:bundleCode>
+          </sel:bundleAction>
+        </sel:bundleActions>
+      </sel:maintainBundleAction>
+    </sel:maintainBundleRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

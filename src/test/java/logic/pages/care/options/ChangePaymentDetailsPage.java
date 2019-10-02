@@ -20,13 +20,16 @@ public class ChangePaymentDetailsPage extends ServiceOrdersPage {
     @FindBy(xpath = "//td[contains(text(),'Bank Account Holder Name:')]//following-sibling::td//input")
     WebElement txtBankAccountHolderName;
 
+    @FindBy(xpath = "//td[contains(text(),'Bank Sort Code:')]//following-sibling::td//input")
+    WebElement txtBankSortCode;
+
     @FindBy(xpath = "//td[contains(text(),'Bank Account Number:')]//following-sibling::td//input")
     WebElement txtBankAccountNumber;
 
     public void enterNewPaymentDetailsForDD(String ... paymentInformation){
         selectByVisibleText(drPaymentMethod, paymentInformation[0]);
-        enterValueByLabel(txtBankName, paymentInformation[1]);
-        enterValueByLabel(txtBankAccountHolderName, paymentInformation[2]);
+        enterValueByLabel(txtBankAccountHolderName, paymentInformation[1]);
+        enterValueByLabel(txtBankSortCode, paymentInformation[2]);
         enterValueByLabel(txtBankAccountNumber, paymentInformation[3]);
 
         clickNextBtn();

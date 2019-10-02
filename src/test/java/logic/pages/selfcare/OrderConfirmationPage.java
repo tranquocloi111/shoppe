@@ -74,6 +74,10 @@ public class OrderConfirmationPage  extends BasePage {
             return tds.size();
         }
 
+        public String getMessageOfOrderConfirmation(){
+            WebElement element = orderDetailsTable.findElement(By.xpath(".//following-sibling::div//a"));
+            return getTextOfElement(element);
+        }
     }
 
 

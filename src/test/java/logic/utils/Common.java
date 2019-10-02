@@ -4,6 +4,7 @@ import framework.utils.Log;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.*;
+import java.nio.file.Files;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -332,5 +333,15 @@ public class Common {
                 count++;
         }
         return count;
+    }
+
+    public static String [] getDatFile(String path){
+        try {
+            String[] lines = Files.readAllLines(new File(path).toPath()).toArray(new String[0]);
+            return lines;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -82,6 +82,9 @@ public class DetailsContentPage extends BasePage {
         public String getCardExpireMonth() {
             return getTextOfElement(tableControlBase.findCellByLabelText("Credit Card Expiry Month:"));
         }
+        public String getCreditCardHolderName() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("Credit Card Holder Name:"));
+        }
     }
 
     public static class AddressInformationPage extends DetailsContentPage {

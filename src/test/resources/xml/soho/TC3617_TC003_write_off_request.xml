@@ -1,7 +1,7 @@
 ﻿<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
   <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <createOrder type="NEW" xmlns="http://order.telco.hsntech.com">
-      <account xmlns="">
+      <account xmlns="" type="BUSINESS">
         <contact>
           <title>Mr</title>
           <firstName>Test</firstName>
@@ -64,13 +64,13 @@
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
-          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
+          <discBundle productCode="1GB-DATA-750-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>
         <orderItem dealSKU="DEAL-INHAND" id="2">
           <serviceRef reference="Mobile Ref 2"/>
-          <tariff productCode="AUTO1-FC12-1000-500SO">
+          <tariff productCode="FC12-1000-500SO">
             <deliveryMethod>INHAND</deliveryMethod>
           </tariff>
           <device productCode="SIM-ONLY">
@@ -79,11 +79,25 @@
           <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
-          <discBundle productCode="250MB-DATA-250-FC" bundleGroup="STANDARDDATAFC">
+          <discBundle productCode="1GB-DATA-750-FC" bundleGroup="STANDARDDATAFC">
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>
-
+        <orderItem dealSKU="DEAL-INHAND" id="3">
+          <serviceRef reference="Mobile Ref 3"/>
+          <tariff productCode="FC12-1000-500SO">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </tariff>
+          <device productCode="SIM-ONLY">
+            <deliveryMethod>DELIVER</deliveryMethod>
+          </device>
+          <discBundle productCode="00250-SB-A" bundleGroup="SB-GRP-A">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+          <discBundle productCode="1GB-DATA-750-FC" bundleGroup="STANDARDDATAFC">
+            <deliveryMethod>INHAND</deliveryMethod>
+          </discBundle>
+        </orderItem>
         <paymentRequest>
           <cardName>CardName</cardName>
           <cardNumber>5105105105105100</cardNumber>

@@ -62,7 +62,7 @@ public class BundlesToSelectEntity {
         };
     }
 
-    public static String[] getBonusBundles(){
+    public static String[] getFamilyPerkBonusBundles(){
         return new String[]{
                 "Family perk - 250MB per month - £0.00 per Month (Expiring in 61 day/s). Remaining: 250 MB"
         };
@@ -75,6 +75,18 @@ public class BundlesToSelectEntity {
                 "Family perk - 500 Tesco Mobile only minutes per month - £0.00 per Month (Recurring)",
                 "Family perk - 500MB per month - 4G - £0.00 per Month (Recurring)",
                 "Family perk - 250MB per month - 4G - £0.00 per Month (Recurring)"
+        };
+    }
+
+    public static String[] getLoyaltyMinBonusBundles(){
+        return new String[]{
+                "Loyalty Bundle - 250 Mins per month - £0.00 per Month (Expiring in 31 day/s). Remaining: 250 MIN"
+        };
+    }
+
+    public static String[] getLoyaltyTextBonusBundles(){
+        return new String[]{
+                "Loyalty Bundle - 250 Texts (Capped) - £0.00 per Month (Expiring in 31 day/s). Remaining: 250 UNIT"
         };
     }
 
