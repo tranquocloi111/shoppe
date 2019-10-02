@@ -41,4 +41,16 @@ public class SFTPHelper extends SFTP {
         }
 
     }
+    public String generateDownLoadFile(String customerNumber)
+    {
+        int temp = 9 - customerNumber.length();
+        String value="";
+        for (int i = 0; i < temp; i++)
+        {
+            value = value + "0";
+        }
+
+        return value + customerNumber;
+    }
+
 }

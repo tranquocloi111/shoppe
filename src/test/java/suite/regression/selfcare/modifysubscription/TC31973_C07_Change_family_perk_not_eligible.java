@@ -1,8 +1,10 @@
 package suite.regression.selfcare.modifysubscription;
 
 import logic.business.ws.ows.OWSActions;
+import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
+import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.options.DeactivateSubscriptionPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import org.testng.Assert;
@@ -26,28 +28,28 @@ public class TC31973_C07_Change_family_perk_not_eligible extends BaseTest {
         owsActions.getSubscription(owsActions.orderIdNo, "Mobile FC");
         subno1 = owsActions.serviceRef;
 
-        test.get().info("load customer in hub net");
+        test.get().info("Step 2: load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("deactive a subscription and return to customer");
+        test.get().info("Step 3: deactive a subscription and return to customer");
         String deactivationReason = "Customer Cancelled";
         deactiveASubScriptionAndReturnToCustomer("Mobile FC", "Customer Cancelled");
 
-        test.get().info("Verify FC subscription status is inactive");
+        test.get().info("Step 4: Verify FC subscription status is inactive");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         Assert.assertEquals(CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue("Mobile FC"), "Inactive");
 
-        test.get().info("Login in to selfcare");
+        test.get().info("Step 5: Login in to selfcare");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
 
-        test.get().info("access tariff detail page");
+        test.get().info("Step 6: access tariff detail page");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
         SelfCareTestBase.page().verifyMyTariffDetailsPageIsDisplayed();
 
-        test.get().info("click add or change a family park button for inactive subscription");
+        test.get().info("Step 7: click add or change a family park button for inactive subscription");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance().clickAddOrChangeAFamilyPerkOfInacitveSubscription();
 
-        test.get().info("verify error message displayed");
+        test.get().info("Step 8: verify error message displayed");
         String message = "Sorry, your tariff isn’t eligible for Family Perks. If you’d like to change your tariff, please call our Customer Care team on 4455 from your Tesco Mobile phone.";
         Assert.assertEquals(MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance().getErrorMssgDialog(), message);
     }

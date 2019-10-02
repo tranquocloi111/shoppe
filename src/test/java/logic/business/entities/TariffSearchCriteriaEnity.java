@@ -8,6 +8,16 @@ public class TariffSearchCriteriaEnity {
     public String monthlyRental;
     public String earlyTerminationCharge;
 
+    public String getSpecialTariff() {
+        return specialTariff;
+    }
+
+    public void setSpecialTariff(String specialTariff) {
+        this.specialTariff = specialTariff;
+    }
+
+    public String specialTariff;
+
     public String getLastSaleDateExpired() {
         return lastSaleDateExpired;
     }

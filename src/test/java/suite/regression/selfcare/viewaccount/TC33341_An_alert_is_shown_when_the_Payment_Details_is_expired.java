@@ -25,25 +25,25 @@ public class TC33341_An_alert_is_shown_when_the_Payment_Details_is_expired exten
 
     @Test(enabled = true, description = "TC33340 self care an alert is shown when there is an overdue invoice on the account", groups = "SelfCare")
     public void TC33340_Self_Care_An_alert_is_shown_when_there_is_an_Overdue_invoice_on_the_account() {
-        test.get().info("Create a CC customer ");
+        test.get().info("Step 1: Create a CC customer ");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_and_NK2720";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         customerNumber = owsActions.customerNo;
 
-        test.get().info("Update credit card expiry date");
+        test.get().info("Step 2: Update credit card expiry date");
         updateCreditCardExpiryDate();
 
-        test.get().info("Load user in hub net");
+        test.get().info("Step 3: Load user in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("verify the payment detail is expired");
+        test.get().info("Step 4: verify the payment detail is expired");
         goTodDetailsToVerifyThePaymentIsExpired();
 
-        test.get().info("Login to selfcare");
+        test.get().info("Step 5: Login to selfcare");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
 
-        test.get().info("Verify the alert message");
+        test.get().info("Step 6: Verify the alert message");
         String mssg = "Your payment card has expired. Click here to update your card details";
         Assert.assertEquals(mssg, MyPersonalInformationPage.myAlertSection.getInstance().getAlertMessageByText("Your payment card has expired. Click here to update your card details"));
 

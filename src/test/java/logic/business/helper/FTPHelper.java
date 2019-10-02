@@ -7,6 +7,8 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FTPHelper {
     FTP ftp;
@@ -39,5 +41,11 @@ public class FTPHelper {
         }
 
     }
+
+    public List<String> getAllFileName(String remoteServer)
+    {
+        return  ftp.getAllFileName(remoteServer);
+    }
+
 
 }

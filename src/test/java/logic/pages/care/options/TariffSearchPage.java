@@ -140,10 +140,10 @@ public class TariffSearchPage extends BasePage {
         selectBillingType(enity.getBillingType());
         selectTariffType(enity.getTariffType());
         selectMonthlyRental(enity.getMonthlyRental());
-        selectSpecialTariff(enity.getMonthlyRental());
+       // selectSpecialTariff(enity.getSpecialTariff());
         selectContactPeriod(enity.getContractPeriod());
         selectETC(enity.getEarlyTerminationCharge());
-        selectLastDateExpired(enity.getEarlyTerminationCharge());
+        selectLastDateExpired(enity.getLastSaleDateExpired());
         selectStaffTariff(enity.getStaffTariff());
         clickFindButton();
     }

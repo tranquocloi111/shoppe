@@ -19,24 +19,22 @@ public class TC33310_Self_Care_View_Usage_Details_with_less_than_1000_calls exte
 
     @Test(enabled = true, description = "TC33310 self care view usage details with less than 1000 calls", groups = "SelfCare")
     public void TC33310_Self_Care_View_Usage_Details_with_less_than_1000_calls() {
-        test.get().info("Create a CC customer with no bundle and sim only");
+        test.get().info("Step 1: Create a CC customer with no bundle and sim only");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_NC_no_bundle_and_sim_only";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         String customerNumber = owsActions.customerNo;
 
-
-
-        test.get().info("create new group billing");
+        test.get().info("Step 2: create new group billing");
         createNewBillingGroup();
 
-        test.get().info("update bill group payment collection date to 10 dáy later");
+        test.get().info("Step 3: update bill group payment collection date to 10 dáy later");
         updateBillGroupPaymentCollectionDateTo10DaysLater();
 
-        test.get().info("set billing group for customer");
+        test.get().info("Step 4: set billing group for customer");
         setBillGroupForCustomer(customerNumber);
 
-        test.get().info("update customer start date");
+        test.get().info("Step 5:update customer start date");
         CommonActions.updateCustomerStartDate(customerNumber, TimeStamp.TodayMinus10Days());
 
 

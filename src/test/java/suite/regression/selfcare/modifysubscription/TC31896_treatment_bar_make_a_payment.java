@@ -30,7 +30,7 @@ public class TC31896_treatment_bar_make_a_payment extends BaseTest {
 
     @Test(enabled = true, description = "TC31896 treatment bar make a payment", groups = "SelfCare")
     public void TC31896_treatment_bar_make_a_payment() {
-        test.get().info("Create a CC customer with no bundle and sim only");
+        test.get().info("Step 1: Create a CC customer with no bundle and sim only");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_NC_no_bundle_and_sim_only";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
@@ -38,37 +38,37 @@ public class TC31896_treatment_bar_make_a_payment extends BaseTest {
         String customerNumber = owsActions.customerNo;
         subNo1 = owsActions.serviceRef;
 
-        test.get().info("load customer in hub net");
+        test.get().info("Step 2: load customer in hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("Turn on all bars in Barring and Roaming options");
+        test.get().info("Step 3: Turn on all bars in Barring and Roaming options");
         turnOnAllBarsInBarringAndRoamingOptions();
 
-        test.get().info("Login to self care");
+        test.get().info("Step 4: Login to self care");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
-        test.get().info("Verify the message customers service has been restricted is displayed");
+        test.get().info("Step 5: Verify the message customers service has been restricted is displayed");
         MyPersonalInformationPage.myAlertSection.getInstance().isMssgDisplayed("Your service has been restricted. Click here for more options.");
 
-        test.get().info("click service has been restricted for more options links");
+        test.get().info("Step 6: click service has been restricted for more options links");
         MyPersonalInformationPage.myAlertSection.getInstance().clickAlertMessageByText("Your service has been restricted. Click here for more options.");
 
-        test.get().info("verify my tariff details page is displayed");
+        test.get().info("Step 7: verify my tariff details page is displayed");
         SelfCareTestBase.page().verifyMyTarriffAndCreditAgreementdocuments();
 
-        test.get().info("verify my tariff details page is displayed");
+        test.get().info("Step 8: verify my tariff details page is displayed");
         Assert.assertEquals("Click here to make a payment", MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile NC 1").getUnpaidBill());
 
-        test.get().info("verify unpaid tool tip");
+        test.get().info("Step 9: verify unpaid tool tip");
         String expectedToolTip = "Unpaid bill means that you have an outstanding bill with us that needs payment. By making this payment, we will remove any bars placed on your account.";
         Assert.assertEquals(MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile NC 1").getUnPaidToolTip(), expectedToolTip);
 
-        test.get().info("click unpaid lin");
+        test.get().info("Step 10: click unpaid lin");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile NC 1").clickUnPaidLink();
 
 
-        test.get().info("verify make a one off payment");
+        test.get().info("Step 11: verify make a one off payment");
         SelfCareTestBase.page().verifyMakeAOneOffPayment();
 
 
