@@ -244,7 +244,6 @@ public class CommonActions extends OracleDB {
         try {
             String sql = "select count(*) as quality from objectrole where roleid = 147 and clientobjectid =  " + Config.getProp("customertypeclientobjectid");
             return OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "quality").toString().equalsIgnoreCase("1");
-
         } catch (Exception ex) {
             Log.info(ex.getMessage());
         }
@@ -314,6 +313,20 @@ public class CommonActions extends OracleDB {
             System.out.print(ex);
         }
         return null;
+    }
+
+    public static List getHiTransactionEvent(String serviceOrderId){
+        String sql = "select HITRANSACTIONEVENTID, HITRANSACTIONID, HIEVENTTYPE, DESCR, CONTEXTINFO from hitransactionevent he where he.hitransactionid = " + serviceOrderId;
+        List hitransactionEvent = OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+        return hitransactionEvent;
+    }
+
+    public static void updateReceiptDate(String receiptid, String date){
+        String sql = "UPDATE receipt set receiptdate = '"+date+"' where receiptid = '"+receiptid+"' ";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+        sql = "UPDATE receiptallocation set alloctimestamp = '"+date+"' where receiptid = '"+receiptid+"' ";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {

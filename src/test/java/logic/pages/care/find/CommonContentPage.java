@@ -30,7 +30,7 @@ public class CommonContentPage extends BasePage {
             return new SubscriptionsGridSectionPage();
         }
 
-        @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Subscriptions')]/../../..//following-sibling::div[1]//table")
+        @FindBy(xpath = "//td[(@class='informationBoxHeader' and contains(text(),'Subscriptions')) or (@class='informationBoxHeaderBusiness' and contains(text(),'Subscriptions'))]/../../..//following-sibling::div[1]//table")
         WebElement subscriptionsTable;
 
         TableControlBase table = new TableControlBase(subscriptionsTable);
@@ -134,6 +134,14 @@ public class CommonContentPage extends BasePage {
 
         public String getCustomerType() {
             return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Customer Type:')]/following-sibling::td[1]")));
+        }
+
+        public String getStatus() {
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Status:')]/following-sibling::td[1]")));
+        }
+
+        public String getPassPhraseAnswer() {
+            return getTextOfElement(parent.findElement(By.xpath(".//td[contains(text(),'Pass Phrase Answer:')]/following-sibling::td[1]")));
         }
     }
 

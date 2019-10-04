@@ -58,13 +58,6 @@ public class TC3796_004_OWS_Create_New_Order_For_Business_Customer_Without_Busin
         Assert.assertFalse(isTagNamePresent(xml));
     }
 
-    private void verifyInformationColorBoxHeaderBusiness(){
-        SummaryContentsPage summaryContentsPage = SummaryContentsPage.getInstance();
-        for (int i = 0; i < summaryContentsPage.getBackGroundColorOfHeader().size(); i++) {
-            Assert.assertEquals(summaryContentsPage.getBackGroundColorOfHeader().get(i), "rgba(255, 220, 0, 1)");
-        }
-    }
-
     private boolean isTagNamePresent(Xml xml){
         try {
             xml.getTextByTagName("businessName");

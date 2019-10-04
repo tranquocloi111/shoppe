@@ -64,7 +64,7 @@ public class TC30432_Transfer_amount_to_Credit_Agreement_subscription_deactivate
 
         test.get().info("Step 9 : Take a payment to master subscription");
         MenuPage.RightMenuPage.getInstance().clickApplyFinancialTransactionLink();
-        ServiceOrdersPage.AccountSummaryAndSelectAction.getInstance().selectChooseAction();
+        ServiceOrdersPage.AccountSummaryAndSelectAction.getInstance().selectChooseAction("Take a Payment");
         ServiceOrdersPage.InputPaymentDetails.getInstance().inputPaymentDetail("120", "Regression Automation");
         ServiceOrdersPage.TransferExistingFunds.getInstance().inputAmountAgainstSubscription("120");
         HashMap<String,String> transfer = ServiceOrdersPage.ConfirmFundsTransfer.getInstance().getConfirmFundsTransfer();

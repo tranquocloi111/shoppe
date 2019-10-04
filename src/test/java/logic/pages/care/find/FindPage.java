@@ -15,13 +15,12 @@ public class FindPage extends BasePage {
     @FindBy(xpath = "//input[@value='Find Now']")
     WebElement btnFindNow;
 
-    @FindBy(xpath = "/html/body/div[2]/table/tbody/tr[1]/td[2]/div[2]/table/tbody/tr/td[1]/div/div[1]/table")
+    @FindBy(xpath = "//td[contains(.,'Results')]//ancestor::table/following-sibling::div[@class='box-shadow']//table")
     WebElement tblResult;
 
     @FindBy(xpath = "//a[@class='informationBoxRow1']")
     WebElement lblName;
 
-    private static FindPage instance = new FindPage();
     public static FindPage getInstance(){
         return  new FindPage();
     }
@@ -54,6 +53,10 @@ public class FindPage extends BasePage {
 
     public boolean isUnderGoPresent(){
         return isElementPresent(lblName);
+    }
+
+    public String getNameOfResult(int index){
+       return getTextOfElement(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));
     }
 
 }

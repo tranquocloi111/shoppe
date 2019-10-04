@@ -1,0 +1,20 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <sel:maintainBundleRequest>
+      <sel:maintainBundleAction effective="IMMEDIATE" acceptWarning="false">
+        <sel:externalSystemId>NETCALL</sel:externalSystemId>
+        <sel:accountNumber>$accountNumber$</sel:accountNumber>
+        <sel:subscriptionNumber>$subscriptionNumber$</sel:subscriptionNumber>
+        <sel:bundleActions>
+          <sel:bundleAction actionType="ADD">
+            <sel:group>FAMILYPERK</sel:group>
+            <sel:groupCode>FAMILYPERK-FC</sel:groupCode>
+            <sel:bundleCode>500MB-FDATA-0-FC-4G</sel:bundleCode>
+            <sel:billCapNotifications>OFF</sel:billCapNotifications>
+          </sel:bundleAction>
+        </sel:bundleActions>
+      </sel:maintainBundleAction>
+    </sel:maintainBundleRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

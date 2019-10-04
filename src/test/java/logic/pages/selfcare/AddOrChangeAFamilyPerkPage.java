@@ -9,13 +9,13 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 
 public class AddOrChangeAFamilyPerkPage extends BasePage {
-
-    private static AddOrChangeAFamilyPerkPage instance;
-
     public static AddOrChangeAFamilyPerkPage getInstance() {
-        if (instance == null)
-            return new AddOrChangeAFamilyPerkPage();
-        return instance;
+        return new AddOrChangeAFamilyPerkPage();
+    }
+    @FindBy(id = "header")
+    WebElement header;
+    public String getHeaderName(){
+        return getTextOfElement(header);
     }
 
     public static class InfoPage extends AddOrChangeAFamilyPerkPage {
@@ -133,8 +133,18 @@ public class AddOrChangeAFamilyPerkPage extends BasePage {
             clickByJs(saveBtn);
         }
 
+        public String getTermsAndConditions(){
+            WebElement element = acceptTermsAndConditionsDiv().findElement(By.xpath(".//tr[1]//td"));
+            return getTextOfElement(element);
+        }
 
+        public String getTickBoxToAccept(){
+            WebElement element = acceptTermsAndConditionsDiv().findElement(By.xpath(".//tr[2]//td"));
+            return getTextOfElement(element);
+        }
     }
+
+
 }
 
 

@@ -184,6 +184,18 @@ public class TasksContentPage extends BasePage {
             @FindBy(xpath = "//td[starts-with(normalize-space(text()),'Service No:')]/following-sibling::td[1]")
             WebElement lblServiceNo;
 
+            @FindBy(xpath = "//td[starts-with(normalize-space(text()),'Business Name:')]/following-sibling::td[1]")
+            WebElement lblBusinessName;
+
+            @FindBy(xpath = "//td[starts-with(normalize-space(text()),'Current Customer Type:')]/following-sibling::td[1]")
+            WebElement lblCurrentCustomerType;
+
+            @FindBy(xpath = "//td[starts-with(normalize-space(text()),'New Customer Type:')]/following-sibling::td[1]")
+            WebElement lblNewCustomerType;
+
+            @FindBy(xpath = "//td[starts-with(normalize-space(text()),'Bill Style:')]/following-sibling::td[1]")
+            WebElement lblBillStyle;
+
             @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Details')]/../../..//following-sibling::div[1]//table")
             WebElement detailTable;
             TableControlBase tableControlBase = new TableControlBase(detailTable);
@@ -356,6 +368,22 @@ public class TasksContentPage extends BasePage {
 
             public String getServiceNo(){
                 return getTextOfElement(lblServiceNo);
+            }
+
+            public String getBusinessName(){
+                return getTextOfElement(lblBusinessName);
+            }
+
+            public String getCurrentCustomerType(){
+                return getTextOfElement(lblCurrentCustomerType);
+            }
+
+            public String getNewCustomerType(){
+                return getTextOfElement(lblNewCustomerType);
+            }
+
+            public String getBillStyle(){
+                return getTextOfElement(lblBillStyle);
             }
         }
     }

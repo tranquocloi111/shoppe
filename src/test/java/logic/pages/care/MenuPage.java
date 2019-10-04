@@ -110,6 +110,10 @@ public class MenuPage extends BasePage {
         public void clickUnBilledSummaryItem() {
             clickLinkByName("Unbilled Summary");
         }
+
+        public void clickUnBilledCallDetailsItem() {
+            clickLinkByName("Unbilled Call Details");
+        }
     }
 
     public static class RightMenuPage extends MenuPage {

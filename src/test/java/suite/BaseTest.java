@@ -23,17 +23,17 @@ import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.InvoicesContentPage;
 import logic.pages.care.find.ServiceOrdersContentPage;
+import logic.pages.care.find.SummaryContentsPage;
+import logic.pages.care.options.ChangeCustomerTypePage;
+import logic.pages.care.options.ConfirmNewCustomerTypePage;
+import logic.utils.Parser;
 import logic.utils.TimeStamp;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -140,8 +140,8 @@ public class BaseTest {
     }
 
     protected static void createNewBillingGroupToMinusMonth(int month) {
-        int day = Integer.parseInt(String.valueOf(TimeStamp.todayMinusTodayMinusMonth(month)));
-        BillingActions.getInstance().createNewBillingGroup(-day, true, -1);
+        int day = Parser.asInteger(TimeStamp.minusTodayMinusMonth(month));
+        BillingActions.getInstance().createNewBillingGroup(- day, true, -1);
     }
 
     protected static void verifyFCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef){
@@ -279,6 +279,39 @@ public class BaseTest {
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
 
         return TimeStamp.TodayMinus1MonthMinus1Day();
+    }
+
+    protected void submitAnonymiseAccountJob(){
+        RemoteJobHelper.getInstance().submitAnonymiseAccountJob();
+    }
+
+    protected void submitAnonymiseOrderJob(){
+        RemoteJobHelper.getInstance().submitAnonymiseOrderJob();
+    }
+
+    protected void verifyInformationColorBoxHeaderBusiness(){
+        SummaryContentsPage summaryContentsPage = SummaryContentsPage.getInstance();
+        for (int i = 0; i < summaryContentsPage.getBackGroundColorOfHeader().size(); i++) {
+            Assert.assertEquals(summaryContentsPage.getBackGroundColorOfHeader().get(i), "rgba(255, 220, 0, 1)");
+        }
+    }
+
+    protected String changeCustomerFromConsumerToBusiness(String billStyle){
+        Boolean isFlag;
+        updateReadWriteAccessChangeTypeCustomer();
+        MenuPage.RightMenuPage.getInstance().clickChangeCustomerTypeLink();
+
+        ConfirmNewCustomerTypePage confirmNewCustomerTypePage  = ConfirmNewCustomerTypePage.getInstance();
+        Assert.assertEquals(confirmNewCustomerTypePage.getCurrentCustomerType(), "Consumer");
+        Assert.assertEquals(confirmNewCustomerTypePage.getNewCustomerType(), "Business");
+        confirmNewCustomerTypePage.clickNextButton();
+
+        ChangeCustomerTypePage changeCustomerTypePage = ChangeCustomerTypePage.getInstance();
+        String businessName = "Business_" + RandomCharacter.getRandomNumericString(9);
+        isFlag = changeCustomerTypePage.ChangeCustomerTypeFromConsumerToBusinessType(businessName, billStyle);
+        Assert.assertFalse(isFlag);
+
+        return businessName;
     }
     //end region
 

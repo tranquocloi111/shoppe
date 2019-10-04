@@ -9,10 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
-import framework.wdm.Browser;
-import framework.wdm.WdManager;
 import logic.pages.TableControlBase;
-
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,6 +28,9 @@ public class ServiceOrdersPage extends BasePage {
 
     @FindBy(name = "PostCmdBtn_BACK")
     protected WebElement btnPre;
+
+    @FindBy(xpath = "//form[@name='wizardstep']//table")
+    WebElement wizardstepTable;
 
     public void clickNextButton() {
         clickNextBtn();
@@ -66,9 +67,9 @@ public class ServiceOrdersPage extends BasePage {
             return new DeactivateSubscriptionPage();
         }
 
-        public void deactivateAccountWithADelayReturnAndImmediateRefund() {
-            enterValueByLabel(deactivationDate, Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT_IN_PDF));
-            click(btnNext);
+        public void deactivateAccountWithADelayReturnAndImmediateRefund(Date date) {
+            enterValueByLabel(deactivationDate, Parser.parseDateFormate(date, TimeStamp.DATE_FORMAT_IN_PDF));
+            clickNextBtn();
 
             DeactivateSubscriptionRefundDetailsPage deactivateSubscriptionRefundDetailsPage = new DeactivateSubscriptionRefundDetailsPage();
             String currentWindow = getDriver().getTitle();
@@ -100,6 +101,15 @@ public class ServiceOrdersPage extends BasePage {
             clickReturnToCustomer();
         }
 
+        public void deactivateAccountWithOutReturnRefund(Date date) {
+            enterValueByLabel(deactivationDate, Parser.parseDateFormate(date, TimeStamp.DATE_FORMAT_IN_PDF));
+            clickNextBtn();
+            clickNextBtn();
+            if (isElementPresent(btnNext))
+                clickNextBtn();
+            clickReturnToCustomer();
+        }
+
         public void deactivateSubscription() {
             click(ckSubscription);
             enterValueByLabel(deactivationNotes, "Regression Automation");
@@ -122,6 +132,8 @@ public class ServiceOrdersPage extends BasePage {
             enterValueByLabel(deactivationNotes, "Regression Automation");
             clickNextBtn();
             clickNextBtn();
+            if (isElementPresent(btnNext))
+                clickNextBtn();
             clickReturnToCustomer();
         }
     }
@@ -265,8 +277,8 @@ public class ServiceOrdersPage extends BasePage {
             return new AccountSummaryAndSelectAction();
         }
 
-        public void selectChooseAction() {
-            selectByVisibleText(ddChooseAction, "Take a Payment");
+        public void selectChooseAction(String action) {
+            selectByVisibleText(ddChooseAction, action);
             click(btnNext);
         }
     }
@@ -763,4 +775,19 @@ public class ServiceOrdersPage extends BasePage {
         }
     }
 
+    public boolean getHyperLinkChangeCustomerServiceOrderProgress(){
+        boolean flag = false;
+        List<WebElement> tds = wizardstepTable.findElements(By.xpath(".//td[@valign='middle']/following-sibling::td"));
+        for (WebElement td : tds) {
+            try {
+                td.findElement(By.tagName("a"));
+                flag = true;
+            } catch (Exception ex) {
+                flag = false;
+            }
+        }
+        if(flag)
+            return true;
+        return false;
+    }
 }

@@ -1,6 +1,5 @@
 package suite.regression.soho;
 
-import logic.business.db.billing.CommonActions;
 import logic.business.entities.BundlesToSelectEntity;
 import logic.business.entities.OtherProductEntiy;
 import logic.business.ws.ows.OWSActions;
@@ -10,8 +9,8 @@ import logic.pages.care.find.SubscriptionContentPage;
 import logic.pages.care.find.SummaryContentsPage;
 import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.options.ChangeBundlePage;
-import logic.pages.care.options.ChangeSafetyBufferPage;
 import logic.pages.care.options.ConfirmChangeBundlePage;
+import logic.pages.selfcare.AddOrChangeAFamilyPerkPage;
 import logic.pages.selfcare.MonthlyBundlesAddChangeOrRemovePage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.utils.Parser;
@@ -21,14 +20,11 @@ import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 import suite.regression.selfcare.SelfCareTestBase;
-
 import java.sql.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class TC5023_003_Business_Customer_That_Has_Family_Perk_Bundle extends BaseTest{
     private String customerNumber = "9671";
-    private Date newStartDate;
     private String username;
     private String password;
     private String subNo1;
@@ -75,10 +71,14 @@ public class TC5023_003_Business_Customer_That_Has_Family_Perk_Bundle extends Ba
         password = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(username, password, customerNumber);
 
-        test.get().info("Step 11 : Navigate to the My tariff and credit agreement documents  page");
+        test.get().info("Step 11 : Verify Alert Message correctly");
+        MyPersonalInformationPage.MyTariffPage.myAlertSection myAlert = MyPersonalInformationPage.MyTariffPage.myAlertSection.getInstance();
+        Assert.assertEquals(myAlert.getAllMessage().get(0), "Don’t forget! You can get a free monthly Perk for "+subNo1+". Click here to choose the one you want.");
+
+        test.get().info("Step 12 : Navigate to the My tariff and credit agreement documents  page");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
 
-        test.get().info("Step 12 : Click on the button Add or change a Bundle button");
+        test.get().info("Step 13 : Click on the button Add or change a Bundle button");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobile2Tariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile 2");
         mobile2Tariff.clickAddOrChangeABundleButton();
 
@@ -87,19 +87,19 @@ public class TC5023_003_Business_Customer_That_Has_Family_Perk_Bundle extends Ba
         Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 2), "150");
         Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 5), "£0.00");
 
-        test.get().info("Step 12 : Click on the button Add or View One Off Bundle button");
+        test.get().info("Step 14 : Click on the button Add or View One Off Bundle button");
         mobile2Tariff.clickBackBtn();
         mobile2Tariff.clickAddOrViewOneOffBundlesButton();
         Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 1), "Family perk - 150 Mins per month");
         Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 2), "150");
         Assert.assertEquals(monthlyBundle.getCurrentBundleDescriptionByCellValue("Perk", 5), "£0.00");
-    }
 
-    private void verifyInformationColorBoxHeaderBusiness(){
-        SummaryContentsPage summaryContentsPage = SummaryContentsPage.getInstance();
-        for (int i = 0; i < summaryContentsPage.getBackGroundColorOfHeader().size(); i++) {
-            Assert.assertEquals(summaryContentsPage.getBackGroundColorOfHeader().get(i), "rgba(255, 220, 0, 1)");
-        }
+        test.get().info("Step 15 : Click on the button Add or Change Perk Bundle button");
+        mobile2Tariff.clickBackBtn();
+        mobile2Tariff.clickAddOrChangeAPerkBtn();
+        AddOrChangeAFamilyPerkPage.BundleAllowancePage bundleAllowance = AddOrChangeAFamilyPerkPage.BundleAllowancePage.getInstance();
+        Assert.assertEquals(bundleAllowance.getTermsAndConditions(), "Click here for the Perks terms and conditions.");
+        Assert.assertEquals(bundleAllowance.getTickBoxToAccept(), "Tick the box to accept the Perks terms and conditions.");
     }
 
     private void changeFamilyPerkBundle(){

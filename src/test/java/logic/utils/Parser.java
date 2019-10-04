@@ -28,6 +28,14 @@ public class Parser {
                 .toLocalDate();
     }
 
+    public static Date asDate(LocalDate localDate) {
+        return Date.valueOf(localDate);
+    }
+
+    public static int asInteger(Object str) {
+        return Integer.parseInt(String.valueOf(str));
+    }
+
     public static Float parseToInt(String s){
         return Float.parseFloat(s);
     }

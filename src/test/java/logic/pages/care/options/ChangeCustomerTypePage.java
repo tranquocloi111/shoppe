@@ -17,12 +17,16 @@ public class ChangeCustomerTypePage extends ServiceOrdersPage {
     WebElement drBillStyle;
 
 
-    public void ChangeCustomerTypeFromConsumerToBusinessType(String businessName, String billStyle){
+    public boolean ChangeCustomerTypeFromConsumerToBusinessType(String businessName, String billStyle){
+        boolean flag;
         enterValueByLabel(txtBusinessName, businessName);
         selectByVisibleText(drBillStyle, billStyle);
 
         clickNextBtn();
         clickNextBtn();
+        flag = getHyperLinkChangeCustomerServiceOrderProgress();
         clickReturnToCustomer();
+
+        return flag;
     }
 }

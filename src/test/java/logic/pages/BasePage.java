@@ -322,7 +322,7 @@ public class BasePage {
 
     public WebElement getMssgBoxByIndex(int index) {
         String xpath = String.format("//div[@class='msg-box'][%s]", index);
-        return getDriver().findElement(By.xpath("//div[@class='msg-box'][1]"));
+        return getDriver().findElement(By.xpath(xpath));
     }
 
     public void selectRadioButtonByText(WebElement element, String text) {
@@ -342,9 +342,7 @@ public class BasePage {
     }
 
     public void executeJs(String mouseOverScript, WebElement hoverElement) {
-        ((JavascriptExecutor) getDriver()).executeScript(mouseOverScript,
-                hoverElement);
-
+        ((JavascriptExecutor) getDriver()).executeScript(mouseOverScript,hoverElement);
     }
 
     public void closeCurrentBrowser()
@@ -355,17 +353,13 @@ public class BasePage {
     {
        return getDriver().getTitle();
     }
-    public String getNextAllowanceDate()
-    {
-        String date = Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_IN_PDF);
-        int day = Integer.parseInt(date.substring(0,2));
-        if (day>=23)
-        {
-            return "23/"+Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),TimeStamp.DATE_FORMAT_IN_PDF3);
-        }
-        else
-        {
-            return  "23/"+Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),TimeStamp.DATE_FORMAT_IN_PDF3);
+    public String getNextAllowanceDate() {
+        String date = Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT_IN_PDF);
+        int day = Integer.parseInt(date.substring(0, 2));
+        if (day >= 23) {
+            return "23/" + Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT_IN_PDF3);
+        } else {
+            return "23/" + Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT_IN_PDF3);
         }
     }
     //endregion

@@ -34,8 +34,6 @@ public class MiscHelper {
                     return true;
                 }
                 maxTryTimes--;
-                //replaces thread sleep to  Wait_for_seconds
-                //Thread.Sleep(interval * 1000);
                 waitForSeconds(1500 * interval);
             }
         } catch (Exception ex) {

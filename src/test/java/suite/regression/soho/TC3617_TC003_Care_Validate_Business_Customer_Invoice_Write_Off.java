@@ -7,11 +7,10 @@ import logic.business.helper.RemoteJobHelper;
 import logic.business.helper.SFTPHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
-import logic.pages.care.find.CommonContentPage;
-import logic.pages.care.find.DetailsContentPage;
-import logic.pages.care.find.InvoicesContentPage;
-import logic.pages.care.find.ServiceOrdersContentPage;
+import logic.pages.care.find.*;
+import logic.pages.care.main.ServiceOrdersPage;
 import logic.pages.care.main.TasksContentPage;
+import logic.pages.care.options.ApplyCreditPage;
 import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
@@ -25,10 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TC3617_TC003_Care_Validate_Business_Customer_Invoice_Write_Off extends BaseTest {
-    private String customerNumber;
+    private String customerNumber = "11480";
     private Date newStartDate;
     Date firstRunDate;
-    String invoiceId;
     String subNo1;
     String subNo2;
 
@@ -62,24 +60,36 @@ public class TC3617_TC003_Care_Validate_Business_Customer_Invoice_Write_Off exte
         subNo2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile Ref 2");
 
         test.get().info("Step 7 : Generate the cdr file then upload to server");
-        generateCDRFileFromTemplateThenUploadToServer(subNo1);
-        BaseTest.waitLoadCDRJobComplete();
+        generateCDRFileFromTemplateThenUploadToServer();
+        RemoteJobHelper.getInstance().submitDoUsageRemoteJob();
 
-        test.get().info("Step 7 : Run refill job");
-        submitDoRefillBCJob();
-        submitDoRefillNCJob();
-        submitDoBundleRenewJob();
+        test.get().info("Step 8 : Run refill job");
+        updateBillRunCalendarRunDatesToRunFirstBillRun(firstRunDate);
+        RemoteJobHelper.getInstance().submitDoRefillBcJob(firstRunDate);
+        RemoteJobHelper.getInstance().submitDoRefillNcJob(firstRunDate);
+        RemoteJobHelper.getInstance().submitDoBundleRenewJob(firstRunDate);
 
-        test.get().info("Step 8 : Submit draft bill run");
+        test.get().info("Step 9 : Submit draft bill run");
         submitDraftBillRun();
 
-        test.get().info("Step 9 : Submit confirm bill run");
+        test.get().info("Step 10 : Submit confirm bill run");
         submitConfirmBillRun();
 
-        test.get().info("Step 10 : Verify One Invoice Generated With Issue Date Of Today");
+        test.get().info("Step 11 : Verify One Invoice Generated With Issue Date Of Today");
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
         verifyOneInvoiceGeneratedWithIssueDateOfToday();
 
+        test.get().info("Step 12 : Apply Write Off Credit");
+        applyACreditAmount();
+
+        test.get().info("Step 13 : Verify Write Off Transaction Financial");
+        verifyWriteOffFinancialTransactions();
+
+        test.get().info("Step 14 : Verify Fully Paid invoice");
+        verifyFullPaidInvoice();
+
+        test.get().info("Step 15 : verify Text Of Unbilled Call Details");
+        verifyTextOfUnbilledCallDetails();
     }
 
     private void verifyOneInvoiceGeneratedWithIssueDateOfToday(){
@@ -88,25 +98,70 @@ public class TC3617_TC003_Care_Validate_Business_Customer_Invoice_Write_Off exte
 
         InvoicesContentPage.InvoiceDetailsContentPage grid = InvoicesContentPage.InvoiceDetailsContentPage.getInstance();
         Assert.assertEquals(1, grid.getRowNumberOfInvoiceTable());
-        invoiceId = grid.getInvoiceNumber();
-
-        grid.clickInvoiceNumberByIndex(1);
-        Assert.assertEquals(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), grid.getIssued());
     }
 
-    public void generateCDRFileFromTemplateThenUploadToServer(String subNo1){
+    public void generateCDRFileFromTemplateThenUploadToServer(){
         String filePath = "src\\test\\resources\\txt\\care\\TM_DRAS_CDR_20150106170007";
         String cdrFileString = Common.readFile(filePath);
-        String file = Parser.parseDateFormate(TimeStamp.Today(),"yyyyMMddHHmm")+ RandomCharacter.getRandomNumericString(6);
-        String fileName = Common.getFolderLogFilePath() + "TM_DRAS_CDR_" + file + ".txt";
-        cdrFileString = cdrFileString.replace("20150106170007", file)
-                .replace("07847469610",subNo1)
-                .replace("04/01/2015",Parser.parseDateFormate(TimeStamp.TodayMinus2Days(), TimeStamp.DATE_FORMAT4));
-        Common.writeFile(cdrFileString,fileName);
+        String timeStamp =  TimeStamp.TodayMinus1HourReturnFullFormat();
+        String fileName = "TM_DRAS_CDR_" + timeStamp + ".txt";
+        cdrFileString = cdrFileString.replace("20150106170007", timeStamp)
+                .replace("07847469610", subNo2)
+                .replace("04/01/2015", Parser.parseDateFormate(TimeStamp.TodayMinus2Days(), TimeStamp.DATE_FORMAT4));
+
+        String localPath = Common.getFolderLogFilePath() + fileName;
+        Common.writeFile(cdrFileString, localPath);
         String remotePath = Config.getProp("CDRSFTPFolder");
-        SFTPHelper.getInstance().upFileFromLocalToRemoteServer(fileName , remotePath);
-        String remoteFile = Config.getProp("cdrFolder").replace("Feed/a2aInterface/fileinbox","Feed/TMPP/"+"TM_DRAS_CDR_" + file + ".txt");
-        RemoteJobHelper.getInstance().waitForLoadFile(remoteFile);
+        SFTPHelper.getInstance().upFileFromLocalToRemoteServer(localPath, remotePath);
+        waitLoadCDRJobComplete();
     }
 
+    private void applyACreditAmount(){
+        MenuPage.RightMenuPage.getInstance().clickApplyFinancialTransactionLink();
+        ServiceOrdersPage.AccountSummaryAndSelectAction accountSummaryAndSelectAction =  ServiceOrdersPage.AccountSummaryAndSelectAction.getInstance();
+        accountSummaryAndSelectAction.selectChooseAction("Apply a Credit");
+        accountSummaryAndSelectAction.clickNextButton();
+
+        ApplyCreditPage applyCreditPage = ApplyCreditPage.getInstance();
+        applyCreditPage.inputCreditAmount("105.00");
+        applyCreditPage.clickNextButton();
+        applyCreditPage.clickNextButton();
+        applyCreditPage.clickReturnToCustomer();
+    }
+
+    private void verifyWriteOffFinancialTransactions(){
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+        MenuPage.LeftMenuPage.getInstance().clickFinancialTransactionLink();
+        List<String> ft = new ArrayList<>();
+        ft.add(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        ft.add("Write Off Credit");
+        ft.add("£105.00");
+        ft.add("-£157.50");
+
+        FinancialTransactionPage.FinancialTransactionGrid financialTransactionPage = FinancialTransactionPage.FinancialTransactionGrid.getInstance();
+        Assert.assertEquals(Common.compareList(financialTransactionPage.getAllValueOfFinancialTransaction(), ft), 1);
+    }
+
+    private void verifyFullPaidInvoice(){
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
+
+        List<String> invoice = new ArrayList<>();
+        invoice.add(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        invoice.add("Fully Paid");
+        invoice.add("£105.00");
+        invoice.add("£0.00");
+
+        InvoicesContentPage.InvoiceDetailsContentPage grid = InvoicesContentPage.InvoiceDetailsContentPage.getInstance();
+        Assert.assertEquals(Common.compareList(grid.getAllValueOfInvocie(), invoice), 1);
+    }
+
+    private void verifyTextOfUnbilledCallDetails(){
+        MenuPage.LeftMenuPage.getInstance().clickUnBilledCallDetailsItem();
+
+        UnbilledCallDetailsPage unbilledCallDetailsPage = UnbilledCallDetailsPage.getInstance();
+        unbilledCallDetailsPage.selectSubscription(subNo2 + " Mobile Ref 2");
+        unbilledCallDetailsPage.clickFindNowBrn();
+        Assert.assertEquals( unbilledCallDetailsPage.get(3).trim(),"(+) Call charged from your perk.");
+    }
 }

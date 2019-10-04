@@ -6,6 +6,7 @@ import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.SummaryContentsPage;
 import logic.pages.care.main.ServiceOrdersPage;
+import logic.pages.selfcare.AddOrChangeAFamilyPerkPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.utils.TimeStamp;
 import org.testng.Assert;
@@ -21,7 +22,6 @@ public class TC5023_002_Consumer_Customer_That_Has_Multi_Subs_One_Of_Them_Is_Ina
     private Date newStartDate;
     private String username;
     private String password;
-    private String subNo1;
     private String subNo2;
 
     @Test(enabled = true, description = "TC5023_002_Consumer_Customer_That_Has_Multi_Subs_One_Of_Them_Is_Inactivated", groups = "Soho")
@@ -48,7 +48,6 @@ public class TC5023_002_Consumer_Customer_That_Has_Multi_Subs_One_Of_Them_Is_Ina
         test.get().info("Step 6 : Get Subscription Number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
-        subNo1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile 1");
         subNo2 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Mobile 2");
 
         test.get().info("Step 7 : Deactivate subscription");
@@ -63,20 +62,25 @@ public class TC5023_002_Consumer_Customer_That_Has_Multi_Subs_One_Of_Them_Is_Ina
         password = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(username, password, customerNumber);
 
-        test.get().info("Step 10 : Navigate to the My tariff and credit agreement documents page");
+        test.get().info("Step 11 : Verify Alert Message correctly");
+        MyPersonalInformationPage.MyTariffPage.myAlertSection myAlert = MyPersonalInformationPage.MyTariffPage.myAlertSection.getInstance();
+        Assert.assertEquals(myAlert.getAllMessage().get(0), "Enjoy a free Family Perk when you add another contract to your account and whoever you add can choose one too! Click here to find out more.");
+
+        test.get().info("Step 12 : Navigate to the My tariff and credit agreement documents page");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
 
-        test.get().info("Step 11 : Click on the button Add or change a Perk button then validate the pop-up message");
-        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobile2Tariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile 2");
-        mobile2Tariff.clickAddOrChangeAFamilyPerkBtn();
-        Assert.assertEquals(mobile2Tariff.getPopupMessageOfPerk(), "Sorry, your tariff isn’t eligible for Family Perks. If you’d like to change your tariff, please call our Customer Care team on 4455 from your Tesco Mobile phone.");
+        test.get().info("Step 13 : Click on the button Add or change a Perk button then validate the pop-up message");
+        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage mobileTariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile 2");
+        mobileTariff.clickAddOrChangeAFamilyPerkBtn();
+        Assert.assertEquals(mobileTariff.getPopupMessageOfPerk(), "Sorry, your tariff isn’t eligible for Family Perks. If you’d like to change your tariff, please call our Customer Care team on 4455 from your Tesco Mobile phone.");
+        mobileTariff.acceptComfirmDialog();
 
-    }
+        test.get().info("Step 14 : Click on the button Add or change a Perk button then validate the message");
+        mobileTariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile 1");
+        mobileTariff.clickAddOrChangeAFamilyPerkBtn();
 
-    private void verifyInformationColorBoxHeaderBusiness(){
-        SummaryContentsPage summaryContentsPage = SummaryContentsPage.getInstance();
-        for (int i = 0; i < summaryContentsPage.getBackGroundColorOfHeader().size(); i++) {
-            Assert.assertEquals(summaryContentsPage.getBackGroundColorOfHeader().get(i), "rgba(255, 220, 0, 1)");
-        }
+        AddOrChangeAFamilyPerkPage addOrChangeAFamilyPerkPage = AddOrChangeAFamilyPerkPage.getInstance();
+        Assert.assertEquals(addOrChangeAFamilyPerkPage.getHeaderName(),"Add or change a Family Perk");
+        Assert.assertEquals(addOrChangeAFamilyPerkPage.getMssgBoxByIndex(2).getText(), "Sorry, your tariff isn’t eligible for Family Perks. If you’d like to change your tariff, please call our Customer Care team on 4455 from your Tesco Mobile phone.");
     }
 }

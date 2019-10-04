@@ -52,6 +52,8 @@ public class OWSActions extends BaseWs {
     private static final String ONLINE_CC_CUSTOMER_WITH_FC_1_BUNDLE_OF_SB_AND_SIMONLY = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only.xml";
     private static final String CC_CUSTOMER_WITH_FC_CORRECT_EXPIRY_DATE = "src\\test\\resources\\xml\\ows\\cc_customer_with_FC_1_SB_and_expiry_date_correct.xml";
     private static final String ONLINES_DD_CUSTOMER_WITH_FC_2_BUNDLES = "src\\test\\resources\\xml\\commonrequest\\onlines_DD_customer_with_FC_2_bundles_and_NK2720";
+    private static final String GET_CUSTOMER = "src\\test\\resources\\xml\\ows\\getcustomer\\get_customer.xml";
+    private static final String GET_ACCOUNT_AUTH = "src\\test\\resources\\xml\\ows\\getaccountauth\\get_account_auth.xml";
     //endregion
 
 
@@ -516,6 +518,40 @@ public class OWSActions extends BaseWs {
         setFullName();
         checkAsyncProcessIsCompleted(orderIdNo);
     }
+
+    public Xml submitFindOrder(String path, String subNo){
+        request = new Xml(new File(path));
+        request.setTextByTagName("mpn", subNo);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        return response;
+    }
+
+    public Xml submitGetAccountAuth(String username, String password){
+        request = new Xml(new File(GET_ACCOUNT_AUTH));
+        request.setTextByTagName("username", username);
+        request.setTextByTagName("password", password);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        return response;
+    }
+
+    public Xml submitGetCustomer(String customerNo){
+        request = new Xml(new File(GET_CUSTOMER));
+        request.setTextByTagName("accountNumber", customerNo);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        return response;
+    }
+
+    public Xml submitFindCustomer(String path, String subscriptionNumber){
+        request = new Xml(new File(path));
+        request.setTextByTagName("mpn", subscriptionNumber);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        return response;
+    }
+
     //endregion
 
 }

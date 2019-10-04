@@ -1,0 +1,9 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ord="http://order.telco.hsntech.com">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <ord:getAccountAuth>
+      <username>un77976511845</username>
+      <password>password3</password>
+    </ord:getAccountAuth>
+  </soapenv:Body>
+</soapenv:Envelope>

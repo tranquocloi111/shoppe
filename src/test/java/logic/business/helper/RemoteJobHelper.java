@@ -46,11 +46,10 @@ public class RemoteJobHelper {
             delay(10);
         }
 
-        MiscHelper.executeFuncntion(5, () ->
-        {
+        MiscHelper.executeFuncntion(5, () ->{
             submitRemoteJob(command);
             //submitRemoteJob(command, jobDescr);
-            return Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "numberJob"))) > 0;
+            return Parser.asInteger(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "numberJob")) > 0;
         }, 5);
     }
 
@@ -110,7 +109,6 @@ public class RemoteJobHelper {
                 try {
                     remoteJobId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "JOBID")));
                 } catch (Exception ex) {
-                    Log.error("can not get the New remote job id");
                 }
                 Thread.sleep(3000);
             }
@@ -211,11 +209,36 @@ public class RemoteJobHelper {
             e.printStackTrace();
         }
 
-        int billRunInvocationId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(resultSet, "brinvocationid")));
+        int billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
         Log.info("InvocationId:" + billRunInvocationId);
 
         currentMaxJobId = getMaxRemoteJobId();
         submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT2)), currentMaxJobId, "Bill Run");
+        waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
+    }
+
+    public void submitConfirmBillRun(Date date) {
+        ResultSet resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
+        try {
+            for (int i = 0; i < 120; i++) {
+                if (resultSet.isBeforeFirst()) {
+                    break;
+                } else {
+                    resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
+                }
+                Thread.sleep(2000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        int billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
+        Log.info("InvocationId:" + billRunInvocationId);
+
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(date, TimeStamp.DATE_FORMAT2)), currentMaxJobId, "Bill Run");
         waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
     }
 
@@ -226,11 +249,10 @@ public class RemoteJobHelper {
     }
 
     public void runDoDealXMLExtractJob() {
-        ResultSet resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select max(reportrunid)+1 as ABC from reportrun  ");
-        int reportrunId = Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(resultSet, "ABC")));
+        String reportrunId = CommonActions.getReportUniqueId();
         Log.info("reportrunId:" + reportrunId);
         currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJob(String.format("DoDealXMLExtract.sh -i 0000%s -e $HUB_SID", reportrunId), "Deal XML Extract");
+        submitRemoteJob(String.format("DoDealXMLExtract.sh -i %s -e $HUB_SID", reportrunId), "Deal XML Extract");
         waitForRemoteJobComplete(currentMaxJobId, "Deal XML Extract");
     }
 
@@ -309,5 +331,17 @@ public class RemoteJobHelper {
         String command = String.format("Reports.sh -i %s -k CRP334R -f %s/Reports/%s.ps", id, pathReport, id);
         submitRemoteJob(command, "Credit Agreement Annual Statement");
         waitForRemoteJobComplete(currentMaxJobId, "Credit Agreement Annual Statement");
+    }
+
+    public void submitAnonymiseAccountJob(){
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJob("AnonymiseAccount.sh -e $HUB_SID","Anonymise Deactivated Accounts");
+        waitForRemoteJobComplete(currentMaxJobId, "Anonymise Deactivated Accounts");
+    }
+
+    public void submitAnonymiseOrderJob(){
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJob("AnonymiseOrder.sh -e $HUB_SID -j","Anonymise Abandoned and Cancelled Orders");
+        waitForRemoteJobComplete(currentMaxJobId, "Anonymise Abandoned and Cancelled Orders");
     }
 }

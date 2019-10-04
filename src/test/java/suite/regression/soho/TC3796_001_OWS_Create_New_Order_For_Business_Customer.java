@@ -58,10 +58,4 @@ public class TC3796_001_OWS_Create_New_Order_For_Business_Customer extends BaseT
         Assert.assertEquals(xml.getTextByTagName("businessName"), "Tom Cruise");
     }
 
-    private void verifyInformationColorBoxHeaderBusiness(){
-        SummaryContentsPage summaryContentsPage = SummaryContentsPage.getInstance();
-        for (int i = 0; i < summaryContentsPage.getBackGroundColorOfHeader().size(); i++) {
-            Assert.assertEquals(summaryContentsPage.getBackGroundColorOfHeader().get(i), "rgba(255, 220, 0, 1)");
-        }
-    }
 }

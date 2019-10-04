@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class FinancialTransactionPage extends BasePage {
 
@@ -15,6 +16,8 @@ public class FinancialTransactionPage extends BasePage {
         public static FinancialTransactionGrid getInstance() {
             return new FinancialTransactionGrid();
         }
+
+        private final String DETAILS = "Details";
 
         @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Financial Transactions')]/../../..//following-sibling::div[1]//table")
         WebElement financialTransactionTable;
@@ -25,7 +28,15 @@ public class FinancialTransactionPage extends BasePage {
         }
 
         public void clickFinancialTransactionByDetail(String detail) {
-            tableControlBase.getRowByColumnNameAndCellValue(detail, detail).findElement(By.tagName("a")).click();
+            tableControlBase.getRowByColumnNameAndCellValue(DETAILS, detail).findElement(By.tagName("a")).click();
+        }
+
+        public List<List<String>> getAllValueOfFinancialTransaction(){
+            return tableControlBase.getAllCellValue();
+        }
+
+        public String getRefNumberByDetail(String detail){
+            return getTextOfElement(tableControlBase.getRowByColumnNameAndCellValue(DETAILS, detail).findElement(By.tagName("a")));
         }
     }
 }
