@@ -17,17 +17,17 @@ import java.util.List;
 
 /**
  * User: Nhi Dinh
- * Date: 16/09/2019
+ * Date: 1/10/2019
  */
-public class TC32046_Alternative_Path_1a_Deactivated_Subscription_Flexible_Cap extends BaseTest {
+public class TC32156_Self_Care_WS_Get_Account_Summary_Inactive_Sub_number_SC_003 extends BaseTest {
     Date newStartDate = TimeStamp.TodayMinus20Days();
     private List<String> subscriptionNumberList = new ArrayList<>();
     String NC2Subscription;
     String FCSubscription;
     String NCSubscription;
 
-    @Test(enabled = true, description = "TC32046_Alternative Path 1a Deactivated Subscription Flexible Cap", groups = "SelfCareWS")
-    public void TC32046_Alternative_Path_1a_Deactivated_Subscription_Flexible_Cap(){
+    @Test(enabled = true, description = "TC32156_Self_Care_WS_Get_Account_Summary_Inactive_Sub_number_SC_003", groups = "SelfCareWS")
+    public void TC32156_Self_Care_WS_Get_Account_Summary_Inactive_Sub_number_SC_003(){
         test.get().info("Create an online CC customer with 3 subscriptions 1FC 2NC");
         OWSActions owsActions = new OWSActions();
         String createOrder_TC32091 = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_3_subscriptions(1FC_2NC).xml";
@@ -68,9 +68,9 @@ public class TC32046_Alternative_Path_1a_Deactivated_Subscription_Flexible_Cap e
         test.get().info("Update Customer End Date");
         CommonActions.updateCustomerEndDate(customerNumber, TimeStamp.TodayMinus1Day());
 
-        test.get().info("Submit get account detail request by subscription number");
+        test.get().info("Submit get account summary request by inactive subscription number");
         SWSActions swsActions = new SWSActions();
-        Xml response = swsActions.submitGetAccountDetailsBySubsRequest(NC2Subscription);
+        Xml response = swsActions.submitGetAccountSummaryWithSubsRequest(NC2Subscription);
 
         test.get().info("Verify fault response data");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();

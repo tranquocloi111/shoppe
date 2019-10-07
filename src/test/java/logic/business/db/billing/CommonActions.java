@@ -333,4 +333,14 @@ public class CommonActions extends OracleDB {
         System.out.println(checkCustomerAccessRole());
     }
 
+    public static void updatePrpovaldate(String date, String customerNumber) {
+        String sql = String.format("update hmbrproperty set propvaldate = to_date('%s','yyyy-mm-dd') where hmbrid in (select hmbrid from hierarchymbr hm, hierarchy h where h.rootbuid in (%s)  and h.hid = hm.hid and hm.hmbrtype = 'BP') and propertykey in ('TKEXPDATE')", date, customerNumber);
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
+
+    public static void updateProvalNumberValue(String customerNumber, String propertyKey, double value) {
+        String sql = String.format("update hmbrproperty set PROPVALNUMBER = %s where hmbrid in (select hmbrid from hierarchymbr hm, hierarchy h where h.rootbuid in (%s)  and h.hid = hm.hid and hm.hmbrtype = 'BP') and propertykey in ('%s')", value, customerNumber, propertyKey);
+
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
 }

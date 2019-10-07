@@ -21,6 +21,7 @@ public class TimeStamp {
     public final static String DATE_FORMAT_IN_PDF2 = "dd-MMM-yyyy";
     public final static String DATE_FORMAT_IN_PDF3 = "MM/yyyy";
     public final static String DATE_FORMAT_XML = "yyyy-MM-dd";
+    public final static String DATE_TIME_FORMAT = "dd/MM/yyyy hh:mma";
 
 
     public static Date Today() {
@@ -310,6 +311,12 @@ public class TimeStamp {
         String formatDateTime = now.format(formatter);
 
         return formatDateTime;
+    }
+
+    public static DateTime currentDateTimeByTimeZone() {
+        DateTimeZone timeZone = DateTimeZone.forID(Config.getProp("timeZoneId"));
+        DateTime now = new DateTime(timeZone);
+        return now;
     }
 
 }

@@ -81,19 +81,20 @@ public class SelfCareWSTestBase extends BaseWs {
                 Assert.assertEquals(response.getTextByXpath("//message//description", i), falseResponseData.getSCSMultiExceptionMessages().get(i).getDescription());
             }
         }
-
     }
 
     public String buildResponseData(String sampleFile, Date startDate,Date nextBillDate, String customerNumber, String subscriptionNumber){
         String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DateFormatXml());
         String sNextBillDate = Parser.parseDateFormate(nextBillDate, TimeStamp.DateFormatXml());
         String sNewStartDate = Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DateFormatXml());
+        String sEndDate = Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DateFormatXml());
 
         String accountName = "Mr " + CareTestBase.getCustomerName();
 
         String file = Common.readFile(sampleFile).replace("$accountNumber$", customerNumber)
                 .replace("$accountName$", accountName)
                 .replace("$startDate$", sStartDate)
+                .replace("$endDate$", sEndDate)
                 .replace("$nextBillDate$", sNextBillDate)
                 .replace("$subscriptionNumber$", subscriptionNumber)
                 .replace("$newStartDate$", sNewStartDate);
