@@ -313,6 +313,22 @@ public class BaseTest {
 
         return businessName;
     }
+
+    protected void changeCustomerFromBusinessToConsumer(String billStyle){
+        Boolean isFlag;
+        updateReadWriteAccessChangeTypeCustomer();
+        MenuPage.RightMenuPage.getInstance().clickChangeCustomerTypeLink();
+
+        ConfirmNewCustomerTypePage confirmNewCustomerTypePage  = ConfirmNewCustomerTypePage.getInstance();
+        Assert.assertEquals(confirmNewCustomerTypePage.getCurrentCustomerType(), "Business");
+        Assert.assertEquals(confirmNewCustomerTypePage.getNewCustomerType(), "Consumer");
+        confirmNewCustomerTypePage.clickNextButton();
+
+        ChangeCustomerTypePage changeCustomerTypePage = ChangeCustomerTypePage.getInstance();
+        isFlag = changeCustomerTypePage.ChangeCustomerTypeFromBusinessToConsumerType(billStyle);
+        Assert.assertFalse(isFlag);
+    }
+
     //end region
 
 }

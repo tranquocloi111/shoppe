@@ -29,4 +29,16 @@ public class ChangeCustomerTypePage extends ServiceOrdersPage {
 
         return flag;
     }
+
+    public boolean ChangeCustomerTypeFromBusinessToConsumerType(String billStyle){
+        boolean flag;
+        selectByVisibleText(drBillStyle, billStyle);
+
+        clickNextBtn();
+        clickNextBtn();
+        flag = getHyperLinkChangeCustomerServiceOrderProgress();
+        clickReturnToCustomer();
+
+        return flag;
+    }
 }

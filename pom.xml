@@ -144,7 +144,11 @@
             <groupId>com.sun.xml.security</groupId>
             <artifactId>xml-security-impl</artifactId>
             <version>1.0</version>
-        </dependency>
+        </dependency><dependency>
+        <groupId>com.opencsv</groupId>
+        <artifactId>opencsv</artifactId>
+        <version>3.7</version>
+    </dependency>
     </dependencies>
 
     <build>

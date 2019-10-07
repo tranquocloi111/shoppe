@@ -344,4 +344,16 @@ public class RemoteJobHelper {
         submitRemoteJob("AnonymiseOrder.sh -e $HUB_SID -j","Anonymise Abandoned and Cancelled Orders");
         waitForRemoteJobComplete(currentMaxJobId, "Anonymise Abandoned and Cancelled Orders");
     }
+
+    public  int submitDMExtractJob(String controlId, String jobDescr) {
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs(String.format("DMExtract.sh -e $HUB_SID -t S -n %s -j", controlId), currentMaxJobId, jobDescr);
+        return waitForRemoteJobComplete(currentMaxJobId, jobDescr);
+    }
+
+    public  int submitDoDMExtractJob(){
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("DMExtract.sh -e $HUB_SID -t A -j", currentMaxJobId, "DataMart Data Extract");
+        return waitForRemoteJobComplete(currentMaxJobId, "DataMart Data Extract");
+    }
 }

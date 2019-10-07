@@ -1,5 +1,6 @@
 package logic.utils;
 
+import com.opencsv.CSVReader;
 import framework.utils.Log;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -333,6 +334,41 @@ public class Common {
                 count++;
         }
         return count;
+    }
+
+    public static String executeCommand(String filePath) {
+        StringBuffer output = new StringBuffer();
+        Process p;
+        try {
+            p = Runtime.getRuntime().exec("gpg " + filePath);
+            p.waitFor();
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output.toString();
+    }
+
+    public static void readPsvFile(String filePath) {
+        try {
+            //last parameter tells it which line (row) to consider as the first one
+            CSVReader reader = new CSVReader(new FileReader(filePath), '|', '\0', 1);
+            String[] row;
+            while ((row = reader.readNext()) != null) {
+
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String [] getDatFile(String path){
