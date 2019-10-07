@@ -25,13 +25,6 @@ import java.util.List;
 public class TC33322_B04_Make_a_one_off_payment_via_3D_secure extends BaseTest {
 /*
 Tran Quoc Loi
-paymentpage
-FinancialTransaction
-Taskcontent
-Paymentgateenity
-Paymentgatewayrespond
-commonaction
-service
  */
 
     @Test(enabled = true, description = "TC33322 Make a one off payment via 3D secure", groups = "SelfCare")

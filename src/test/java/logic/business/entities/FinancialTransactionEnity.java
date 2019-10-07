@@ -14,4 +14,13 @@ public class FinancialTransactionEnity {
 
         return so;
     }
+    public static HashMap<String, String> dataFinancialTransactionForMakeAOneOffPayment(String detail, String credit,String balance) {
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Details", detail);
+        so.put("Balance", balance);
+        so.put("Credit", credit);
+        so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+
+        return so;
+    }
 }

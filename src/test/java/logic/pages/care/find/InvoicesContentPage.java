@@ -95,17 +95,33 @@ public class InvoicesContentPage extends BasePage {
         @FindBy(xpath = "//td[contains(text(),'Net Amount:')]/following-sibling::td[1]")
         WebElement netAmount;
 
-        public void saveFileFromWebRequest(String customerNumber){
-            String [] param = btnViewPdf.getAttribute("href").split(",");
+        @FindBy(xpath = "//a[contains(text(),'PDF')]")
+        WebElement PDFViewBtn;
+
+        @FindBy(id = "plugin")
+        WebElement embeddedPdfForm;
+
+        public void saveFileFromWebRequest(String customerNumber) {
+            String[] param = btnViewPdf.getAttribute("href").split(",");
             String fileToDownloadLocation = String.format("%scustomer/CustomerInvoice.aspx?item=invoice&rootbuid=%s&invid=%s", Config.getProp("careUrl"), Common.stripNonDigits(param[0]), Common.stripNonDigits(param[1]));
             pdfFile = String.format("TC_%s_%s.pdf", customerNumber, RandomCharacter.getRandomNumericString(9));
             MiscHelper.saveFileFromWebRequest(btnViewPdf, fileToDownloadLocation, pdfFile);
         }
 
-        public String getSaveFileFromWebRequest(String customerNumber){
+        public String getSaveFileFromWebRequest(String customerNumber) {
             saveFileFromWebRequest(customerNumber);
             return pdfFile;
         }
+
+        public void savePDFFile(String fileName) {
+            String parent = getTitle();
+            switchWindow("Your Invoice", false);
+            String url = embeddedPdfForm.getAttribute("src");
+            MiscHelper.saveFileFromWebRequest(url, fileName);
+
+            switchWindow(parent, false);
+        }
+
 
         public List<String> getListInvoiceContent(String pdfFilePath, int startPage){
             return Pdf.getInstance().getText(System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFilePath, startPage);
@@ -136,6 +152,10 @@ public class InvoicesContentPage extends BasePage {
         }
         public String getNetAmount() {
             return getTextOfElement(netAmount);
+        }
+        public void clickViewPDFBtn()
+        {
+            click(btnViewPdf);
         }
     }
 

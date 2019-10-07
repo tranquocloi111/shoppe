@@ -88,4 +88,8 @@ public class AddASafeTyBufferPage extends BasePage {
     {
         return super.getNextAllowanceDate();
     }
+    public boolean checkRadioBoxExists(String name)
+    {
+       return findCheckBox(addASafetyBufferMsgBox,name).isDisplayed();
+    }
 }
