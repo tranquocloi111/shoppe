@@ -57,7 +57,7 @@ public class TC33310_Self_Care_View_Usage_Details_with_less_than_1000_calls exte
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
 
         test.get().info("Step 14: click view my usage  since my last bill link");
-        MyPersonalInformationPage.MyTariffPage.getInstance().clickViewMyUsageSinceMyLastBillLink();
+        MyPersonalInformationPage.MyTariffPage.getInstance().clickViewMyUsageDetailsSinceMyLastBillLink();
 
         test.get().info("Step 15: view usage for FC mobile 1");
         MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf1stSubscription + " FC Mobile 1");
@@ -65,16 +65,16 @@ public class TC33310_Self_Care_View_Usage_Details_with_less_than_1000_calls exte
         test.get().info("Step 15: verify an image was displayed for FC1");
         verifyAnImageWasDisplayedForFC1();
 
-        test.get().info("Step 15: view usage for FC mobile 2");
+        test.get().info("Step 16: view usage for FC mobile 2");
         MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf1stSubscription + " FC Mobile 2");
 
-        test.get().info("Step 15: verify an image was displayed for FC2");
+        test.get().info("Step 17: verify an image was displayed for FC2");
         verifyAnImageWasDisplayedForFC2();
 
-        test.get().info("Step 15: view usage for FC mobile 1");
+        test.get().info("Step 18: view usage for FC mobile 1");
         MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf1stSubscription + " NC Mobile 3");
 
-        test.get().info("Step 15: verify an image was displayed for NC");
+        test.get().info("Step 19: verify an image was displayed for NC");
         verifyAnImageWasDisplayedForNC();
     }
 
