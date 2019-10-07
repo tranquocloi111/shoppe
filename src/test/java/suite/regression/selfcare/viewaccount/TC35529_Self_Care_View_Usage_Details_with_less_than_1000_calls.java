@@ -3,33 +3,28 @@ package suite.regression.selfcare.viewaccount;
 import framework.config.Config;
 import framework.utils.Log;
 import logic.business.db.billing.CommonActions;
-import logic.business.entities.selfcare.MyBillAndPaymentEnity;
 import logic.business.helper.RemoteJobHelper;
 import logic.business.helper.SFTPHelper;
 import logic.business.ws.ows.OWSActions;
-import logic.pages.selfcare.MyBillsAndPaymentsPage;
+import logic.pages.care.find.UnbilledSumaryPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.pages.selfcare.MyUsageSinceMyLastBillPage;
 import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.selfcare.SelfCareTestBase;
 
-import java.util.HashMap;
-
-public class TC33310_Self_Care_View_Usage_Details_with_less_than_1000_calls extends BaseTest {
+public class TC35529_Self_Care_View_Usage_Details_with_less_than_1000_calls extends BaseTest {
 
     String serviceRefOf1stSubscription;
     String serviceRefOf2ndSubscription;
     String serviceRefOf3rdSubscription;
-    String customerNumber = "11604";
-        //review the scenarios
-   /// @Test(enabled = true, description = "TC33310 self care view usage details with less than 1000 calls", groups = "SelfCare")
-    public void TC33310_Self_Care_View_Usage_Details_with_less_than_1000_calls() {
+    String customerNumber;
+
+    @Test(enabled = true, description = "TC35529 selfcare view usage details with less than 1000 calls", groups = "SelfCare")
+    public void TC35529_Self_Care_View_Usage_Details_with_less_than_1000_calls() {
         test.get().info("Step 1: Create a  customer with 3 subscription");
         String path = "src\\test\\resources\\xml\\selfcare\\viewaccount\\TC65_create_order.xml";
         OWSActions owsActions = new OWSActions();
@@ -49,32 +44,31 @@ public class TC33310_Self_Care_View_Usage_Details_with_less_than_1000_calls exte
         test.get().info("Step 5: update start date for customer");
         CommonActions.updateCustomerStartDate(customerNumber, TimeStamp.TodayMinus10Days());
 
-
-        test.get().info("Step 12: prepare CDR file with sample TM DRAS CDR file and wait for load CDR file compplete");
+        test.get().info("Step 6: prepare CDR file with sample TM DRAS CDR file and wait for load CDR file compplete");
         prepareTopUpFileFor2SubscriptionsThenUploadToServer();
 
-        test.get().info("Step 13: Login in to selfcare");
+        test.get().info("Step 7: Login in to selfcare");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
 
-        test.get().info("Step 14: click view my usage  since my last bill link");
+        test.get().info("Step 8: click view my usage  since my last bill link");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewMyUsageSinceMyLastBillLink();
 
-        test.get().info("Step 15: view usage for FC mobile 1");
+        test.get().info("Step 9: view usage for FC mobile 1");
         MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf1stSubscription + " FC Mobile 1");
 
-        test.get().info("Step 15: verify an image was displayed for FC1");
+        test.get().info("Step 10: verify an image was displayed for FC1");
         verifyAnImageWasDisplayedForFC1();
 
-        test.get().info("Step 15: view usage for FC mobile 2");
+        test.get().info("Step 11: view usage for FC mobile 2");
         MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf1stSubscription + " FC Mobile 2");
 
-        test.get().info("Step 15: verify an image was displayed for FC2");
+        test.get().info("Step 12: verify an image was displayed for FC2");
         verifyAnImageWasDisplayedForFC2();
 
-        test.get().info("Step 15: view usage for FC mobile 1");
+        test.get().info("Step 13: view usage for FC mobile 1");
         MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf1stSubscription + " NC Mobile 3");
 
-        test.get().info("Step 15: verify an image was displayed for NC");
+        test.get().info("Step 14: verify an image was displayed for NC");
         verifyAnImageWasDisplayedForNC();
     }
 
@@ -111,12 +105,6 @@ public class TC33310_Self_Care_View_Usage_Details_with_less_than_1000_calls exte
         Common.writeFile(topupsTemplate, localPath);
         SFTPHelper.getInstance().upFileFromLocalToRemoteServer(localPath, remotePath);
         RemoteJobHelper.getInstance().waitLoadCDRJobComplete();
-    }
-
-
-    @DataProvider(name = "browsername")
-    public Object[][] dataProviderMethod() {
-        return new Object[][]{{"gc"}, {"ff"}, {"ie"}};
     }
 
 

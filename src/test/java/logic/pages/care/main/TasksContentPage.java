@@ -82,6 +82,9 @@ public class TasksContentPage extends BasePage {
             public int getRowNumberOfEventGird() {
                 return table.getRowsCount();
             }
+            public String getDateTimeByIndex(int index) {
+                return table.getCellValueByColumnNameAndRowIndex(index, "Date/Time");
+            }
         }
 
         public static class DetailsPage extends TaskPage {

@@ -28,7 +28,7 @@ public class TC33958_CCA_Annual_Statement_PDF_Document extends BaseTest {
     String customerNumber ;
     String agreementNO;
 
-    @Test(enabled = true, description = "TC33958 CCA annual statement PDF document", groups = "SelfCare")
+    //@Test(enabled = true, description = "TC33958 CCA annual statement PDF document", groups = "SelfCare")
     public void TC33958_CCA_Annual_Statement_PDF_Document() {
         test.get().info("Step 6:run credit agreement annual statement job");
         RemoteJobHelper.getInstance().runCreditAgreementAnnualStatement();

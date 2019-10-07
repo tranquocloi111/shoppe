@@ -113,6 +113,9 @@ public class SelfCareTestBase extends BasePage {
     public void verifyAddOrChangeAFamilyPerkIsDisplayed() {
         Assert.assertEquals("Add or change a Family Perk", MyPersonalInformationPage.getInstance().getHeader());
     }
+    public void verifyMonthlyBundlesAddChangeOrRemovePageDisplayed() {
+        Assert.assertEquals("Monthly bundles - Add, change or remove", MyPersonalInformationPage.getInstance().getHeader());
+    }
 
     public void verifyMyPersonalInformationPageIsDisplayed() {
         Assert.assertEquals("My personal information", MyPersonalInformationPage.getInstance().getHeader());

@@ -157,7 +157,7 @@ public class TC31961_Apply_the_change_from_my_next_bill_date extends BaseTest {
         }
         Log.info("Check unbilled summary image for 1 subscrption manually from ");
         String imgFile = String.format("TC31961_%s_HubNet.jpg", customerNumber);
-        UnbilledSumaryPage.getInstance().saveFileFromWebRequest(customerNumber, imgFile);
+        UnbilledSumaryPage.getInstance().saveFileFromWebRequest( imgFile);
     }
 
     @DataProvider(name = "browsername")

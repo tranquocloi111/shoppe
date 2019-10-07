@@ -12,10 +12,31 @@ public class AddOrChangeAFamilyPerkPage extends BasePage {
     public static AddOrChangeAFamilyPerkPage getInstance() {
         return new AddOrChangeAFamilyPerkPage();
     }
+
+
     @FindBy(id = "header")
     WebElement header;
-    public String getHeaderName(){
+
+    public String getHeaderName() {
         return getTextOfElement(header);
+    }
+
+    @FindBy(xpath = "//a[@href='http://www.tescomobile.com/perks']//ancestor::div[1]")
+    WebElement bizMessage;
+
+    @FindBy(xpath = "//a[text()='here']")
+    WebElement hereLink;
+
+    public String getBizMessage() {
+        return getTextOfElement(bizMessage);
+    }
+
+    public String getHereLinkHref() {
+        return hereLink.getAttribute("href");
+    }
+
+    public void clickHereLink() {
+        click(hereLink);
     }
 
     public static class InfoPage extends AddOrChangeAFamilyPerkPage {
@@ -81,11 +102,11 @@ public class AddOrChangeAFamilyPerkPage extends BasePage {
             return bundleTable.findElement(By.xpath(".//td[1]")).findElement(By.xpath(".//div[@class='msg-box']"));
         }
 
-        private WebElement acceptTermsAndConditionsDiv(){
+        private WebElement acceptTermsAndConditionsDiv() {
             return getDriver().findElement(By.xpath("//div[@class='msg-box']/following-sibling::div[@class='msg-box']"));
         }
 
-        public String getWarningMessage(){
+        public String getWarningMessage() {
             return getTextOfElement(warningMessageCtl());
         }
 
@@ -99,8 +120,7 @@ public class AddOrChangeAFamilyPerkPage extends BasePage {
         }
 
         public void unselectBundlesByName(String... names) {
-            for(String name : names)
-            {
+            for (String name : names) {
                 WebElement checkbox = findCheckBox(chooseBundlesDiv(), name);
                 if (checkbox.getAttribute("checked").equalsIgnoreCase("true")) {
                     click(checkbox);
@@ -108,37 +128,35 @@ public class AddOrChangeAFamilyPerkPage extends BasePage {
             }
         }
 
-        public String getTextsRow(String column, int index){
+        public String getTextsRow(String column, int index) {
             WebElement tableRow = allowanceTable().findElements(By.tagName("tr")).get(index);
-            if (column.equalsIgnoreCase("Current allowance")){
+            if (column.equalsIgnoreCase("Current allowance")) {
                 return tableRow.findElement(By.xpath(".//td[2]")).getText().trim();
-            }
-            else if (column.equalsIgnoreCase("New allowance")){
+            } else if (column.equalsIgnoreCase("New allowance")) {
                 return tableRow.findElement(By.xpath(".//td[3]")).getText().trim();
-            }
-            else {
+            } else {
                 Log.error("Can't find bundle allowance value");
             }
             return null;
         }
 
         public void tickBoxToAcceptTheFamilyPerkTermsAndConditions() {
-                WebElement checkbox = findCheckBox(acceptTermsAndConditionsDiv(), "Tick the box to accept the Family Perks terms and conditions.");
-                if (checkbox.getAttribute("checked") == null){
-                    click(checkbox);
-                }
+            WebElement checkbox = findCheckBox(acceptTermsAndConditionsDiv(), "Tick the box to accept the Family Perks terms and conditions.");
+            if (checkbox.getAttribute("checked") == null) {
+                click(checkbox);
+            }
         }
 
-        public void clickSaveButton(){
+        public void clickSaveButton() {
             clickByJs(saveBtn);
         }
 
-        public String getTermsAndConditions(){
+        public String getTermsAndConditions() {
             WebElement element = acceptTermsAndConditionsDiv().findElement(By.xpath(".//tr[1]//td"));
             return getTextOfElement(element);
         }
 
-        public String getTickBoxToAccept(){
+        public String getTickBoxToAccept() {
             WebElement element = acceptTermsAndConditionsDiv().findElement(By.xpath(".//tr[2]//td"));
             return getTextOfElement(element);
         }
