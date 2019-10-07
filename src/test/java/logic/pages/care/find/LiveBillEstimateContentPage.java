@@ -116,4 +116,27 @@ public class LiveBillEstimateContentPage extends BasePage {
             return tableControlBase.getAllRows().size()-1;
         }
     }
+
+    public static class AccountPaymentsAndVouchers extends LiveBillEstimate.ChargesToDate {
+        WebElement accountPaymentsAndVoucherHeaderRow;
+        static WebElement accountPaymentAndVoucherDiv;
+        WebElement accountPaymentsAndVoucherTable;
+        TableControlBase tableControlBase;
+
+        public AccountPaymentsAndVouchers() {
+            WebElement td = getCdDiv().findElement(By.xpath(String.format(".//td[@class='GroupHeader' and contains(text(),'Account Payments and Vouchers')]" )));
+            accountPaymentsAndVoucherHeaderRow = td.findElement(By.xpath(".//ancestor::tr[1]"));
+            WebElement secondRow = accountPaymentsAndVoucherHeaderRow.findElement(By.xpath(".//following-sibling::tr[1]"));
+            accountPaymentAndVoucherDiv = secondRow.findElement(By.xpath(".//div"));
+            tableControlBase = new TableControlBase(accountPaymentsAndVoucherTable);
+        }
+
+        public void expand(){
+            click(accountPaymentsAndVoucherHeaderRow.findElement(By.tagName("a")));
+        }
+
+        public String getReferenceByIndex(int index){
+            return tableControlBase.getCellValueByColumnNameAndRowIndex(index, "Reference");
+        }
+    }
 }

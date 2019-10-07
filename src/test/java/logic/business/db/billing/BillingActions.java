@@ -7,6 +7,7 @@ import logic.business.db.OracleDB;
 import logic.business.entities.DiscountBundleEntity;
 import logic.business.entities.PaymentGatewayEnity;
 import logic.business.entities.PaymentGatewayRespondEnity;
+import logic.business.helper.RemoteJobHelper;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 
@@ -353,5 +354,9 @@ public class BillingActions extends OracleDB {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.partitionIdRef.equalsIgnoreCase(partitionIdRef) && x.bundleCode.equalsIgnoreCase(bundleCode) && x.status.equalsIgnoreCase(status)).count()));
     }
 
+    public void generateAndLoadCRDFile(HashMap<Integer, Object> parameters){
+        OracleDB.SetToNonOEDatabase().executeNonQuery("pkg_loadfeedtmpp.generatecdrfile'", parameters);
+        RemoteJobHelper.getInstance().waitLoadCDRJobComplete();
+    }
 }
 

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<S:Envelope
+        xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <getAccountSummaryResponse
+                xmlns="http://selfcare.telco.hsntech.com"
+                xmlns:ns2="http://wsdl.hsntech.com">
+            <accountSummary>
+                <accountDetail>
+                    <accountNumber>$accountNumber$</accountNumber>
+                    <accountName>$accountName$</accountName>
+                    <startDate>$startDate$</startDate>
+                    <endDate>$endDate$</endDate>
+                    <clubcardNumber>634143330730912784</clubcardNumber>
+                    <nextBillDate>$nextBillDate$</nextBillDate>
+                </accountDetail>
+                <subscriptions>
+                    <subscription>
+                        <subscriptionDetail>
+                            <subscriptionNumber>$subscriptionNumber$</subscriptionNumber>
+                            <subscriptionDescription>Mobile Ref 1</subscriptionDescription>
+                            <masterSubscriptionFlag>true</masterSubscriptionFlag>
+                            <status>ACTIVE</status>
+                            <startDate>$newStartDate$</startDate>
+                            <endDate
+                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                        </subscriptionDetail>
+                        <tariff capType="NETWORKCAPPED" code="FC12-1000-500SO" descr="£10 Tariff 12 Month Contract" startDate="$nextBillDate$" charge="10.0">
+                        </tariff>
+                    </subscription>
+                </subscriptions>
+            </accountSummary>
+        </getAccountSummaryResponse>
+    </S:Body>
+</S:Envelope>
