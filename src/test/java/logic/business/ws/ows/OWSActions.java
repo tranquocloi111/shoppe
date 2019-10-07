@@ -552,6 +552,22 @@ public class OWSActions extends BaseWs {
         return response;
     }
 
+    public Xml createInvalidOcsCustomerRequest(String path, String provisioningSystem, String subscriptionNumber) {
+        request = new Xml(new File(path));
+        request.setTextByTagName(commonModMap);
+        request.setTextByTagName("billGroupId", "906");
+        request.setTextByTagName("password", "password1");
+        if (!provisioningSystem.isEmpty())
+            request.setAttributeTextAllNodesByXpath("ord1:createOrder","provisioningSystem", provisioningSystem);
+
+        if (!subscriptionNumber.isEmpty())
+            request.setTextByTagName("serviceRef", subscriptionNumber);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+        return response;
+    }
+
     //endregion
 
 }
