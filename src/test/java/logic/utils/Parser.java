@@ -1,6 +1,9 @@
 package logic.utils;
 
 import framework.utils.Log;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -38,6 +41,17 @@ public class Parser {
 
     public static Float parseToInt(String s){
         return Float.parseFloat(s);
+    }
+
+    public static String parseDateTimeFormat(DateTime value, String dateFormat){
+        try {
+            DateTimeFormatter formatter = DateTimeFormat.forPattern(dateFormat);
+            String dateString = formatter.print(value);
+            return  dateString;
+        }catch (Exception ex){
+            Log.error(ex.getMessage());
+        }
+        return null;
     }
 
 }

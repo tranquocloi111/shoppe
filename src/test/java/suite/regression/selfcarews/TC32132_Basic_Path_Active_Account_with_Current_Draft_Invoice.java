@@ -32,7 +32,7 @@ public class TC32132_Basic_Path_Active_Account_with_Current_Draft_Invoice extend
         owsActions.createAnOnlinesCCCustomerWithFC1BundleAndNK2720();
         customerNumber = owsActions.customerNo;
 
-        test.get().info("Create new billing group start from today minus 15 days");
+        test.get().info("Create new billing group");
         createNewBillingGroup();
 
         test.get().info("Update bill group payment collection date to 10 days later");

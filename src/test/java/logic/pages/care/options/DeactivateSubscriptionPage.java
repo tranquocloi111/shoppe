@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.sql.Date;
+
 /**
  * User: Nhi Dinh
  * Date: 9/08/2019
@@ -37,8 +39,8 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
         @FindBy(xpath = "//input[@type='checkbox' and not (@disabled)]")
         WebElement ckSubscription;
 
-        public void setDeactivationDate() {
-            String sDeactivationDate = Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT4);
+        public void setDeactivationDate(Date deactivateDate ) {
+            String sDeactivationDate = Parser.parseDateFormate(deactivateDate, TimeStamp.DATE_FORMAT4);
             enterValueByLabel(deactivationDate, sDeactivationDate);
         }
 
@@ -53,7 +55,8 @@ public class DeactivateSubscriptionPage extends ServiceOrdersPage {
         }
 
         public void deactivateLastActiveSubscription() {
-            setDeactivationDate();
+            Date deactivateDate = TimeStamp.TodayPlus1Day();
+            setDeactivationDate(deactivateDate);
             setNotes("Deactivate Last Active Subscription on the Account");
             clickNextButton();
             ConfirmDeactivatingSubscription.instance.verifyConfirmDeactivatingSubscriptionIsDisplay();

@@ -21,7 +21,9 @@ public class SWSActions extends BaseWs {
     private static final String GET_CONTRACT_SUMMARY_REQUEST = "src\\test\\resources\\xml\\sws\\getcontract\\Get_Contract_Summary_Request.xml";
     private static final String GET_ACCOUNT_DETAIL_REQUEST = "src\\test\\resources\\xml\\sws\\getaccountdetails\\Get_Account_Detail_Request.xml";
     private static final String GET_ACCOUNT_DETAIL_BY_SUBS_REQUEST = "src\\test\\resources\\xml\\sws\\getaccountdetails\\Get_Account_Detail_By_Subs_Request.xml";
-
+    private static final String GET_ACCOUNT_DETAIL_WITH_FLAG = "src\\test\\resources\\xml\\sws\\getaccountdetails\\Get_Account_Detail_With_Flag_Request.xml";
+    private static final String GET_ACCOUNT_SUMMARY_WITH_SUBS_REQUEST = "src\\test\\resources\\xml\\sws\\getaccount\\Get_Account_Summary_By_SubsNumber_Request.xml";
+    private static final String GET_BILL_ESTIMATE_REQUEST = "src\\test\\resources\\xml\\sws\\getbillestimate\\Get_Bill_Estimate_Request.xml";
     //endregion
 
     public SWSActions() {
@@ -162,8 +164,8 @@ public class SWSActions extends BaseWs {
         return response;
     }
 
-    public Xml submitGetAccountSummaryWithSubsRequest(String requestFilePath, String subscriptionNumber){
-        request = new Xml(new File(requestFilePath));
+    public Xml submitGetAccountSummaryWithSubsRequest(String subscriptionNumber){
+        request = new Xml(new File(GET_ACCOUNT_SUMMARY_WITH_SUBS_REQUEST));
         request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);
 
         response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
@@ -175,6 +177,28 @@ public class SWSActions extends BaseWs {
     public Xml submitGetAccountDetailsBySubsRequest(String subscriptionNumber){
         request = new Xml(new File(GET_ACCOUNT_DETAIL_BY_SUBS_REQUEST));
         request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
+
+    public Xml submitGetAccountDetailsRequestWithFlag(String accountNumber, String flag){
+        request = new Xml(new File(GET_ACCOUNT_DETAIL_WITH_FLAG));
+        request.setTextByTagName("sel:accountNumber", accountNumber);
+        request.setTextByTagName("sel:includeInactiveSubscriptionFlag", flag);
+
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
+
+
+    public Xml submitGetBillEstimateRequest(String accountNumber){
+        request = new Xml(new File(GET_BILL_ESTIMATE_REQUEST));
+        request.setTextByTagName("sel:accountNumber", accountNumber);
+
         response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());
 

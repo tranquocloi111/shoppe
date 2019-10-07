@@ -2,7 +2,6 @@ package suite.regression.selfcarews;
 
 import framework.utils.Xml;
 import logic.business.db.billing.CommonActions;
-import logic.business.entities.ErrorResponseEntity;
 import logic.business.ws.ows.OWSActions;
 import logic.business.ws.sws.SWSActions;
 import logic.business.ws.sws.SelfCareWSTestBase;
@@ -17,82 +16,70 @@ import java.util.List;
 
 /**
  * User: Nhi Dinh
- * Date: 16/09/2019
+ * Date: 30/09/2019
  */
-public class TC32046_Alternative_Path_1a_Deactivated_Subscription_Flexible_Cap extends BaseTest {
+public class TC32124_Self_Care_WS_Get_Account_Summary_Active_Account_and_Bundles_InactiveSub_FALSE extends BaseTest {
     Date newStartDate = TimeStamp.TodayMinus20Days();
     private List<String> subscriptionNumberList = new ArrayList<>();
     String NC2Subscription;
     String FCSubscription;
     String NCSubscription;
 
+
     @Test(enabled = true, description = "TC32046_Alternative Path 1a Deactivated Subscription Flexible Cap", groups = "SelfCareWS")
-    public void TC32046_Alternative_Path_1a_Deactivated_Subscription_Flexible_Cap(){
-        test.get().info("Create an online CC customer with 3 subscriptions 1FC 2NC");
+    public void TC32124_Self_Care_WS_Get_Account_Summary_Active_Account_and_Bundles_InactiveSub_FALSE(){
+        test.get().info("1. Create an online CC customer with 3 subscriptions 1FC 2NC");
         OWSActions owsActions = new OWSActions();
         String createOrder_TC32091 = "src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_3_subscriptions(1FC_2NC).xml";
         owsActions.createGeneralCustomerOrder(createOrder_TC32091);
         String customerNumber = owsActions.customerNo;
 
-        test.get().info("Create new billing group");
+        test.get().info("2. Create new billing group");
         createNewBillingGroup();
 
-        test.get().info("Update bill group payment collection date to 10 days later");
+        test.get().info("3. Update bill group payment collection date to 10 days later");
         updateBillGroupPaymentCollectionDateTo10DaysLater();
 
-        test.get().info("Set bill group for customer");
+        test.get().info("4. Set bill group for customer");
         setBillGroupForCustomer(customerNumber);
 
-        test.get().info("Update Customer Start Date");
+        test.get().info("5. Update Customer Start Date");
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
         //=============================================================================
 
-        test.get().info("Login to HUBNet then search Customer by customer number");
+        test.get().info("6. Login to HUBNet then search Customer by customer number");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("Get All Subscriptions Number");
-        getAllSubscriptionNumber(owsActions);
+        test.get().info("7. Get All Subscriptions Number");
+        getAllSubscriptionNumber();
 
-        test.get().info("Verify Customer Start Date and Billing Group are updated successfully");
+        test.get().info("8. Verify Customer Start Date and Billing Group are updated successfully");
         CareTestBase.page().verifyCustomerStartDateAndBillingGroupAreUpdatedSuccessfully(newStartDate);
 
-        test.get().info("Deactivate NC subscription");
+        test.get().info("9. Deactivate NC subscription");
         CareTestBase.deactivateSubscription(NC2Subscription);
 
-        test.get().info("Reload customer");
+        test.get().info("10. Reload customer");
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
 
-        test.get().info("Verify NC Subscription status is inactive");
+        test.get().info("11. Verify NC Subscription status is inactive");
         CareTestBase.verifySubscriptionStatus(NC2Subscription, "Inactive");
 
-        test.get().info("Update Customer End Date");
-        CommonActions.updateCustomerEndDate(customerNumber, TimeStamp.TodayMinus1Day());
-
-        test.get().info("Submit get account detail request by subscription number");
+        test.get().info("12. Submit get account detail request by subscription number");
         SWSActions swsActions = new SWSActions();
-        Xml response = swsActions.submitGetAccountDetailsBySubsRequest(NC2Subscription);
+        String getAccountSummaryRequest = "src\\test\\resources\\xml\\sws\\getaccount\\Get_Account_Summary_Request.xml";
+        Xml response = swsActions.submitAccountSummaryWithFlagRequest(getAccountSummaryRequest, customerNumber, "false");
 
-        test.get().info("Verify fault response data");
+        test.get().info("13. Build Expected Account Summary Response Data");
+        String sampleResponseFile = "src\\test\\resources\\xml\\sws\\getaccount\\TC32124_response.xml";
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        selfCareWSTestBase.verifySelfCareWSFaultResponse(response, buildFaultResponse());
+        String expectedResponseFile = selfCareWSTestBase.buildResponseData(sampleResponseFile, newStartDate, TimeStamp.TodayPlus1Month(), customerNumber, subscriptionNumberList);
 
+        test.get().info("14. Verify Get Account Summary Response");
+        selfCareWSTestBase.verifyTheResponseOfRequestIsCorrect(customerNumber, expectedResponseFile, response);
     }
 
-    private ErrorResponseEntity buildFaultResponse(){
-        ErrorResponseEntity falseResponse = new ErrorResponseEntity();
-        falseResponse.setFaultCode("SC_003");
-        falseResponse.setCodeAttribute("SC_003");
-        falseResponse.setTypeAttribute("ERROR");
-        falseResponse.setFaultString("Subscription Number not active");
-        falseResponse.setDescription("Subscription Number not active");
-        falseResponse.setExceptionMsg("Subscription Number not active");
-        falseResponse.setExceptionCauseMsg("Subscription Number not active");
-
-        return falseResponse;
-    }
-
-
-    private void getAllSubscriptionNumber(OWSActions owsActions){
+    private void getAllSubscriptionNumber(){
         subscriptionNumberList = CareTestBase.getAllSubscription();
         for (String subscription : subscriptionNumberList) {
             if (subscription.endsWith("Mobile FC")) {
@@ -104,5 +91,4 @@ public class TC32046_Alternative_Path_1a_Deactivated_Subscription_Flexible_Cap e
             }
         }
     }
-
 }
