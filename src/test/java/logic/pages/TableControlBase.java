@@ -258,6 +258,21 @@ public class TableControlBase extends BasePage {
         }
         return columnIndex;
     }
+    private int getColumnIndexTagTh(String columnName) {
+        int columnIndex = 0;
+        List<WebElement> header = element.findElements(By.tagName("tr"));
+        for (WebElement row : header) {
+            List<WebElement> cols = row.findElements(By.xpath("th"));
+            for (WebElement col : cols) {
+                String str = col.getText();
+                if (str.equals(columnName)) {
+                    columnIndex = cols.indexOf(col);
+                    break;
+                }
+            }
+        }
+        return columnIndex;
+    }
 
     private WebElement getRowByIndex(int index) {
         String xPath = String.format("./tbody/tr[%d]", index);
@@ -452,5 +467,42 @@ public class TableControlBase extends BasePage {
         } catch (Exception e) {
             return null;
         }
+    }
+    public int countTrElements() {
+        return element.findElements(By.xpath(".//tr")).size();
+    }
+
+    public List<WebElement> findRowsByColumnsWithTagTh(HashMap<String, String> columns) {
+        int columnIndex = 0;
+        boolean flag = false;
+        boolean isFail;
+        WebElement elm = null;
+        List<WebElement> column = new ArrayList<>();
+        List<WebElement> body = getBody();
+        body.remove(0);// remove first row with th elements
+        for (WebElement el : body) {
+            isFail = false;
+            for (Map.Entry mapElement : columns.entrySet()) {
+                String columnName = (String) mapElement.getKey();
+                String cellValue = (String) mapElement.getValue();
+                columnIndex = getColumnIndexTagTh(columnName);
+                String elementText = el.findElements(By.tagName("td")).get(columnIndex).getText();
+                elementText=elementText.replace(" ","");
+                cellValue=cellValue.replace(" ","");
+                if (elementText.equalsIgnoreCase(cellValue) && !isFail) {
+                    flag = true;
+                    isFail = false;
+                } else {
+                    flag = false;
+                    isFail = true;
+                    break;
+                }
+            }
+            if (flag && !isFail) {
+                elm = el;
+                column.add(elm);
+            }
+        }
+        return column;
     }
 }

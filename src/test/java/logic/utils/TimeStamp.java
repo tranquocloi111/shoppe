@@ -318,5 +318,27 @@ public class TimeStamp {
         DateTime now = new DateTime(timeZone);
         return now;
     }
+    public static String TodayMinus10DatsReturnFullFormat() {
+        LocalDateTime now = LocalDateTime.now().minusDays(10);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
+        String formatDateTime = now.format(formatter);
+
+        return formatDateTime;
+    }
+
+    public static String getMillisecond() {
+        Clock clock = Clock.systemUTC();
+        Duration tickDuration = Duration.ofNanos(250000);
+        Clock clock1 = Clock.tick(clock, tickDuration);
+        return String.valueOf( clock1.instant().toEpochMilli());
+    }
+    public static Date TodayPlus5Year() {
+        return Date.valueOf(String.valueOf(LocalDateTime.now().plusYears(5).toLocalDate()));
+    }
+    public static Date TodayPlus1MonthMinus15Day() {
+        return Date.valueOf(LocalDate.now().plusMonths(1).minusDays(15));
+    }
 
 }

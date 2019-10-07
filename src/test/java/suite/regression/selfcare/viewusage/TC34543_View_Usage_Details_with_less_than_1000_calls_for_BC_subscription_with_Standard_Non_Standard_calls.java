@@ -25,18 +25,19 @@ import suite.regression.selfcare.SelfCareTestBase;
 
 import java.util.HashMap;
 
-public class TC34542_View_Usage_Details_with_less_than_1000_calls_for_FC_subscription_with_Standard_Non_Standard_calls extends BaseTest {
+public class TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscription_with_Standard_Non_Standard_calls extends BaseTest {
 
     String sub ;
+    //only pass on MEL3
 
-    @Test(enabled = true, description = "TC34542 view usage details with less than 1000 calls for FC subscription with standard non standard calls", groups = "SelfCare")
-    public void TC34542_View_Usage_Details_with_less_than_1000_calls_for_FC_subscription_with_Standard_Non_Standard_calls() {
+    @Test(enabled = true, description = "TC34543 view usage details with less than 1000 calls for BC subscription with standard non standard calls", groups = "SelfCare")
+    public void TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscription_with_Standard_Non_Standard_calls() {
         test.get().info("Step 1: Create a CC customer");
-        String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only";
+        String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_BC_1_bundle_and_sim_only";
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         String customerNumber = owsActions.customerNo;
-        owsActions.getSubscription(owsActions.orderIdNo, "Mobile Ref 1");
+        owsActions.getSubscription(owsActions.orderIdNo, "Mobile BC");
         sub = owsActions.serviceRef;
 
         test.get().info("Step 2: create new billing group");
@@ -109,7 +110,7 @@ public class TC34542_View_Usage_Details_with_less_than_1000_calls_for_FC_subscri
     }
 
     private void verifyUsageDetail() {
-        MyUsageDetailsSinceMyLastBillPage.getInstance().selectSubscriptionForUsage(sub + " Mobile Ref 1");
+        MyUsageDetailsSinceMyLastBillPage.getInstance().selectSubscriptionForUsage(sub + " Mobile BC");
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickUsageViewBtn();
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickMonthlyChargeExpandBtn();
         HashMap<String, String> expectedEnity = UsageDetailsEnity.getMonthlyChargesEnity("CURRENT", "£10 Tariff 12 Month Contract", TimeStamp.TodayMinus20Days(), TimeStamp.TodayPlus1MonthMinus1Day(), "£10.00");
@@ -118,7 +119,7 @@ public class TC34542_View_Usage_Details_with_less_than_1000_calls_for_FC_subscri
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Monthly Charges", expectedEnity), 1);
 
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickBundleChargeExpandBtn();
-        expectedEnity = UsageDetailsEnity.getBundleChargesEnity(TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), String.format("£10 safety buffer for %s Mobile Ref 1", sub), "£10.00");
+        expectedEnity = UsageDetailsEnity.getBundleChargesEnity(TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), String.format("£10 safety buffer for %s Mobile BC", sub), "£10.00");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Bundle Charges", expectedEnity), 1);
         expectedEnity = UsageDetailsEnity.getBundleChargesEnity(TimeStamp.TodayMinus20Days(), TimeStamp.TodayPlus1MonthMinus1Day(), String.format("£20 safety buffer for %s", sub), "£0.00");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Bundle Charges", expectedEnity), 1);

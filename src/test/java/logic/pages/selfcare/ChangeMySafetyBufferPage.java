@@ -96,18 +96,22 @@ public class ChangeMySafetyBufferPage extends BasePage {
         WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);
         return checkbox.isEnabled();
     }
+
     public void selectWhenWouldLikeToChangeMethod(String name) {
         WebElement checkbox = findCheckBox(whenWouldYouLikeToChangeMssgBox, name);
         checkbox.click();
     }
+
     public void selectSafetyBuffer(String name) {
         WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);
         checkbox.click();
     }
+
     public boolean isWhenWouldLikeToChangeMethodEnable(String name) {
         WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);
         return checkbox.isEnabled();
     }
+
     public boolean isWhenWouldLikeToChangeMethodExist(String name) {
         WebElement checkbox = findCheckBox(changeOrRemoveYourSafetyBuffer, name);
         return checkbox.isDisplayed();
@@ -118,12 +122,38 @@ public class ChangeMySafetyBufferPage extends BasePage {
 
     @FindBy(xpath = "//label[@id='confirmWhenLabel']")
     WebElement comfirmWhenLabel;
-    public String getComfirmMessage()
-    {
-        return getTextOfElement(comfirmWhenLabel)+"\r\n"+getTextOfElement(waitLabelLabel);
+
+    public String getComfirmMessage() {
+        return getTextOfElement(comfirmWhenLabel) + "\r\n" + getTextOfElement(waitLabelLabel);
     }
-    public String calculateNextAllowanceDate()
-    {
-       return super.getNextAllowanceDate();
+
+    public String calculateNextAllowanceDate() {
+        return super.getNextAllowanceDate();
     }
+
+    public boolean checkRadioBoxExists(String name) {
+        return findCheckBox(changeOrRemoveYourSafetyBuffer, name).isDisplayed();
+    }
+
+    @FindBy(xpath = "//b[normalize-space()='Change it now but only until my next bill date']//ancestor::td[1]//following-sibling::td")
+    WebElement changeItNowButOnlyUntillMssg;
+    @FindBy(xpath = "//b[normalize-space()='Change it now and keep it at this amount']//ancestor::td[1]//following-sibling::td")
+    WebElement changeItNowAndKeepItAtThisAmount;
+    @FindBy(xpath = "//b[normalize-space()='Change it from my next bill date']//ancestor::td[1]//following-sibling::td")
+    WebElement changeItFromMyTextBillDate;
+
+    public String getChangeItNowButOnlyUntillMyNextBillDate() {
+        return getTextOfElement(changeItNowButOnlyUntillMssg);
+    }
+    public String getChangeITNowAndKeepAtThisAmount() {
+        return getTextOfElement(changeItNowAndKeepItAtThisAmount);
+    }
+    public String getChangeItFromMyTextBillDate() {
+        return getTextOfElement(changeItFromMyTextBillDate);
+    }
+    public boolean IsWhenWouldYouLikeYourSafetyBufferToChangeBlockDisplayed()
+    {
+     return whenWouldYouLikeToChangeMssgBox.isDisplayed();
+    }
+
 }
