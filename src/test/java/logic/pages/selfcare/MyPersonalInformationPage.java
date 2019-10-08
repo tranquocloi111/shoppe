@@ -422,6 +422,10 @@ public class MyPersonalInformationPage extends BasePage {
         public void clickViewMyUsageDetailsSinceMyLastBillLink() {
             clickLinkByText("View my usage details since my last bill");
         }
+
+        public void clickViewMyUsageSinceMyLastBillLink() {
+            clickLinkByText("View my usage since my last bill");
+        }
     }
 
     public static class myAlertSection extends MyPersonalInformationPage {
