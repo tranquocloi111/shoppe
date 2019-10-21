@@ -1,0 +1,31 @@
+﻿<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:doConfirm xmlns:ns2="http://ws.productsupplier.hub.hsntech.com/">
+            <ConfirmRequest orderType="RESIDENTIAL_NEW" dateTime="2019-10-09T10:39:45.769+11:00">
+                <accountDetails company="Tesco Moble" companyId="35635635" supplier="Oakwood"/>
+                <orderNumber>$orderNumber$</orderNumber>
+                <reserveReference>8701038-FGDH000</reserveReference>
+                <deliveryAddress>
+                    <name>$firstName$ $lastName$</name>
+                    <street>6 LUKIN STREET</street>
+                    <city>LONDON</city>
+                    <postcode>E10AA</postcode>
+                    <country>UK</country>
+                </deliveryAddress>
+                <customerDetails>
+                    <name>$firstName$ $lastName$</name>
+                    <contactTelephone>02086999990</contactTelephone>
+                    <secondReference>$secondReference$</secondReference>
+                </customerDetails>
+                <orderLine>
+                    <productCode>5053947620911</productCode>
+                    <quantityRequested>1</quantityRequested>
+                    <orderLineItem>
+                        <mobilePhoneNumber>$mobilePhoneNumber$</mobilePhoneNumber>
+                        <imei>SIM Only</imei>
+                    </orderLineItem>
+                </orderLine>
+            </ConfirmRequest>
+        </ns2:doConfirm>
+    </S:Body>
+</S:Envelope>

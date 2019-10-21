@@ -43,6 +43,10 @@ public class MyPersonalInformationPage extends BasePage {
         public void clickViewByIndex(int index) {
             click(myPreviousOrdersContracttable.findElement(By.xpath(".//tr[" + index + "]")).findElement(By.linkText("View")));
         }
+
+        public List<List<String>> getAllValueOfOrdersAndContractPage(){
+            return tableControlBase.getAllCellValueWithoutColumName();
+        }
     }
 
     public static class MyTariffPage extends MyPersonalInformationPage {

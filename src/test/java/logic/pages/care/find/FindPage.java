@@ -1,11 +1,13 @@
 package logic.pages.care.find;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.AbstractMap;
 
 public class FindPage extends BasePage {
 
@@ -25,8 +27,8 @@ public class FindPage extends BasePage {
         return  new FindPage();
     }
 
-    public void findCustomer(Pair<String, String>... pairs) {
-        for (Pair<String, String> p : pairs) {
+    public void findCustomer(AbstractMap.SimpleEntry<String, String>... pairs) {
+        for (AbstractMap.SimpleEntry<String, String> p : pairs) {
             enterValueByLabel(tblFindDetail, p.getKey(), p.getValue());
         }
         btnFindNow.click();
@@ -43,7 +45,7 @@ public class FindPage extends BasePage {
 
     public void navigateToCustomerDetailPage(int index, String customerNumber){
         MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
-        findCustomer(new Pair<String, String>("Customer Number", customerNumber));
+        findCustomer(new AbstractMap.SimpleEntry<String, String>("Customer Number", customerNumber));
         openCustomerByIndex(index);
     }
 

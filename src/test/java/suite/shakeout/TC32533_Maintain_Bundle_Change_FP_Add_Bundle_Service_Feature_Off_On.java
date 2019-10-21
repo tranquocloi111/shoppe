@@ -1,7 +1,7 @@
 package suite.shakeout;
 
 import framework.utils.Xml;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
 import logic.business.db.billing.CommonActions;
 import logic.business.entities.DiscountBundleEntity;
@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 import java.sql.Date;
+import java.util.AbstractMap;
 import java.util.List;
 
 public class TC32533_Maintain_Bundle_Change_FP_Add_Bundle_Service_Feature_Off_On extends BaseTest{
@@ -160,7 +161,7 @@ public class TC32533_Maintain_Bundle_Change_FP_Add_Bundle_Service_Feature_Off_On
         Assert.assertEquals(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), TasksContentPage.TaskPage.DetailsPage.getInstance().getProvisioningDate());
         Assert.assertEquals(8, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getRowNumberOfEventGird());
 
-        Pair<String, String> event = EventEntity.setEvents("Description", "Service Order created");
+        AbstractMap.SimpleEntry<String, String> event = EventEntity.setEvents("Description", "Service Order created");
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(event));
         event = EventEntity.setEvents("Description", "PPB: AddSubscription: Request completed");
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(event));

@@ -320,6 +320,7 @@ public class Common {
         }
         return null;
     }
+
     public static int compareList(List<List<String>> actual, List<String> expected) {
         boolean flg = false;
         int count = 0;
@@ -332,6 +333,26 @@ public class Common {
             }
             if (flg)
                 count++;
+        }
+        return count;
+    }
+
+    public static int compareLists(List<List<String>> actual, List<List<String>> expected) {
+        boolean flg = false;
+        int count = 0;
+        for (int i = 0; i < actual.size(); i++) {
+            for (int k = 0; k < expected.size(); k++) {
+                for (int j = 0; j < expected.get(k).size(); j++) {
+                    if (actual.get(i).contains(expected.get(k).get(j))) {
+                        flg = true;
+                    } else {
+                        flg = false;
+                        break;
+                    }
+                }
+                if (flg)
+                    count++;
+            }
         }
         return count;
     }
@@ -379,5 +400,40 @@ public class Common {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean compareTextsFile(String serverLogPath, String expectedFile) {
+        boolean flag = false;
+        String serverLog = Common.readFile(serverLogPath);
+        try {
+            // Read a file from disk and return the text contents.
+            StringBuilder sb = new StringBuilder();
+            FileReader input = new FileReader(expectedFile);
+            BufferedReader bufRead = new BufferedReader(input);
+            try {
+                String line = bufRead.readLine();
+                while (line != null) {
+                    sb.append(line).append('\n');
+                    line = bufRead.readLine();
+                    if (serverLog.contains(line.trim())) {
+                        flag = true;
+                    }
+                    else {
+                        flag = false;
+                        break;
+                    }
+                }
+            } finally {
+                bufRead.close();
+                input.close();
+            }
+
+        } catch (Exception ex) {
+            Log.error(ex.getMessage());
+        }
+        if (flag)
+            return true;
+
+        return false;
     }
 }

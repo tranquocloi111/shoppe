@@ -41,8 +41,7 @@ public class Xml {
         try{
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            InputSource inputSource = new InputSource(new StringReader(xmlString));
-            this.doc = docBuilder.parse(inputSource);
+            this.doc = docBuilder.parse(new ByteArrayInputStream(xmlString.getBytes()));
         }catch (ParserConfigurationException | SAXException | IOException e){
             e.printStackTrace();
             this.doc = null;
@@ -147,7 +146,7 @@ public class Xml {
         return null;
     }
 
-    public void setAttributeTextAllNodesByXpath(String tagName, String attributeName, String value){
+    public void setAttributeTextAllNodesByTagName(String tagName, String attributeName, String value){
         NodeList nodes = getElementsByTagName(tagName);
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);

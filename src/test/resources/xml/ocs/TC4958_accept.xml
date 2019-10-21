@@ -1,0 +1,42 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ord1:createOrder type="UPGRADE" provisioningSystem="HPIN" correlationId="$correlationId$" xsi:schemaLocation="http://order.telco.hsntech.com ShopFront.xsd" xmlns:ord1="http://order.telco.hsntech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <account type="RESIDENTIAL" accountNumber="$accountNumber$"/>
+            <verification runCreditCheck="false" termsAndConditionsAccepted="true" refundableDepositAccepted="false" acceptAgreement="true">
+                <interconnect>
+                    <param name="PAYASYOUGO"/>
+                </interconnect>
+            </verification>
+            <orderDetail orderRef="12345" ipAddress="160.206.234.22" salesChannel="Telecomm Centre" agentId="55555" branchId="BRANCH001" externalSystemID="COCO" devicePrint="232342344" paymentMethod="TILL">
+                <dateTime>2011-06-10T16:44:31.0Z</dateTime>
+                <orderItem id="1" dealSKU="DEAL-INHAND">
+                    <serviceRef reference="Upgrade Mobile">$MPN$</serviceRef>
+                    <tariff productCode="FF24-0750-250-5M4M">
+                        <deliveryMethod>INHAND</deliveryMethod>
+                    </tariff>
+                    <device productCode="NK-2720">
+                        <deliveryMethod>INHAND</deliveryMethod>
+                        <imei>359090017074582</imei>
+                        <serialNumber>123152436457568486784684</serialNumber>
+                    </device>
+                    <discBundle productCode="30000-HU-C" bundleGroup="SB-GRP-C" billCapNotifications="true">
+                        <deliveryMethod>INHAND</deliveryMethod>
+                    </discBundle>
+                </orderItem>
+                <orderEvent dateTime="2013-06-10T16:41:30.0Z" eventType="Initiated Order">Started Order</orderEvent>
+                <receipt type="TILL" dateTime="2011-06-10T16:44:31.0Z">
+                    <reference>1234123412341</reference>
+                    <amount>0</amount>
+                </receipt>
+                <paymentRequest>
+                    <cardName>Card</cardName>
+                    <cardNumber>4111111111111111</cardNumber>
+                    <cardType>MC</cardType>
+                    <cardExpiryDate>0124</cardExpiryDate>
+                    <cvv>123</cvv>
+                </paymentRequest>
+            </orderDetail>
+        </ord1:createOrder>
+    </soapenv:Body>
+</soapenv:Envelope>

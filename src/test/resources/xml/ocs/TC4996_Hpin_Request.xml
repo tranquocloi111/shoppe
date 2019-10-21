@@ -55,7 +55,7 @@
         <dateTime>2011-06-10T16:44:31.0Z</dateTime>
         <!--1 or more repetitions:-->
         <orderItem id="1" dealSKU="DEAL-INHAND" masterSubscription="true">
-          <serviceRef reference="Mobile 1"/>
+          <serviceRef reference="Mobile 1"></serviceRef>
           <!--You have a CHOICE of the next 4 items at this level-->
           <tariff productCode="FC30-1000-100">
             <deliveryMethod>INHAND</deliveryMethod>

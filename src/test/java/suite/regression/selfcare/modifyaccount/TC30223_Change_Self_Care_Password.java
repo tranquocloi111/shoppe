@@ -28,7 +28,7 @@ public class TC30223_Change_Self_Care_Password extends BaseTest {
 Tran Quoc Loi
  */
 
-    @Test(enabled = true, description = "TC30223 Change password by selfcare", groups = "SelfCare")
+    @Test(enabled = true, description = "TC30223 Change password by selfcare", groups = "SelfCare", dataProvider = "asaa")
     public void TC30223_Change_Self_Care_Password() {
 
         test.get().info("Step 1 : delete all old data");

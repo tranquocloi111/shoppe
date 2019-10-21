@@ -35,7 +35,7 @@ public class TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract 
     private String subscription2;
 
     //OF_04 - Deal Extract Changes
-    @Test(enabled = true, description = "TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract", groups = "Tropicana")
+    @Test(enabled = false, description = "TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract", groups = "Tropicana")
     public void TC4562_HUB_Validation_For_Bonus_Bundles_Excluded_From_Deal_Extract() {
         test.get().info("Step 1 : Create a Customer has 2 Subscription that has Tropicana bundle and has no Tropicana");
         OWSActions owsActions = new OWSActions();

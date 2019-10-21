@@ -14,7 +14,7 @@ import suite.regression.care.CareTestBase;
 public class TC4313_Restrict_Access_To_Business_Customers_And_Change_Customer_Type extends BaseTest {
     String customerNumber;
 
-    @Test(enabled = true, description = "TC4313_Restrict_Access_To_Business_Customers_And_Change_Customer_Type", groups = "Soho")
+    @Test(enabled = true, description = "TC4313_Restrict_Access_To_Business_Customers_And_Change_Customer_Type", groups = "SOHO")
     public void TC4313_Restrict_Access_To_Business_Customers_And_Change_Customer_Type() {
         test.get().info("Step 1 : Create a Customer with business type");
         OWSActions owsActions = new OWSActions();

@@ -1,12 +1,12 @@
 package logic.pages.care.find;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 
@@ -72,7 +72,7 @@ public class CommonContentPage extends BasePage {
             clickByJs(table.getRowByCellValue(cellValue).findElement(By.tagName("a")));
         }
 
-        public int getNumberOfSubscription(Pair<String, String> subscriptions) {
+        public int getNumberOfSubscription(AbstractMap.SimpleEntry<String, String> subscriptions) {
             return table.findRowsByColumns(subscriptions).size();
         }
 

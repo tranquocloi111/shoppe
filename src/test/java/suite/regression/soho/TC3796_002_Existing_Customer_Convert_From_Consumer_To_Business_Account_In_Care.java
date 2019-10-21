@@ -26,7 +26,7 @@ public class TC3796_002_Existing_Customer_Convert_From_Consumer_To_Business_Acco
     private String businessName;
     private String billStyle;
 
-    @Test(enabled = true, description = "TC3796_002_Existing_Customer_Convert_From_Consumer_To_Business_Account_In_Care)", groups = "SOHO")
+    @Test(enabled = true, description = "TC3796_002_Existing_Customer_Convert_From_Consumer_To_Business_Account_In_Care", groups = "SOHO")
     public void TC3796_002_Existing_Customer_Convert_From_Consumer_To_Business_Account_In_Care() {
         test.get().info("Step 1 : Create a Customer with RESIDENTIAL type");
         OWSActions owsActions = new OWSActions();

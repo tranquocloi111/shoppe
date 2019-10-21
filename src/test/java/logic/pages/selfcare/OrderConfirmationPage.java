@@ -1,5 +1,7 @@
 package logic.pages.selfcare;
 
+import framework.utils.RandomCharacter;
+import logic.business.helper.MiscHelper;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
@@ -11,12 +13,38 @@ import java.util.List;
 
 public class OrderConfirmationPage  extends BasePage {
 
+    public static OrderConfirmationPage getInstance(){
+        return  new OrderConfirmationPage();
+    }
+
+    @FindBy(xpath = "//b[contains(.,'Order #')]")
+    WebElement lblOrderIdConfirmation;
+
+    @FindBy(xpath = "//a[span[contains(.,'View and print contract')]]")
+    WebElement btnViewAndPrintContract;
+
+    @FindBy(id = "plugin")
+    WebElement embeddedPdfForm;
+
+    public String getOrderIdConfirmation(){
+        return getTextOfElement(lblOrderIdConfirmation);
+    }
+
+    public void clickViewAndPrintContrat(){
+        click(btnViewAndPrintContract);
+    }
+
+    public String saveContractPdfFile(String customerNumber){
+        clickViewAndPrintContrat();
+        String fileName = String.format("%s_%s_Contract.pdf", RandomCharacter.getRandomNumericString(9), customerNumber);
+        savePDFFile(embeddedPdfForm, fileName, "Your Contract");
+
+        return fileName;
+    }
+
     public static class ProductSummary extends OrderConfirmationPage{
-        private static ProductSummary instance;
         public static ProductSummary getInstance(){
-            if (instance == null)
-                return new ProductSummary();
-            return instance;
+            return new ProductSummary();
         }
 
         @FindBy(xpath = "//b[contains(text(),'Product summary')]/following-sibling::div[1]//table")
@@ -29,12 +57,8 @@ public class OrderConfirmationPage  extends BasePage {
     }
 
     public static class OrderDetails extends OrderConfirmationPage{
-
-        private static OrderDetails instance;
         public static OrderDetails getInstance(){
-            if (instance == null)
-                return new OrderDetails();
-            return instance;
+            return new OrderDetails();
         }
 
         @FindBy(xpath = "//b[contains(text(),'Order Details')]/following-sibling::div[1]//table")

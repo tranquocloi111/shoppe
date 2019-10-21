@@ -22,10 +22,10 @@
             </allowance>
             <allowance>
               <type>UNIT</type>
-              <amount>5000.0</amount>L chay
+              <amount>5000.0</amount>
             </allowance>
           </bundle>
-          <bundle charge="0.0" code="250MB-FDATA-0-FC" cycles="9999" descr="Family perk - 250MB per month" endDate="$startDateBonus$+10:00" group="BONUS" groupCode="DOUBLE_DATA" startDate="$startDateBonus$+10:00">
+          <bundle charge="0.0" code="250MB-FDATA-0-FC" cycles="9999" descr="Family perk - 250MB per month" endDate="$startDateBonus$+11:00" group="BONUS" groupCode="DOUBLE_DATA" startDate="$startDateBonus$+11:00">
             <allowance>
               <type>MB</type>
               <amount>250.0</amount>
@@ -68,7 +68,7 @@
           <totalChargeOutside>0.0</totalChargeOutside>
           <highUsageLimit>0.0</highUsageLimit>
           <minimumTopUp>0.0</minimumTopUp>
-          <lastCDRLoaded>2018-05-04T09:22:58.000+10:00</lastCDRLoaded>
+          <lastCDRLoaded>$lastCDRLoaded$+11:00</lastCDRLoaded>
         </overageSummary>
         <alerts>
           <alert>
@@ -136,7 +136,7 @@
           <totalChargeOutside>0.0</totalChargeOutside>
           <highUsageLimit>0.0</highUsageLimit>
           <minimumTopUp>0.0</minimumTopUp>
-          <lastCDRLoaded>2018-05-04T09:22:58.000+10:00</lastCDRLoaded>
+          <lastCDRLoaded>$lastCDRLoaded$+11:00</lastCDRLoaded>
         </overageSummary>
         <alerts>
           <alert>

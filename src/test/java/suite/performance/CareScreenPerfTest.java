@@ -1,12 +1,14 @@
 package suite.performance;
 
 import com.aventstack.extentreports.Status;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.pages.care.find.FindPage;
 import logic.pages.care.main.LoginPage;
 import framework.utils.Timer;
 import org.testng.annotations.Test;
 import suite.BaseTest;
+
+import java.util.AbstractMap;
 
 public class CareScreenPerfTest extends BaseTest {
 
@@ -19,7 +21,7 @@ public class CareScreenPerfTest extends BaseTest {
 
         FindPage findPage = new FindPage();
         Timer.start();
-        findPage.findCustomer(new Pair<>("First Name", "first*"));
+        findPage.findCustomer(new AbstractMap.SimpleEntry<>("First Name", "first*"));
         test.get().log(Status.PASS, "Find customer loading time: " + Timer.stop() + " ms");
 
         Timer.start();

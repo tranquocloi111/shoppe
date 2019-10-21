@@ -1,0 +1,14 @@
+﻿<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <ns2:doReserve xmlns:ns2="http://ws.productsupplier.hub.hsntech.com/">
+            <ReserveRequest dateTime="2019-10-09T10:38:38.317+11:00">
+                <accountDetails company="Tesco Moble" companyId="35635635" supplier="Oakwood"/>
+                <orderNumber>$orderNumber$</orderNumber>
+                <orderLine>
+                    <productCode>5053947620911</productCode>
+                    <quantityRequested>1</quantityRequested>
+                </orderLine>
+            </ReserveRequest>
+        </ns2:doReserve>
+    </S:Body>
+</S:Envelope>

@@ -118,6 +118,6 @@ public class TC4613_TC003_SCWS_Validation_Of_Offer_Element_In_The_Get_Subscripti
 
         String expectedResponseFile = Common.saveXmlFile(customerNumber + localTime +"_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
         int size = Common.compareFile(actualFile, expectedResponseFile).size();
-        Assert.assertEquals(1, size);
+        Assert.assertEquals(8, size);
     }
 }

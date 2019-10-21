@@ -13,7 +13,7 @@
             <descr>One off data bundles</descr>
             <maxQuantity>1</maxQuantity>
             <maxQuantityPerMonth>2</maxQuantityPerMonth>
-            <bundle charge="3.0" code="250MB-TUDATA-0300-FC" descr="One-off data 250MB" group="ONEOFF" numberSelected="0" selected="false">
+            <bundle selected="false" numberSelected="0" group="ONEOFF" charge="3.0" descr="One-off data 250MB" code="250MB-TUDATA-0300-FC">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -22,7 +22,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="5.0" code="500MB-TUDATA-0500-FC" descr="One-off data 500MB" group="ONEOFF" numberSelected="0" selected="false">
+            <bundle selected="false" numberSelected="0" group="ONEOFF" charge="5.0" descr="One-off data 500MB" code="500MB-TUDATA-0500-FC">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -31,7 +31,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="5.0" code="500MB-4GTUDATA-0500-FC" descr="One-off FC data 4G - 500MB" group="ONEOFF" numberSelected="0" selected="false">
+            <bundle selected="false" numberSelected="0" group="ONEOFF" charge="5.0" descr="One-off FC data 4G - 500MB" code="500MB-4GTUDATA-0500-FC">
               <serviceFeatures>
                 <serviceFeature type="4G Service">ON</serviceFeature>
               </serviceFeatures>
@@ -42,7 +42,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="7.5" code="1GB-TUDATA-0750-FC" descr="One-off data 1GB" group="ONEOFF" numberSelected="0" selected="false">
+            <bundle selected="false" numberSelected="0" group="ONEOFF" charge="7.5" descr="One-off data 1GB" code="1GB-TUDATA-0750-FC">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -58,7 +58,7 @@
             <descr>Monthly Family Perks</descr>
             <minQuantity>0</minQuantity>
             <maxQuantity>1</maxQuantity>
-            <bundle charge="0.0" code="150-FMIN-0-FC" descr="Family perk - 150 Mins per month" group="FAMILYPERK" selected="false">
+            <bundle selected="false" group="FAMILYPERK" charge="0.0" descr="Family perk - 150 Mins per month" code="150-FMIN-0-FC">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -67,7 +67,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="250MB-FDATA-0-FC" descr="Family perk - 250MB per month" group="FAMILYPERK" selected="false">
+            <bundle selected="false" group="FAMILYPERK" charge="0.0" descr="Family perk - 250MB per month" code="250MB-FDATA-0-FC">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -76,7 +76,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="500-FONMIN-0-FC" descr="Family perk - 500 Tesco Mobile only minutes per month" group="FAMILYPERK" selected="false">
+            <bundle selected="false" group="FAMILYPERK" charge="0.0" descr="Family perk - 500 Tesco Mobile only minutes per month" code="500-FONMIN-0-FC">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -85,7 +85,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="500MB-FDATA-0-FC-4G" descr="Family perk - 500MB per month - 4G" group="FAMILYPERK" selected="false">
+            <bundle selected="false" group="FAMILYPERK" charge="0.0" descr="Family perk - 500MB per month - 4G" code="500MB-FDATA-0-FC-4G">
               <serviceFeatures>
                 <serviceFeature type="4G Service">ON</serviceFeature>
               </serviceFeatures>
@@ -96,7 +96,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="250MB-FDATA-0-FC-4G" descr="Family perk - 250MB per month - 4G" group="FAMILYPERK" selected="false">
+            <bundle selected="false" group="FAMILYPERK" charge="0.0" descr="Family perk - 250MB per month - 4G" code="250MB-FDATA-0-FC-4G">
               <serviceFeatures>
                 <serviceFeature type="4G Service">ON</serviceFeature>
               </serviceFeatures>
@@ -114,9 +114,7 @@
             <descr>2GB Data bundles</descr>
             <minQuantity>0</minQuantity>
             <maxQuantity>1</maxQuantity>
-            <bundle charge="0.0" code="2GB-DATA-0-FC"
-                    descr="Monthly 2GB inclusive data allowance"
-                    group="ADDITIONAL" selected="false">
+            <bundle selected="false" group="ADDITIONAL" charge="0.0" descr="Monthly 2GB inclusive data allowance" code="2GB-DATA-0-FC">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -125,9 +123,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="10.0" code="3GB-DATA-1000-FC"
-                    descr="Monthly 3GB data allowance (upgrade from 2GB)"
-                    group="ADDITIONAL" selected="false">
+            <bundle selected="false" group="ADDITIONAL" charge="10.0" descr="Monthly 3GB data allowance (upgrade from 2GB)" code="3GB-DATA-1000-FC">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -143,7 +139,18 @@
             <descr>Standard Data Bundles</descr>
             <minQuantity>0</minQuantity>
             <maxQuantity>2</maxQuantity>
-            <bundle charge="5.0" code="250MB-DATA-250-FC" descr="Monthly 250MB data allowance - 4G" group="ADDITIONAL" selected="true">
+            <bundle selected="true" group="ADDITIONAL" charge="7.5" descr="Monthly 1GB data allowance" code="1GB-DATA-750-FC">
+              <serviceFeatures/>
+              <allowances>
+                <allowance>
+                  <allowanceType>MB</allowanceType>
+                  <totalAllowance>1024.0</totalAllowance>
+                  <startDate>$startDate$+10:00</startDate>
+                  <nextScheduledRefill>$nextScheduledRefill$+11:00</nextScheduledRefill>
+                </allowance>
+              </allowances>
+            </bundle>
+            <bundle selected="true" group="ADDITIONAL" charge="5.0" descr="Monthly 250MB data allowance - 4G" code="250MB-DATA-250-FC">
               <serviceFeatures>
                 <serviceFeature type="4G Service">ON</serviceFeature>
               </serviceFeatures>
@@ -156,18 +163,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="7.5" code="1GB-DATA-750-FC" descr="Monthly 1GB data allowance" group="ADDITIONAL" selected="true">
-              <serviceFeatures/>
-              <allowances>
-                <allowance>
-                  <allowanceType>MB</allowanceType>
-                  <totalAllowance>1024.0</totalAllowance>
-                  <startDate>$startDate$+10:00</startDate>
-                  <nextScheduledRefill>$nextScheduledRefill$+11:00</nextScheduledRefill>
-                </allowance>
-              </allowances>
-            </bundle>
-            <bundle charge="5.0" code="500MB-DATA-500-FC" descr="Monthly 500MB data allowance" group="ADDITIONAL" selected="false">
+            <bundle selected="false" group="ADDITIONAL" charge="5.0" descr="Monthly 500MB data allowance" code="500MB-DATA-500-FC">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -183,18 +179,18 @@
             <descr>Safety Buffers A</descr>
             <minQuantity>1</minQuantity>
             <maxQuantity>1</maxQuantity>
-            <bundle billCapNotifications="Y" charge="0.0" code="00250-SB-A" descr="£2.50 safety buffer" group="FLEXCAP" selected="true">
+            <bundle selected="true" group="FLEXCAP" charge="0.0" descr="£2.50 safety buffer" code="00250-SB-A" billCapNotifications="Y">
               <serviceFeatures/>
               <allowances>
                 <allowance>
                   <allowanceType>SAFETYBUFFER</allowanceType>
                   <totalAllowance>2.5</totalAllowance>
-                  <startDate>2019-09-01+10:00</startDate>
-                  <nextScheduledRefill>2019-10-16+11:00</nextScheduledRefill>
+                  <startDate>$startDate$+10:00</startDate>
+                  <nextScheduledRefill>$nextScheduledRefill$+11:00</nextScheduledRefill>
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="10000-HU-A" descr="No safety buffer" group="FLEXCAP" selected="false">
+            <bundle selected="false" group="FLEXCAP" charge="0.0" descr="No safety buffer" code="10000-HU-A">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -203,7 +199,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="00500-SB-A" descr="£5 safety buffer" group="FLEXCAP" selected="false">
+            <bundle selected="false" group="FLEXCAP" charge="0.0" descr="£5 safety buffer" code="00500-SB-A">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -212,7 +208,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="00750-SB-A" descr="£7.50 safety buffer" group="FLEXCAP" selected="false">
+            <bundle selected="false" group="FLEXCAP" charge="0.0" descr="£7.50 safety buffer" code="00750-SB-A">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -221,7 +217,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="01000-SB-A" descr="£10 safety buffer" group="FLEXCAP" selected="false">
+            <bundle selected="false" group="FLEXCAP" charge="0.0" descr="£10 safety buffer" code="01000-SB-A">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -230,7 +226,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="02000-SB-A" descr="£20 safety buffer" group="FLEXCAP" selected="false">
+            <bundle selected="false" group="FLEXCAP" charge="0.0" descr="£20 safety buffer" code="02000-SB-A">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -239,7 +235,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="03000-SB-A" descr="£30 safety buffer" group="FLEXCAP" selected="false">
+            <bundle selected="false" group="FLEXCAP" charge="0.0" descr="£30 safety buffer" code="03000-SB-A">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -248,7 +244,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="04000-SB-A" descr="£40 safety buffer" group="FLEXCAP" selected="false">
+            <bundle selected="false" group="FLEXCAP" charge="0.0" descr="£40 safety buffer" code="04000-SB-A">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -257,7 +253,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="10000-SB-C" descr="£100 safety buffer" group="FLEXCAP" selected="false">
+            <bundle selected="false" group="FLEXCAP" charge="0.0" descr="£100 safety buffer" code="10000-SB-C">
               <serviceFeatures/>
               <allowances>
                 <allowance>
@@ -266,7 +262,7 @@
                 </allowance>
               </allowances>
             </bundle>
-            <bundle charge="0.0" code="05000-HU-A" descr="No safety buffer" group="FLEXCAP" selected="false">
+            <bundle selected="false" group="FLEXCAP" charge="0.0" descr="No safety buffer" code="05000-HU-A">
               <serviceFeatures/>
               <allowances>
                 <allowance>

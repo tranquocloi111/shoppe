@@ -481,6 +481,7 @@ public class OWSActions extends BaseWs {
         request.setTextByTagName("serviceRef", subNo);
 
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
         String agreementSigningUrl = response.getTextByTagName("URL");
         AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
         AgreementWrapperPage.getInstance().signAgreementViaUI(1);
@@ -494,7 +495,7 @@ public class OWSActions extends BaseWs {
         request.setTextByXpath("//orderDetail//@orderId", orderIdNo);
         request.setTextByXpath("//createOrder//@correlationId", correlation);
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
-        Log.info(response.toString());
+        Log.info("Response: " + response.toString());
         setOrderIdNo();
         checkAsyncProcessIsCompleted(orderIdNo);
     }
@@ -552,20 +553,103 @@ public class OWSActions extends BaseWs {
         return response;
     }
 
-    public Xml createInvalidOcsCustomerRequest(String path, String provisioningSystem, String subscriptionNumber) {
+    public Xml createOcsCustomerRequest(String path, boolean isValid, String ... params) {
         request = new Xml(new File(path));
         request.setTextByTagName(commonModMap);
         request.setTextByTagName("billGroupId", "906");
         request.setTextByTagName("password", "password1");
-        if (!provisioningSystem.isEmpty())
-            request.setAttributeTextAllNodesByXpath("ord1:createOrder","provisioningSystem", provisioningSystem);
+        for (int i = 0; i < params.length; i++) {
+            switch (i) {
+                case 0:
+                    if (!params[i].isEmpty())
+                        request.setAttributeTextAllNodesByTagName("ord1:createOrder", "provisioningSystem", params[i]);
+                    break;
+                case 1:
+                    if (!params[i].isEmpty())
+                        request.setTextByTagName("serviceRef", params[i]);
+                    break;
+                case 2:
+                    if (!params[i].isEmpty())
+                        request.setAttributeTextAllNodesByTagName("account", "accountNumber", params[i]);
+                    break;
+                case 3:
+                    if (!params[i].isEmpty())
+                        request.setTextByXpath("//createOrder//@type", params[i]);
+                    break;
+            }
+        }
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+        if (isValid) {
+            setCustomerNo();
+            Log.info("Account number:" + customerNo);
+            setOrderIdNo();
+            Log.info("OrderId number:" + orderIdNo);
+            setUsername();
+            setPassword();
+            setFirstName();
+            setLastName();
+            setFullName();
+            checkAsyncProcessIsCompleted(orderIdNo);
+        }
+        return response;
+    }
 
-        if (!subscriptionNumber.isEmpty())
-            request.setTextByTagName("serviceRef", subscriptionNumber);
+    public Xml createOcsCustomerRequestWithStringRequest(String strRequest, boolean isValid, String ... params) {
+        request = new Xml(strRequest);
+        request.setTextByTagName(commonModMap);
+        request.setTextByTagName("billGroupId", "906");
+        request.setTextByTagName("password", "password1");
+        for (int i = 0; i < params.length; i++) {
+            switch (i) {
+                case 0:
+                    if (!params[i].isEmpty())
+                        request.setAttributeTextAllNodesByTagName("ord1:createOrder", "provisioningSystem", params[i]);
+                    break;
+                case 1:
+                    if (!params[i].isEmpty())
+                        request.setTextByTagName("serviceRef", params[i]);
+                    break;
+                case 2:
+                    if (!params[i].isEmpty())
+                        request.setAttributeTextAllNodesByTagName("account", "accountNumber", params[i]);
+                    break;
+                case 3:
+                    if (!params[i].isEmpty())
+                        request.setTextByXpath("//createOrder//@type", params[i]);
+                    break;
+            }
+        }
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+        if (isValid) {
+            setCustomerNo();
+            Log.info("Account number:" + customerNo);
+            setOrderIdNo();
+            Log.info("OrderId number:" + orderIdNo);
+            setUsername();
+            setPassword();
+            setFirstName();
+            setLastName();
+            setFullName();
+            checkAsyncProcessIsCompleted(orderIdNo);
+        }
+        return response;
+    }
+
+    public void upgradeOrderWithoutAcceptUrl(String path, String customerNumber, String subNo) {
+        request = new Xml(new File(path));
+        request.setTextByXpath("//account//@accountNumber", customerNumber);
+        request.setTextByTagName("serviceRef", subNo);
 
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());
-        return response;
+
+        setCustomerNo();
+        Log.info("Customer Number: " + customerNumber);
+        setOrderIdNo();
+        Log.info("Order Id: " + orderIdNo);
+        checkAsyncProcessIsCompleted(orderIdNo);
     }
 
     //endregion

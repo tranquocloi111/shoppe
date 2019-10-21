@@ -10,7 +10,7 @@
           <masterSubscriptionFlag>false</masterSubscriptionFlag>
           <eligibleForUpgrade>true</eligibleForUpgrade>
           <status>ACTIVE</status>
-          <startDate>2019-09-01+10:00</startDate>
+          <startDate>$startDate$+10:00</startDate>
           <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
           <offers>BONUS</offers>
         </subscriptionDetail>
@@ -69,7 +69,7 @@
           <totalChargeOutside>0.0</totalChargeOutside>
           <highUsageLimit>0.0</highUsageLimit>
           <minimumTopUp>0.0</minimumTopUp>
-          <lastCDRLoaded>2018-05-04T09:22:58.000+10:00</lastCDRLoaded>
+          <lastCDRLoaded>$startDateBonus$+11:00</lastCDRLoaded>
         </overageSummary>
         <alerts>
           <alert>
@@ -144,7 +144,7 @@
           <totalChargeOutside>0.0</totalChargeOutside>
           <highUsageLimit>0.0</highUsageLimit>
           <minimumTopUp>0.0</minimumTopUp>
-          <lastCDRLoaded>2018-05-04T09:22:58.000+10:00</lastCDRLoaded>
+          <lastCDRLoaded>$startDateBonus$+11:00</lastCDRLoaded>
         </overageSummary>
         <alerts>
           <alert>

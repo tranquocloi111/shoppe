@@ -27,7 +27,7 @@ public class TC4500_005_Business_Customer_Update_To_Consumer_Customer_And_Has_Be
     private Date endDate;
     private String billStyle;
 
-    @Test(enabled = true, description = "TC4500_005_Business_Customer_Update_To_Consumer_Customer_And_Has_Been_Deactivated_In_24_Months_Ago)", groups = "SOHO")
+    @Test(enabled = true, description = "TC4500_005_Business_Customer_Update_To_Consumer_Customer_And_Has_Been_Deactivated_In_24_Months_Ago", groups = "SOHO")
     public void TC4500_005_Business_Customer_Update_To_Consumer_Customer_And_Has_Been_Deactivated_In_24_Months_Ago() {
         test.get().info("Step 1 : Create a Customer with Business type");
         OWSActions owsActions = new OWSActions();

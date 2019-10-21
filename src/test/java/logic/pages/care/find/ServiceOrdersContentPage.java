@@ -1,12 +1,13 @@
 package logic.pages.care.find;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class ServiceOrdersContentPage extends BasePage {
         return tableControlBase.findRowsByColumns(orderServices);
     }
 
-    public List<WebElement> getServiceOrder(Pair<String, String> orderService) {
+    public List<WebElement> getServiceOrder(AbstractMap.SimpleEntry<String, String> orderService) {
         return tableControlBase.findRowsByColumns(orderService);
     }
 

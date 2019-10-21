@@ -103,11 +103,12 @@ public class TC4613_TC002_SCWS_Validation_Of_Offer_Element_In_The_Get_Subscripti
                 .replace("$subscriptionNumber1$", subscription1)
                 .replace("$subscriptionNumber2$", subscription2)
                 .replace("$startDate$", Parser.parseDateFormate(newStartDate,"yyyy-MM-dd"))
+                .replace("$lastCDRLoaded$", Parser.parseDateFormate(TimeStamp.Today(),"yyyy-MM-dd"))
                 .replace("$startDateBonus$", Parser.parseDateFormate(TimeStamp.Today(),"yyyy-MM-dd"))
                 .replace("$nextBillDate$", Parser.parseDateFormate(TimeStamp.TodayPlus1Month(),"yyyy-MM-dd"));
 
         String expectedResponseFile = Common.saveXmlFile(customerNumber + localTime +"_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
         int size = Common.compareFile(actualFile, expectedResponseFile).size();
-        Assert.assertEquals(1, size);
+        Assert.assertEquals(5, size);
     }
 }

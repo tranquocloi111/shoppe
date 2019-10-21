@@ -20,20 +20,19 @@ import logic.business.entities.DiscountBundleEntity;
 import logic.business.helper.FTPHelper;
 import logic.business.helper.RemoteJobHelper;
 import logic.pages.care.MenuPage;
-import logic.pages.care.find.CommonContentPage;
-import logic.pages.care.find.InvoicesContentPage;
-import logic.pages.care.find.ServiceOrdersContentPage;
-import logic.pages.care.find.SummaryContentsPage;
+import logic.pages.care.find.*;
 import logic.pages.care.options.ChangeCustomerTypePage;
 import logic.pages.care.options.ConfirmNewCustomerTypePage;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -56,9 +55,22 @@ public class BaseTest {
     @BeforeMethod
     public void beforeMethod(Method m) throws MalformedURLException {
         test.set(extent.createTest(m.getName()));
-        //WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.internetExplorer()));
-        WDFactory.getConfig().setDriverVersion("77");
-        WdManager.set(WDFactory.initBrowser(Config.getProp("browser")));
+
+        switch (Config.getProp("browser")){
+            case "gc":
+                WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.chrome()));
+                break;
+            case "ff":
+                WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.firefox()));
+                break;
+            case "ie" :
+                WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.internetExplorer()));
+                break;
+        }
+
+        //WDFactory.getConfig().setDriverVersion("77");
+        //WdManager.set(WDFactory.initBrowser(Config.getProp("browser")));
+        WdManager.get().manage().window().maximize();
         WdManager.get().get(Config.getProp("careUrl"));
     }
 
@@ -245,8 +257,14 @@ public class BaseTest {
     }
 
     protected void updateReadWriteAccessBusinessCustomers(){
-        if (!CommonActions.checkCustomerAccessRole())
+        if (!CommonActions.checkCustomerAccessRole()) {
             CommonActions.updateCustomerAccessRoleToReadWrite();
+        }else if(CommonActions.checkCustomerAccessRole()){
+            if (CommonActions.check3PermissionsBusinessCustomer()){
+                CommonActions.updateCustomerAccessRoleToNone();
+                CommonActions.updateCustomerAccessRoleToReadWrite();
+            }
+        }
     }
 
     protected void updateNoneAccessChangeTypeCustomer(){
@@ -254,19 +272,25 @@ public class BaseTest {
             CommonActions.updateChangeCustomerTypeAccessRoleToNone();
     }
 
-    protected void updateReadWriteAccessChangeTypeCustomer(){
-        if (!CommonActions.checkChangeCustomerTypeAccessRole())
+    protected void updateReadWriteAccessChangeTypeCustomer() {
+        if (!CommonActions.checkChangeCustomerTypeAccessRole()) {
             CommonActions.updateChangeCustomerTypeAccessRoleToReadWrite();
+        } else if (CommonActions.checkChangeCustomerTypeAccessRole()) {
+            if (CommonActions.check3PermissionsChangeCustomerType()) {
+                CommonActions.updateChangeCustomerTypeAccessRoleToNone();
+                CommonActions.updateChangeCustomerTypeAccessRoleToReadWrite();
+            }
+        }
     }
 
     protected void openServiceOrderDetailsForSendDDIToBACSItem(){
        MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
        ServiceOrdersContentPage serviceOrders =  ServiceOrdersContentPage.getInstance();
-        serviceOrders.clickServiceOrderByType("Send DDI to BACS");
+       serviceOrders.clickServiceOrderByType("Send DDI to BACS");
     }
 
     protected Date updateBillRunCalendarRunDatesToRunFirstBillRun(Date date){
-        String sql = "update billruncalendar set rundate=trunc(SYSDATE -5) where rundate=trunc(SYSDATE) and billinggroupid <> " + BillingActions.tempBillingGroupHeader.getKey();
+        String sql = "update billruncalendar set rundate=trunc(SYSDATE - 5) where rundate=trunc(SYSDATE) and billinggroupid <> " + BillingActions.tempBillingGroupHeader.getKey();
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
 
         sql = "update billruncalendar set asatdate=trunc(SYSDATE -5) where asatdate=trunc(SYSDATE-1) and billinggroupid <> " + BillingActions.tempBillingGroupHeader.getKey();
@@ -329,6 +353,12 @@ public class BaseTest {
         Assert.assertFalse(isFlag);
     }
 
+    protected void verifyOcsSubscriptionDetails(String ocsType, String ocsSubscriberKey, String ocsSubscriberAccountKey){
+        SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
+        Assert.assertEquals(generalSectionPage.getProvisioningSystem(), String.format("%s ( %s )", ocsType, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT)));
+        Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), ocsSubscriberKey);
+        Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), ocsSubscriberAccountKey);
+    }
     //end region
 
 }

@@ -1,31 +1,26 @@
 package suite.regression.batchjobs;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.business.db.OracleDB;
 import logic.business.db.billing.BillingActions;
 import logic.business.db.billing.CommonActions;
 import logic.business.entities.DiscountBundleEntity;
-import logic.business.helper.RemoteJobHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.DetailsContentPage;
 import logic.pages.care.find.InvoicesContentPage;
 import logic.pages.care.find.SubscriptionContentPage;
-import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
-
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
-import static logic.utils.TimeStamp.DATE_FORMAT;
 
 public class TC3_Batch_Produce_Invoice_for_2nd_Bill_Cycle extends BaseTest {
     private String customerNumber = "15758";

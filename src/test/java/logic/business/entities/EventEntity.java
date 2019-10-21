@@ -1,7 +1,7 @@
 package logic.business.entities;
 
-import javafx.util.Pair;
-
+//import javafx.util.Pair;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,8 +81,8 @@ public class EventEntity {
         return event;
     }
 
-    public static Pair<String, String> setEvents(String description, String status) {
-        return new Pair<String, String>(description, status);
+    public static AbstractMap.SimpleEntry<String, String> setEvents(String description, String status) {
+        return new AbstractMap.SimpleEntry<String, String>(description, status);
     }
 
     public static List<HashMap<String, String>> dataForEventChangeBundleImmediate() {
