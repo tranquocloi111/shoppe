@@ -28,7 +28,6 @@ public class TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_B
     private String password;
     private String subscription1;
     private String subscription2;
-    private String serviceOrderId;
 
     @Test(enabled = false, description = "TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_Buffer", groups = "Tropicana")
     public void TC5024_SC_MODF_Sub_Validation_For_Current_Bundle_In_Change_Safety_Buffer(){

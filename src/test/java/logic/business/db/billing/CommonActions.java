@@ -340,7 +340,51 @@ public class CommonActions extends OracleDB {
 
     public static void updateProvalNumberValue(String customerNumber, String propertyKey, double value) {
         String sql = String.format("update hmbrproperty set PROPVALNUMBER = %s where hmbrid in (select hmbrid from hierarchymbr hm, hierarchy h where h.rootbuid in (%s)  and h.hid = hm.hid and hm.hmbrtype = 'BP') and propertykey in ('%s')", value, customerNumber, propertyKey);
-
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
+
+    public static void updateHubProvisionSystem(String typeOfPs){
+        String sql = String.format("UPDATE systemproperty set propvalchar = '%s' where systempropertyid = '3379'", typeOfPs);
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
+
+    public static List getAsynccommand(String orderId){
+        String sql = String.format("select command from asynccommandreq where taskkey = '%s'", orderId);
+        return OracleDB.SetToNonOEDatabase().executeQueryReturnList(sql);
+    }
+
+    public static void addSubscriptionToWhiteList(String subNo){
+        String sql = String.format("insert into oe_feature_whitelist (oe_feature_whitelist_id, feature, whitelist_item ,enabled) values((SELECT MAX(oe_feature_whitelist_id)+1 FROM oe_feature_whitelist), 'OCS', '%s', 1)", subNo);
+        OracleDB.SetToOEDatabase().executeNonQuery(sql);
+    }
+
+    public static boolean check3PermissionsChangeCustomerType() {
+        try {
+            String sql = "select insflg, updflg, delflg  from objectrole where roleid = 147 and clientobjectid =  " + Config.getProp("customertypeclientobjectid");
+            String insertRole = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "insflg").toString();
+            String updateRole = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "updflg").toString();
+            String deleteRole = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "delflg").toString();
+            if (insertRole.equalsIgnoreCase("N") || updateRole.equalsIgnoreCase("N") || deleteRole.equalsIgnoreCase("N"))
+                return true;
+
+        } catch (Exception ex) {
+            Log.info(ex.getMessage());
+        }
+        return false;
+    }
+
+    public static boolean check3PermissionsBusinessCustomer() {
+        try {
+            String sql = "select insflg, updflg, delflg  from objectrole where roleid = 147 and clientobjectid =  " + Config.getProp("businessclientobjectid");
+            String insertRole = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "insflg").toString();
+            String updateRole = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "updflg").toString();
+            String deleteRole = OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "delflg").toString();
+            if (insertRole.equalsIgnoreCase("N") || updateRole.equalsIgnoreCase("N") || deleteRole.equalsIgnoreCase("N"))
+                return true;
+
+        } catch (Exception ex) {
+            Log.info(ex.getMessage());
+        }
+        return false;
     }
 }

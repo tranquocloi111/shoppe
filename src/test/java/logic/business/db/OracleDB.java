@@ -30,9 +30,7 @@ public class OracleDB extends Db {
             e.printStackTrace();
         }
 
-        if (instance == null)
-            instance = new OracleDB();
-        return instance;
+        return new OracleDB();
     }
 
     public static OracleDB SetToOEDatabase() {

@@ -68,8 +68,8 @@ public class TC4667_SC_Validation_For_Tropicana_3_Types_Bundle_In_My_Tariff_Page
         swsActions.submitMaintainBundleRequest(selfCarePath, customerNumber, subscription4);
 
         test.get().info("Step 8 : Login to self care");
-        username = "un264282687@hsntech.com";//owsActions.username;
-        password = "password1";//owsActions.password;
+        username = owsActions.username;
+        password = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(username, password, customerNumber);
 
         test.get().info("Step 9 : Verify my personal information page is displayed");
@@ -86,20 +86,20 @@ public class TC4667_SC_Validation_For_Tropicana_3_Types_Bundle_In_My_Tariff_Page
         Assert.assertEquals(mobileTariff.getFamilyPerkStack().get(0).getText(), String.format("Family perk - 250MB per month   ACTIVE  as of  %s", Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT4)));
 
         test.get().info("Step 13 : Verify Hover your cursor over the question mark image next to the data bundle to open the tooltip");
-        Assert.assertEquals(mobileTariff.getFamilyPerkHelpIconText(), "???help.bonus.ACTIVE???");
+        Assert.assertEquals(mobileTariff.getFamilyPerkHelpIconText(), "This is the data bundle you get with your Bonus subscription.");
 
         test.get().info("Step 14 : Verify Tropicana mins bundle type is added as a Month as expected");
         mobileTariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 3");
         Assert.assertEquals(mobileTariff.getLoyaltyStack().get(0).getText(), String.format("Loyalty Bundle - 250 Mins per month   ACTIVE  as of  %s", Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT4)));
 
         test.get().info("Step 15 : Verify Hover your cursor over the question mark image next to the mins bundle to open the tooltip");
-        Assert.assertEquals(mobileTariff.getLoyaltyHelpIconText(0), "???help.bonus.ACTIVE???");
+        Assert.assertEquals(mobileTariff.getLoyaltyHelpIconText(0), "This is the data bundle you get with your Bonus subscription.");
 
         test.get().info("Step 14 : Verify Tropicana text bundle type is added as a Month as expected");
         mobileTariff = MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 4");
         Assert.assertEquals(mobileTariff.getLoyaltyStack().get(0).getText(), String.format("Loyalty Bundle - 250 Texts (Capped)   ACTIVE  as of  %s", Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT4)));
 
         test.get().info("Step 15 : Verify Hover your cursor over the question mark image next to the text bundle to open the tooltip");
-        Assert.assertEquals(mobileTariff.getLoyaltyHelpIconText(0), "???help.bonus.ACTIVE???");
+        Assert.assertEquals(mobileTariff.getLoyaltyHelpIconText(0), "This is the data bundle you get with your Bonus subscription.");
     }
 }

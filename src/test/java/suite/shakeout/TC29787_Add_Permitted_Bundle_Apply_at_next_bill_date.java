@@ -1,6 +1,6 @@
 package suite.shakeout;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
 import logic.business.db.billing.CommonActions;
 import logic.business.entities.*;
@@ -23,6 +23,7 @@ import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 
 import java.sql.Date;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,7 +201,7 @@ public class TC29787_Add_Permitted_Bundle_Apply_at_next_bill_date extends BaseTe
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
 
         test.get().info("Step 29 : Verify there are 3 change bundle service orders are created");
-        Pair<String,String> serviceOrder = EventEntity.setEvents("Type", "Change Bundle");
+        AbstractMap.SimpleEntry<String, String> serviceOrder = EventEntity.setEvents("Type", "Change Bundle");
         List<WebElement> listServiceOrder = ServiceOrdersContentPage.getInstance().getServiceOrder(serviceOrder);
         Assert.assertEquals(2, listServiceOrder.size());
 

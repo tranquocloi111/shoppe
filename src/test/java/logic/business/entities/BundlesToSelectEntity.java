@@ -1,5 +1,7 @@
 package logic.business.entities;
 
+import logic.utils.TimeStamp;
+
 public class BundlesToSelectEntity {
 
     public static String [] getFCBundleToSelect(){
@@ -64,7 +66,7 @@ public class BundlesToSelectEntity {
 
     public static String[] getFamilyPerkBonusBundles(){
         return new String[]{
-                "Family perk - 250MB per month - £0.00 per Month (Expiring in 61 day/s). Remaining: 250 MB"
+                "Family perk - 250MB per month - £0.00 per Month (Expiring in "+TimeStamp.TodayPlus1MonthMinusToday() +" day/s). Remaining: 250 MB"
         };
     }
 
@@ -80,13 +82,13 @@ public class BundlesToSelectEntity {
 
     public static String[] getLoyaltyMinBonusBundles(){
         return new String[]{
-                "Loyalty Bundle - 250 Mins per month - £0.00 per Month (Expiring in 31 day/s). Remaining: 250 MIN"
+                "Loyalty Bundle - 250 Mins per month - £0.00 per Month (Recurring in "+TimeStamp.TodayPlus1MonthMinusToday()+" day/s). Remaining: 250 MIN"
         };
     }
 
     public static String[] getLoyaltyTextBonusBundles(){
         return new String[]{
-                "Loyalty Bundle - 250 Texts (Capped) - £0.00 per Month (Expiring in 31 day/s). Remaining: 250 UNIT"
+                "Loyalty Bundle - 250 Texts (Capped) - £0.00 per Month (Recurring in "+TimeStamp.TodayPlus1MonthMinusToday()+" day/s). Remaining: 250 UNIT"
         };
     }
 

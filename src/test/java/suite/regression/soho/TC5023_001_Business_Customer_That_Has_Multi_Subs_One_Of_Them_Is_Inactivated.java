@@ -24,7 +24,7 @@ public class TC5023_001_Business_Customer_That_Has_Multi_Subs_One_Of_Them_Is_Ina
     private String password;
     private String subNo2;
 
-    @Test(enabled = true, description = "TC5023_001_Business_Customer_That_Has_Multi_Subs_One_Of_Them_Is_Inactivated", groups = "Soho")
+    @Test(enabled = true, description = "TC5023_001_Business_Customer_That_Has_Multi_Subs_One_Of_Them_Is_Inactivated", groups = "SOHO")
     public void TC5023_001_Business_Customer_That_Has_Multi_Subs_One_Of_Them_Is_Inactivated() {
         test.get().info("Step 1 :  Business customer that has multi subs, one of them is Inactivated");
         OWSActions owsActions = new OWSActions();

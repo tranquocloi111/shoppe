@@ -18,7 +18,7 @@ public class TC4774_UAT_HUBSOW_445_SCWS_Maintain_Bundle_Request_Rejected_Adding_
     private String customerNumber;
     private String subscription2;
 
-    @Test(enabled = true, description = "UAT-HUBSOW-445 - SCWSs - Request rejected if same request contain Removing an existing Tropicana Bundle Group and Adding Permitted Bundle Group (WS_03)", groups = "Tropicana")
+    @Test(enabled = true, description = "TC4774_UAT_HUBSOW_445_SCWS_Maintain_Bundle_Request_Rejected_Adding_Permitted_Bundle", groups = "Tropicana")
     public void TC4774_UAT_HUBSOW_445_SCWS_Maintain_Bundle_Request_Rejected_Adding_Permitted_Bundle(){
         test.get().info("Step 1 : Create a Customer Subscription already has a Tropicana Bundle associated to a tariff in a subscription ");
         OWSActions owsActions = new OWSActions();

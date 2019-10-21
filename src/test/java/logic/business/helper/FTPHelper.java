@@ -2,6 +2,7 @@ package logic.business.helper;
 
 import framework.config.Config;
 import framework.utils.FTP;
+import framework.utils.Log;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
@@ -25,27 +26,22 @@ public class FTPHelper {
     public void upLoadFromDisk(String localPathFile, String ftpFileName) {
         try {
             FileInputStream in = new FileInputStream(new File(localPathFile));
-            boolean flag = ftp.uploadFile(Config.getProp("cdrFolder"), ftpFileName, in);
-            System.out.println(flag);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            ftp.uploadFile(Config.getProp("cdrFolder"), ftpFileName, in);
+        } catch (FileNotFoundException ex) {
+            Log.info(ex.getMessage());
         }
     }
 
     public void downLoadFromDisk(String remotePath, String fileName, String localPath) {
         try {
-            boolean flag = ftp.downLoadFile(remotePath, fileName, localPath);
-            System.out.println(flag);
+            ftp.downLoadFile(remotePath, fileName, localPath);
         } catch (Exception ex) {
-            System.out.println(ex);
+            Log.info(ex.getMessage());
         }
 
     }
 
-    public List<String> getAllFileName(String remoteServer)
-    {
-        return  ftp.getAllFileName(remoteServer);
+    public List<String> getAllFileName(String remoteServer) {
+        return ftp.getAllFileName(remoteServer);
     }
-
-
 }

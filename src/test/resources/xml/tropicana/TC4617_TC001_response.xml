@@ -19,7 +19,7 @@
                 <allowance>
                   <allowanceType>MB</allowanceType>
                   <totalAllowance>1024.0</totalAllowance>
-                  <startDate>$startDateOneOff$+10:00</startDate>
+                  <startDate>$startDateOneOff$+11:00</startDate>
                   <nextScheduledRefill>$nextScheduledRefill$+11:00</nextScheduledRefill>
                 </allowance>
               </allowances>

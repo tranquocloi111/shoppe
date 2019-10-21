@@ -35,11 +35,12 @@ public class TC3796_005_Existing_Consumer_Customer_Add_Subscriptions_With_Accoun
 
         test.get().info("Step 2 : Add More Than 1 Subscriptions To Customer with Business type");
         path = "src\\test\\resources\\xml\\soho\\TC3796_005_request_business_type.xml";
+        customerNumber = owsActions.customerNo;
         Xml xml = owsActions.createNewOrderWithExistCustomer(path, customerNumber);
 
         test.get().info("Step 3 : Verify the system does not allow to add new business customer type");
-        Assert.assertEquals(xml.getTextByTagName("errorCode"), "CO_060");
-        Assert.assertEquals(xml.getTextByTagName("errorDescription"), "Max Subscriptions Per Account exceeded");
+        Assert.assertEquals(xml.getTextByTagName("errorCode"), "CO_125");
+        Assert.assertEquals(xml.getTextByTagName("errorDescription"), "Account Type BUSINESS is not valid with existing Customer Account Type RESIDENTIAL");
 
     }
 

@@ -63,6 +63,15 @@ public class SubscriptionContentPage extends BasePage {
             @FindBy(xpath = "//td[contains(text(),'Model:')]//following-sibling::td")
             WebElement lblModel;
 
+            @FindBy(xpath = "//td[starts-with(normalize-space(text()),'Provisioning System:')]//following-sibling::td[1]")
+            WebElement lblProvisioningSystem;
+
+            @FindBy(xpath = "//td[starts-with(normalize-space(text()),'OCS Subscriber Key :')]//following-sibling::td[1]")
+            WebElement lblOCSSubscriberKey;
+
+            @FindBy(xpath = "//td[starts-with(normalize-space(text()),'OCS Subscriber Account Key :')]//following-sibling::td[1]")
+            WebElement lblOCSSubscriberAccountKey;
+
             @FindBy(xpath = "//td[contains(text(),'Upgrade Order Reference:')]//following-sibling::td[1]")
             WebElement lblUpgradeOrderReference;
             @FindBy(xpath = "//td[contains(text(),'Flexible Cap Amount:')]//following-sibling::td[1]")
@@ -138,6 +147,18 @@ public class SubscriptionContentPage extends BasePage {
             public String getFlexibleCapToolTip() {
                 hover(flexibleCapAmountToolTip);
                 return getDriver().findElement(By.xpath("//body/div[last()]")).getText();
+            }
+
+            public String getProvisioningSystem() {
+                return getTextOfElement(lblProvisioningSystem);
+            }
+
+            public String getOCSSubscriberKey() {
+                return getTextOfElement(lblOCSSubscriberKey);
+            }
+
+            public String getOCSSubscriberAccountKey() {
+                return getTextOfElement(lblOCSSubscriberAccountKey);
             }
         }
 

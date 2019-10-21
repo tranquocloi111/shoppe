@@ -1,11 +1,12 @@
 package logic.pages.care.main;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.pages.BasePage;
 import logic.pages.TableControlBase;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class TasksContentPage extends BasePage {
             WebElement eventsGridPageTable;
             TableControlBase table = new TableControlBase(eventsGridPageTable);
 
-            public List<WebElement> getEvents(Pair<String, String> events) {
+            public List<WebElement> getEvents(AbstractMap.SimpleEntry<String, String> events) {
                 return table.findRowsByColumns(events);
             }
 
@@ -63,7 +64,7 @@ public class TasksContentPage extends BasePage {
                 return table.getCellValueByColumnNameAndRowIndex(index, "Description");
             }
 
-            public int getNumberOfEvents(Pair<String, String> events) {
+            public int getNumberOfEvents(AbstractMap.SimpleEntry<String, String> events) {
                 return table.findRowsByColumns(events).size();
             }
 

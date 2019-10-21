@@ -1,13 +1,9 @@
 package logic.pages;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TableControlBase extends BasePage {
     WebElement element;
@@ -352,14 +348,14 @@ public class TableControlBase extends BasePage {
         return column;
     }
 
-    public List<WebElement> findRowsByColumns(Pair<String, String>... pairs) {
+    public List<WebElement> findRowsByColumns(AbstractMap.SimpleEntry<String, String> ... pairs) {
         int columnIndex = 0;
         boolean flag = false;
         boolean isFail = true;
         WebElement elm = null;
         List<WebElement> column = new ArrayList<>();
         List<WebElement> body = getBody();
-        for (Pair<String, String> p : pairs) {
+        for (AbstractMap.SimpleEntry<String, String> p : pairs) {
             String columnName = p.getKey();
             String cellValue = p.getValue();
             columnIndex = getColumnIndex(columnName);
@@ -504,5 +500,19 @@ public class TableControlBase extends BasePage {
             }
         }
         return column;
+    }
+
+    public List<List<String>> getAllCellValueWithoutColumName() {
+        List<List<String>> hashMapList = new ArrayList<>();
+        List<WebElement> body = getBody();
+        for (int i = 0; i < body.size(); i++) {
+            List<String> list = new ArrayList<>();
+            List<WebElement> td = body.get(i).findElements(By.tagName("td"));
+            for (int y = 0; y < td.size(); y ++) {
+                list.add(td.get(y).getText());
+            }
+            hashMapList.add(list);
+        }
+        return hashMapList;
     }
 }

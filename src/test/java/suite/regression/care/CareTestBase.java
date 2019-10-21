@@ -2,7 +2,7 @@ package suite.regression.care;
 
 import framework.config.Config;
 import framework.utils.Xml;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
 import logic.business.entities.ServiceOrderEntity;
 import logic.business.helper.MiscHelper;
@@ -22,6 +22,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.sql.Date;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class CareTestBase extends BasePage {
         loginPage.navigateToLoginPage();
         loginPage.login(userName, passWord);
 
-        findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
+        findPage.findCustomer(new AbstractMap.SimpleEntry<String, String>("Customer Number", customerId));
         findPage.openCustomerByIndex(1);
     }
 
@@ -59,14 +60,14 @@ public class CareTestBase extends BasePage {
         loginPage.navigateToLoginPage();
         loginPage.login(userName, passWord);
 
-        findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
+        findPage.findCustomer(new AbstractMap.SimpleEntry<String, String>("Customer Number", customerId));
         Assert.assertFalse(findPage.IsCustomerDiplayedByIndex(1));
     }
 
 
     public void reLoadCustomerInHubNet(String customerId) {
         MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
-        findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
+        findPage.findCustomer(new AbstractMap.SimpleEntry<String, String>("Customer Number", customerId));
         findPage.openCustomerByIndex(1);
     }
 
@@ -74,12 +75,12 @@ public class CareTestBase extends BasePage {
         loginPage.navigateToLoginPage();
         loginPage.login(userName, passWord);
 
-        findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
+        findPage.findCustomer(new AbstractMap.SimpleEntry<String, String>("Customer Number", customerId));
     }
 
     public void reLoadCustomerInHubNetWithoutOpenCustomer(String customerId) {
         MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
-        findPage.findCustomer(new Pair<String, String>("Customer Number", customerId));
+        findPage.findCustomer(new AbstractMap.SimpleEntry<String, String>("Customer Number", customerId));
     }
 
     public void clickApplyBtn() {
@@ -147,6 +148,18 @@ public class CareTestBase extends BasePage {
             actualTooltip = ServiceOrdersPage.ChangeBundle.getInstance().bundleToolTip(bundle);
             Assert.assertEquals(expectTooltip, actualTooltip);
         }
+    }
+
+    public void checkLoyaltyBundleToolTip(String[] bundles) {
+        String expectTooltip;
+        String actualTooltip;
+        for (String bundle : bundles) {
+            int endIndex = bundle.lastIndexOf((" - £"));
+            String bundleSubstr = bundle.substring(0, endIndex);
+            expectTooltip = String.format("Additional Information\n%s\nFair Usage Warning =\nFair Usage Limit =\nNext Allocation = %s", bundleSubstr, Parser.parseDateFormate(TimeStamp.TodayPlus1Month(), TimeStamp.DATE_FORMAT4));
+            actualTooltip = ServiceOrdersPage.ChangeBundle.getInstance().bundleToolTip(bundle);
+            Assert.assertEquals(expectTooltip, actualTooltip);
+        }
 
     }
 
@@ -188,7 +201,7 @@ public class CareTestBase extends BasePage {
         return newSubscriptionNumber;
     }
 
-    private String newSubscriptionNumber() {
+    public String newSubscriptionNumber() {
         return "0" + MiscHelper.RandomStringF9() + "0";
     }
 

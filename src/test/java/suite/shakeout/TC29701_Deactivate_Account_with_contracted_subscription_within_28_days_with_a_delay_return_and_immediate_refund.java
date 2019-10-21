@@ -1,6 +1,6 @@
 package suite.shakeout;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
 import logic.business.db.billing.CommonActions;
 import logic.business.entities.*;
@@ -18,6 +18,7 @@ import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 import java.sql.Date;
+import java.util.AbstractMap;
 import java.util.List;
 
 public class TC29701_Deactivate_Account_with_contracted_subscription_within_28_days_with_a_delay_return_and_immediate_refund extends BaseTest  {
@@ -110,7 +111,7 @@ public class TC29701_Deactivate_Account_with_contracted_subscription_within_28_d
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
         ServiceOrdersContentPage.getInstance().clickServiceOrderIdLink(serviceOrderId);
 
-        Pair<String,String> event = EventEntity.setEvents("Description", "PPB: SetSubscriberRatePlan: Request completed");
+        AbstractMap.SimpleEntry<String, String> event = EventEntity.setEvents("Description", "PPB: SetSubscriberRatePlan: Request completed");
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getEvents(event).size());
         event = EventEntity.setEvents("Description", "O2SOA: getAccountSummary: Request completed");
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getEvents(event).size());

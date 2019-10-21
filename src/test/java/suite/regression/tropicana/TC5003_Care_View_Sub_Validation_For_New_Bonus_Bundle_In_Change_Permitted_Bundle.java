@@ -121,7 +121,7 @@ public class TC5003_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Perm
         Assert.assertEquals("Bundle - 500 mins, 5000 texts (FC)", ServiceOrdersPage.ChangeBundle.getInstance().getPackagedBundle());
         Assert.assertEquals("Next Bill Date", ServiceOrdersPage.ChangeBundle.getInstance().getWhenToApplyChangeText());
         Assert.assertTrue(ServiceOrdersPage.ChangeBundle.getInstance().bundleExists(BundlesToSelectEntity.getLoyaltyMinBonusBundles()));
-        CareTestBase.page().checkFamilyPerkBundleToolTip(BundlesToSelectEntity.getLoyaltyMinBonusBundles());
+        CareTestBase.page().checkLoyaltyBundleToolTip(BundlesToSelectEntity.getLoyaltyMinBonusBundles());
 
         test.get().info("Step 15 : Select a new Permitted bundle that has no an Equivalent Bonus bundle");
         ServiceOrdersPage.ChangeBundle.getInstance().selectBundlesByName(BundlesToSelectEntity.getStandardDataBundles(),"Monthly 500MB data allowance - £5.00 per Month (Recurring)");
@@ -156,7 +156,7 @@ public class TC5003_Care_View_Sub_Validation_For_New_Bonus_Bundle_In_Change_Perm
         Assert.assertEquals("Bundle - 500 mins, 5000 texts (FC)", ServiceOrdersPage.ChangeBundle.getInstance().getPackagedBundle());
         Assert.assertEquals("Next Bill Date", ServiceOrdersPage.ChangeBundle.getInstance().getWhenToApplyChangeText());
         Assert.assertTrue(ServiceOrdersPage.ChangeBundle.getInstance().bundleExists(BundlesToSelectEntity.getLoyaltyTextBonusBundles()));
-        CareTestBase.page().checkFamilyPerkBundleToolTip(BundlesToSelectEntity.getLoyaltyTextBonusBundles());
+        CareTestBase.page().checkLoyaltyBundleToolTip(BundlesToSelectEntity.getLoyaltyTextBonusBundles());
 
         test.get().info("Step 19 : Select a new Permitted bundle that has no an Equivalent Bonus bundle");
         ServiceOrdersPage.ChangeBundle.getInstance().selectBundlesByName(BundlesToSelectEntity.getStandardDataBundles(),"Monthly 500MB data allowance - £5.00 per Month (Recurring)");

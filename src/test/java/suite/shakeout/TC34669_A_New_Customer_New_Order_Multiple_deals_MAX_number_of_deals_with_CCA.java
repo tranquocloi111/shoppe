@@ -1,7 +1,7 @@
 package suite.shakeout;
 
 import framework.utils.Xml;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.business.db.billing.CommonActions;
 import logic.business.entities.CreditAgreementPaymentsEntiy;
 import logic.business.entities.CreditAgreementsGridEntity;
@@ -21,6 +21,8 @@ import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 import suite.regression.selfcare.SelfCareTestBase;
+
+import java.util.AbstractMap;
 
 public class TC34669_A_New_Customer_New_Order_Multiple_deals_MAX_number_of_deals_with_CCA extends BaseTest {
 
@@ -46,7 +48,7 @@ public class TC34669_A_New_Customer_New_Order_Multiple_deals_MAX_number_of_deals
 
         test.get().info("Step 6 : Open service orders content for customer");
         ServiceOrdersContentPage.getInstance().clickServiceOrderByType("Sales Order");
-        Pair<String, String> event = EventEntity.setEvents("Description", "MPNs Assigned");
+        AbstractMap.SimpleEntry<String, String> event = EventEntity.setEvents("Description", "MPNs Assigned");
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(event));
         event = EventEntity.setEvents("Description", "Terms And Conditions Requested for CA");
         Assert.assertEquals(1, TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEvents(event));

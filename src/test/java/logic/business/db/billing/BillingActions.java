@@ -2,7 +2,7 @@ package logic.business.db.billing;
 
 import framework.utils.Log;
 import framework.utils.RandomCharacter;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import logic.business.db.OracleDB;
 import logic.business.entities.DiscountBundleEntity;
 import logic.business.entities.PaymentGatewayEnity;
@@ -10,7 +10,6 @@ import logic.business.entities.PaymentGatewayRespondEnity;
 import logic.business.helper.RemoteJobHelper;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
-
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -18,13 +17,14 @@ import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class BillingActions extends OracleDB {
 
-    public static Pair<Integer, String> tempBillingGroupHeader;
+    public static AbstractMap.SimpleEntry<Integer, String> tempBillingGroupHeader;
     private static BillingActions instance;
 
     public static BillingActions getInstance() {
@@ -114,7 +114,7 @@ public class BillingActions extends OracleDB {
     }
 
 
-    private Pair<Integer, String> createNewBillGroupHeader() throws SQLException {
+    private AbstractMap.SimpleEntry<Integer, String> createNewBillGroupHeader() throws SQLException {
         String sql = "select periodid from PERIOD where descr='Monthly'";
         BigDecimal periodId = (BigDecimal) OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), 1);
         sql = String.format("insert into billinggroup (billinggroupid,descr,bgstatus,periodid,bgtype,psid) values (BILLINGGROUPID.nextval,?,'A',%d,'BILL',200)", Integer.parseInt(String.valueOf(periodId)));
@@ -136,7 +136,7 @@ public class BillingActions extends OracleDB {
         sql = String.format("update bgproperty set propvalchar = '%s' where  propertykey = 'EXTERNDESCR' and billinggroupid = %d", billingGroupName, billingGroupId);
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
 
-        return new Pair<Integer, String>(billingGroupId, billingGroupName);
+        return new AbstractMap.SimpleEntry<Integer, String>(billingGroupId, billingGroupName);
     }
 
     private void createBillrunCalendar(int billGroupId, Date runDate, Date asAtDat) {
@@ -147,12 +147,12 @@ public class BillingActions extends OracleDB {
         OracleDB.SetToNonOEDatabase().executeNonQueryForDate(sql, formParams);
     }
 
-    public Pair<Integer, String> createNewBillingGroup(int daysAgo, Boolean changeExistingBillingGroups, int asAtDateOffset) {
+    public AbstractMap.SimpleEntry<Integer, String> createNewBillingGroup(int daysAgo, Boolean changeExistingBillingGroups, int asAtDateOffset) {
         try {
             if (changeExistingBillingGroups)
                 changeExistingBillRunCalendar(daysAgo, asAtDateOffset);
 
-            Pair<Integer, String> billGroupHeader = createNewBillGroupHeader();
+            AbstractMap.SimpleEntry<Integer, String> billGroupHeader = createNewBillGroupHeader();
             tempBillingGroupHeader = billGroupHeader;
             LocalDate futureDate = LocalDate.now().plusDays(daysAgo);
             for (int i = 0; i < 4; i++) {
