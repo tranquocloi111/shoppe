@@ -1,18 +1,11 @@
 package suite.regression.selfcare.modifysubscription;
 
-import framework.utils.Log;
 import logic.business.db.OracleDB;
-import logic.business.db.billing.CommonActions;
-import logic.business.entities.BundlesToSelectEntity;
-import logic.business.entities.ServiceOrderEntity;
 import logic.business.entities.TariffSearchCriteriaEnity;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
-import logic.pages.care.find.CommonContentPage;
 import logic.pages.care.find.ServiceOrdersContentPage;
-import logic.pages.care.find.SubscriptionContentPage;
 import logic.pages.care.main.ServiceOrdersPage;
-import logic.pages.care.main.TasksContentPage;
 import logic.pages.care.options.TariffSearchPage;
 import logic.pages.selfcare.ChangeMySafetyBufferPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
@@ -24,10 +17,7 @@ import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 import suite.regression.selfcare.SelfCareTestBase;
 
-import java.sql.ResultSet;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
 
 public class TC53286_Change_SB_Immediate_Pending_Change_Tariff_SO_New_SO_rejected extends BaseTest {
     String sub = "07209466820";
@@ -59,19 +49,15 @@ public class TC53286_Change_SB_Immediate_Pending_Change_Tariff_SO_New_SO_rejecte
         ServiceOrdersContentPage.getInstance().clickNextBtn();
 
         test.get().info("Step 5: open the search tariff window");
-        String title= ServiceOrdersContentPage.getInstance().getTitle();
         ServiceOrdersContentPage.getInstance().clicknewTariffSearchBtn();
-        ServiceOrdersContentPage.getInstance().switchWindow("Tariff Search",false);
 
-        test.get().info("Step 6: Search tariff by specified criteria");
+        test.get().info("Step 6: Build Search tariff by specified criteria Entity");
         TariffSearchCriteriaEnity tariffSearchCriteriaEnity=new TariffSearchCriteriaEnity();
         tariffSearchCriteriaEnity.setBillingType("Flexible Cap");
         tariffSearchCriteriaEnity.setContractPeriod("24");
-        TariffSearchPage.getInstance().searchTariffByCriteria(tariffSearchCriteriaEnity);
 
         test.get().info("Step 7: Select Tariff by code then click next button");
-        TariffSearchPage.getInstance().clickTariffByTariffCode("FC24-2000-500");
-        ServiceOrdersContentPage.getInstance().switchWindow(title,false);
+        TariffSearchPage.getInstance().searchAndSelectTariffByCode(tariffSearchCriteriaEnity, "FC24-2000-500");
 
         test.get().info("Step 8: click next button on change tariff wizad");
         ServiceOrdersContentPage.getInstance().clickNextBtn();

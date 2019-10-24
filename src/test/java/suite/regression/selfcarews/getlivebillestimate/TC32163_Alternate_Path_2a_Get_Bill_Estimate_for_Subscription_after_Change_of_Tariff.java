@@ -179,7 +179,6 @@ public class TC32163_Alternate_Path_2a_Get_Bill_Estimate_for_Subscription_after_
         ServiceOrdersPage.SelectSubscription.getInstance().clickNextButton();
         ChangeTariffPage.ChangeTariff.getInstance().clickButtonNewTariff();
 
-        ChangeTariffPage.ChangeTariff.getInstance().clickButtonNewTariff();
         TariffSearchCriteriaEnity tariffSearchCriteriaEnity = new TariffSearchCriteriaEnity();
         tariffSearchCriteriaEnity.setStaffTariff("No");
         tariffSearchCriteriaEnity.setBillingType("Flexible Cap");
@@ -188,10 +187,8 @@ public class TC32163_Alternate_Path_2a_Get_Bill_Estimate_for_Subscription_after_
         tariffSearchCriteriaEnity.setMonthlyRental("10-20");
         tariffSearchCriteriaEnity.setEarlyTerminationCharge("");
 
-        TariffSearchPage.getInstance().searchTariffByCriteria(tariffSearchCriteriaEnity);
-
         String tariffCode = "FC12-2000-750";
-        TariffSearchPage.getInstance().selectTariffByCode(tariffCode);
+        TariffSearchPage.getInstance().searchAndSelectTariffByCode(tariffSearchCriteriaEnity, tariffCode);
         ChangeTariffPage.ChangeTariff.getInstance().clickNextButton();
 
         ServiceOrdersPage.ChangeBundle.getInstance().selectBundlesByName(BundlesToSelectEntity.getSafetyBuffersAToSelect(), "£10 safety buffer");
