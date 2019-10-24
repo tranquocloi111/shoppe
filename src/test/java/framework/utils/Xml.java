@@ -1,7 +1,6 @@
 package framework.utils;
 
 import org.w3c.dom.*;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,7 +18,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -218,4 +216,10 @@ public class Xml {
         }
         return listChildNode;
     }
+
+    public String getAttributeTextByXpath(String xpath, String attributeName) {
+        NodeList nodes = getElementsByXpath(xpath);
+        return nodes.item(0).getAttributes().getNamedItem(attributeName).getNodeValue();
+    }
+
 }

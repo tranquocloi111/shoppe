@@ -66,9 +66,11 @@ public class TariffSearchPage extends BasePage {
 
     public void selectTariffByCode(String tariffCode) {
         String currentWindow = getDriver().getTitle();
-        switchWindow("Tariff Search", false);
+        if (currentWindow != "Tariff Search") {
+            switchWindow("Tariff Search", false);
+        }
         clickTariffByTariffCode(tariffCode);
-        switchWindow(currentWindow, false);
+        switchWindow("hubNET", false);
     }
 
     public void selectTheFilterCriteria(String criteria, String value) {
@@ -136,15 +138,16 @@ public class TariffSearchPage extends BasePage {
         selectByVisibleText(cboStaffTariff, text);
     }
 
-    public void searchTariffByCriteria(TariffSearchCriteriaEnity enity) {
-        selectBillingType(enity.getBillingType());
-        selectTariffType(enity.getTariffType());
-        selectMonthlyRental(enity.getMonthlyRental());
+    public void searchTariffByCriteria(TariffSearchCriteriaEnity entity) {
+        switchWindow("Tariff Search", false);
+        selectBillingType(entity.getBillingType());
+        selectTariffType(entity.getTariffType());
+        selectMonthlyRental(entity.getMonthlyRental());
        // selectSpecialTariff(enity.getSpecialTariff());
-        selectContactPeriod(enity.getContractPeriod());
-        selectETC(enity.getEarlyTerminationCharge());
-        selectLastDateExpired(enity.getLastSaleDateExpired());
-        selectStaffTariff(enity.getStaffTariff());
+        selectContactPeriod(entity.getContractPeriod());
+        selectETC(entity.getEarlyTerminationCharge());
+        selectLastDateExpired(entity.getLastSaleDateExpired());
+        selectStaffTariff(entity.getStaffTariff());
         clickFindButton();
     }
     public void clickNextBtn()
