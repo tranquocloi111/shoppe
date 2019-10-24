@@ -3,9 +3,9 @@ package logic.utils;
 import framework.config.Config;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Hours;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -22,6 +22,7 @@ public class TimeStamp {
     public final static String DATE_FORMAT_IN_PDF3 = "MM/yyyy";
     public final static String DATE_FORMAT_XML = "yyyy-MM-dd";
     public final static String DATE_TIME_FORMAT = "dd/MM/yyyy hh:mma";
+    public final static String DATE_FORMAT_XINVOICE = "dd/MMM/yyyy";
 
 
     public static Date Today() {
@@ -318,6 +319,7 @@ public class TimeStamp {
         DateTime now = new DateTime(timeZone);
         return now;
     }
+
     public static String TodayMinus10DatsReturnFullFormat() {
         LocalDateTime now = LocalDateTime.now().minusDays(10);
 
@@ -341,4 +343,17 @@ public class TimeStamp {
         return Date.valueOf(LocalDate.now().plusMonths(1).minusDays(15));
     }
 
+    public static String getDateTimeByTimeZone() {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_FORMAT);
+
+        java.util.Date date = new java.util.Date();
+        DateTime currentDateTime = new DateTime(date);
+        DateTimeZone dtZone = DateTimeZone.forID(Config.getProp("timeZoneId"));
+        DateTime dateTimeByTimeZone = currentDateTime.withZone(dtZone);
+        java.util.Date dateInAmerica = dateTimeByTimeZone.toLocalDateTime().toDate(); //Convert to LocalDateTime first
+
+        System.out.println("dateInAmerica (Formatter) : " + formatter.format(dateInAmerica));
+
+        return formatter.format(dateInAmerica);
+    }
 }

@@ -2,7 +2,6 @@ package suite.regression.care;
 
 import framework.config.Config;
 import framework.utils.Xml;
-//import javafx.util.Pair;
 import logic.business.db.billing.BillingActions;
 import logic.business.entities.ServiceOrderEntity;
 import logic.business.helper.MiscHelper;
@@ -318,4 +317,45 @@ public class CareTestBase extends BasePage {
         String actualStatus = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subscription);
         Assert.assertEquals(expectedStatus, actualStatus);
     }
+
+
+    public static void deactivateAccountAndReturnToCustomer() {
+        MenuPage.RightMenuPage.getInstance().clickDeactivateAccountLink();
+        DeactivateSubscriptionPage.DeactivateSubscription.getInstance().deactivateLastActiveSubscription();
+    }
+
+    public static void verifyAccountStatus(String expectedStatus) {
+        String endDate = CommonContentPage.CustomerSummarySectionPage.getInstance().getCustomerSummaryEndDate();
+        String actualStatus;
+
+        if (!endDate.equals("")) {
+            actualStatus = "Inactive";
+        } else {
+            actualStatus = "Active";
+        }
+        Assert.assertEquals(expectedStatus, actualStatus);
+    }
+
+    public String verifyCustomerHas1InvoiceGenerated() {
+        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
+        Assert.assertEquals(1, InvoicesContentPage.getInstance().getRowNumberOfInvoiceTable());
+        String invoiceNumber = InvoicesContentPage.getInstance().getInvoiceNumber();
+        InvoicesContentPage.getInstance().clickInvoiceNumberByIndex(1);
+
+        return invoiceNumber;
+    }
+
+    public void editBillingDetailInvoiceStyleValue(String billStyle) {
+        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        DetailsContentPage.BillingInformationSectionPage.getInstance().clickEditBtnBySection("Billing Information");
+        DetailsContentPage.BillingInformationSectionPage.getInstance().changeBillStyle(billStyle);
+        DetailsContentPage.BillingInformationSectionPage.getInstance().clickApplyBtn();
+    }
+
+    public void verifyCustomerHas1DraftInvoiceGenerated() {
+        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
+        Assert.assertEquals(1, InvoicesContentPage.getInstance().getRowNumberOfInvoiceTable());
+        Assert.assertEquals("Draft", InvoicesContentPage.getInstance().getStatusByIndex(1));
+    }
+
 }
