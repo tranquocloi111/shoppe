@@ -55,19 +55,15 @@ public class TC53291_Change_SB_temporary_pending_change_tariff_so_new_so_allowed
         ServiceOrdersContentPage.getInstance().clickNextBtn();
 
         test.get().info("Step 5: open the search tariff window");
-        String title= ServiceOrdersContentPage.getInstance().getTitle();
         ServiceOrdersContentPage.getInstance().clicknewTariffSearchBtn();
-        ServiceOrdersContentPage.getInstance().switchWindow("Tariff Search",false);
 
-        test.get().info("Step 6: Search tariFff by specified criteria");
+        test.get().info("Step 6: Build Search tariFff by specified criteria Entity");
         TariffSearchCriteriaEnity tariffSearchCriteriaEnity=new TariffSearchCriteriaEnity();
         tariffSearchCriteriaEnity.setBillingType("Flexible Cap");
         tariffSearchCriteriaEnity.setContractPeriod("24");
-        TariffSearchPage.getInstance().searchTariffByCriteria(tariffSearchCriteriaEnity);
 
         test.get().info("Step 7: Select Tariff by code then click next button");
-        TariffSearchPage.getInstance().clickTariffByTariffCode("FC24-2000-500");
-        ServiceOrdersContentPage.getInstance().switchWindow(title,false);
+        TariffSearchPage.getInstance().searchAndSelectTariffByCode(tariffSearchCriteriaEnity, "FC24-2000-500");
 
         test.get().info("Step 8: click next button on change tariff wizad");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
