@@ -56,7 +56,7 @@ public class TariffSearchPage extends BasePage {
         return table.findRowsByColumns(payment).size();
     }
 
-    public void clickTariffByTariffCode(String tariffCode) {
+    private void clickTariffByTariffCode(String tariffCode) {
         table.getRowByColumnNameAndCellValue("Tariff Code", tariffCode).findElement(By.tagName("a")).click();
     }
 
@@ -71,6 +71,14 @@ public class TariffSearchPage extends BasePage {
         switchWindow(currentWindow, false);
     }
 
+    public void searchAndSelectTariffByCode(TariffSearchCriteriaEnity tariffSearchEntity, String tariffCode) {
+        String currentWindow = getDriver().getTitle();
+        switchWindow("Tariff Search", false);
+        searchTariffByCriteria(tariffSearchEntity);
+        clickTariffByTariffCode(tariffCode);
+        switchWindow(currentWindow, false);
+    }
+
     public void selectTheFilterCriteria(String criteria, String value) {
         TableControlBase tableControlBase = new TableControlBase(criteriaFilterTable);
         if (value == null) {
@@ -80,71 +88,72 @@ public class TariffSearchPage extends BasePage {
         }
     }
 
-    public void selectBillingType(String text) {
+    private void selectBillingType(String text) {
         if (text == null) {
             text = "";
         }
         selectByVisibleText(cboBillingType, text);
     }
 
-    public void selectTariffType(String text) {
+    private void selectTariffType(String text) {
         if (text == null) {
             text = "";
         }
         selectByVisibleText(cboTariffType, text);
     }
 
-    public void selectMonthlyRental(String text) {
+    private void selectMonthlyRental(String text) {
         if (text == null) {
             text = "";
         }
         selectByVisibleText(cboMonthlyRental, text);
     }
 
-    public void selectSpecialTariff(String text) {
+    private void selectSpecialTariff(String text) {
         if (text == null) {
             text = "";
         }
         selectByVisibleText(cboSpecialTariff, text);
     }
 
-    public void selectContactPeriod(String text) {
+    private void selectContactPeriod(String text) {
         if (text == null) {
             text = "";
         }
         selectByVisibleText(cboContractPeriod, text);
     }
 
-    public void selectETC(String text) {
+    private void selectETC(String text) {
         if (text == null) {
             text = "";
         }
         selectByVisibleText(cboEarlyTerminationCharge, text);
     }
 
-    public void selectLastDateExpired(String text) {
+    private void selectLastDateExpired(String text) {
         if (text == null) {
             text = "";
         }
         selectByVisibleText(cboLastSaleDateExpired, text);
     }
 
-    public void selectStaffTariff(String text) {
+    private void selectStaffTariff(String text) {
         if (text == null) {
             text = "";
         }
         selectByVisibleText(cboStaffTariff, text);
     }
 
-    public void searchTariffByCriteria(TariffSearchCriteriaEnity enity) {
-        selectBillingType(enity.getBillingType());
-        selectTariffType(enity.getTariffType());
-        selectMonthlyRental(enity.getMonthlyRental());
+    public void searchTariffByCriteria(TariffSearchCriteriaEnity entity) {
+        switchWindow("Tariff Search", false);
+        selectBillingType(entity.getBillingType());
+        selectTariffType(entity.getTariffType());
+        selectMonthlyRental(entity.getMonthlyRental());
        // selectSpecialTariff(enity.getSpecialTariff());
-        selectContactPeriod(enity.getContractPeriod());
-        selectETC(enity.getEarlyTerminationCharge());
-        selectLastDateExpired(enity.getLastSaleDateExpired());
-        selectStaffTariff(enity.getStaffTariff());
+        selectContactPeriod(entity.getContractPeriod());
+        selectETC(entity.getEarlyTerminationCharge());
+        selectLastDateExpired(entity.getLastSaleDateExpired());
+        selectStaffTariff(entity.getStaffTariff());
         clickFindButton();
     }
     public void clickNextBtn()

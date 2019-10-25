@@ -94,49 +94,80 @@ public class LiveBillEstimateContentPage extends BasePage {
                 }
 
             }
-
         }
 
     }
 
     public static class BundleCharges extends LiveBillEstimate.ChargesToDate {
+        @FindBy(xpath = "//td[contains(text(),'Bundle Charges')]//ancestor::tr[1]//following-sibling::tr/td[2]//table")
+        WebElement bundleChargesTable;
+
         public static BundleCharges getInstance() {
             return new BundleCharges();
         }
-
-        @FindBy(xpath = "//td[contains(text(),'Bundle Charges')]//ancestor::tr[1]//following-sibling::tr/td[2]//table")
-        WebElement bundleChargesTable;
 
         public int getRowInBundleCharge(HashMap<String, String> row) {
             TableControlBase tableControlBase = new TableControlBase(bundleChargesTable);
             return tableControlBase.findRowsByColumns(row).size();
         }
+
         public int getRowCount() {
             TableControlBase tableControlBase = new TableControlBase(bundleChargesTable);
-            return tableControlBase.getAllRows().size()-1;
+            return tableControlBase.getAllRows().size() - 1;
         }
     }
 
     public static class AccountPaymentsAndVouchers extends LiveBillEstimate.ChargesToDate {
-        WebElement accountPaymentsAndVoucherHeaderRow;
         static WebElement accountPaymentAndVoucherDiv;
+        @FindBy(xpath = "//td[contains(text(),'Account Payments and Vouchers')]//ancestor::tr[1]//following-sibling::tr/td[2]//table")
         WebElement accountPaymentsAndVoucherTable;
+        WebElement accountPaymentsAndVoucherHeaderRow;
         TableControlBase tableControlBase;
 
         public AccountPaymentsAndVouchers() {
-            WebElement td = getCdDiv().findElement(By.xpath(String.format(".//td[@class='GroupHeader' and contains(text(),'Account Payments and Vouchers')]" )));
+            WebElement td = getCdDiv().findElement(By.xpath(String.format(".//td[@class='GroupHeader' and contains(text(),'Account Payments and Vouchers')]")));
             accountPaymentsAndVoucherHeaderRow = td.findElement(By.xpath(".//ancestor::tr[1]"));
             WebElement secondRow = accountPaymentsAndVoucherHeaderRow.findElement(By.xpath(".//following-sibling::tr[1]"));
             accountPaymentAndVoucherDiv = secondRow.findElement(By.xpath(".//div"));
             tableControlBase = new TableControlBase(accountPaymentsAndVoucherTable);
         }
 
-        public void expand(){
+        public void expand() {
             click(accountPaymentsAndVoucherHeaderRow.findElement(By.tagName("a")));
         }
 
-        public String getReferenceByIndex(int index){
-            return tableControlBase.getCellValueByColumnNameAndRowIndex(index, "Reference");
+        public String getReferenceByIndex(int index) {
+            return tableControlBase.getCellValueByColumnNameAndRowIndex(index + 1, "Reference");
+        }
+    }
+
+    public static class BillingInformation extends LiveBillEstimate {
+        WebElement sectionHeader = getParent().findElement(By.xpath(".//td[@class='SectionHeader' and text()='Billing Information']"));
+        WebElement cdDiv;
+        WebElement cdBillingContentTable;
+        WebElement cdHeaderRow;
+        TableControlBase tableControlBase;
+
+        public BillingInformation() {
+            tableControlBase = new TableControlBase(getBillingContentTable());
+        }
+
+        public WebElement getCdHeaderRow() {
+            return sectionHeader.findElement(By.xpath(".//ancestor::tr[1]"));
+        }
+
+        public WebElement getCdDiv() {
+            return getCdHeaderRow().findElement(By.xpath(".//following-sibling::tr[1]")).findElement(By.tagName("div"));
+        }
+
+        public WebElement getBillingContentTable() {
+            return getCdDiv().findElement(By.xpath(".//table[@class='ContentTable']"));
+        }
+
+        public String getEstimateOfUsageCharges() {
+            String value = "Estimate of Usage Charges is current as of:";
+            WebElement row = tableControlBase.getRowByCellValue(value);
+            return row.findElement(By.xpath(String.format(".//following-sibling::td[%d]", 1))).getText();
         }
     }
 }

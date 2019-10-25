@@ -1,0 +1,10 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:sel="http://selfcare.telco.hsntech.com">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <sel:getInvoiceDetailRequest>
+            <sel:externalSystemID>ADMIN</sel:externalSystemID>
+            <sel:accountNumber>$accountNumber$</sel:accountNumber>
+        </sel:getInvoiceDetailRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

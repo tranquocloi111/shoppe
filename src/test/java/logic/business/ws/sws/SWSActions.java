@@ -4,8 +4,6 @@ import framework.utils.Log;
 import framework.utils.Soap;
 import framework.utils.Xml;
 import logic.business.ws.BaseWs;
-import logic.utils.Common;
-import logic.utils.XmlUtils;
 
 import java.io.File;
 
@@ -24,6 +22,10 @@ public class SWSActions extends BaseWs {
     private static final String GET_ACCOUNT_DETAIL_WITH_FLAG = "src\\test\\resources\\xml\\sws\\getaccountdetails\\Get_Account_Detail_With_Flag_Request.xml";
     private static final String GET_ACCOUNT_SUMMARY_WITH_SUBS_REQUEST = "src\\test\\resources\\xml\\sws\\getaccount\\Get_Account_Summary_By_SubsNumber_Request.xml";
     private static final String GET_BILL_ESTIMATE_REQUEST = "src\\test\\resources\\xml\\sws\\getbillestimate\\Get_Bill_Estimate_Request.xml";
+    private static final String GET_INVOICE_REQUEST = "src\\test\\resources\\xml\\sws\\getinvoice\\Get_Invoice_Request.xml";
+    private static final String GET_INVOICE_DETAIL_REQUEST = "src\\test\\resources\\xml\\sws\\getinvoicedetail\\Get_Invoice_Detail_Request.xml";
+    private static final String GET_INVOICE_HISTORY_REQUEST = "src\\test\\resources\\xml\\sws\\getinvoicehistory\\Get_Invoice_History_Request.xml";
+    private static final String GET_SUBSCRIPTION_AUTHORITY_REQUEST = "src\\test\\resources\\xml\\sws\\getsubscriptionauthority\\Get_Subscription_Authority_Request.xml";
     //endregion
 
     public SWSActions() {
@@ -196,8 +198,17 @@ public class SWSActions extends BaseWs {
 
 
     public Xml submitGetBillEstimateRequest(String accountNumber){
-        request = new Xml(new File(GET_BILL_ESTIMATE_REQUEST));
-        request.setTextByTagName("sel:accountNumber", accountNumber);
+        return submitGetByCustomerNumberRequest(GET_BILL_ESTIMATE_REQUEST, accountNumber);
+    }
+
+    public Xml submitGetInvoiceRequest(String customerNumber) {
+        return submitGetByCustomerNumberRequest(GET_INVOICE_REQUEST, customerNumber);
+    }
+
+    public Xml submitGetInvoiceWithAccountNoAndInvoiceNoRequest(String customerNumber, String invoiceNumber) {
+        request = new Xml(new File("src\\test\\resources\\xml\\sws\\getinvoice\\Get_Invoice_With_AccountNo_And_InvoiceNo_Request.xml"));
+        request.setTextByTagName("sel:accountNumber", customerNumber);
+        request.setTextByTagName("sel:invoiceNumber", invoiceNumber);
 
         response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());
@@ -205,5 +216,28 @@ public class SWSActions extends BaseWs {
         return response;
     }
 
+    public Xml submitGetInvoiceDetailRequest(String customerNumber) {
+        return submitGetByCustomerNumberRequest(GET_INVOICE_DETAIL_REQUEST, customerNumber);
+    }
+
+    public Xml submitGetInvoiceHistoryRequest(String customerNumber, String startDate) {
+        request = new Xml(new File(GET_INVOICE_HISTORY_REQUEST));
+        request.setTextByTagName("sel:accountNumber", customerNumber);
+        request.setTextByTagName("sel:startDate", startDate);
+
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
+
+    public Xml submitGetInvoiceHistoryByAccountNoRequest(String customerNumber) {
+        String filePath = "src\\test\\resources\\xml\\sws\\getinvoice\\Get_Invoice_History_By_AccountNo_Request.xml";
+        return submitGetByCustomerNumberRequest(filePath, customerNumber);
+    }
+
+    public Xml submitGetSubscriptionAuthorityRequest(String subscriptionNumber) {
+        return submitGetBySubscriptionNumberRequest(GET_SUBSCRIPTION_AUTHORITY_REQUEST, subscriptionNumber);
+    }
 }
 

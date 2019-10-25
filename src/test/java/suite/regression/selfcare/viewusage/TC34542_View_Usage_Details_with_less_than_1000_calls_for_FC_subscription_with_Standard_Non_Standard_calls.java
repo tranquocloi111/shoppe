@@ -58,11 +58,9 @@ public class TC34542_View_Usage_Details_with_less_than_1000_calls_for_FC_subscri
         ServiceOrdersPage.ChangeBundle.getInstance().clickNextButton();
 
         test.get().info("Step 5: open the search tariff window");
-        String title = ServiceOrdersContentPage.getInstance().getTitle();
         ServiceOrdersContentPage.getInstance().clicknewTariffSearchBtn();
-        ServiceOrdersContentPage.getInstance().switchWindow("Tariff Search", false);
 
-        test.get().info("Step 6: Search tariff by specified criteria");
+        test.get().info("Step 6: Build Search tariff by specified criteria Entity");
         TariffSearchCriteriaEnity tariffSearchCriteriaEnity = new TariffSearchCriteriaEnity();
         tariffSearchCriteriaEnity.setBillingType("Flexible Cap");
         tariffSearchCriteriaEnity.setStaffTariff("No");
@@ -71,9 +69,8 @@ public class TC34542_View_Usage_Details_with_less_than_1000_calls_for_FC_subscri
         TariffSearchPage.getInstance().searchTariffByCriteria(tariffSearchCriteriaEnity);
 
 
-        test.get().info("Step 7: Select Tariff by code then click next button");
-        TariffSearchPage.getInstance().clickTariffByTariffCode("FC12-2000-750");
-        ServiceOrdersContentPage.getInstance().switchWindow(title, false);
+        test.get().info("Step 7: Search and select Tariff by code then click next button");
+        TariffSearchPage.getInstance().searchAndSelectTariffByCode(tariffSearchCriteriaEnity, "FC12-2000-750");
 
         test.get().info("Step 8: click next button on change tariff wizad");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
