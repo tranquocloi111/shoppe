@@ -1,0 +1,75 @@
+﻿<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <S:Body>
+    <ns2:getOrderResponse xmlns:ns2="http://order.telco.hsntech.com" xmlns:ns3="http://wsdl.hsntech.com">
+      <order>
+        <account type="RESIDENTIAL"/>
+        <orderDetails ipAddress="160.206.234.22" orderId="$orderId$" orderRef="12345" salesChannel="Onlines">
+          <dateTime>$dateTime$+11:00</dateTime>
+          <delivery>
+            <addressee>$firstName$ $lastName$</addressee>
+            <address>
+              <buildingIdentifier>6</buildingIdentifier>
+              <addressLine1>LUKIN STREET</addressLine1>
+              <town>LONDON</town>
+              <country>UK</country>
+              <postcode>E10AA</postcode>
+            </address>
+            <deliveryOption method="DELIVER"/>
+          </delivery>
+          <orderItem dealSKU="DEAL-INHAND" id="1">
+            <serviceRef reference="Mobile 1">$subNo1$</serviceRef>
+            <tariff productCode="FC36-1000-100">
+              <deliveryMethod>INHAND</deliveryMethod>
+            </tariff>
+            <device productCode="AP616SV-24-2200-0">
+              <deliveryMethod>DELIVER</deliveryMethod>
+              <unitCharge currencyCode="GBP">0.00</unitCharge>
+              <agreement provider="AGRTESCOMOBILE">
+                <number>0031910001139090</number>
+              </agreement>
+            </device>
+            <peripheral productCode="IPADMINI4-00-0000-50">
+              <deliveryMethod>DELIVER</deliveryMethod>
+              <unitCharge currencyCode="GBP">50.00</unitCharge>
+              <agreement provider="AGRTESCOMOBILE">
+                <number>0031910001139091</number>
+              </agreement>
+            </peripheral>
+            <discBundle bundleGroup="SB-GRP-A" productCode="02000-SB-A">
+              <deliveryMethod>INHAND</deliveryMethod>
+            </discBundle>
+            <insurance productCode="MA">
+              <deliveryMethod>INHAND</deliveryMethod>
+            </insurance>
+          </orderItem>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="02 Registration OK"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="02R Payment Card Check Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="02P Payment Card Check Passed"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="03NR Credit Check Not Required"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="05 MPNs Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="05 MPNs Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="06 MPNs Reserved"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="06 MPNs Reserved"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="07 MPNs Assigned"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="08B Agreement Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="08D Agreement Accepted"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="08 Terms and Conds Accepted"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="09B 3DS Enrolment Received"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="09A 3DS Enrolment Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="09 Payment Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="10 Payment Received"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11 Order Sent to Billing"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="15 Order Complete"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11UU Temporary Username Updated"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11CA Billing Customer Created"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="14 Products Released"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="14 Products Released"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="HUB Inventory Created"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11RC Receipt Created"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11AS Activation Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11RS Refill Requested"/>
+        </orderDetails>
+      </order>
+    </ns2:getOrderResponse>
+  </S:Body>
+</S:Envelope>

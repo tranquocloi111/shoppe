@@ -1,5 +1,6 @@
 package framework.utils;
 
+import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
@@ -71,6 +72,32 @@ public class SFTP {
         return blResult;
     }
 
+    public boolean connect(String strHostAddress, int iPort, String strUserName, String strPassword) {
+        boolean blResult = false;
+
+        try {
+            //creating a new jsch session
+            mJschSession = new JSch();
+            //creating session with user, host port
+            mSSHSession = mJschSession.getSession(strUserName, strHostAddress, iPort);
+            mSSHSession.setConfig("StrictHostKeyChecking", "no");
+            mSSHSession.setPassword(strPassword);
+            //connect to host
+            mSSHSession.connect();
+
+            //open sftp channel
+            mChannelSftp = (ChannelSftp) this.mSSHSession.openChannel("sftp");
+
+            //connect to sftp session
+            mChannelSftp.connect();
+            if (mChannelSftp != null) {
+                blResult = true;
+            }
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        }
+        return blResult;
+    }
 
 
     //download file

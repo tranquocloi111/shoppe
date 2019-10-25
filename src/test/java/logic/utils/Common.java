@@ -326,10 +326,13 @@ public class Common {
         int count = 0;
         for (int i = 0; i < actual.size(); i++) {
             for (int k = 0; k < expected.size(); k++) {
-                if (actual.get(i).contains(expected.get(k)))
+                if (actual.get(i).contains(expected.get(k))) {
                     flg = true;
-                else
+                }
+                else {
                     flg = false;
+                    break;
+                }
             }
             if (flg)
                 count++;
@@ -415,7 +418,7 @@ public class Common {
                 while (line != null) {
                     sb.append(line).append('\n');
                     line = bufRead.readLine();
-                    if (serverLog.contains(line.trim())) {
+                    if (serverLog.contains(line.trim().replaceFirst("<",""))) {
                         flag = true;
                     }
                     else {

@@ -1,0 +1,65 @@
+﻿<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <S:Body>
+    <ns2:getOrderResponse xmlns:ns2="http://order.telco.hsntech.com" xmlns:ns3="http://wsdl.hsntech.com">
+      <order>
+        <account type="BUSINESS">
+          <businessDetail>
+            <businessName>Tom Cruise</businessName>
+          </businessDetail>
+        </account>
+        <orderDetails agentId="AmeeCare01"
+                      ipAddress="160.206.234.22" orderId="$orderId$"
+                      orderRef="12345" salesChannel="Care (CSA)">
+          <dateTime>$dateTime$+11:00</dateTime>
+          <delivery>
+            <addressee>$firstName$ $lastName$</addressee>
+            <address>
+              <buildingIdentifier>6 </buildingIdentifier>
+              <addressLine1>LUKIN STREET</addressLine1>
+              <town>LONDON</town>
+              <country>UK</country>
+              <postcode>E10AA</postcode>
+            </address>
+            <deliveryOption method="DELIVER"/>
+          </delivery>
+          <orderItem dealSKU="DEAL-INHAND" id="3">
+            <serviceRef reference="Mobile 3">$subNo3$</serviceRef>
+            <tariff productCode="FF24-0750-250-5M4M">
+              <deliveryMethod>INHAND</deliveryMethod>
+            </tariff>
+            <simonly productCode="SIM-ONLY">
+              <deliveryMethod>DELIVER</deliveryMethod>
+              <unitCharge currencyCode="GBP">0.00</unitCharge>
+            </simonly>
+            <discBundle bundleGroup="STANDARDDATAFC" productCode="500MB-DATA-500-FC">
+              <deliveryMethod>INHAND</deliveryMethod>
+            </discBundle>
+            <discBundle bundleGroup="SB-GRP-A" productCode="02000-SB-A">
+              <deliveryMethod>INHAND</deliveryMethod>
+            </discBundle>
+          </orderItem>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="02 Registration OK"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="02R Payment Card Check Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="02P Payment Card Check Passed"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="03NR Credit Check Not Required"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="05 MPNs Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="05 MPNs Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="06 MPNs Reserved"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="06 MPNs Reserved"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="07 MPNs Assigned"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="08 Terms and Conds Accepted"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="09 Payment Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="10 Payment Received"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11 Order Sent to Billing"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="15 Order Complete"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="14 Products Released"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="14 Products Released"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="HUB Inventory Created"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11RC Receipt Created"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11AS Activation Requested"/>
+          <orderEvent dateTime="$dateTime$+11:00" eventType="11RS Refill Requested"/>
+        </orderDetails>
+      </order>
+    </ns2:getOrderResponse>
+  </S:Body>
+</S:Envelope>

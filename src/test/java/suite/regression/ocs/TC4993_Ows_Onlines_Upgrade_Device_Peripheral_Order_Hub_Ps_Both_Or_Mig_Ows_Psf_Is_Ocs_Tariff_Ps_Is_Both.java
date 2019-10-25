@@ -1,15 +1,16 @@
 package suite.regression.ocs;
 
+import framework.utils.Log;
 import framework.utils.Pdf;
 import framework.utils.Xml;
 import logic.business.db.billing.CommonActions;
-import logic.business.entities.PaymentGridEntity;
-import logic.business.entities.ServiceOrderEntity;
 import logic.business.helper.RemoteJobHelper;
+import logic.business.helper.SFTPHelper;
 import logic.business.ws.ows.OWSActions;
-import logic.business.ws.sws.SWSActions;
 import logic.pages.care.MenuPage;
-import logic.pages.care.find.*;
+import logic.pages.care.find.CommonContentPage;
+import logic.pages.care.find.ServiceOrdersContentPage;
+import logic.pages.care.find.SubscriptionContentPage;
 import logic.pages.care.main.TasksContentPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.pages.selfcare.OrderConfirmationPage;
@@ -24,17 +25,15 @@ import suite.regression.care.CareTestBase;
 import suite.regression.selfcare.SelfCareTestBase;
 
 import java.sql.Date;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hpin_Existing_Ps_Hpin_Ows_Psf_Ignored_Tariff_Ps_Both extends BaseTest {
-    private String customerNumber = "47747501";
-    private String orderId = "8701044";
+public class TC4993_Ows_Onlines_Upgrade_Device_Peripheral_Order_Hub_Ps_Both_Or_Mig_Ows_Psf_Is_Ocs_Tariff_Ps_Is_Both extends BaseTest {
+    private String customerNumber = "47752420";
+    private String orderId = "8701338";
     private String firstName = "first290383441";
     private String lastName = "last892849311";
     private String subNo1 = "07406981070";
@@ -43,14 +42,15 @@ public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hp
     private String serviceOrderId = "12453";
     private OWSActions owsActions;
     private Date newStartDate;
+    private String discountGroupCode;
 
-    @Test(enabled = true, description = "TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hpin_Existing_Ps_Hpin_Ows_Psf_Ignored_Tariff_Ps_Both", groups = "OCS")
-    public void TC3796_001_OWS_Create_New_Order_For_Business_Customer() {
-        test.get().info("Step 1 : Create a Customer with HPIN Account");
-        CommonActions.updateHubProvisionSystem("H");
+    @Test(enabled = true, description = "TC4993_Ows_Onlines_Upgrade_Device_Peripheral_Order_Hub_Ps_Both_Or_Mig_Ows_Psf_Is_Ocs_Tariff_Ps_Is_Both", groups = "OCS")
+    public void TC4993_Ows_Onlines_Upgrade_Device_Peripheral_Order_Hub_Ps_Both_Or_Mig_Ows_Psf_Is_Ocs_Tariff_Ps_Is_Both() {
+        test.get().info("Step 1 : Create a Customer with OCS Account");
+        CommonActions.updateHubProvisionSystem("B");
         owsActions = new OWSActions();
-        String path = "src\\test\\resources\\xml\\ocs\\TC4996_Hpin_Request.xml";
-        owsActions.createOcsCustomerRequest(path, true, "");
+        String path = "src\\test\\resources\\xml\\ocs\\TC4993_Ocs_Request_Both.xml";
+        owsActions.createOcsCustomerRequest(path, true, "OCS");
 
         test.get().info("Step 2 : Create new billing group");
         createNewBillingGroup();
@@ -60,6 +60,7 @@ public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hp
 
         test.get().info("Step 4 : Set bill group for customer");
         customerNumber = owsActions.customerNo;
+        orderId  = owsActions.orderIdNo;
         setBillGroupForCustomer(customerNumber);
 
         test.get().info("Step 5 : Update start date for customer");
@@ -67,13 +68,12 @@ public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hp
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
 
         test.get().info("Step 6 : Get subscription number");
-        owsActions.getOrder(owsActions.orderIdNo);
+        owsActions.getOrder(orderId);
         subNo1 = owsActions.getOrderMpnByReference(1);
 
-        test.get().info("Step 7 : Upgrade Order With Business Type");
-        path = "src\\test\\resources\\xml\\ocs\\TC4958_upgrade.xml";
-        owsActions.upgradeOrderWithoutAcceptUrl(path, customerNumber, subNo1);
-        orderId = owsActions.orderIdNo;
+        test.get().info("Step 7 : Upgrade Device & Peripheral order - System PS=BOTH or MIG, OWS PSF=OCS& Tariff PS=OCS/BOTH");
+        path = "src\\test\\resources\\xml\\ocs\\TC4993_upgrade_ocs_order_device_peripheral.xml";
+        owsActions.upgradeOrderWithAcceptUrl(path, customerNumber, subNo1, 2);
 
         test.get().info("Step 8 : Load Care screen");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
@@ -89,38 +89,40 @@ public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hp
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         subNo1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Upgrade Mobile");
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
-        verifyOcsSubscriptionDetails("HPIN", "", "");
+        SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
+        discountGroupCode = generalSectionPage.getDiscountGroupCode();
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A");
 
-        test.get().info("Step 11 : Validate Sales Order and Order Task Service Orders in HUB .NET");
+        test.get().info("Step 5 : Validate Sales Order and Order Task Service Orders in HUB .NET");
         verifyServiceOrdersAreCreatedCorrectly();
 
-        test.get().info("Step 12 : Validate the Order detail using Get Order OWS request");
+        test.get().info("Step 6 : Validate the Order detail using Get Order OWS request");
         Xml xml = owsActions.getOrder(orderId);
         verifyGetOrderRequestAreCorrect(xml);
 
-        test.get().info("Step 13 : Login to SelfCare ");
+        test.get().info("Step 7 : Login to SelfCare ");
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
-        test.get().info("Step 14 : Validate the order confirmations screen in Self Care");
+        test.get().info("Step 8 : Validate the order confirmations screen in Self Care");
         MyPersonalInformationPage.MyPreviousOrdersPage myPreviousOrdersPage = MyPersonalInformationPage.MyPreviousOrdersPage.getInstance();
         List<String> orderAndContract = new ArrayList<>();
         orderAndContract.add("#"+orderId);
-        orderAndContract.add("Phoneshop");
+        orderAndContract.add("Online");
         Assert.assertEquals(Common.compareList(myPreviousOrdersPage.getAllValueOfOrdersAndContractPage(), orderAndContract), 1);
 
-        test.get().info("Step 15 : Validate the Contract PDF in Self Care");
+        test.get().info("Step 9 : Validate the Contract PDF in Self Care");
         myPreviousOrdersPage.clickViewByIndex(1);
         verifyContractInformation();
 
-        test.get().info("Step 16 : Validate the server log in public/trust server");
+        test.get().info("Step 10 : Validate the server log in public/trust server");
         verifyTrustServerLog();
-
     }
+
 
     private void verifyGetOrderRequestAreCorrect(Xml xml){
         String localTime = Common.getCurrentLocalTime();
         String actualFile = Common.saveXmlFile(customerNumber + localTime +"_ActualResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(xml.toString())));
-        String file =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4958_Get_Order_Response.xml")
+        String file =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4956_Get_Order_Response.xml")
                 .replace("$orderId$", orderId)
                 .replace("$firstName$", firstName)
                 .replace("$lastName$", lastName)
@@ -129,7 +131,7 @@ public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hp
 
         String expectedResponseFile = Common.saveXmlFile(customerNumber + localTime +"_ExpectedResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(file)));
         int size = Common.compareFile(actualFile, expectedResponseFile).size();
-        Assert.assertEquals(47, size);
+        Assert.assertEquals(51, size);
     }
 
 
@@ -162,49 +164,50 @@ public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hp
         serviceOrders.clickServiceOrderByType("Sales Order");
         eventsGridSectionPage = TasksContentPage.TaskPage.EventsGridSectionPage.getInstance();
         Assert.assertEquals(TasksContentPage.TaskPage.TaskSummarySectionPage.getInstance().getStatus(), "Completed Task");
-        Assert.assertEquals(eventsGridSectionPage.getRowNumberOfEventGird(),18);
+        Assert.assertEquals(eventsGridSectionPage.getRowNumberOfEventGird(),20);
     }
 
     private void verifyTrustServerLog(){
         String localTime = Common.getCurrentLocalTime();
-//        String ftpFile = "/opt/payara/payara5/glassfish/domains/trusted-R2-silo/logs/";
-//        String localFile = Common.getFolderLogFilePath() + "sds.txt";
-//        List<String> allFileName= FTPHelper.getInstance().getAllFileName(ftpFile);
-//        FTPHelper.getInstance().downLoadFromDisk(ftpFile, allFileName.get(2), localFile);
-//        Log.info("Server log file:" + localFile);
+        String ftpFile = "/opt/payara/payara5/glassfish/domains/trust-R2-serv/logs/server.log";
+        String localFile = Common.getFolderLogFilePath() + customerNumber + localTime + "_TrustServerLog.txt";
+        SFTPHelper.getGlassFishInstance().downloadGlassFishFile(localFile, ftpFile);
+        Log.info("Server log file:" + localFile);
 
-        String serverLog = Common.getFolderLogFilePath() + "TrustServerLog1.txt";
-        String doReservePath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Do_Reserve.xml")
-                .replace("$orderNumber$", orderId);
-        String doReserveFile = Common.saveXmlFile(customerNumber + localTime +"_doReserve.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doReservePath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, doReserveFile));
+        //Trust Server
+        String trustServerLog = localFile;
+        String doCreateSubscriberRequestMsgPath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4997_Create_Subscriber_Request_Msg.xml")
+                .replace("$custKey$", customerNumber)
+                .replace("$acctKey1$", discountGroupCode)
+                .replace("$subIdentity$", subNo1)
+                .replace("$effectiveTime$", Parser.parseDateFormate(TimeStamp.Today(),"yyyyMMdd"));
+        String createSubscriberRequestMsgFile = Common.saveXmlFile(customerNumber + localTime +"_CreateSubscriberRequestMsg.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doCreateSubscriberRequestMsgPath)));
+        Assert.assertTrue(Common.compareTextsFile(trustServerLog, createSubscriberRequestMsgFile));
 
-        String doReserveResponsePath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Do_Reserve_Response.xml")
-                .replace("$orderNumber$", orderId)
-                .replace("$mobilePhoneNumber$", subNo1);
-        String doReserveResponseFile = Common.saveXmlFile(customerNumber + localTime +"_doReserveResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doReserveResponsePath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, doReserveResponseFile));
+        String doCreateCustomerRequestMsgPath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4997_Create_Customer_Request_Msg.xml")
+                .replace("$custKey$", customerNumber)
+                .replace("$acctKey1$", discountGroupCode)
+                .replace("$subIdentity$", subNo1)
+                .replace("$effectiveTime$", Parser.parseDateFormate(TimeStamp.Today(),"yyyyMMdd"));
+        String createCustomerRequestMsgFile = Common.saveXmlFile(customerNumber + localTime +"_CreateCustomerRequestMsg.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doCreateCustomerRequestMsgPath)));
+        Assert.assertTrue(Common.compareTextsFile(trustServerLog, createCustomerRequestMsgFile));
 
-        String createOrderResponsePath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Create_Order_Response.xml")
-                .replace("$accountNumber$", customerNumber)
-                .replace("$orderId$", orderId);
-        String createOrderResponseFile = Common.saveXmlFile(customerNumber + localTime +"_createOrderResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(createOrderResponsePath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, createOrderResponseFile));
+        //Public Server
+        ftpFile = "/opt/payara/payara5/glassfish/domains/public-R2-serv/logs/server.log";
+        localFile = Common.getFolderLogFilePath() + customerNumber + localTime + "_PublicServerLog.txt";
+        SFTPHelper.getGlassFishInstance().downloadGlassFishFile(localFile, ftpFile);
+        Log.info("Server log file:" + localFile);
 
-        String doConfirmPath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Do_Confirm.xml")
-                .replace("$accountNumber$", customerNumber)
-                .replace("$orderNumber$", orderId)
-                .replace("$mobilePhoneNumber$", subNo1)
-                .replace("$firstName$", firstName)
-                .replace("$lastName$", lastName)
-                .replace("$secondReference$", userName);
-        String doConfirmFile = Common.saveXmlFile(customerNumber + localTime +"_doConfirm.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doConfirmPath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, doConfirmFile));
+        String publicServerLog = localFile;
+        Assert.assertTrue(Common.compareTextsFile(publicServerLog, createSubscriberRequestMsgFile));
 
-        String doConfirmResponsePath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Do_Confirm_Response.xml")
-                .replace("$orderNumber$", orderId);
-        String doConfirmResponseFile = Common.saveXmlFile(customerNumber + localTime +"_doConfirmReponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doConfirmResponsePath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, doConfirmResponseFile));
+        String doPublicCreateCustomerRequestMsgPath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4997_Public_Create_Customer_Request_Msg.xml")
+                .replace("$custKey$", customerNumber)
+                .replace("$acctKey1$", discountGroupCode)
+                .replace("$subIdentity$", subNo1)
+                .replace("$effectiveTime$", Parser.parseDateFormate(TimeStamp.Today(),"yyyyMMdd"));
+        String publicCreateCustomerRequestMsgFile = Common.saveXmlFile(customerNumber + localTime +"_PublicCreateCustomerRequestMsg.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doPublicCreateCustomerRequestMsgPath)));
+        Assert.assertTrue(Common.compareTextsFile(publicServerLog, publicCreateCustomerRequestMsgFile));
     }
 
     private void checkCreateOcsAccountCommand(){
@@ -216,7 +219,7 @@ public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hp
                 break;
             }
         }
-        Assert.assertFalse(isExist);
+        Assert.assertTrue(isExist);
     }
 
 }

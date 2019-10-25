@@ -578,6 +578,7 @@ public class OWSActions extends BaseWs {
                     break;
             }
         }
+
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());
         if (isValid) {
@@ -641,6 +642,89 @@ public class OWSActions extends BaseWs {
         request = new Xml(new File(path));
         request.setTextByXpath("//account//@accountNumber", customerNumber);
         request.setTextByTagName("serviceRef", subNo);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        setCustomerNo();
+        Log.info("Customer Number: " + customerNumber);
+        setOrderIdNo();
+        Log.info("Order Id: " + orderIdNo);
+        checkAsyncProcessIsCompleted(orderIdNo);
+    }
+
+    public Xml createOcsCustomerRequestAcceptUrl(String path, int numberOfAgreements, String ... params) {
+        request = new Xml(new File(path));
+        request.setTextByTagName(commonModMap);
+        request.setTextByTagName("billGroupId", "906");
+        request.setTextByTagName("password", "password1");
+        for (int i = 0; i < params.length; i++) {
+            switch (i) {
+                case 0:
+                    if (!params[i].isEmpty())
+                        request.setAttributeTextAllNodesByTagName("ord1:createOrder", "provisioningSystem", params[i]);
+                    break;
+                case 1:
+                    if (!params[i].isEmpty())
+                        request.setTextByTagName("serviceRef", params[i]);
+                    break;
+                case 2:
+                    if (!params[i].isEmpty())
+                        request.setAttributeTextAllNodesByTagName("account", "accountNumber", params[i]);
+                    break;
+                case 3:
+                    if (!params[i].isEmpty())
+                        request.setTextByXpath("//createOrder//@type", params[i]);
+                    break;
+            }
+        }
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        String agreementSigningUrl = response.getTextByTagName("URL");
+        String correlation = response.getTextByXpath("//createOrderResponse//@correlationId");
+        AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
+        AgreementWrapperPage.getInstance().signAgreementViaUI(numberOfAgreements);
+
+        request.setTextByXpath("//createOrder//@correlationId", correlation);
+        request.setTextByXpath("//verification//@termsAndConditionsAccepted", "true");
+        request.setTextByXpath("//verification//@acceptAgreement", "true");
+        Log.info("Request: " + request.toString());
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        setCustomerNo();
+        Log.info("Account number:" + customerNo);
+        setOrderIdNo();
+        Log.info("OrderId number:" + orderIdNo);
+        setUsername();
+        setPassword();
+        setFirstName();
+        setLastName();
+        setFullName();
+        checkAsyncProcessIsCompleted(orderIdNo);
+        return response;
+    }
+
+    public void upgradeOrderWithAcceptUrl(String path, String customerNumber, String subNo, int numberOfAgreements) {
+        request = new Xml(new File(path));
+        request.setTextByXpath("//account//@accountNumber", customerNumber);
+        request.setTextByTagName("serviceRef", subNo);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        String agreementSigningUrl = response.getTextByTagName("URL");
+        String correlation = response.getTextByXpath("//createOrderResponse//@correlationId");
+        AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
+        AgreementWrapperPage.getInstance().signAgreementViaUI(numberOfAgreements);
+
+        request.setTextByXpath("//createOrder//@correlationId", correlation);
+        request.setTextByXpath("//verification//@termsAndConditionsAccepted", "true");
+        request.setTextByXpath("//verification//@acceptAgreement", "true");
+        Log.info("Request: " + request.toString());
 
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());

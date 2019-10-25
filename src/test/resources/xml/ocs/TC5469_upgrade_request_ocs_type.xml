@@ -1,0 +1,36 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ord1:createOrder type="UPGRADE" provisioningSystem="OCS" xsi:schemaLocation="http://order.telco.hsntech.com ShopFront.xsd" xmlns:ord1="http://order.telco.hsntech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <account accountNumber="$accountNumber$" type="RESIDENTIAL">
+            </account>
+            <verification runCreditCheck="false" termsAndConditionsAccepted="true" refundableDepositAccepted="false" acceptAgreement="true">
+                <interconnect>
+                    <param name="PAYASYOUGO"/>
+                </interconnect>
+            </verification>
+            <orderDetail orderRef="12345" ipAddress="160.206.234.22" salesChannel="Onlines" externalSystemID="COCO" devicePrint="DEVICEPRINT-AA" paymentMethod="CARD">
+                <dateTime>2011-06-10T16:44:31.0Z</dateTime>
+                <orderItem id="1" dealSKU="DEAL-100">
+                    <serviceRef reference="Upgrade Mobile">$MPN$</serviceRef>
+                    <tariff productCode="FC36-1000-100">
+                        <deliveryMethod>INHAND</deliveryMethod>
+                    </tariff>
+                    <device productCode="SIM-ONLY">
+                        <deliveryMethod>DELIVER</deliveryMethod>
+                    </device>
+                    <discBundle productCode="00750-SB-B" bundleGroup="SB-GRP-B" billCapNotifications="false">
+                        <deliveryMethod>INHAND</deliveryMethod>
+                    </discBundle>
+                </orderItem>
+                <paymentRequest>
+                    <cardName>CardName</cardName>
+                    <cardNumber>5105105105105100</cardNumber>
+                    <cardType>MC</cardType>
+                    <cardExpiryDate>1222</cardExpiryDate>
+                    <cvv>123</cvv>
+                </paymentRequest>
+            </orderDetail>
+        </ord1:createOrder>
+    </soapenv:Body>
+</soapenv:Envelope>

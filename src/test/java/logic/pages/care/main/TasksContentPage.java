@@ -86,6 +86,10 @@ public class TasksContentPage extends BasePage {
             public String getDateTimeByIndex(int index) {
                 return table.getCellValueByColumnNameAndRowIndex(index, "Date/Time");
             }
+
+            public List<List<String>> getAllValueOfEvents(){
+                return  table.getAllCellValue();
+            }
         }
 
         public static class DetailsPage extends TaskPage {
@@ -199,6 +203,15 @@ public class TasksContentPage extends BasePage {
 
             @FindBy(xpath = "//td[starts-with(normalize-space(text()),'Bill Style:')]/following-sibling::td[1]")
             WebElement lblBillStyle;
+
+            @FindBy(xpath = "//td[contains(text(),'Subscription Number 2:')]/following-sibling::td[1]")
+            WebElement lblSubscriptionNumber2;
+
+            @FindBy(xpath = "//td[contains(text(),'Master MPN:')]/following-sibling::td[1]")
+            WebElement lblMasterMpn;
+
+            @FindBy(xpath = "//td[contains(text(),'Root BUID:')]/following-sibling::td[1]")
+            WebElement lblRootBuid;
 
             @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Details')]/../../..//following-sibling::div[1]//table")
             WebElement detailTable;
@@ -388,6 +401,18 @@ public class TasksContentPage extends BasePage {
 
             public String getBillStyle(){
                 return getTextOfElement(lblBillStyle);
+            }
+
+            public String getSubscriptionNumber2() {
+                return getTextOfElement(lblSubscriptionNumber2);
+            }
+
+            public String getMasterMpn() {
+                return getTextOfElement(lblMasterMpn);
+            }
+
+            public String getRootBuid() {
+                return getTextOfElement(lblRootBuid);
             }
         }
     }

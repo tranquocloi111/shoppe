@@ -56,20 +56,20 @@ public class BaseTest {
     public void beforeMethod(Method m) throws MalformedURLException {
         test.set(extent.createTest(m.getName()));
 
-        switch (Config.getProp("browser")){
-            case "gc":
-                WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.chrome()));
-                break;
-            case "ff":
-                WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.firefox()));
-                break;
-            case "ie" :
-                WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.internetExplorer()));
-                break;
-        }
+//        switch (Config.getProp("browser")){
+//            case "gc":
+//                WdManager.set(WDFactory.remote(new URL("http://10.50.172.189:4444/wd/hub"), DesiredCapabilities.chrome()));
+//                break;
+//            case "ff":
+//                WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.firefox()));
+//                break;
+//            case "ie" :
+//                WdManager.set(WDFactory.remote(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.internetExplorer()));
+//                break;
+//        }
 
-        //WDFactory.getConfig().setDriverVersion("77");
-        //WdManager.set(WDFactory.initBrowser(Config.getProp("browser")));
+        WDFactory.getConfig().setDriverVersion("77");
+        WdManager.set(WDFactory.initBrowser(Config.getProp("browser")));
         WdManager.get().manage().window().maximize();
         WdManager.get().get(Config.getProp("careUrl"));
     }
@@ -356,6 +356,8 @@ public class BaseTest {
     protected void verifyOcsSubscriptionDetails(String ocsType, String ocsSubscriberKey, String ocsSubscriberAccountKey){
         SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         Assert.assertEquals(generalSectionPage.getProvisioningSystem(), String.format("%s ( %s )", ocsType, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT)));
+        //Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), "TMPAYM" + ocsSubscriberKey);
+        //Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), "TMPAYM" + ocsSubscriberAccountKey);
         Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), ocsSubscriberKey);
         Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), ocsSubscriberAccountKey);
     }

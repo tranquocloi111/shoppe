@@ -1,0 +1,33 @@
+﻿<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <S:Body xmlns:ns2="http://www.huawei.com/bme/cbsinterface/bcservices" xmlns:ns3="http://www.huawei.com/bme/cbsinterface/cbscommon" xmlns:ns4="http://www.huawei.com/bme/cbsinterface/bccommon">
+        <ns2:CreateCustomerRequestMsg>
+            <RequestHeader>
+                <ns3:Version>1</ns3:Version>
+                <ns3:MessageSeq>1</ns3:MessageSeq>
+                <ns3:OwnershipInfo>
+                    <ns3:BEID>1031</ns3:BEID>
+                </ns3:OwnershipInfo>
+                <ns3:AccessSecurity>
+                    <ns3:LoginSystemCode>123</ns3:LoginSystemCode>
+                    <ns3:Password>password</ns3:Password>
+                </ns3:AccessSecurity>
+            </RequestHeader>
+            <CreateCustomerRequest>
+                <ns2:RegisterCustKey>TMPAYM$custKey$C</ns2:RegisterCustKey>
+                <ns2:Customer>
+                    <ns2:CustKey>TMPAYM$custKey$C</ns2:CustKey>
+                </ns2:Customer>
+                <ns2:DFTAccount>
+                    <ns2:PayRelationKey>TMPAYM57735788P</ns2:PayRelationKey>
+                    <ns2:AcctKey>TMPAYM57735788A</ns2:AcctKey>
+                    <ns2:AcctInfo>
+                        <ns4:BillCycleType>02</ns4:BillCycleType>
+                        <ns4:PaymentType>1</ns4:PaymentType>
+                    </ns2:AcctInfo>
+                </ns2:DFTAccount>
+                <ns2:EffectiveTime>$effectiveTime$145526</ns2:EffectiveTime>
+            </CreateCustomerRequest>
+        </ns2:CreateCustomerRequestMsg>
+    </S:Body>
+</S:Envelope>

@@ -12,15 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FTPHelper {
-    FTP ftp;
+    static FTP ftp;
 
     public static FTPHelper getInstance() {
+        ftp = new FTP(Config.getProp("unixServer"), 22, Config.getProp("unixUsername"), Config.getProp("unixPassword"));
+        ftp.setUpConnection();
         return new FTPHelper();
     }
 
-    public FTPHelper() {
-        ftp = new FTP(Config.getProp("unixServer"), 22, Config.getProp("unixUsername"), Config.getProp("unixPassword"));
+    public static FTPHelper getGFInstance() {
+        ftp = new FTP(Config.getProp("GlassFishServer"), 22, Config.getProp("GFSUsername"), Config.getProp("GFSPassword"));
         ftp.setUpConnection();
+        return new FTPHelper();
     }
 
     public void upLoadFromDisk(String localPathFile, String ftpFileName) {
