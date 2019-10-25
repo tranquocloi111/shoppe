@@ -222,18 +222,21 @@ public class BillingActions extends OracleDB {
         return null;
     }
 
-    public int findDiscountBundlesByConditionByPartitionIdRef(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String status) {
+    public static int findDiscountBundlesByConditionByPartitionIdRef(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String status) {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.partitionIdRef.equalsIgnoreCase(partitionIdRef) && x.status.equalsIgnoreCase(status)).count()));
     }
 
-    public int findDiscountBundlesByConditionByBundleCode(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String bundleCode, String status) {
+    public static int findDiscountBundlesByConditionByBundleCode(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String bundleCode, String status) {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.bundleCode.equalsIgnoreCase(bundleCode) && x.status.equalsIgnoreCase(status)).count()));
+    }
+    public static int findDiscountBundlesByConditionByBundleCode(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String bundleCode, String partitionIdRef, String status) {
+        return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate)&& x.partitionIdRef.equalsIgnoreCase(partitionIdRef)  && x.bundleCode.equalsIgnoreCase(bundleCode) && x.status.equalsIgnoreCase(status)).count()));
     }
 
     public int findNewDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String bundleCode, String status) {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.partitionIdRef.equalsIgnoreCase(partitionIdRef) && x.bundleCode.equalsIgnoreCase(bundleCode) && x.status.equalsIgnoreCase(status)).count()));
     }
-    public int findNewDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String status) {
+    public static int findNewDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String status) {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.partitionIdRef.equalsIgnoreCase(partitionIdRef) && x.status.equalsIgnoreCase(status)).count()));
     }
     public int findDeletedDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, Date startDate, Date endDate, int deleteHitransactionID, Date deleteDate, String capType, String partitionIdRef, String bundleCode) {

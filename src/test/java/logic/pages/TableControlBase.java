@@ -3,6 +3,7 @@ package logic.pages;
 //import javafx.util.Pair;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+
 import java.util.*;
 
 public class TableControlBase extends BasePage {
@@ -17,7 +18,7 @@ public class TableControlBase extends BasePage {
     }
 
     public int getRowsCountWithOutBoxRow() {
-        return element.findElements(By.xpath("//tr[contains(@class,'informationBoxRow')]")).size();
+        return element.findElements(By.xpath(".//tr")).size();
     }
 
     public WebElement getRecordByIndex(int index) {
@@ -245,7 +246,7 @@ public class TableControlBase extends BasePage {
         for (WebElement row : header) {
             List<WebElement> cols = row.findElements(By.xpath("td"));
             for (WebElement col : cols) {
-                String str = col.getText().toString();
+                String str = col.getText();
                 if (str.equals(columnName)) {
                     columnIndex = cols.indexOf(col);
                     break;
@@ -273,7 +274,6 @@ public class TableControlBase extends BasePage {
     private WebElement getRowByIndex(int index) {
         String xPath = String.format("./tbody/tr[%d]", index);
         try {
-
             return element.findElement(By.xpath(xPath));
         } catch (Exception e) {
             return null;
@@ -347,7 +347,6 @@ public class TableControlBase extends BasePage {
         }
         return column;
     }
-
     public List<WebElement> findRowsByColumns(AbstractMap.SimpleEntry<String, String> ... pairs) {
         int columnIndex = 0;
         boolean flag = false;
@@ -502,6 +501,18 @@ public class TableControlBase extends BasePage {
         return column;
     }
 
+    public String getCellByAnotherCellInSameRow(String columnName, String cellValue) {
+        // i = 1: Header
+        try {
+            WebElement row = getRowByCellValue(cellValue);
+            int columnIndex = getColumnIndex(columnName);
+            String xpath = String.format(".//following-sibling::td[%d]", columnIndex);
+            return row.findElement(By.xpath(xpath)).getText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List<List<String>> getAllCellValueWithoutColumName() {
         List<List<String>> hashMapList = new ArrayList<>();
         List<WebElement> body = getBody();
@@ -515,4 +526,28 @@ public class TableControlBase extends BasePage {
         }
         return hashMapList;
     }
+
+    public List<WebElement> getAllColumnsByColumnName(String columnName) {
+        int columnIndex = 0;
+        WebElement elm = null;
+        List<WebElement> column = new ArrayList<>();
+        List<WebElement> body = getBody();
+        columnIndex = getColumnIndex(columnName);
+        for (int i=1;i<body.size();i++) {
+            column.add(body.get(i).findElements(By.tagName("td")).get(columnIndex));
+        }
+        return column;
+    }
+    public List<WebElement> getRowSByColumnNameAndCellValue(String columnName, String cellValue) {
+        List<WebElement> body = getBody();
+        List<WebElement> el= new ArrayList<>();
+        int columnIndex = getColumnIndex(columnName);
+        for (WebElement element : body) {
+            if (element.findElements(By.tagName("td")).get(columnIndex).getText().equalsIgnoreCase(cellValue)) {
+                el.add(element);
+            }
+        }
+        return el;
+    }
+
 }

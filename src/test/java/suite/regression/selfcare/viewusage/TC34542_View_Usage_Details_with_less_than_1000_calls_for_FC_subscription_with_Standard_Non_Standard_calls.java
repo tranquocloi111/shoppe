@@ -80,7 +80,7 @@ public class TC34542_View_Usage_Details_with_less_than_1000_calls_for_FC_subscri
         ServiceOrdersPage.ChangeBundle.getInstance().selectBundlesByName("£10 safety buffer");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
 
-        test.get().info("Step 10:Select recuring bundle to add immdediately");
+        test.get().info("Step 10:Select recurring bundle to add immediately");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
         ServiceOrdersContentPage.getInstance().clickReturnToCustomer();
 

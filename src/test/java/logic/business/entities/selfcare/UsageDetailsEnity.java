@@ -28,6 +28,15 @@ public class UsageDetailsEnity  {
         event.put("Amount", amount);
         return event;
     }
+    public static  HashMap<String,String> getBundleChargesEnity(  Date dateFrom, String description,String amount)
+    {
+        HashMap<String, String> event = new HashMap<String, String>();
+        event.put("Description", description);
+        event.put("Date From",Parser.parseDateFormate(dateFrom,TimeStamp.DATE_FORMAT_IN_PDF));
+        event.put("Date To", "");
+        event.put("Amount", amount);
+        return event;
+    }
     public static HashMap<String,String> getUsageChargesEnity(String callType,String quantity, String cost,String amount)
     {
         HashMap<String, String> event = new HashMap<String, String>();

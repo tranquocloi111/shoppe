@@ -76,7 +76,10 @@ public class MyPersonalInformationPage extends BasePage {
             WebElement savePhoneUserNameBtn;
 
             @FindBy(xpath = "//td[contains(text(),'Monthly bundles')]//ancestor::tr[1]//following-sibling::tr[1]//td[@class='fieldvalue']")
-            WebElement secondMontlyBundle;
+            WebElement secondMonthlyBundle;
+
+            @FindBy(xpath = "//td[contains(text(),'Monthly bundles')]//ancestor::tr[1]//following-sibling::tr[2]//td[@class='fieldvalue']")
+            WebElement thirdMonthlyBundle;
 
             @FindBy(xpath = "//a[@id='viewAgreementButton']")
             WebElement viewAgreementButton;
@@ -229,9 +232,15 @@ public class MyPersonalInformationPage extends BasePage {
             public String getMonthlyBundles() {
                 return getTextOfElement(validTableControlBase().findCellByLabelText("Monthly bundles"));
             }
+            public String getOneOffBundles() {
+                return getTextOfElement(validTableControlBase().findCellByLabelText("One-off bundles"));
+            }
 
             public String getSecondMonthlyBundles() {
-                return getTextOfElement(secondMontlyBundle);
+                return getTextOfElement(secondMonthlyBundle);
+            }
+            public String getThirdMonthlyBundles() {
+                return getTextOfElement(thirdMonthlyBundle);
             }
 
             public String getRoaming() {
@@ -430,6 +439,14 @@ public class MyPersonalInformationPage extends BasePage {
         public void clickViewMyUsageSinceMyLastBillLink() {
             clickLinkByText("View my usage since my last bill");
         }
+
+        @FindBy(xpath = "//label[normalize-space(text())='Safety buffer']//ancestor::tr[1]//following-sibling::tr[1]")
+        WebElement secondMonthlyBundle;
+        public String getSecondSafetyBuffer()
+        {
+            return getTextOfElement(secondMonthlyBundle).substring(0,getTextOfElement(secondMonthlyBundle).indexOf("Change my"));
+        }
+
     }
 
     public static class myAlertSection extends MyPersonalInformationPage {
@@ -472,6 +489,7 @@ public class MyPersonalInformationPage extends BasePage {
         public void clickAlertMessageByText(String text) {
             click(tableControlBase.getLinkByText(text));
         }
+
 
 
         public String getAlertMessagebForOverDuePayment() {
@@ -522,5 +540,6 @@ public class MyPersonalInformationPage extends BasePage {
         public void clickViewDetailsOfMyCLubCardPoints() {
             tableControlBase.clickLinkByText("View details of my Clubcard points");
         }
+
     }
 }

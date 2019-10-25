@@ -659,6 +659,13 @@ public class OWSActions extends BaseWs {
     public void createAnOnlinesCCCustomerWithFCNoBundleButHasSimOnly() {
         createGeneralCustomerOrder("src\\test\\resources\\xml\\ows\\online_CC_customer_with_FC_no_bundle_and_simonly.xml");
     }
+     public Xml submitRequestAndReturnRespond(Xml request) {
+        return Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+    }
+public Xml submitRequestAndReturnRespond(String filePath) {
+        request = new Xml(new File(filePath));
+        return Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+    }
     //endregion
 
 }

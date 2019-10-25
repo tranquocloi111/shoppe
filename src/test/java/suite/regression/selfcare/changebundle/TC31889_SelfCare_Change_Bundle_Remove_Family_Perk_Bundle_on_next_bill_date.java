@@ -98,7 +98,7 @@ public class TC31889_SelfCare_Change_Bundle_Remove_Family_Perk_Bundle_on_next_bi
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(sub + " Mobile1 - NC");
         discountGroupCodeOfMobileRef1 = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
-//
+
         List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCodeOfMobileRef1);
         Assert.assertEquals(9, discountBundles.size());
 
@@ -155,7 +155,7 @@ public class TC31889_SelfCare_Change_Bundle_Remove_Family_Perk_Bundle_on_next_bi
 
         test.get().info("Step 24 : verify discount bundle rows have not marked as deleted");
         expectedStatus = "Active";
-        verifyDiscountBundleRowsHaveBeenMarkAsDeleted();
+        verifyDiscountBundleRowsHaveNotBeenMarkAsDeleted();
 
         test.get().info("Step 25 : submit the do refill BC Job");
         BaseTest.submitDoRefillBCJob();
@@ -179,7 +179,7 @@ public class TC31889_SelfCare_Change_Bundle_Remove_Family_Perk_Bundle_on_next_bi
 
         test.get().info("Step 31 : view invoice PDF");
         InvoicesContentPage.InvoiceDetailsContentPage.getInstance().clickViewPDFBtn();
-        String fileName = String.format("%s_%s_%s.pdf", "31889", RandomCharacter.getRandomNumericString(9), "15140");
+        String fileName = String.format("%s_%s_%s.pdf", "TC_31889",customerNumber, RandomCharacter.getRandomNumericString(9));
         InvoicesContentPage.InvoiceDetailsContentPage.getInstance().savePDFFile(fileName);
 
         test.get().info("Step 32 : verify invoice in not charging next billing period for Family Perk");
@@ -193,7 +193,7 @@ public class TC31889_SelfCare_Change_Bundle_Remove_Family_Perk_Bundle_on_next_bi
             if (pdfList.get(i).contains(adjustmentsChargesCredits))
                 flag = true;
         }
-        Assert.assertFalse(false);
+        Assert.assertFalse(flag);
     }
 
     private void verifyChangeBundleSODetailsAreCorrect() {
@@ -222,6 +222,18 @@ public class TC31889_SelfCare_Change_Bundle_Remove_Family_Perk_Bundle_on_next_bi
                 Assert.assertEquals(expectedStatus, rs.getString(0));
                 Assert.assertEquals(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT_IN_PDF), rs.getString(1));
                 Assert.assertEquals(serviceOrderId, rs.getString(2));
+            }
+        } catch (Exception ex) {
+        }
+    }
+
+    private void verifyDiscountBundleRowsHaveNotBeenMarkAsDeleted() {
+        String sql = String.format("select count(*) from discountbundle where discgrpcode = %s and status = '%s'", discountGroupCodeOfMobileRef1, expectedStatus);
+        try {
+
+            ResultSet rs = OracleDB.SetToNonOEDatabase().executeQuery(sql);
+            while (rs.next()) {
+            Assert.assertEquals(rs.getString(0),7);
             }
         } catch (Exception ex) {
         }
