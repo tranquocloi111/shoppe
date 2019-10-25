@@ -11,8 +11,9 @@ import org.openqa.selenium.support.FindBy;
  */
 public class ChangeSafetyBufferPage extends ServiceOrdersPage {
 
-    public static class ChangeSafetyBuffer extends ChangeSafetyBufferPage{
+    public static class ChangeSafetyBuffer extends ChangeSafetyBufferPage {
         private static ChangeSafetyBuffer instance = new ChangeSafetyBuffer();
+
         public static ChangeSafetyBuffer getInstance() {
             return new ChangeSafetyBuffer();
         }
@@ -34,18 +35,18 @@ public class ChangeSafetyBufferPage extends ServiceOrdersPage {
             selectByVisibleText(optWhenToApplyChangeText, value);
         }
 
-        public void selectBundlesByName(String[] names, String value){
-            for (String name : names){
+        public void selectBundlesByName(String[] names, String value) {
+            for (String name : names) {
                 WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", name)));
                 WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
                 if (name.equalsIgnoreCase(value)) {
-                        click(checkbox);
+                    click(checkbox);
                 }
             }
         }
 
-        public void unSelectBundlesByName(String[] names, String value){
-            for (String name : names){
+        public void unSelectBundlesByName(String[] names, String value) {
+            for (String name : names) {
                 WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", name)));
                 WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
                 if (name.equalsIgnoreCase(value)) {
@@ -56,6 +57,18 @@ public class ChangeSafetyBufferPage extends ServiceOrdersPage {
             }
         }
 
+
+        public void selectBundlesByName(String value) {
+            WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", value)));
+            WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
+            if (value.equalsIgnoreCase(value)) {
+                click(checkbox);
+            }
+        }
+        public String getlblCurrentOverageCapAmount()
+        {
+            return getTextOfElement(lblCurrentOverageCapAmount);
+        }
     }
 
 }

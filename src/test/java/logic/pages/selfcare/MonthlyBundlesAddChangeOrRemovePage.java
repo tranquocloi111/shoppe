@@ -143,7 +143,7 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
     }
 
     public void selectBundlesByName(String... value) {
-        SelfCareTestBase.page().selectBundlesByName(msgBoxDivMonthlyBundles, value);
+        SelfCareTestBase.page().selectBundlesByName(value);
     }
 
     public void unSelectBundlesByName(String... value) {
@@ -168,27 +168,27 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
 
     public String getMobilePhoneNumber() {
         table = new TableControlBase(infoTable);
-        return getTextOfElement(table.findCellByLabelText("Mobile phone number"));
+        return getTextOfElement(table.getCellByTagLabel("Mobile phone number"));
     }
 
     public String getTariff() {
         table = new TableControlBase(infoTable);
-        return getTextOfElement(table.findCellByLabelText("Tariff"));
+        return getTextOfElement(table.getCellByTagLabel("Tariff"));
     }
 
     public String getMonthlyAllowance() {
         table = new TableControlBase(infoTable);
-        return getTextOfElement(table.findCellByLabelText("Monthly allowance"));
+        return getTextOfElement(table.getCellByTagLabel("Monthly allowance"));
     }
 
     public String getMonthlySafetyBuffer() {
         table = new TableControlBase(infoTable);
-        return getTextOfElement(table.findCellByLabelText("Monthly safety buffer"));
+        return getTextOfElement(table.getCellByTagLabel("Monthly safety buffer"));
     }
 
     public String getMonthAllowanceExpiryDate() {
         table = new TableControlBase(infoTable);
-        return getTextOfElement(table.findCellByLabelText("This month’s allowance expiry date"));
+        return getTextOfElement(table.getCellByTagLabel("This month’s allowance expiry date"));
     }
 
     public String getMonthlyDataBundleDescriptionByValue(String value) {
@@ -220,6 +220,20 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
     public String getTotalPrice() {
         return getDriver().findElement(By.tagName("body")).findElement(By.id("BundleGrp0_Subtotal")).getText().trim();
     }
+    @FindBy(xpath = "//label[normalize-space(text())='Tariff charge']//ancestor::td[1]//following-sibling::td")
+    WebElement tariffCharge;
+    @FindBy(xpath = "//b[normalize-space(text())='Total monthly charge']//ancestor::td[1]//following-sibling::td")
+    WebElement totalMonthlyCharge;
+
+    public String getTariffCharge()
+    {
+        return getTextOfElement(tariffCharge);
+    }
+    public String getTotalMonthlyCharge()
+    {
+        return getTextOfElement(totalMonthlyCharge);
+    }
+
 
 }
 

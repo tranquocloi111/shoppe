@@ -59,22 +59,17 @@ public class TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscri
         ServiceOrdersPage.ChangeBundle.getInstance().clickNextButton();
 
         test.get().info("Step 5: open the search tariff window");
-        String title = ServiceOrdersContentPage.getInstance().getTitle();
         ServiceOrdersContentPage.getInstance().clicknewTariffSearchBtn();
-        ServiceOrdersContentPage.getInstance().switchWindow("Tariff Search", false);
 
-        test.get().info("Step 6: Search tariff by specified criteria");
+        test.get().info("Step 6: Build Search tariff by specified criteria Entity");
         TariffSearchCriteriaEnity tariffSearchCriteriaEnity = new TariffSearchCriteriaEnity();
         tariffSearchCriteriaEnity.setBillingType("Flexible Cap");
         tariffSearchCriteriaEnity.setStaffTariff("No");
         tariffSearchCriteriaEnity.setMonthlyRental("10-20");
         tariffSearchCriteriaEnity.setContractPeriod("12");
-        TariffSearchPage.getInstance().searchTariffByCriteria(tariffSearchCriteriaEnity);
-
 
         test.get().info("Step 7: Select Tariff by code then click next button");
-        TariffSearchPage.getInstance().clickTariffByTariffCode("FC12-2000-750");
-        ServiceOrdersContentPage.getInstance().switchWindow(title, false);
+        TariffSearchPage.getInstance().searchAndSelectTariffByCode(tariffSearchCriteriaEnity, "FC12-2000-750");
 
         test.get().info("Step 8: click next button on change tariff wizad");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
@@ -84,7 +79,7 @@ public class TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscri
         ServiceOrdersPage.ChangeBundle.getInstance().selectBundlesByName("£10 safety buffer");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
 
-        test.get().info("Step 10:Select recuring bundle to add immdediately");
+        test.get().info("Step 10:Select recurring bundle to add immediately");
         ServiceOrdersContentPage.getInstance().clickNextBtn();
         ServiceOrdersContentPage.getInstance().clickReturnToCustomer();
 

@@ -3,9 +3,9 @@ package logic.utils;
 import framework.config.Config;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Hours;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -17,11 +17,13 @@ public class TimeStamp {
     public final static String DATE_FORMAT3 = "dd-MMM-yy";
     public final static String DATE_FORMAT4 = "dd/MM/yyyy";
     public final static String DATE_FORMAT5 = "yyyyMMdd HH mm";
+    public final static String DATE_FORMAT6 = "dd/MM";
     public final static String DATE_FORMAT_IN_PDF = "dd/MM/yyyy";
     public final static String DATE_FORMAT_IN_PDF2 = "dd-MMM-yyyy";
     public final static String DATE_FORMAT_IN_PDF3 = "MM/yyyy";
     public final static String DATE_FORMAT_XML = "yyyy-MM-dd";
     public final static String DATE_TIME_FORMAT = "dd/MM/yyyy hh:mma";
+    public final static String DATE_FORMAT_XINVOICE = "dd/MMM/yyyy";
 
 
     public static Date Today() {
@@ -207,7 +209,7 @@ public class TimeStamp {
         return zonedDateTime.getOffset().toString();
     }
 
-    public static long todayPlus1YearMinus1DayMinusToday() {
+    public static long todayPlus1MonthMinus1DayMinusToday() {
         LocalDate day1 = LocalDate.now();
         LocalDate day2 = LocalDate.now().plusMonths(1).minusDays(1);
         return ChronoUnit.DAYS.between(day2, day1);
@@ -318,6 +320,7 @@ public class TimeStamp {
         DateTime now = new DateTime(timeZone);
         return now;
     }
+
     public static String TodayMinus10DatsReturnFullFormat() {
         LocalDateTime now = LocalDateTime.now().minusDays(10);
 
@@ -340,5 +343,41 @@ public class TimeStamp {
     public static Date TodayPlus1MonthMinus15Day() {
         return Date.valueOf(LocalDate.now().plusMonths(1).minusDays(15));
     }
+    public static long todayPlus1MonthMinusTodayPlus1Day() {
+        LocalDate day1 = LocalDate.now().plusDays(1);
+        LocalDate day2 = LocalDate.now().plusMonths(1);
+        return ChronoUnit.DAYS.between(day1, day2);
+    }
 
+    public static String getDateTimeByTimeZone() {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_FORMAT);
+
+        java.util.Date date = new java.util.Date();
+        DateTime currentDateTime = new DateTime(date);
+        DateTimeZone dtZone = DateTimeZone.forID(Config.getProp("timeZoneId"));
+        DateTime dateTimeByTimeZone = currentDateTime.withZone(dtZone);
+        java.util.Date dateInAmerica = dateTimeByTimeZone.toLocalDateTime().toDate(); //Convert to LocalDateTime first
+
+        System.out.println("dateInAmerica (Formatter) : " + formatter.format(dateInAmerica));
+
+        return formatter.format(dateInAmerica);
+    }
+    public static Date TodayPlus2MonthMinus16Days() {
+        return Date.valueOf(LocalDate.now().plusMonths(2).minusDays(16));
+    }
+    public static long TodayPlus2MonthMinus16DaysMinusToday() {
+        LocalDate day1 = LocalDate.now();
+        LocalDate day2 =LocalDate.now().plusMonths(2).minusDays(16);
+        return ChronoUnit.DAYS.between(day1, day2);
+    }
+    public static Date TodayPlus1MonthMinus16Day() {
+        return Date.valueOf(LocalDate.now().plusMonths(1).minusDays(16));
+    }
+
+    public static Date TodayPlus3MonthsMinus16Days() {
+        return Date.valueOf(LocalDate.now().plusMonths(3).minusDays(16));
+    }
+    public static Date TodayPlus2MonthMinus15Days() {
+        return Date.valueOf(LocalDate.now().plusMonths(2).minusDays(15));
+    }
 }

@@ -72,7 +72,7 @@ public class EventEntity {
         return event;
     }
 
-    public static HashMap<String, String> dataForEventChangePassword(String description, String status, String username) {
+    public static HashMap<String, String> dataForEventServiceOrder(String description, String status, String username) {
         HashMap<String, String> event = new HashMap<String, String>();
         event.put("Description", description);
         event.put("Status", status);

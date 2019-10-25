@@ -98,7 +98,7 @@ public class TC31961_Apply_the_change_from_my_next_bill_date extends BaseTest {
 
         String serviceOrderID = ServiceOrdersContentPage.getInstance().getServiceOrderidByType("Change Bundle");
 
-        test.get().info("Step 16: update th PDate and BillDate for provision wait SO");
+        test.get().info("Step 16: update the PDate and BillDate for provision wait SO");
         BillingActions.getInstance().updateThePDateAndBillDateForChangeBundle(serviceOrderID);
 
         test.get().info("Step 17: submit the do provision services batch job");

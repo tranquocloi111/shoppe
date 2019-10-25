@@ -230,4 +230,12 @@ public class ServiceOrderEntity {
         so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
         return so;
     }
+
+    public static HashMap<String, String> dataServiceOrder(String status, String type) {
+        HashMap<String, String> so = new HashMap<String, String>();
+        so.put("Status", status);
+        so.put("Type", type);
+        so.put("Date", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        return so;
+    }
 }

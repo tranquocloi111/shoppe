@@ -225,8 +225,6 @@ public class OtherProductEntiy {
         otherProduct.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
         otherProduct.put("End Date", "");
         otherProduct.put("Charge", charge);
-
-
         return otherProduct;
     }
     public static HashMap<String, String> dataForAnEndedOtherBundleProduct(String productCode, String type, String description,String charge ,Date newStartDate) {
@@ -238,6 +236,26 @@ public class OtherProductEntiy {
         otherProduct.put("End Date", Parser.parseDateFormate(TimeStamp.TodayMinus1Day(), TimeStamp.DATE_FORMAT));
         otherProduct.put("Charge", charge);
 
+
+        return otherProduct;
+    }
+    public static HashMap<String, String> dataForAnOtherBundleProduct(String productCode, String type) {
+        HashMap<String, String> otherProduct = new HashMap<String, String>();
+        otherProduct.put("Product Code", productCode);
+        otherProduct.put("Type", type);
+        otherProduct.put("End Date", Parser.parseDateFormate(TimeStamp.TodayMinus1Day(), TimeStamp.DATE_FORMAT));
+
+
+
+        return otherProduct;
+    }
+    public static HashMap<String, String> dataForAnEndedOtherBundleProduct(String productCode, String type, String description ,Date newStartDate) {
+        HashMap<String, String> otherProduct = new HashMap<String, String>();
+        otherProduct.put("Product Code", productCode);
+        otherProduct.put("Type", type);
+        otherProduct.put("Description", description);
+        otherProduct.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
+        otherProduct.put("End Date", Parser.parseDateFormate(TimeStamp.TodayMinus1Day(), TimeStamp.DATE_FORMAT));
 
         return otherProduct;
     }
@@ -261,6 +279,55 @@ public class OtherProductEntiy {
         otherProduct.put("Charge", charge);
         return otherProduct;
     }
+    public static HashMap<String, String> dataForOtherBundleProduct(String productCode, String type, Date endDate) {
+        HashMap<String, String> otherProduct = new HashMap<String, String>();
+        otherProduct.put("Product Code", productCode);
+        otherProduct.put("Type", type);
+        otherProduct.put("End Date",Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT));
+        return otherProduct;
+    }
 
+
+    public static HashMap<String, String> dataForOtherBundleProductNoEndDate(String productCode, String type, Date newStartDate) {
+        HashMap<String, String> otherProduct = new HashMap<String, String>();
+        otherProduct.put("Product Code", productCode);
+        otherProduct.put("Type", type);
+        otherProduct.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
+        otherProduct.put("End Date", "");
+        return otherProduct;
+    }
+    public static HashMap<String, String> dataForOtherBundleProductNoStartDate(String productCode, String type) {
+        HashMap<String, String> otherProduct = new HashMap<String, String>();
+        otherProduct.put("Product Code", productCode);
+        otherProduct.put("Type", type);
+        otherProduct.put("End Date", "");
+        return otherProduct;
+    }
+    public static HashMap<String, String> dataForOtherBundleProduct(String productCode, String type, String description) {
+        HashMap<String, String> otherProduct = new HashMap<String, String>();
+        otherProduct.put("Product Code", productCode);
+        otherProduct.put("Type", type);
+        otherProduct.put("Description", description);
+        otherProduct.put("End Date","");
+
+        return otherProduct;
+    }
+    public static HashMap<String, String> dataForOtherBundleProductWithStartDate(String productCode, String type, Date startDate) {
+        HashMap<String, String> otherProduct = new HashMap<String, String>();
+        otherProduct.put("Product Code", productCode);
+        otherProduct.put("Type", type);
+        otherProduct.put("Start Date",Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT));
+        return otherProduct;
+    }
+    public static HashMap<String, String> dataForAnOtherBundleProduct(String productCode, String type, String description, String charge , Date newStartDate,Date endDate) {
+        HashMap<String, String> otherProduct = new HashMap<String, String>();
+        otherProduct.put("Product Code", productCode);
+        otherProduct.put("Type", type);
+        otherProduct.put("Description", description);
+        otherProduct.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
+        otherProduct.put("End Date",Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT));
+        otherProduct.put("Charge", charge);
+        return otherProduct;
+    }
 
 }

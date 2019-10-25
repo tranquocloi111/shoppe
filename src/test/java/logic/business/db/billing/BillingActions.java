@@ -2,7 +2,6 @@ package logic.business.db.billing;
 
 import framework.utils.Log;
 import framework.utils.RandomCharacter;
-//import javafx.util.Pair;
 import logic.business.db.OracleDB;
 import logic.business.entities.DiscountBundleEntity;
 import logic.business.entities.PaymentGatewayEnity;
@@ -10,6 +9,7 @@ import logic.business.entities.PaymentGatewayRespondEnity;
 import logic.business.helper.RemoteJobHelper;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -21,6 +21,8 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+//import javafx.util.Pair;
 
 public class BillingActions extends OracleDB {
 
@@ -220,18 +222,21 @@ public class BillingActions extends OracleDB {
         return null;
     }
 
-    public int findDiscountBundlesByConditionByPartitionIdRef(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String status) {
+    public static int findDiscountBundlesByConditionByPartitionIdRef(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String status) {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.partitionIdRef.equalsIgnoreCase(partitionIdRef) && x.status.equalsIgnoreCase(status)).count()));
     }
 
-    public int findDiscountBundlesByConditionByBundleCode(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String bundleCode, String status) {
+    public static int findDiscountBundlesByConditionByBundleCode(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String bundleCode, String status) {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.bundleCode.equalsIgnoreCase(bundleCode) && x.status.equalsIgnoreCase(status)).count()));
+    }
+    public static int findDiscountBundlesByConditionByBundleCode(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String bundleCode, String partitionIdRef, String status) {
+        return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate)&& x.partitionIdRef.equalsIgnoreCase(partitionIdRef)  && x.bundleCode.equalsIgnoreCase(bundleCode) && x.status.equalsIgnoreCase(status)).count()));
     }
 
     public int findNewDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String bundleCode, String status) {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.partitionIdRef.equalsIgnoreCase(partitionIdRef) && x.bundleCode.equalsIgnoreCase(bundleCode) && x.status.equalsIgnoreCase(status)).count()));
     }
-    public int findNewDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String status) {
+    public static int findNewDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, String capType, Date startDate, Date endDate, String partitionIdRef, String status) {
         return Integer.parseInt(String.valueOf(allDiscountBundles.stream().filter(x -> x.capType.equalsIgnoreCase(capType) && x.startDate.equals(startDate) && x.endDate.equals(endDate) && x.partitionIdRef.equalsIgnoreCase(partitionIdRef) && x.status.equalsIgnoreCase(status)).count()));
     }
     public int findDeletedDiscountBundlesByCondition(List<DiscountBundleEntity> allDiscountBundles, Date startDate, Date endDate, int deleteHitransactionID, Date deleteDate, String capType, String partitionIdRef, String bundleCode) {
@@ -357,6 +362,31 @@ public class BillingActions extends OracleDB {
     public void generateAndLoadCRDFile(HashMap<Integer, Object> parameters){
         OracleDB.SetToNonOEDatabase().executeNonQuery("pkg_loadfeedtmpp.generatecdrfile'", parameters);
         RemoteJobHelper.getInstance().waitLoadCDRJobComplete();
+    }
+
+    public static void updateInvoiceIssueDate(Date newdateissue, String documentnbr) {
+        try {
+            HashMap<Integer, Object> formParams = new HashMap<Integer, Object>();
+            formParams.put(1, newdateissue);
+            String sql = String.format("update invoice set dateissue=trunc(:dateissue) where documentnbr='%s'", documentnbr);
+
+            OracleDB.SetToNonOEDatabase().executeNonQuery(sql, formParams);
+        } catch (Exception ex) {
+            Log.error(ex.getMessage());
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+    public String getInvoiceIdByInvoiceNumber(String invoiceNumber) {
+        try {
+            String sql = String.format("select invoiceid from invoice where documentnbr='%s'", invoiceNumber);
+            ResultSet rs = OracleDB.SetToNonOEDatabase().executeQuery(sql);
+            return String.valueOf(OracleDB.getValueOfResultSet(rs, "invoiceid"));
+        } catch (Exception ex) {
+            Log.error(ex.getMessage());
+        }
+        return null;
     }
 }
 

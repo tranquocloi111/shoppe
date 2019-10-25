@@ -500,7 +500,7 @@ public class OWSActions extends BaseWs {
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 
-    public void createAnOnlinesDDCustomerWithFC2BundlesAndNK2720(){
+    public void createADDCustomerWithFC2BundlesAndNK2720() {
         createGeneralCustomerOrder(ONLINES_DD_CUSTOMER_WITH_FC_2_BUNDLES);
     }
 
@@ -736,6 +736,22 @@ public class OWSActions extends BaseWs {
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 
+    public void createACCCustomerWithOrder() {
+        createGeneralCustomerOrder("src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_order.xml");
+    }
+
+    public void createAnOnlinesCCCustomerWithFCNoBundleButHasSimOnly() {
+        createGeneralCustomerOrder("src\\test\\resources\\xml\\ows\\online_CC_customer_with_FC_no_bundle_and_simonly.xml");
+    }
+
+    public Xml submitRequestAndReturnRespond(Xml request) {
+        return Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+    }
+
+    public Xml submitRequestAndReturnRespond(String filePath) {
+        request = new Xml(new File(filePath));
+        return Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+    }
     //endregion
 
 }

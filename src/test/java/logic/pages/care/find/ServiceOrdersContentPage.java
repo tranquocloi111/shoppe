@@ -94,4 +94,21 @@ public class ServiceOrdersContentPage extends BasePage {
     public List<List<String>> getAllValueOfServiceOrder(){
         return  tableControlBase.getAllCellValue();
     }
+    public String getStatusByServiceOrderID(String serviceOrderID) {
+        return tableControlBase.getCellByAnotherCellInSameRow("Status", serviceOrderID);
+    }
+    public String getServiceOrderIdSByType(String type)
+    {
+        return getTextOfElement(tableControlBase.getRowByColumnNameAndCellValue(type, type).findElement(By.tagName("a")));
+    }
+    public String getServiceOrderidByTypeAndIndex(String type,int index)
+    {
+        return getTextOfElement(tableControlBase.getRowSByColumnNameAndCellValue(type, type).get(index).findElement(By.tagName("a")));
+    }
+    public void clickServiceOrderIdByIndex(int index) {
+        click (tableControlBase.getElementByColumnNameAndRowIndex(index + 1, "Id"));
+    }
+    public String getStatusByServiceOrderType (String type) {
+        return tableControlBase.getCellByAnotherCellInSameRow("Status", type);
+    }
 }

@@ -21,6 +21,7 @@ import logic.business.helper.FTPHelper;
 import logic.business.helper.RemoteJobHelper;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.*;
+import logic.pages.care.main.TasksContentPage;
 import logic.pages.care.options.ChangeCustomerTypePage;
 import logic.pages.care.options.ConfirmNewCustomerTypePage;
 import logic.utils.Parser;
@@ -361,6 +362,31 @@ public class BaseTest {
         Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), ocsSubscriberKey);
         Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), ocsSubscriberAccountKey);
     }
+
+    protected void verifyCustomerDDIStatusChangedToInactive() {
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        Assert.assertEquals(DetailsContentPage.PaymentInformationPage.getInstance().getDDIStatus(), "Inactive");
+    }
+
+    protected String verifyServiceOrderStatusIsSentAndDIReferenceHasValue() {
+        Assert.assertEquals(TasksContentPage.TaskPage.DetailsPage.getInstance().getServiceOrderStatus(), "Sent");
+        String dDIReference = TasksContentPage.TaskPage.DetailsPage.getInstance().getDDIReference();
+        Assert.assertNotEquals(dDIReference, "");
+        return dDIReference;
+    }
+
+
+    protected String verifyInvoiceStatusChangedToFullyPaidAfterCCPayment() {
+        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
+        InvoicesContentPage.InvoiceDetailsContentPage grid = InvoicesContentPage.InvoiceDetailsContentPage.getInstance();
+        String invoiceNumber = grid.getInvoiceNumber();
+        Assert.assertEquals("Fully Paid", grid.getStatusByIndex(1));
+        Assert.assertEquals("£0.00", grid.getAmountOutStandingByIndex(1));
+
+        return invoiceNumber;
+    }
+
     //end region
 
 }

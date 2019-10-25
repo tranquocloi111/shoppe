@@ -2,6 +2,7 @@ package logic.pages.care.main;
 
 import logic.business.entities.CardDetailsEntity;
 import logic.pages.BasePage;
+import logic.pages.TableControlBase;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.By;
@@ -10,6 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 import logic.pages.TableControlBase;
+
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -202,68 +204,18 @@ public class ServiceOrdersPage extends BasePage {
         }
     }
 
-    public static class ReturnsAndEtcPage extends ServiceOrdersPage {
-
-        private static ReturnsAndEtcPage instance = new ReturnsAndEtcPage();
-        @FindBy(xpath = "//td[@class='pagedesc']")
-        WebElement MPN;
-        @FindBy(xpath = "//td[@class='instuctionalTextHighLight']")
-        WebElement IMEI;
-        @FindBy(className = "PanelList")
-        WebElement productTable;
-        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Date Returned:')]/following-sibling::td//input")
-        WebElement dateReturnedCtl;
-        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Assessment Grade:')]/following-sibling::td//select")
-        WebElement assessmentGradeCtl;
-        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Non-Return Charge Amount:')]/following-sibling::td//input")
-        WebElement nonReturnChargeAmountCtl;
-        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Return Reference Number:')]/following-sibling::td//input")
-        WebElement returnReferenceNoCtl;
-        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Agent:')]/following-sibling::td//input")
-        WebElement agentCtl;
-        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Notes:')]/following-sibling::td//input")
-        WebElement notesCtl;
-
-
-        public static ReturnsAndEtcPage getInstance() {
-            if (instance == null)
-                return new ReturnsAndEtcPage();
-            return new ReturnsAndEtcPage();
-        }
-
-        public String getMPN() {
-            return MPN.getText().split(" ")[4];
-        }
-
-        public String getIMEI() {
-            return IMEI.getText().split(":")[1];
-        }
-
-
-        public String getInitialPurchasePriceByProduct(String product) {
-            List<WebElement> rows = productTable.findElements(By.tagName("tr"));
-            for (WebElement row : rows) {
-                List<WebElement> tds = row.findElements(By.tagName("td"));
-                if (tds.get(0).getText().trim() == product)
-                    return tds.get(1).getText().trim();
+    public boolean getHyperLinkChangeCustomerServiceOrderProgress() {
+        boolean flag = false;
+        List<WebElement> tds = wizardstepTable.findElements(By.xpath(".//td[@valign='middle']/following-sibling::td"));
+        for (WebElement td : tds) {
+            try {
+                td.findElement(By.tagName("a"));
+                flag = true;
+            } catch (Exception ex) {
+                flag = false;
             }
-            return null;
         }
-
-        public String getNonReturnChargeByProduct(String product) {
-            List<WebElement> rows = productTable.findElements(By.tagName("tr"));
-            for (WebElement row : rows) {
-                List<WebElement> tds = row.findElements(By.tagName("td"));
-                if (tds.get(0).getText().trim() == product)
-                    return tds.get(2).getText().trim();
-            }
-            return null;
-        }
-
-        public void selectWaiveETCReasonByIndexAndValue(int index, String value) {
-            List<WebElement> elementList = getDriver().findElements(By.xpath("//td[contains(text(),'Waive ETC Reason:')]"));
-            selectByVisibleText(elementList.get(index).findElement(By.xpath("..//following-sibling::td[1]//select")), value);
-        }
+        return flag;
     }
 
     public static class AccountSummaryAndSelectAction extends ServiceOrdersPage {
@@ -452,6 +404,11 @@ public class ServiceOrdersPage extends BasePage {
             clickNextBtn();
         }
 
+        public void selectAction(String action) {
+            selectByVisibleText(ddAction, action);
+            clickNextBtn();
+        }
+
         public void selectSubscriptionWithouAction(String subNo) {
             selectByVisibleText(ddSubscriptionNumber, subNo);
             clickNextBtn();
@@ -462,122 +419,79 @@ public class ServiceOrdersPage extends BasePage {
         }
     }
 
-    public static class ChangeBundle extends ServiceOrdersPage {
-        private static ChangeBundle instance = new ChangeBundle();
-        @FindBy(xpath = "//td[normalize-space(text())='Available Bundle(s)']//ancestor::form[1]")
-        WebElement form;
-        @FindBy(xpath = "//td[contains(text(),'Subscription Number:')]/following-sibling::td//span")
-        WebElement lblSubNumber;
-        @FindBy(xpath = "//td[contains(text(),'Next Bill Date for this Account:')]/following-sibling::td//span")
-        WebElement lblNextBillDateForThisAccount;
-        @FindBy(xpath = "//td[contains(text(),'Current Tariff:')]/following-sibling::td//span")
-        WebElement lblCurrentTariff;
-        @FindBy(xpath = "//td[contains(text(),'Packaged Bundle:')]/following-sibling::td//span")
-        WebElement lblPackagedBundle;
-        @FindBy(xpath = "//td[contains(text(),'Info:')]/following-sibling::td//span")
-        WebElement lblInfo;
-        @FindBy(xpath = "//td[contains(text(),'When to apply change?:')]/following-sibling::td//span")
-        WebElement lblWhenToApplyChangeText;
+    public static class ReturnsAndEtcPage extends ServiceOrdersPage {
 
-        @FindBy(xpath = "//td[contains(.,'Double Data')]")
-        WebElement lblBonusBundle;
+        private static ReturnsAndEtcPage instance = new ReturnsAndEtcPage();
+        @FindBy(xpath = "//td[@class='pagedesc']")
+        WebElement MPN;
+        @FindBy(xpath = "//td[@class='instuctionalTextHighLight']")
+        WebElement IMEI;
+        @FindBy(className = "PanelList")
+        WebElement productTable;
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Date Returned:')]/following-sibling::td//input")
+        WebElement dateReturnedCtl;
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Assessment Grade:')]/following-sibling::td//select")
+        WebElement assessmentGradeCtl;
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Non-Return Charge Amount:')]/following-sibling::td//input")
+        WebElement nonReturnChargeAmountCtl;
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Return Reference Number:')]/following-sibling::td//input")
+        WebElement returnReferenceNoCtl;
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Agent:')]/following-sibling::td//input")
+        WebElement agentCtl;
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Notes:')]/following-sibling::td//textarea")
+        WebElement notesCtl;
+        @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'ETC Amount:')]/following-sibling::td//input")
+        WebElement ETCAmountCtl;
 
-        public static ChangeBundle getInstance() {
+
+        public static ReturnsAndEtcPage getInstance() {
             if (instance == null)
-                return new ChangeBundle();
-            return new ChangeBundle();
+                return new ReturnsAndEtcPage();
+            return new ReturnsAndEtcPage();
         }
 
-        public String getSubscriptionNumber() {
-            return getTextOfElement(lblSubNumber);
+        public String getMPN() {
+            return MPN.getText().split(" ")[4];
         }
 
-        public String getNextBillDateForThisAccount() {
-            return getTextOfElement(lblNextBillDateForThisAccount);
+        public String getIMEI() {
+            return IMEI.getText().split(":")[1];
         }
 
-        public String getCurrentTariff() {
-            return getTextOfElement(lblCurrentTariff);
-        }
 
-        public String getPackagedBundle() {
-            return getTextOfElement(lblPackagedBundle);
-        }
-
-        public String getWhenToApplyChangeText() {
-            return getTextOfElement(lblWhenToApplyChangeText);
-        }
-
-        public String getInfo() {
-            return getTextOfElement(lblInfo);
-        }
-
-        public Boolean bundleExists(String[] bundles) {
-            int matchCount = 0;
-            for (String bundle : bundles) {
-                List<WebElement> tdCells = form.findElements(By.xpath(".//td"));
-                for (WebElement cell : tdCells) {
-                    if (cell.getText().equalsIgnoreCase(bundle))
-                        System.out.println("cell.getText().trim() : " + cell.getText().trim());
-                    matchCount++;
-                    break;
-                }
-            }
-            if (bundles.length == matchCount)
-                return true;
-            else
-                return false;
-        }
-
-        public String bundleToolTip(String bundle) {
-            List<WebElement> tds = form.findElements((By.xpath(".//td")));
-            try {
-                for (WebElement td : tds) {
-                    if (td.getText().equalsIgnoreCase(bundle)) {
-                        WebElement image = td.findElement(By.tagName("img"));
-                        String js = image.getAttribute("onmouseover");
-                        Actions a = new Actions(getDriver());
-                        a.moveToElement(image).build().perform();
-                        Thread.sleep(1000);
-                        WebElement div = getDriver().findElement(By.xpath(".//body/div[last()]"));
-                        return div.getText();
-                    }
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        public String getInitialPurchasePriceByProduct(String product) {
+            List<WebElement> rows = productTable.findElements(By.tagName("tr"));
+            for (WebElement row : rows) {
+                List<WebElement> tds = row.findElements(By.tagName("td"));
+                if (tds.get(0).getText().trim() == product)
+                    return tds.get(1).getText().trim();
             }
             return null;
         }
 
-        public void clickNextButton() {
-            clickNextBtn();
-        }
-
-        public void selectBundlesByName(String[] names, String value) {
-            for (String name : names) {
-                WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", name)));
-                WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
-                if (name.equalsIgnoreCase(value)) {
-                    if (checkbox.getAttribute("checked") != "true") {
-                        click(checkbox);
-                    }
-                }
+        public String getNonReturnChargeByProduct(String product) {
+            List<WebElement> rows = productTable.findElements(By.tagName("tr"));
+            for (WebElement row : rows) {
+                List<WebElement> tds = row.findElements(By.tagName("td"));
+                if (tds.get(0).getText().trim() == product)
+                    return tds.get(2).getText().trim();
             }
+            return null;
         }
 
-        public void selectBundlesByName(String value) {
-
-            WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", value)));
-            WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
-            if (checkbox.getAttribute("checked") != "true") {
-                click(checkbox);
-            }
+        public void selectWaiveETCReasonByIndexAndValue(int index, String value) {
+            List<WebElement> elementList = getDriver().findElements(By.xpath("//td[contains(text(),'Waive ETC Reason:')]"));
+            selectByVisibleText(elementList.get(index).findElement(By.xpath("..//following-sibling::td[1]//select")), value);
         }
 
-
-        public boolean isBonusBundle() {
-            return isElementPresent(lblBonusBundle);
+        public String getETCAmountValue() {
+            return ETCAmountCtl.getAttribute("value");
         }
+
+        public void setNotes(String note) {
+            notesCtl.sendKeys(note);
+        }
+
     }
 
     public static class ConfirmChangeBundle extends ServiceOrdersPage {
@@ -666,6 +580,19 @@ public class ServiceOrdersPage extends BasePage {
             return getTextOfElement(lblErrorEmssage);
         }
 
+
+
+        @FindBy(xpath = "//td[normalize-space(text())='Safety Buffer Before']//ancestor::tr[1]//following-sibling::tr[1]")
+        WebElement safetyBufferBefore;
+        @FindBy(xpath = "//td[normalize-space(text())='Safety Buffer After']//ancestor::tr[1]//following-sibling::tr[1]")
+        WebElement safetyBufferAfter;
+        public String getSafetyBufferBefore() {
+            return getTextOfElement(safetyBufferBefore);
+        }
+
+        public String getSafetyBufferAfter() {
+            return getTextOfElement(safetyBufferAfter);
+        }
     }
 
     public static class ServiceOrderComplete extends ServiceOrdersPage {
@@ -775,19 +702,119 @@ public class ServiceOrdersPage extends BasePage {
         }
     }
 
-    public boolean getHyperLinkChangeCustomerServiceOrderProgress(){
-        boolean flag = false;
-        List<WebElement> tds = wizardstepTable.findElements(By.xpath(".//td[@valign='middle']/following-sibling::td"));
-        for (WebElement td : tds) {
+    public static class ChangeBundle extends ServiceOrdersPage {
+        private static ChangeBundle instance = new ChangeBundle();
+        @FindBy(xpath = "//td[normalize-space(text())='Available Bundle(s)']//ancestor::form[1]")
+        WebElement form;
+        @FindBy(xpath = "//td[contains(text(),'Subscription Number:')]/following-sibling::td//span")
+        WebElement lblSubNumber;
+        @FindBy(xpath = "//td[contains(text(),'Next Bill Date for this Account:')]/following-sibling::td//span")
+        WebElement lblNextBillDateForThisAccount;
+        @FindBy(xpath = "//td[contains(text(),'Current Tariff:')]/following-sibling::td//span")
+        WebElement lblCurrentTariff;
+        @FindBy(xpath = "//td[contains(text(),'Packaged Bundle:')]/following-sibling::td//span")
+        WebElement lblPackagedBundle;
+        @FindBy(xpath = "//td[contains(text(),'Info:')]/following-sibling::td//span")
+        WebElement lblInfo;
+        @FindBy(xpath = "//td[contains(text(),'When to apply change?:')]/following-sibling::td//span")
+        WebElement lblWhenToApplyChangeText;
+
+        @FindBy(xpath = "//td[contains(.,'Double Data')]")
+        WebElement lblBonusBundle;
+
+        public static ChangeBundle getInstance() {
+            if (instance == null)
+                return new ChangeBundle();
+            return new ChangeBundle();
+        }
+
+        public String getSubscriptionNumber() {
+            return getTextOfElement(lblSubNumber);
+        }
+
+        public String getNextBillDateForThisAccount() {
+            return getTextOfElement(lblNextBillDateForThisAccount);
+        }
+
+        public String getCurrentTariff() {
+            return getTextOfElement(lblCurrentTariff);
+        }
+
+        public String getPackagedBundle() {
+            return getTextOfElement(lblPackagedBundle);
+        }
+
+        public String getWhenToApplyChangeText() {
+            return getTextOfElement(lblWhenToApplyChangeText);
+        }
+
+        public String getInfo() {
+            return getTextOfElement(lblInfo);
+        }
+
+        public Boolean bundleExists(String[] bundles) {
+            int matchCount = 0;
+            for (String bundle : bundles) {
+                List<WebElement> tdCells = form.findElements(By.xpath(".//td"));
+                for (WebElement cell : tdCells) {
+                    if (cell.getText().equalsIgnoreCase(bundle))
+                        System.out.println("cell.getText().trim() : " + cell.getText().trim());
+                    matchCount++;
+                    break;
+                }
+            }
+            return bundles.length == matchCount;
+        }
+
+        public String bundleToolTip(String bundle) {
+            List<WebElement> tds = form.findElements((By.xpath(".//td")));
             try {
-                td.findElement(By.tagName("a"));
-                flag = true;
-            } catch (Exception ex) {
-                flag = false;
+                for (WebElement td : tds) {
+                    if (td.getText().equalsIgnoreCase(bundle)) {
+                        WebElement image = td.findElement(By.tagName("img"));
+                        String js = image.getAttribute("onmouseover");
+                        Actions a = new Actions(getDriver());
+                        a.moveToElement(image).build().perform();
+                        Thread.sleep(1000);
+                        WebElement div = getDriver().findElement(By.xpath(".//body/div[last()]"));
+                        return div.getText();
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        public void clickNextButton() {
+            clickNextBtn();
+        }
+
+        public void selectBundlesByName(String[] names, String value) {
+            for (String name : names) {
+                WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", name)));
+                WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
+                if (name.equalsIgnoreCase(value)) {
+                    if (checkbox.getAttribute("checked") != "true") {
+                        click(checkbox);
+                        break;
+                    }
+                }
             }
         }
-        if(flag)
-            return true;
-        return false;
+
+        public void selectBundlesByName(String value) {
+
+            WebElement tdCell = form.findElement(By.xpath(String.format(".//td[normalize-space(text())='%s']", value)));
+            WebElement checkbox = tdCell.findElement(By.xpath(".//input[@type='checkbox']"));
+            if (checkbox.getAttribute("checked") != "true") {
+                click(checkbox);
+            }
+        }
+
+
+        public boolean isBonusBundle() {
+            return isElementPresent(lblBonusBundle);
+        }
     }
 }

@@ -71,6 +71,10 @@ public class InvoicesContentPage extends BasePage {
         return table.getAllCellValue();
     }
 
+    public String getInvoiceNumberByIndex(int index) {
+        return table.getElementByColumnNameAndRowIndex(index + 1, invoiceNumber).getText().split(" ")[0];
+    }
+
     public static class InvoiceDetailsContentPage extends InvoicesContentPage{
 
         private static InvoiceDetailsContentPage instance;

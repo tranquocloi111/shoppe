@@ -229,7 +229,7 @@ public class TC31911_Add_bundle_SF_already_present_on_account extends BaseTest {
         Assert.assertEquals(MonthlyBundlesAddChangeOrRemovePage.getInstance().getMonthlyAllowance(), "500 mins, 5000 texts (FC)");
 
         String expireDate = Parser.parseDateFormate(TimeStamp.TodayPlus1MonthMinus1Day(), TimeStamp.DATE_FORMAT_IN_PDF);
-        long numberRemainDays = Math.abs(TimeStamp.todayPlus1YearMinus1DayMinusToday());
+        long numberRemainDays = Math.abs(TimeStamp.todayPlus1MonthMinus1DayMinusToday());
         String expectedMssg = String.format("%s  (%s  days remaining)", expireDate, String.valueOf(numberRemainDays));
         Assert.assertEquals(MonthlyBundlesAddChangeOrRemovePage.getInstance().getMonthAllowanceExpiryDate(), expectedMssg);
 

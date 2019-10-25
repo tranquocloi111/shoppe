@@ -181,15 +181,19 @@ public class SelfCareTestBase extends BasePage {
             }
         }
     }
+
     public void clickMakeAOneOfPayment() {
         super.clickLinkByText("Make a one-off payment");
     }
+
     public void verifyMakeAOneOffPayment() {
         Assert.assertEquals("Make a one-off payment", MyPersonalInformationPage.getInstance().getHeader());
     }
+
     public void clickChangeMyPaymentDetails() {
         super.clickLinkByText("Change my payment details");
     }
+
     public void verifyMyPaymentDetail() {
         Assert.assertEquals("My payment details", MyPersonalInformationPage.getInstance().getHeader());
     }
@@ -202,19 +206,34 @@ public class SelfCareTestBase extends BasePage {
         Assert.assertEquals("Accept data charges of more than £40 while abroad", MyPersonalInformationPage.getInstance().getHeader());
     }
 
-    public String newSubscriptionNumber()
-    {
-      String newSubscriptionNumber = "0" + RandomCharacter.getRandomNumericString(9) + "0";
+    public String newSubscriptionNumber() {
+        String newSubscriptionNumber = "0" + RandomCharacter.getRandomNumericString(9) + "0";
         return newSubscriptionNumber;
     }
+
     public void verifyMonthlyBundleDisplayed() {
         Assert.assertEquals("Monthly bundles - Add, change or remove", MyPersonalInformationPage.getInstance().getHeader());
     }
+
     public void verifyAddASaftyBufferSafetyBufferPage() {
         Assert.assertEquals("Add a safety buffer", MyPersonalInformationPage.getInstance().getHeader());
     }
+
     public void verifyChangeMySafetyBufferPage() {
         Assert.assertEquals("Change my safety buffer", MyPersonalInformationPage.getInstance().getHeader());
+    }
+
+    public void clickMyAccountTab() {
+        super.clickLinkByText("My Account");
+    }
+
+    public void selectBundlesByName( String... names) {
+        for (String name : names) {
+            WebElement checkbox = findCheckBox( name);
+            if (findCheckBox(name).getAttribute("checked") == null) {
+                click(checkbox);
+            }
+        }
     }
 }
 

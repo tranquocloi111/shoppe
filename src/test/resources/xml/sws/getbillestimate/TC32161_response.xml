@@ -54,7 +54,7 @@
                         <row>
                             <item>$dateFrom$</item>
                             <item>Online Payment</item>
-                            <item>4009</item>
+                            <item>$reference$</item>
                             <item align="right">£-10.00</item>
                         </row>
                     </rows>

@@ -31,9 +31,6 @@ import java.util.List;
 
 public class TC31890_SelfCare_Change_Bundle_Add_Family_Perk_Subscription_is_not_eligible extends BaseTest {
     String sub;
-    String serviceOrderId;
-    String expectedStatus;
-    String discountGroupCodeOfMobileRef1;
 
     @Test(enabled = true, description = "TC31890 SelfCare change bundle add family perk subscription is not eligble", groups = "SelfCare")
     public void TC31890_SelfCare_Change_Bundle_Add_Family_Perk_Subscription_is_not_eligible() {

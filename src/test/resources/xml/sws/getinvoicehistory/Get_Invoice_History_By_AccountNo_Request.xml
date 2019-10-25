@@ -1,0 +1,13 @@
+﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:sel="http://selfcare.telco.hsntech.com">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <sel:getInvoiceHistoryRequest>
+            <!--Optional:-->
+            <sel:externalSystemID>MOBILEAWARE</sel:externalSystemID>
+            <sel:accountNumber>$accountNumber$</sel:accountNumber>
+            <!--Optional:-->
+            <sel:startDate>$startDate$</sel:startDate>
+        </sel:getInvoiceHistoryRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

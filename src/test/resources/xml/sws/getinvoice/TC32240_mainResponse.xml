@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XINVOICES>
+    <XINVOICE invoiceId="735" customerNo="14158" hmbrId="19699" brInvocationId="795" documentNbr="134000223517"
+              invoiceStatus="C" dateFrom="28/SEP/2019" dateTo="17/OCT/2019" dateIssue="18/OCT/2019"
+              dateDue="28/OCT/2019" billCurrency="GBP" netAmtBase="30.00" netAmtBill="30.00" closingBalBase="15.00"
+              closingBalBill="15.00" nextTpStageId="19" nextTreatmentDate="28/OCT/2019" agreementFlg="N" earlyPayFlg="N"
+              invoiceType="FIRST" billMedia="S" rewardPoints="90" payMethod="CARD" clubCard="**************2784">
+        <ACCT>
+            <ACCT_ROW accountName="first853518280 last792513282" addressType="UKCADD" addressTemplateKey="UKCONTROLLED">
+                <FORMATADDR>
+                    <FORMATADDR_ROW>
+                        <formattedAddress>6 LUKIN STREET
+                            LONDON
+                            E1 0AA
+                        </formattedAddress>
+                    </FORMATADDR_ROW>
+                </FORMATADDR>
+                <ADDR>
+                    <ADDR_ROW apKey="PREMNO" char="6">
+                    </ADDR_ROW>
+                    <ADDR_ROW apKey="THORF" char="LUKIN STREET">
+                    </ADDR_ROW>
+                    <ADDR_ROW apKey="PTOWN" char="LONDON">
+                    </ADDR_ROW>
+                    <ADDR_ROW apKey="PSORT" char="E10AA">
+                    </ADDR_ROW>
+                    <ADDR_ROW apKey="PAFKEY" char="3075103S0X">
+                    </ADDR_ROW>
+                </ADDR>
+            </ACCT_ROW>
+        </ACCT>
+        <ISUMM>
+            <ISUMM_ROW userCharges="20.00" agreementCharges="0.00" otherCharges="10.00" discounts="0.00" vat="0.00"
+                       previousBill="0.00" payments="-15.00">
+            </ISUMM_ROW>
+        </ISUMM>
+        <MMSG>
+        </MMSG>
+        <USUMM>
+            <USUMM_ROW reference="07066369590  Mobile FC" tariff="£10 Tariff 12 Month Contract" charge="20.00"
+                       agreementCharge="0.00" invId="16467" groupCode="16467" refNo="07066369590" capType="NC"
+                       displayFlg="Y">
+            </USUMM_ROW>
+        </USUMM>
+        <ADJ>
+            <ADJ_ROW fromDate="28/SEP/2019" toDate="17/OCT/2019"
+                     description="Monthly 500MB data allowance for 07066369590" charge="5.00" glcode="10090">
+            </ADJ_ROW>
+            <ADJ_ROW fromDate="28/SEP/2019" toDate="17/OCT/2019" description="£2.50 safety buffer for 07066369590"
+                     charge="0.00" glcode="40050">
+            </ADJ_ROW>
+            <ADJ_ROW fromDate="18/OCT/2019" toDate="17/NOV/2019"
+                     description="Monthly 500MB data allowance for 07066369590" charge="5.00" glcode="10090">
+            </ADJ_ROW>
+            <ADJ_ROW fromDate="18/OCT/2019" toDate="17/NOV/2019" description="£2.50 safety buffer for 07066369590"
+                     charge="0.00" glcode="40050">
+            </ADJ_ROW>
+        </ADJ>
+        <DISC>
+        </DISC>
+        <PAY>
+            <PAY_ROW date="28/SEP/2019" id="3016" type="Online" amt="-15.00">
+            </PAY_ROW>
+        </PAY>
+        <TOPUP>
+        </TOPUP>
+        <SSUMM>
+            <SSUMM_ROW prInvFcd="MOB" invId="16467" serviceDescr="07066369590  Mobile FC" chargeType="RF" sSAmt="20.00"
+                       wSAmt="0.00" fcFlag="Y">
+                <SSDETAILS>
+                    <SSDETAILS_ROW type="tariff" invoiceChargeId="4798" descr="Monthly subscription" capType="NC"
+                                   dateFrom="28/SEP/2019" dateTo="17/OCT/2019" amt="10.00" wSAmt="0.00" cost="0.00"
+                                   glcode="20000">
+                    </SSDETAILS_ROW>
+                    <SSDETAILS_ROW type="tariff" invoiceChargeId="4802" descr="Monthly subscription" capType="NC"
+                                   dateFrom="18/OCT/2019" dateTo="17/NOV/2019" amt="10.00" wSAmt="0.00" cost="0.00"
+                                   glcode="20000">
+                    </SSDETAILS_ROW>
+                </SSDETAILS>
+            </SSUMM_ROW>
+        </SSUMM>
+    </XINVOICE>
+</XINVOICES>

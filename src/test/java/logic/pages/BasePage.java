@@ -236,13 +236,21 @@ public class BasePage {
     public WebElement findCheckBox(WebElement container, String name) {
         List<WebElement> labels = container.findElements(By.tagName("label"));
         for (WebElement label : labels) {
-            if (label.getText().trim().equalsIgnoreCase(name)) {
+            if (label.getText().replace(" ","").equalsIgnoreCase(name.replace(" ",""))) {
                 return label.findElement(By.tagName("input"));
             }
         }
         return null;
     }
-
+    public WebElement findCheckBox( String name) {
+        List<WebElement> labels = getDriver().findElements(By.tagName("label"));
+        for (WebElement label : labels) {
+            if (label.getText().replace(" ","").equalsIgnoreCase(name.replace(" ",""))) {
+                return label.findElement(By.tagName("input"));
+            }
+        }
+        return null;
+    }
     public void clickEditBtnByIndex(int index) {
         getDriver().findElements(By.xpath("//a[contains(text(),'Edit')]")).get(index).click();
 
@@ -269,7 +277,7 @@ public class BasePage {
         getDriver().switchTo().alert().accept();
     }
 
-    public void dismissConfirmDialog() {
+    public void dismissComfirmDialog() {
         getDriver().switchTo().alert().dismiss();
     }
 

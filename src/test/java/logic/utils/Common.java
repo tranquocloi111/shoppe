@@ -304,7 +304,6 @@ public class Common {
             PDDocument document = PDDocument.load((new File(filePath)));
             document.getClass();
 
-            if (!document.isEncrypted()) {
                 PDFTextStripper tStripper = new PDFTextStripper();
                 tStripper.setSortByPosition(true);
                 String pdfFileInText = tStripper.getText(document);
@@ -314,9 +313,9 @@ public class Common {
                     list.add(line);
                 }
                 return list;
-            }
-        } catch (Exception ex) {
 
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
         return null;
     }

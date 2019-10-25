@@ -6,14 +6,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MyUsageDetailsSinceMyLastBillPage extends BasePage {
 
     public static MyUsageDetailsSinceMyLastBillPage getInstance() {
         return new MyUsageDetailsSinceMyLastBillPage();
     }
-
 
     public WebElement getDivPanelBox(String text) {
         String xpath = String.format("//td[text()[normalize-space()='%s']]//ancestor::div[@class='panelBox_']", text);
@@ -68,6 +69,10 @@ public class MyUsageDetailsSinceMyLastBillPage extends BasePage {
         TableControlBase tableControlBase = new TableControlBase(getDropDownTable(text));
         return tableControlBase.findRowsByColumns(enity).size();
     }
+    public WebElement getRowInDropDownByIndex(String text, int index) {
+        TableControlBase tableControlBase = new TableControlBase(getDropDownTable(text));
+        return tableControlBase.getAllRows().get(index);
+    }
 
     @FindBy(xpath = "//p[text()='Key:']//following-sibling::p")
     WebElement key;
@@ -96,46 +101,67 @@ public class MyUsageDetailsSinceMyLastBillPage extends BasePage {
     WebElement totalCharge;
     @FindBy(xpath = "//b[text()='Call details']//ancestor::div[1]//following::div[1]/table[@class='DisplayTable']")
     WebElement callDetailTable;
+    @FindBy(xpath = "//span[@class='pagelinks']")
+    WebElement pageLinkCtl;
 
-    public String getStartDate()
-    {
+
+    public String getStartDate() {
         return getValueOfElement(startDateTextBox);
     }
-    public String getEndDate()
-    {
+
+    public String getEndDate() {
         return getValueOfElement(endDateTextBox);
     }
-    public void selectUsageType(String text)
-    {
-         selectByVisibleText(usageTypeSelect,text);
+
+    public void selectUsageType(String text) {
+        selectByVisibleText(usageTypeSelect, text);
     }
-    public void clickNextLink()
-    {
+
+    public void clickNextLink() {
         click(nextLink);
     }
-    public String getToTalCountText()
-    {
+
+    public String getToTalCountText() {
         return getTextOfElement(totalCountText);
     }
-    public String getTotalCost()
-    {
+
+    public String getTotalCost() {
         return getTextOfElement(totalCost).trim();
     }
-    public String getTotalCharge()
-    {
+
+    public String getTotalCharge() {
         return getTextOfElement(totalCharge).trim();
     }
-    public String getTotalDurationValue()
-    {
+
+    public String getTotalDurationValue() {
         return getTextOfElement(totalDurationVolume);
     }
-    public void clickSearchButton()
-    {
+
+    public void clickSearchButton() {
         click(searchBtn);
     }
-    public int getCountRowInCallDetailTable()
-    {
+
+    public int getCountRowInCallDetailTable() {
         TableControlBase tableControlBase = new TableControlBase(callDetailTable);
-        return tableControlBase.countTrElements()-1;
+        return tableControlBase.countTrElements() - 1;
+    }
+
+    public String getPageLinks() {
+        return getTextOfElement(pageLinkCtl);
+    }
+
+    public List<String> getAllStringColumnInGrid(String columnName) {
+        TableControlBase tableControlBase = new TableControlBase(callDetailTable);
+        List<String> textList = new ArrayList<>();
+        List<WebElement> elList = tableControlBase.getAllColumnsByColumnName(columnName);
+        for (WebElement el : elList) {
+            textList.add(el.getText());
+        }
+        return textList;
+    }
+
+    public String getTotalInHeader(String title) {
+        String xpath = String.format("//td[contains(normalize-space(text()), '%s')]//following-sibling::td", title);
+        return getTextOfElement(getDriver().findElement(By.xpath(xpath)));
     }
 }
