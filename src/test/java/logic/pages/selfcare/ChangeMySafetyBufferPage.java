@@ -145,15 +145,38 @@ public class ChangeMySafetyBufferPage extends BasePage {
     public String getChangeItNowButOnlyUntillMyNextBillDate() {
         return getTextOfElement(changeItNowButOnlyUntillMssg);
     }
+
     public String getChangeITNowAndKeepAtThisAmount() {
         return getTextOfElement(changeItNowAndKeepItAtThisAmount);
     }
+
     public String getChangeItFromMyTextBillDate() {
         return getTextOfElement(changeItFromMyTextBillDate);
     }
-    public boolean IsWhenWouldYouLikeYourSafetyBufferToChangeBlockDisplayed()
-    {
-     return whenWouldYouLikeToChangeMssgBox.isDisplayed();
+
+    public boolean IsWhenWouldYouLikeYourSafetyBufferToChangeBlockDisplayed() {
+        return whenWouldYouLikeToChangeMssgBox.isDisplayed();
+    }
+    public boolean IsComfirmingYourChangesTableDisplayed() {
+        return comfirmYourChangesMssgBox.isDisplayed();
     }
 
+
+    public static class ComfirmationYourChanges extends ChangeMySafetyBufferPage {
+        public static ComfirmationYourChanges getInstance() {
+            return new ComfirmationYourChanges();
+        }
+
+        @FindBy(xpath = "//b[contains(text(),'Confirming your changes')]//ancestor::div[@id='confirmBillCapChanges']")
+        WebElement comfirmYourChangesMssgBox;
+
+        @FindBy(xpath = "//label[normalize-space(text())='I’m ok with this.']//preceding::input[@type='checkbox']")
+        WebElement agreeCheckBox;
+
+        public void tickAgreeCheckBox() {
+            waitUntilVisible(agreeCheckBox);
+            if (agreeCheckBox.getAttribute("value").equalsIgnoreCase("unchecked"))
+                click(agreeCheckBox);
+        }
+    }
 }

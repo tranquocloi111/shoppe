@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
+import logic.pages.TableControlBase;
 
 import java.sql.Date;
 import java.util.HashMap;
@@ -403,6 +404,11 @@ public class ServiceOrdersPage extends BasePage {
             clickNextBtn();
         }
 
+        public void selectAction(String action) {
+            selectByVisibleText(ddAction, action);
+            clickNextBtn();
+        }
+
         public void selectSubscriptionWithouAction(String subNo) {
             selectByVisibleText(ddSubscriptionNumber, subNo);
             clickNextBtn();
@@ -485,6 +491,7 @@ public class ServiceOrdersPage extends BasePage {
         public void setNotes(String note) {
             notesCtl.sendKeys(note);
         }
+
     }
 
     public static class ConfirmChangeBundle extends ServiceOrdersPage {
@@ -573,6 +580,19 @@ public class ServiceOrdersPage extends BasePage {
             return getTextOfElement(lblErrorEmssage);
         }
 
+
+
+        @FindBy(xpath = "//td[normalize-space(text())='Safety Buffer Before']//ancestor::tr[1]//following-sibling::tr[1]")
+        WebElement safetyBufferBefore;
+        @FindBy(xpath = "//td[normalize-space(text())='Safety Buffer After']//ancestor::tr[1]//following-sibling::tr[1]")
+        WebElement safetyBufferAfter;
+        public String getSafetyBufferBefore() {
+            return getTextOfElement(safetyBufferBefore);
+        }
+
+        public String getSafetyBufferAfter() {
+            return getTextOfElement(safetyBufferAfter);
+        }
     }
 
     public static class ServiceOrderComplete extends ServiceOrdersPage {

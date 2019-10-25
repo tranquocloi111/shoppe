@@ -100,7 +100,7 @@ Tran Quoc Loi
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
         ServiceOrdersContentPage.getInstance().clickServiceOrderByType("Ad-hoc SMS Messages");
         String description = String.format("Password Change (%s)", subscriptionNo1);
-        int event = TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventChangePassword(description, "Created", "Batch"));
+        int event = TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(EventEntity.dataForEventServiceOrder(description, "Created", "Batch"));
         Assert.assertEquals(event, 1);
 
         test.get().info("Step 16: verify  sms is created in the hitransactioneven table");

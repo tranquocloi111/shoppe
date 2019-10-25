@@ -30,4 +30,15 @@ public class TariffComponentEntity {
         return tariffComponent;
     }
 
+    public static HashMap<String, String> dataTariffComponentForNC(String componentCode,String description,Date newStartDate, String charge) {
+        HashMap<String, String> tariffComponent = new HashMap<String, String>();
+        tariffComponent.put("Component Code",componentCode);
+        tariffComponent.put("Description", description);
+        tariffComponent.put("Start Date", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
+        tariffComponent.put("End Date", "");
+        tariffComponent.put("Charge", charge);
+
+        return tariffComponent;
+    }
+
 }
