@@ -59,8 +59,8 @@ public class AddOneOffBundle extends BasePage {
     }
 
     public String getNote() {
-        String text=  getTextOfElement(note);
-        text=text.substring(text.indexOf("* Note"));
+        String text = getTextOfElement(note);
+        text = text.substring(text.indexOf("* Note"));
         return text;
     }
 
@@ -72,6 +72,12 @@ public class AddOneOffBundle extends BasePage {
     public int findRowInCurrentBundle(HashMap<String, String> enity) {
         TableControlBase tableControlBase = new TableControlBase(currentBundleGrid);
         return tableControlBase.findRowsByColumns(enity).size();
+    }
+
+    public String getCurrentBundleDescriptionByCellValue(String value, int index) {
+        TableControlBase table = new TableControlBase(currentBundleGrid);
+        WebElement row = table.getRowByCellValue(value);
+        return row.findElement(By.xpath(".//following-sibling::td[" + index + "]")).getText().trim();
     }
 
     @FindBy(xpath = "//td[normalize-space(text())='Total:']//following-sibling::td")
@@ -90,6 +96,7 @@ public class AddOneOffBundle extends BasePage {
         TableControlBase tableControlBase = new TableControlBase(availableOneOffDataBundles);
         return tableControlBase.findRowsByColumns(enity).size();
     }
+
     public int findRowInAvailableOneOffTextBundleGrid(HashMap<String, String> enity) {
         TableControlBase tableControlBase = new TableControlBase(availableOneOffTextBundles);
         return tableControlBase.findRowsByColumns(enity).size();

@@ -735,7 +735,6 @@ public class OWSActions extends BaseWs {
         Log.info("Order Id: " + orderIdNo);
         checkAsyncProcessIsCompleted(orderIdNo);
     }
-
     public void createACCCustomerWithOrder() {
         createGeneralCustomerOrder("src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_order.xml");
     }
@@ -752,6 +751,29 @@ public class OWSActions extends BaseWs {
         request = new Xml(new File(filePath));
         return Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
     }
+
+    public void createGeneralCustomerOrder(String path,String username) {
+        request = new Xml(new File(path));
+        request.setTextByTagName(commonModMap);
+        request.setTextByTagName("billGroupId", "2");
+        request.setTextByTagName("password", "password1");
+        request.setTextByTagName("username", username);
+
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+        setCustomerNo();
+        Log.info("Account number:" + customerNo);
+        setOrderIdNo();
+        Log.info("OrderId number:" + orderIdNo);
+        setUsername();
+        setFirstName();
+        setLastName();
+        setPassword();
+        setFullName();
+        setEmail();
+        checkAsyncProcessIsCompleted(orderIdNo);
+    }
+
     //endregion
 
 }

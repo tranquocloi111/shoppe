@@ -1,0 +1,32 @@
+package logic.business.entities;
+
+public class MaintainContactResponseData {
+    public String AccountNumber;
+
+    public String getAccountNumber() {
+        return AccountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        AccountNumber = accountNumber;
+    }
+
+    public String getResponseCode() {
+        return ResponseCode;
+    }
+
+    public void setResponseCode(String responseCode) {
+        ResponseCode = responseCode;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        Message = message;
+    }
+
+    public String ResponseCode ;
+    public String Message ;
+}

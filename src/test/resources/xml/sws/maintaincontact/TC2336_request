@@ -1,0 +1,13 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <sel:maintainContactRequest>
+            <sel:ExternalSystemID>MOBILEAWARE</sel:ExternalSystemID>
+            <sel:MaintainContactAction>Forgotten Password</sel:MaintainContactAction>
+            <!--Optional:-->
+            <sel:UserName>$UserName$</sel:UserName>
+            <!--Optional:-->
+            <sel:SecurityAnswer>0</sel:SecurityAnswer>
+        </sel:maintainContactRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
