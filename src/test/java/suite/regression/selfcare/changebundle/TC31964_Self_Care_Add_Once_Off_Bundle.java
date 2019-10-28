@@ -48,7 +48,7 @@ public class TC31964_Self_Care_Add_Once_Off_Bundle extends BaseTest {
         test.get().info("Step 1 : Create a customer with 2 NC subscription");
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
-        String customerNumber = owsActions.customerNo;
+        String customerNumber =  owsActions.customerNo;
         owsActions.getSubscription(owsActions.orderIdNo, "Mobile Ref 1");
         serviceRefOf1stSubscription = owsActions.serviceRef;
 
@@ -163,8 +163,6 @@ public class TC31964_Self_Care_Add_Once_Off_Bundle extends BaseTest {
     }
 
 
-
-
     private void verifyContextInfoOfSMSServiceOrderIsCorrectInDB() {
         Assert.assertTrue(CommonActions.getSMSIsSent(serviceOrderIDSms, "") != null);
         String mess = String.format("<SMSGateway><sms:sendSms><smsRequest><type>OFCOM</type><mpn>%s</mpn><message>Tesco Mobile: You have added a 250MB one-off data bundle. This is valid until %s. Call 4488, free, to add a safety buffer or more data.</message>",
@@ -183,7 +181,6 @@ public class TC31964_Self_Care_Add_Once_Off_Bundle extends BaseTest {
     }
 
 
-
     private void verifyMyTariffDetailPageDisplayedWithCorrectData() {
         List<String> alert = SelfCareTestBase.page().successfulMessageStack();
         Assert.assertEquals(1, alert.size());
@@ -200,13 +197,16 @@ public class TC31964_Self_Care_Add_Once_Off_Bundle extends BaseTest {
         Assert.assertEquals(String.format("%s  (%s  days remaining)", expiryDate, TimeStamp.TodayPlus2MonthMinus16DaysMinusToday(), TimeStamp.DATE_FORMAT_IN_PDF), AddOneOffBundle.getInstance().getExpiryDate());
 
         Assert.assertEquals(1, AddOneOffBundle.getInstance().getRowCountCurrentBundle());
-        HashMap<String, String> expectedEnity = OneOffBundleEnity.getBundleChargesEnity("Bill cap", "£20 safety buffer", "0", "N/A", TimeStamp.TodayPlus1MonthMinus16Day(), "£0.00");
-        // Assert.assertEquals(1,AddOneOffBundle.getInstance().findRowInCurrentBundle(expectedEnity));
+        Assert.assertEquals("£20 safety buffer", AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 1));
+        Assert.assertEquals("0", AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 2));
+        Assert.assertEquals("N/A", AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 3));
+        Assert.assertEquals(Parser.parseDateFormate(TimeStamp.TodayPlus1MonthMinus16Day(), TimeStamp.DATE_FORMAT_IN_PDF), AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 4));
+        Assert.assertEquals("£0.00", AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 5));
         Assert.assertEquals("£0.00", AddOneOffBundle.getInstance().gettotal());
 
         Assert.assertEquals(4, AddOneOffBundle.getInstance().getRowCountAvailableOneOffDataBundleGrid());
 
-        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off FC data 4G - 500MB", "500", TimeStamp.TodayPlus1MonthMinus16Day(), "£5.00");
+        HashMap<String, String> expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off FC data 4G - 500MB", "500", TimeStamp.TodayPlus1MonthMinus16Day(), "£5.00");
         Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
 
         expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off data 250MB", "250", TimeStamp.TodayPlus1MonthMinus16Day(), "£3.00");
@@ -230,7 +230,7 @@ public class TC31964_Self_Care_Add_Once_Off_Bundle extends BaseTest {
         List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountBundleGroupCode);
         Assert.assertEquals(9, discountBundles.size());
 
-        Assert.assertEquals(1,BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(discountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayMinus16DaysAdd1Month(), "250MB-TUDATA-0300-FC", "ACTIVE"));
+        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(discountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayMinus16DaysAdd1Month(), "250MB-TUDATA-0300-FC", "ACTIVE"));
 
     }
 }

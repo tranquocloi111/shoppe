@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <sel:maintainContactRequest>
+            <sel:ExternalSystemID>MOBILEAWARE</sel:ExternalSystemID>
+            <sel:MaintainContactAction>Update Contact</sel:MaintainContactAction>
+            <sel:UserName>$userName$</sel:UserName>
+            <sel:AccountNumber>$accountNumber$</sel:AccountNumber>
+        </sel:maintainContactRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

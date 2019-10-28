@@ -33,7 +33,6 @@ public class TC31965_B15_Add_One_off_Bundle_One_off_bundle_already_exists extend
     String serviceOrderID;
     String serviceOrderIDSms;
     String discountBundleGroupCode;
-    String expectedStatus;
 
     @Test(enabled = true, description = "TC31965 B15 add one off bundle already exist", groups = "SelfCare")
     public void TC31965_B15_Add_One_off_Bundle_One_off_bundle_already_exists() {
@@ -42,7 +41,7 @@ public class TC31965_B15_Add_One_off_Bundle_One_off_bundle_already_exists extend
         test.get().info("Step 1 : Create a customer with 2 NC subscription");
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
-        String customerNumber = owsActions.customerNo;
+        String customerNumber =owsActions.customerNo;
         owsActions.getSubscription(owsActions.orderIdNo, "Mobile Ref 1");
         serviceRefOf1stSubscription = owsActions.serviceRef;
 
@@ -59,56 +58,70 @@ public class TC31965_B15_Add_One_off_Bundle_One_off_bundle_already_exists extend
         Date newStartDate = TimeStamp.TodayMinus10Days();
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
 
-
-        test.get().info("Step 9 : Login to Self Care");
+        test.get().info("Step 6 : Login to Self Care");
         SelfCareTestBase.page().LoginIntoSelfCarePage(owsActions.username, owsActions.password, customerNumber);
         SelfCareTestBase.page().verifyMyPersonalInformationPageIsDisplayed();
 
-        test.get().info("Step 10 : Click view or change my tariff detail links");
+        test.get().info("Step 7 : Click view or change my tariff detail links");
         MyPersonalInformationPage.MyTariffPage.getInstance().clickViewOrChangeMyTariffDetailsLink();
 
-        test.get().info("Step 10 : verify tariff detail page");
+        test.get().info("Step 8 : verify tariff detail page");
         verifyTariffDetailsScreen(newStartDate);
 
-        test.get().info("Step 11 : Click add or change bundles on my tariff page");
+        test.get().info("Step 9 : Click add or change bundles on my tariff page");
         MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1").clickAddOrViewOneOffBundlesButton();
 
-        test.get().info("Step 12 : verify one off bundle screen displayed with correct data");
+        test.get().info("Step 10 : verify one off bundle screen displayed with correct data");
         verifyAddOneOffBundleScreenDisplayedWithCorrectData();
 
-        test.get().info("Step 13 : change bundle for customer");
+        test.get().info("Step 11 : change bundle for customer");
         AddOneOffBundle.getInstance().selectBundleByName("One-off data 250MB");
 
-        test.get().info("Step 15 : click save changes ");
+        test.get().info("Step 12 : click save changes ");
         MonthlyBundlesAddChangeOrRemovePage.getInstance().clickSaveBtn();
 
-        test.get().info("Step 16 :verify my tariff details page displayed with correct data");
+        test.get().info("Step 13 :verify my tariff details page displayed with correct data");
         verifyMyTariffDetailPageDisplayedWithCorrectData();
 
-        test.get().info("Step 17 : record the latest subscription number for customer");
+        test.get().info("Step 14 : Click add or change bundles on my tariff page");
+        MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1").clickAddOrViewOneOffBundlesButton();
+
+        test.get().info("Step 15 : change bundle for customer");
+        AddOneOffBundle.getInstance().selectBundleByName("One-off data 250MB");
+
+        test.get().info("Step 16 : verify the one off bundle charge values are changed after selecting");
+        verifyOneOffBundleChargeValuesAreChangedAfterSelecting();
+
+        test.get().info("Step 17 : click save changes ");
+        MonthlyBundlesAddChangeOrRemovePage.getInstance().clickSaveBtn();
+
+        test.get().info("Step 18 :verify my tariff details page displayed with correct data");
+        verifyMyTariffDetailPageDisplayedWithCorrectData();
+
+        test.get().info("Step 19 : record the latest subscription number for customer");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         serviceRefOf1stSubscription = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getSubscriptionNumber();
-        String discountBundleGroupCode = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
+        discountBundleGroupCode = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance().getDiscountGroupCode();
 
-        test.get().info("Step 17 : open the service order page");
+        test.get().info("Step 20 : open the service order page");
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
 
-        test.get().info("Step 18 : Verify customer has 1 expected change bundle SO record");
+        test.get().info("Step 21 : Verify customer has 1 expected change bundle SO record");
         HashMap<String, String> temp = ServiceOrderEntity.dataServiceOrder(serviceRefOf1stSubscription, "Change Bundle", "Completed Task");
         int size = ServiceOrdersContentPage.getInstance().getNumberOfServiceOrdersByOrderService(temp);
         serviceOrderIDSms = ServiceOrdersContentPage.getInstance().getServiceOrderidByType("Ad-hoc SMS Messages");
         serviceOrderID = ServiceOrdersContentPage.getInstance().getServiceOrderidByType("Change Bundle");
         Assert.assertEquals(2, size);
 
-        test.get().info("Step 19 : Open details screen for change bundle SO");
+        test.get().info("Step 22 : Open details screen for change bundle SO");
         ServiceOrdersContentPage.getInstance().clickServiceOrderByType("Change Bundle");
 
-        test.get().info("Step 20 : Verify SO details data are updated");
+        test.get().info("Step 23 : Verify SO details data are updated");
         Assert.assertEquals(serviceRefOf1stSubscription + " Mobile Ref 1", TasksContentPage.TaskPage.DetailsPage.getInstance().getSubscriptionNumber());
-        Assert.assertEquals("FC12-1000-500SO £10 Tariff 12 Month Contract {£10.00}", TasksContentPage.TaskPage.DetailsPage.getInstance().getTariff());
+        Assert.assertEquals("FC12-1500-100SO £15 Tariff 12 Month Contract {£10.00}", TasksContentPage.TaskPage.DetailsPage.getInstance().getTariff());
         Assert.assertEquals(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), TasksContentPage.TaskPage.DetailsPage.getInstance().getProvisioningDate());
         Assert.assertEquals("Yes", TasksContentPage.TaskPage.DetailsPage.getInstance().getNotificationOfLowBalance());
         Assert.assertEquals("One-off data 250MB;", TasksContentPage.TaskPage.DetailsPage.getInstance().getBundlesAdded());
@@ -125,29 +138,26 @@ public class TC31965_B15_Add_One_off_Bundle_One_off_bundle_already_exists extend
         Assert.assertEquals(TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getNumberOfEventsByEvent(enity), 1);
         Assert.assertTrue(TasksContentPage.TaskPage.EventsGridSectionPage.getInstance().getDateTimeByIndex(2).startsWith(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT)));
 
-        test.get().info("Step 21: verify context info of SMS service order is correct DB in db");
+        test.get().info("Step 24: verify context info of SMS service order is correct DB in db");
         verifyContextInfoOfSMSServiceOrderIsCorrectInDB();
 
-        test.get().info("Step 22 :re-Load customer in hub net");
+        test.get().info("Step 25 :re-Load customer in hub net");
         CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
 
-        test.get().info("Step 23 : Open details for customer 1st subscription");
+        test.get().info("Step 26 : Open details for customer 1st subscription");
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(serviceRefOf1stSubscription + " Mobile Ref 1");
 
-        test.get().info("Step 24: Verify the one off bundle just added is listed in other products grid");
+        test.get().info("Step 27: Verify the one off bundle just added is listed in other products grid");
         SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage otherProductsGridSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.OtherProductsGridSectionPage.getInstance();
 
         HashMap<String, String> otherProducts = OtherProductEntiy.dataForAnOtherBundleProduct("BUNDLE - [250MB-TUDATA-0300-FC]", "Bundle", "Discount Bundle - [One-off data 250MB]", "£3.00", TimeStamp.Today(), TimeStamp.TodayPlus1MonthMinus16Day());
         Assert.assertEquals(2, otherProductsGridSectionPage.getNumberOfOtherProductsByProduct(otherProducts));
 
-        test.get().info("Step 25: verify the one new discount bundle record generated for cusomter");
+        test.get().info("Step 28: verify the one new discount bundle record generated for cusomter");
         verifyTwoNewDiscountBundleRecordGeneratedForCustomer();
     }
-
-
-
 
 
     private void verifyContextInfoOfSMSServiceOrderIsCorrectInDB() {
@@ -159,19 +169,6 @@ public class TC31965_B15_Add_One_off_Bundle_One_off_bundle_already_exists extend
         Assert.assertEquals(mess, result);
     }
 
-    private void verifyAllDiscountBundleEntriesAlignWithBillRunCalendarEntires(Date newStartDate, String discountGroupCode) {
-        List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountGroupCode);
-        Assert.assertEquals(8, discountBundles.size());
-        verifyFCDiscountBundlesFoBillingGroupMinus15days(discountBundles, newStartDate, "FLX17");
-        verifyNCDiscountBundlesFoBillingGroupMinus15days(discountBundles, newStartDate, "TM500");
-        verifyNCDiscountBundlesFoBillingGroupMinus15days(discountBundles, newStartDate, "TMT5K");
-    }
-
-    private static void verifyDiscountBundlesForNewNCTariff(List<DiscountBundleEntity> allDiscountBundles) {
-        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(allDiscountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayMinus16DaysAdd2Months(), "500-FONMIN-0-FC", "ACTIVE"));
-        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(allDiscountBundles, "NC", TimeStamp.TodayMinus15DaysAdd1Month(), TimeStamp.TodayMinus16DaysAdd2Months(), "500-FONMIN-0-FC", "ACTIVE"));
-        Assert.assertEquals(1, BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(allDiscountBundles, "NC", TimeStamp.TodayMinus15DaysAdd2Months(), TimeStamp.TodayMinus16DaysAdd3Months(), "500-FONMIN-0-FC", "ACTIVE"));
-    }
 
 
     private void verifyMyTariffDetailPageDisplayedWithCorrectData() {
@@ -189,23 +186,26 @@ public class TC31965_B15_Add_One_off_Bundle_One_off_bundle_already_exists extend
         Assert.assertEquals(String.format("%s  (%s  days remaining)", expiryDate, TimeStamp.TodayPlus2MonthMinus16DaysMinusToday(), TimeStamp.DATE_FORMAT_IN_PDF), AddOneOffBundle.getInstance().getExpiryDate());
 
         Assert.assertEquals(1, AddOneOffBundle.getInstance().getRowCountCurrentBundle());
-        HashMap<String, String> expectedEnity = OneOffBundleEnity.getBundleChargesEnity("Bill cap", "£20 safety buffer", "0", "N/A", TimeStamp.TodayPlus1MonthMinus16Day(), "£0.00");
-        // Assert.assertEquals(1,AddOneOffBundle.getInstance().findRowInCurrentBundle(expectedEnity));
+        Assert.assertEquals("£2.50 safety buffer", AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 1));
+        Assert.assertEquals("0", AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 2));
+        Assert.assertEquals("N/A", AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 3));
+        Assert.assertEquals(Parser.parseDateFormate(TimeStamp.TodayPlus1MonthMinus16Day(), TimeStamp.DATE_FORMAT_IN_PDF), AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 4));
+        Assert.assertEquals("£0.00", AddOneOffBundle.getInstance().getCurrentBundleDescriptionByCellValue("Bill cap", 5));
+
         Assert.assertEquals("£0.00", AddOneOffBundle.getInstance().gettotal());
 
         Assert.assertEquals(8, AddOneOffBundle.getInstance().getRowCountAvailableOneOffDataBundleGrid());//UI changed: 2 more rows for header
 
-//        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off FC data 4G - 500MB", "500", TimeStamp.TodayPlus1MonthMinus16Day(), "£5.00");
-//        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
-
-//        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off data 250MB", "250", TimeStamp.TodayPlus1MonthMinus16Day(), "£3.00");
-//        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
-//        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off data 500MB", "500", TimeStamp.TodayPlus1MonthMinus16Day(), "£5.00");
-//        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
-//        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off data 1GB", "1024", TimeStamp.TodayPlus1MonthMinus16Day(), "£7.50");
-//        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
-//        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off text 250MB", "250", TimeStamp.TodayPlus1MonthMinus16Day(), "£3.00");
-//        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffTextBundleGrid(expectedEnity));
+        HashMap<String,String>expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off FC data 4G - 500MB", "500", TimeStamp.TodayPlus1MonthMinus16Day(), "£5.00");
+        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
+        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off data 250MB", "250", TimeStamp.TodayPlus1MonthMinus16Day(), "£3.00");
+        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
+        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off data 500MB", "500", TimeStamp.TodayPlus1MonthMinus16Day(), "£5.00");
+        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
+        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off data 1GB", "1024", TimeStamp.TodayPlus1MonthMinus16Day(), "£7.50");
+        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
+        expectedEnity = OneOffBundleEnity.getAvailableOneOffDataBundleEnity("One-off text 250", "250", TimeStamp.TodayPlus1MonthMinus16Day(), "£3.00");
+        Assert.assertEquals(1, AddOneOffBundle.getInstance().findRowInAvailableOneOffDataBundleGrid(expectedEnity));
 
 
         Assert.assertTrue(AddOneOffBundle.getInstance().isReadOurFairUsagePolicyLinkDisplayed());
@@ -221,7 +221,6 @@ public class TC31965_B15_Add_One_off_Bundle_One_off_bundle_already_exists extend
     private void verifyTwoNewDiscountBundleRecordGeneratedForCustomer() {
         List<DiscountBundleEntity> discountBundles = BillingActions.getInstance().getDiscountBundlesByDiscountGroupCode(discountBundleGroupCode);
         Assert.assertEquals(11, discountBundles.size());
-
         Assert.assertEquals(2, BillingActions.getInstance().findDiscountBundlesByConditionByBundleCode(discountBundles, "NC", TimeStamp.Today(), TimeStamp.TodayMinus16DaysAdd1Month(), "250MB-TUDATA-0300-FC", "ACTIVE"));
 
     }
@@ -238,5 +237,12 @@ public class TC31965_B15_Add_One_off_Bundle_One_off_bundle_already_exists extend
         Assert.assertTrue(MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1").hasAddOrChangeABundleButton());
         Assert.assertTrue(MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1").hasAddOrViewOneoffBundlesButton());
         Assert.assertTrue(MyPersonalInformationPage.MyTariffPage.MyTariffDetailsPage.getInstance("Mobile Ref 1").hasUpdateButton());
+    }
+
+    private void verifyOneOffBundleChargeValuesAreChangedAfterSelecting() {
+        Assert.assertEquals("£15.00", AddOneOffBundle.getInstance().getTariffCharge());
+        Assert.assertEquals("£0.00", AddOneOffBundle.getInstance().getTotalyMonthlyBundlecharge());
+        Assert.assertEquals("£3.00", AddOneOffBundle.getInstance().getNewOneOffBundleCharge());
+        Assert.assertEquals("£6.00", AddOneOffBundle.getInstance().getTotalOneOffBundleCharge());
     }
 }

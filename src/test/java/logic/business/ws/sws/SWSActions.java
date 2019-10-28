@@ -243,5 +243,34 @@ public class SWSActions extends BaseWs {
     public Xml submitGetSubscriptionAuthorityRequest(String subscriptionNumber) {
         return submitGetBySubscriptionNumberRequest(GET_SUBSCRIPTION_AUTHORITY_REQUEST, subscriptionNumber);
     }
+    public void buildForgottenPasswordRequest( String userName,String xpathFile) {
+        request = new Xml(new File(xpathFile));
+        request.setTextByTagName("sel:UserName", userName);
+
+    }
+    public void buildMaintainContactRequest( String customerNumber,String xpathFile) {
+        request = new Xml(new File(xpathFile));
+        request.setTextByTagName("sel:accountnumber", customerNumber);
+
+    }
+    public void buildContactDetailRequest( String username,String xpathFile) {
+        request = new Xml(new File(xpathFile));
+        request.setTextByTagName("sel:UserName", username);
+
+    }
+    public void buildContactDetailRequest( String username,String newUsername,String customerNumber,String xpathFile) {
+        request = new Xml(new File(xpathFile));
+        request.setTextByTagName("sel:UserName", username);
+        request.setTextByTagName("sel:NewUserName", newUsername);
+        request.setTextByTagName("sel:accountnumber", customerNumber);
+
+    }
+
+    public Xml submitTheRequest() {
+        response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
+    }
 }
 

@@ -1,12 +1,17 @@
 package suite.regression.selfcare.modifyaccount;
 
 
+import framework.config.Config;
+import framework.utils.Log;
+import framework.utils.RandomCharacter;
 import logic.business.db.billing.BillingActions;
 import logic.business.db.billing.CommonActions;
 import logic.business.entities.CardDetailsEntity;
 import logic.business.entities.FinancialTransactionEnity;
 import logic.business.entities.ServiceOrderEntity;
+import logic.business.helper.FTPHelper;
 import logic.business.helper.RemoteJobHelper;
+import logic.business.helper.SFTPHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.*;
@@ -15,6 +20,7 @@ import logic.pages.care.main.TasksContentPage;
 import logic.pages.selfcare.MakeAOneOffPaymentPage;
 import logic.pages.selfcare.MyPersonalInformationPage;
 import logic.pages.selfcare.Test3DSecurePage;
+import logic.utils.Common;
 import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.WebElement;
@@ -43,7 +49,7 @@ public class TC33321_B04_Make_a_one_off_payment_overdue_invoice_in_Confirmed_sta
         test.get().info("Step 1 : create an online cc customer with FC 1 bundle of SB and sim only");
         String path = "src\\test\\resources\\xml\\SelfCare\\viewaccount\\onlines_CC_customer_with_2_FC_1_bundle_and_NK2720";
         OWSActions owsActions = new OWSActions();
-        owsActions.createGeneralCustomerOrderForChangePassword(path);
+        owsActions.createGeneralCustomerOrder(path);
         owsActions.getSubscription(owsActions.orderIdNo, "FC Mobile 1");
         subScriptNo1 = owsActions.serviceRef;
         String customerNumber = owsActions.customerNo;
@@ -205,7 +211,7 @@ public class TC33321_B04_Make_a_one_off_payment_overdue_invoice_in_Confirmed_sta
         Assert.assertEquals(SubscriptionContentPage.SubscriptionDetailsPage.SubscriptionFeatureSectionPage.getInstance().getBarringStatus(), expectedBarringStatus);
 
         test.get().info("Step 25 :verify red log in glassfish 3");
-//        verifyRedLogInGlassFish3();
+        verifyRedLogInGlassFish3();
 
     }
 
@@ -262,20 +268,19 @@ public class TC33321_B04_Make_a_one_off_payment_overdue_invoice_in_Confirmed_sta
         ServiceOrdersPage.SelectSubscription.getInstance().clickReturnToCustomer();
     }
 
-//    public  void verifyRedLogInGlassFish3()
-//    {
-//        String env = Config.getProp("cdrFolder");
-//        env=env.substring(env.indexOf("/En")-1,env.indexOf("/En"));
-//        String ftpFile = "/opt/payara/payara5/glassfish/domains/public-" + env + "-apps/logs/" + "reds.log";
-//        String localFile = Common.getFolderLogFilePath();
-//        String fileName =Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT2)+ RandomCharacter.getRandomNumericString(9)+"reds.log";
-//        FTPHelper.getInstance().downLoadFromGrassFish(ftpFile,fileName,localFile);
-//        Log.info("Reds log file:" + localFile);
-//        String redslogfile = Common.readFile(localFile+fileName);
-//        Assert.assertTrue(redslogfile.contains("DIV_NUM:TESCOGBPWEBAH"));
-//        Assert.assertTrue(redslogfile.contains("Amount:2000"));
-//
-//
-//    }
+    public  void verifyRedLogInGlassFish3()
+    {
+        String env = Config.getProp("cdrFolder");
+        env=env.substring(env.indexOf("/En")-1,env.indexOf("/En"));
+        String ftpFile = "/opt/payara/payara5/glassfish/domains/trust-" + env + "-ser/logs/" ;
+        String localFile = Common.getFolderLogFilePath();
+        FTPHelper.getGFInstance().downLoadFromDisk(ftpFile,"reds.log",localFile);
+        Log.info("Reds log file:" + localFile+"reds.log");
+        String redslogfile = Common.readFile(localFile+"red.logs");
+        Assert.assertTrue(redslogfile.contains("DIV_NUM:TESCOGBPWEBAH"));
+        Assert.assertTrue(redslogfile.contains("Amount:2000"));
+
+
+    }
 
 }
