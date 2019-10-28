@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<S:Envelope
+        xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+    <S:Body>
+        <getInvoiceHistoryResponse
+                xmlns="http://selfcare.telco.hsntech.com"
+        >
+            <accountNumber>$accountNumber$</accountNumber>
+        </getInvoiceHistoryResponse>
+    </S:Body>
+</S:Envelope>

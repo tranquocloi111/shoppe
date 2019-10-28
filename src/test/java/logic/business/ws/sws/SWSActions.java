@@ -4,8 +4,11 @@ import framework.utils.Log;
 import framework.utils.Soap;
 import framework.utils.Xml;
 import logic.business.ws.BaseWs;
+import logic.utils.Parser;
+import logic.utils.TimeStamp;
 
 import java.io.File;
+import java.sql.Date;
 
 public class SWSActions extends BaseWs {
     //region XML files
@@ -220,10 +223,11 @@ public class SWSActions extends BaseWs {
         return submitGetByCustomerNumberRequest(GET_INVOICE_DETAIL_REQUEST, customerNumber);
     }
 
-    public Xml submitGetInvoiceHistoryRequest(String customerNumber, String startDate) {
+    public Xml submitGetInvoiceHistoryRequest(String customerNumber, Date startDate) {
+        String sStartDate = Parser.parseDateFormate(startDate, TimeStamp.DATE_FORMAT_XML);
         request = new Xml(new File(GET_INVOICE_HISTORY_REQUEST));
         request.setTextByTagName("sel:accountNumber", customerNumber);
-        request.setTextByTagName("sel:startDate", startDate);
+        request.setTextByTagName("sel:startDate", sStartDate);
 
         response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());
@@ -232,7 +236,7 @@ public class SWSActions extends BaseWs {
     }
 
     public Xml submitGetInvoiceHistoryByAccountNoRequest(String customerNumber) {
-        String filePath = "src\\test\\resources\\xml\\sws\\getinvoice\\Get_Invoice_History_By_AccountNo_Request.xml";
+        String filePath = "src\\test\\resources\\xml\\sws\\getinvoicehistory\\Get_Invoice_History_By_AccountNo_Request.xml";
         return submitGetByCustomerNumberRequest(filePath, customerNumber);
     }
 

@@ -7,7 +7,7 @@
             <rows>
                 <row>
                     <item>Estimate of Usage Charges is current as of:</item>
-                    <item align="right">$currentDateTime$</item>
+                    <item align="right">$estimateOfUsageCharges$</item>
                 </row>
                 <row>
                     <item>Date of next invoice:</item>
