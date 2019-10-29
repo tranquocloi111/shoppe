@@ -84,7 +84,7 @@ public class MyPersonalInformationPage extends BasePage {
             @FindBy(xpath = "//a[@id='viewAgreementButton']")
             WebElement viewAgreementButton;
 
-            @FindBy(id = "plugin")
+            @FindBy(xpath = "//embed[@id='plugin']")
             WebElement embeddedPdfForm;
 
             public static MyTariffDetailsPage getInstance(String name) {
@@ -318,7 +318,7 @@ public class MyPersonalInformationPage extends BasePage {
             public void savePDFFile(String fileName) {
                 String parent = getTitle();
                 switchWindow("Your Agreement", false);
-                String url = embeddedPdfForm.getAttribute("src");
+                String url = getDriver().getCurrentUrl();
                 MiscHelper.saveFileFromWebRequest(url, fileName);
 
                 switchWindow(parent, false);

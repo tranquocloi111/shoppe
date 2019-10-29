@@ -1,14 +1,20 @@
 package suite.regression.selfcare.modifyaccount;
 
 
+import framework.config.Config;
+import framework.utils.Log;
+import framework.utils.RandomCharacter;
 import logic.business.db.billing.BillingActions;
 import logic.business.entities.*;
+import logic.business.helper.FTPHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.*;
 import logic.pages.care.main.TasksContentPage;
 import logic.pages.selfcare.MakeAOneOffPaymentPage;
 import logic.pages.selfcare.Test3DSecurePage;
+import logic.utils.Common;
+import logic.utils.Parser;
 import logic.utils.TimeStamp;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -164,6 +170,21 @@ Tran Quoc Loi
         Assert.assertEquals(BillingActions.findPaymentGateWayRespond(result, "PA", "APPROVE", "SUCCESS", "00", "CARD_SIGN_OK"), 1);
         Assert.assertEquals(BillingActions.findPayemtGateWayRespondByFraudStatus(result, "OC", "APPROVE", "APPROVE", "00", "ACCEPT"), 1);
         Assert.assertEquals(BillingActions.findPaymentGateWayRespondByTokenStatus(result, "OA", "APPROVE", "APPROVE", "00", "ACTIVE"), 1);
+    }
+    public  void verifyRedLogInGlassFish3()
+    {
+        String env = Config.getProp("cdrFolder");
+        env=env.substring(env.indexOf("/En")-1,env.indexOf("/En"));
+        String sftpFile = "/opt/payara/payara5/glassfish/domains/trust-" + env + "-ser/logs/" + "reds.log";
+        String localFile = Common.getFolderLogFilePath();
+        String fileName = Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT2)+ RandomCharacter.getRandomNumericString(9)+"reds.log";
+        FTPHelper.getGFInstance().downLoadFromDisk(sftpFile,fileName,localFile);
+        Log.info("Reds log file:" + localFile);
+        String redslogfile = Common.readFile(localFile+fileName);
+        Assert.assertTrue(redslogfile.contains("DIV_NUM:TESCOGBPWEBAH"));
+        Assert.assertTrue(redslogfile.contains("Amount:2000"));
+
+
     }
 
 

@@ -45,10 +45,13 @@ public class TC33953_CCA_Paid_and_Remaining_Balance_PDF_Document extends BaseTes
 
         test.get().info("Step 2: create new billing group");
         createNewBillingGroup();
+
         test.get().info("Step 3: update bill group payment collection date to 10 day later ");
         updateBillGroupPaymentCollectionDateTo10DaysLater();
+
         test.get().info("Step 4: set bill group for customer");
         setBillGroupForCustomer(customerNumber);
+
         test.get().info("Step 5: update start date for customer");
         CommonActions.updateCustomerStartDate(customerNumber, TimeStamp.TodayMinus20Days());
 
