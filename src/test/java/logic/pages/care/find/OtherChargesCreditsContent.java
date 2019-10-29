@@ -34,4 +34,8 @@ public class OtherChargesCreditsContent extends BasePage {
     public int getRowNumberOfOtherChargesCreditsContentTable() {
         return table.getRowsCount();
     }
+
+    public List<List<String>> getAllValueOfOtherChargesCredits(){
+        return  table.getAllCellValue();
+    }
 }

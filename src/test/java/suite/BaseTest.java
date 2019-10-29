@@ -387,6 +387,13 @@ public class BaseTest {
         return invoiceNumber;
     }
 
+    protected void openInvoiceDetailsScreen(){
+        MenuPage.LeftMenuPage.getInstance().clickSummaryLink();
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
+        InvoicesContentPage.getInstance().clickInvoiceNumberByIndex(1);
+    }
+
     //end region
 
 }

@@ -117,7 +117,7 @@ public class TC30432_Transfer_amount_to_Credit_Agreement_subscription_deactivate
         billEstimatePerSubscription.expand();
 
         //subscription 1 should be active and it has payment and device in Adjustments, Charges and Credits
-        LiveBillEstimateContentPage.LiveBillEstimate.ChargesToDate.BillEstimatePerSubscription.AdjustmentsChargesAndCredits adjustmentsChargesAndCredits =  billEstimatePerSubscription.new AdjustmentsChargesAndCredits();
+        LiveBillEstimateContentPage.LiveBillEstimate.ChargesToDate.BillEstimatePerSubscription.AdjustmentsChargesAndCredits adjustmentsChargesAndCredits =  billEstimatePerSubscription.new AdjustmentsChargesAndCredits(subNo1 + "  Mobile Ref 1");
         adjustmentsChargesAndCredits.expand();
         int sizeOfAdjustment =  adjustmentsChargesAndCredits.getNumberOfServiceOrders(AdjustmentsChargesAndCreditsEntity.getTransferPaymentAdjustmentProducts(TimeStamp.TodayMinus20Days()));
         Assert.assertEquals(2, sizeOfAdjustment);
@@ -126,7 +126,7 @@ public class TC30432_Transfer_amount_to_Credit_Agreement_subscription_deactivate
         billEstimatePerSubscription = new LiveBillEstimateContentPage.LiveBillEstimate.ChargesToDate.BillEstimatePerSubscription(subNo2 + "  Mobile Ref 2");
         billEstimatePerSubscription.expand();
 
-        adjustmentsChargesAndCredits =  billEstimatePerSubscription.new AdjustmentsChargesAndCredits();
+        adjustmentsChargesAndCredits =  billEstimatePerSubscription.new AdjustmentsChargesAndCredits(subNo2 + "  Mobile Ref 2");
         adjustmentsChargesAndCredits.expand();
         sizeOfAdjustment =  adjustmentsChargesAndCredits.getNumberOfServiceOrders(AdjustmentsChargesAndCreditsEntity.getTransferPaymentAdjustmentProducts(TimeStamp.TodayMinus20Days()));
         Assert.assertEquals(1, sizeOfAdjustment);

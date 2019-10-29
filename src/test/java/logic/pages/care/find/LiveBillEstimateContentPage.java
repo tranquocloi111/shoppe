@@ -64,14 +64,16 @@ public class LiveBillEstimateContentPage extends BasePage {
 
                 public class AdjustmentsChargesAndCredits {
                     WebElement adjustmentHeaderRow;
+                    WebElement adjustmentsChargesCredits;
                     WebElement adjustmentTable;
                     TableControlBase tableControlBase;
 
-                    public AdjustmentsChargesAndCredits() {
-                        WebElement td = billEsDiv.findElement(By.xpath(".//table/tbody/tr/td[text()='Adjustments, Charges and Credits']"));
+                    public AdjustmentsChargesAndCredits(String title) {
+                        WebElement td = getDriver().findElement(By.xpath(String.format(".//td[@class='GroupHeader' and contains(.,'%s')]", title)));
                         adjustmentHeaderRow = td.findElement(By.xpath(".//ancestor::tr[1]"));
                         WebElement secondRow = adjustmentHeaderRow.findElement(By.xpath(".//following-sibling::tr[1]"));
-                        adjustmentTable = secondRow.findElement(By.tagName("table"));
+                        adjustmentsChargesCredits = secondRow.findElement(By.xpath(".//table[.//td[text()='Adjustments, Charges and Credits']]"));
+                        adjustmentTable = adjustmentsChargesCredits.findElement(By.tagName("table"));
                         tableControlBase = new TableControlBase(adjustmentTable);
                     }
 
@@ -84,7 +86,7 @@ public class LiveBillEstimateContentPage extends BasePage {
                     }
 
                     public void expand() {
-                        click(adjustmentHeaderRow.findElement(By.tagName("a")));
+                        click(adjustmentsChargesCredits.findElement(By.tagName("a")));
                     }
 
                     public List<List<String>> getAllValueAdjustmentsOrders() {

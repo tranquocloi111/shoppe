@@ -356,4 +356,18 @@ public class RemoteJobHelper {
         submitRemoteJobs("DMExtract.sh -e $HUB_SID -t A -j", currentMaxJobId, "DataMart Data Extract");
         return waitForRemoteJobComplete(currentMaxJobId, "DataMart Data Extract");
     }
+
+    public void submitTreatmentJob(Date date) {
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs(String.format("treatment.sh -a %s -R", Parser.parseDateFormate(date, "yyyyMMdd")), currentMaxJobId, "Treatment Batch run");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Treatment Batch run");
+        waitForRemoteJobComplete(remoteJobId, "Automatic Treatment Letters");
+    }
+
+    public void submitTreatmentJob(String date) {
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs(String.format("treatment.sh -a %s -R", date), currentMaxJobId, "Treatment Batch run");
+        remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Treatment Batch run");
+        waitForRemoteJobComplete(remoteJobId, "Automatic Treatment Letters");
+    }
 }

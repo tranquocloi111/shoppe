@@ -213,6 +213,16 @@ public class TasksContentPage extends BasePage {
             @FindBy(xpath = "//td[contains(text(),'Root BUID:')]/following-sibling::td[1]")
             WebElement lblRootBuid;
 
+            @FindBy(xpath = "//td[contains(text(),'Deactivation Reason:')]/following-sibling::td[1]")
+            WebElement lblDeactivationReason;
+
+            @FindBy(xpath = "//td[contains(text(),'Barring Status - Outbound:')]/following-sibling::td[1]")
+            WebElement lblBarringStatusOutbound;
+
+            @FindBy(xpath = "//td[contains(text(),'Barring Status - Both-Way:')]/following-sibling::td[1]")
+            WebElement lblBarringStatusBothWay;
+
+
             @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Details')]/../../..//following-sibling::div[1]//table")
             WebElement detailTable;
             TableControlBase tableControlBase = new TableControlBase(detailTable);
@@ -413,6 +423,18 @@ public class TasksContentPage extends BasePage {
 
             public String getRootBuid() {
                 return getTextOfElement(lblRootBuid);
+            }
+
+            public String getDeactivationReason() {
+                return getTextOfElement(lblDeactivationReason);
+            }
+
+            public String getBarringStatusOutbound() {
+                return getTextOfElement(lblBarringStatusOutbound);
+            }
+
+            public String getBarringStatusBothWay() {
+                return getTextOfElement(lblBarringStatusBothWay);
             }
         }
     }

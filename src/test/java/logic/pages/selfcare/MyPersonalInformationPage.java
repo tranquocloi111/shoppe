@@ -45,7 +45,7 @@ public class MyPersonalInformationPage extends BasePage {
         }
 
         public List<List<String>> getAllValueOfOrdersAndContractPage(){
-            return tableControlBase.getAllCellValueWithoutColumName();
+            return tableControlBase.getAllCellValueWithoutColumnName();
         }
     }
 

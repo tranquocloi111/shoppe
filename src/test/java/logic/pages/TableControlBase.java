@@ -513,7 +513,7 @@ public class TableControlBase extends BasePage {
         }
     }
 
-    public List<List<String>> getAllCellValueWithoutColumName() {
+    public List<List<String>> getAllCellValueWithoutColumnName() {
         List<List<String>> hashMapList = new ArrayList<>();
         List<WebElement> body = getBody();
         for (int i = 0; i < body.size(); i++) {

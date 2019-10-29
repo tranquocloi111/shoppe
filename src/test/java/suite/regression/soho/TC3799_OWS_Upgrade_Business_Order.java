@@ -345,7 +345,7 @@ public class TC3799_OWS_Upgrade_Business_Order extends BaseTest {
         billEstimatePerSubscription.expand();
 
         //subscription 1 should be active and it has payment and device in Adjustments, Charges and Credits
-        LiveBillEstimateContentPage.LiveBillEstimate.ChargesToDate.BillEstimatePerSubscription.AdjustmentsChargesAndCredits adjustmentsChargesAndCredits =  billEstimatePerSubscription.new AdjustmentsChargesAndCredits();
+        LiveBillEstimateContentPage.LiveBillEstimate.ChargesToDate.BillEstimatePerSubscription.AdjustmentsChargesAndCredits adjustmentsChargesAndCredits =  billEstimatePerSubscription.new AdjustmentsChargesAndCredits(subNo1 + "  Mobile 1");
         adjustmentsChargesAndCredits.expand();
         List<String> list = new ArrayList<>();
         list.add(Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));

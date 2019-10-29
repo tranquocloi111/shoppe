@@ -1,10 +1,12 @@
 package suite.regression.ocs;
 
+import framework.utils.Log;
 import framework.utils.Pdf;
 import framework.utils.RandomCharacter;
 import framework.utils.Xml;
 import logic.business.db.billing.CommonActions;
 import logic.business.helper.RemoteJobHelper;
+import logic.business.helper.SFTPHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
@@ -31,26 +33,26 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN_To_OCS extends BaseTest {
-    private String customerNumber = "47755393";
-    private String orderId = "8701480";
-    private String firstName = "first737863077";
-    private String lastName = "last679564728";
+public class TC5470_OWS_Care_CSA_Upgrade_Order_Change_Tariff_Validation_From_Ocs_To_Ocs extends BaseTest {
+    private String customerNumber = "47757393";
+    private String orderId = "8701578";
+    private String firstName = "first713056674";
+    private String lastName = "last571440380";
     private String subNo1 = "07647064770";
     private String inactiveSubNo1 = "07647064770";
-    private String userName = "un448969177@hsntech.com";
+    private String userName = "un610662208@hsntech.com";
     private String passWord = "password1";
     private String serviceOrderId = "12453";
     private OWSActions owsActions;
     private Date newStartDate;
     private String discountGroupCode;
 
-    @Test(enabled = true, description = "TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN_To_OCS", groups = "OCS")
-    public void TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN_To_OCS() {
-        test.get().info("Step 1 : Create a Customer with HPIN Account");
-        CommonActions.updateHubProvisionSystem("H");
+    @Test(enabled = true, description = "TC5470_OWS_Care_CSA_Upgrade_Order_Change_Tariff_Validation_From_Ocs_To_Ocs", groups = "OCS")
+    public void TC5470_OWS_Care_CSA_Upgrade_Order_Change_Tariff_Validation_From_Ocs_To_Ocs() {
+        test.get().info("Step 1 : Create a Customer with OCS Account");
+        CommonActions.updateHubProvisionSystem("B");
         owsActions = new OWSActions();
-        String path = "src\\test\\resources\\xml\\ocs\\TC4996_Hpin_Request.xml";
+        String path = "src\\test\\resources\\xml\\ocs\\TC5470_Care_CSA_Ocs_Request_Type.xml";
         owsActions.createOcsCustomerRequest(path, true, "");
 
         test.get().info("Step 2 : Create new billing group");
@@ -61,6 +63,8 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
 
         test.get().info("Step 4 : Set bill group for customer");
         customerNumber = owsActions.customerNo;
+        firstName = owsActions.firstName;
+        lastName = owsActions.lastName;
         setBillGroupForCustomer(customerNumber);
 
         test.get().info("Step 5 : Update start date for customer");
@@ -72,9 +76,8 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
         owsActions.getOrder(orderId);
         subNo1 = owsActions.getOrderMpnByReference(1);
 
-        test.get().info("Step 7 : Upgrade Order With Business Type");
-        CommonActions.updateHubProvisionSystem("B");
-        path = "src\\test\\resources\\xml\\ocs\\TC5469_upgrade_request_ocs_type.xml";
+        test.get().info("Step 7 : Upgrade Tariff from lower to higher");
+        path = "src\\test\\resources\\xml\\ocs\\TC5470_care_csa_upgrade_request_ocs_type.xml";
         owsActions.upgradeOrderWithoutAcceptUrl(path, customerNumber, subNo1);
         orderId = owsActions.orderIdNo;
 
@@ -115,13 +118,15 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
         verifyInvoiceDetail();
 
         test.get().info("Step 16 : Login to SelfCare ");
+        userName = owsActions.username;
+        passWord = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
         test.get().info("Step 17 : Validate the order confirmations screen in Self Care");
         MyPersonalInformationPage.MyPreviousOrdersPage myPreviousOrdersPage = MyPersonalInformationPage.MyPreviousOrdersPage.getInstance();
         List<String> orderAndContract = new ArrayList<>();
         orderAndContract.add("#"+orderId);
-        orderAndContract.add("Online");
+        orderAndContract.add("Telesales");
         Assert.assertEquals(Common.compareList(myPreviousOrdersPage.getAllValueOfOrdersAndContractPage(), orderAndContract), 1);
 
         test.get().info("Step 18 : Validate the Contract PDF in Self Care");
@@ -136,7 +141,7 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
     private void verifyGetOrderRequestAreCorrect(Xml xml){
         String localTime = Common.getCurrentLocalTime();
         String actualFile = Common.saveXmlFile(customerNumber + localTime +"_ActualResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(xml.toString())));
-        String file =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC5469_Get_Order_Response.xml")
+        String file =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC5470_Get_Order_Response.xml")
                 .replace("$orderId$", orderId)
                 .replace("$firstName$", firstName)
                 .replace("$lastName$", lastName)
@@ -156,13 +161,13 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
         String fileName = orderConfirmationPage.saveContractPdfFile(customerNumber);
         String localFile = Common.getFolderLogFilePath() + fileName;
         List<String> pdfList = Pdf.getInstance().getText(localFile, 1,1);
-        Assert.assertEquals(pdfList.get(2), String.format("%s %s £0.00", Parser.parseDateFormate(TimeStamp.Today(), "dd MMMM yyyy"), orderId));
-        Assert.assertEquals(pdfList.get(4), String.format("Name: Mr %s %s", firstName, lastName));
-        Assert.assertEquals(pdfList.get(5), "Address: 6 LUKIN STREET, LONDON E1 0AA");
-        Assert.assertEquals(pdfList.get(7), String.format("Number: %s", subNo1));
-        Assert.assertEquals(pdfList.get(9), "Tariff: £10 36Mth Smartphone Tariff 100 Mins 5000 Texts");
-        Assert.assertEquals(pdfList.get(16), "Total upfront cost: £0.00");
-        Assert.assertEquals(pdfList.get(18), "Monthly charges: £10.00");
+        Assert.assertTrue(pdfList.contains(String.format("%s %s £0.00", Parser.parseDateFormate(TimeStamp.Today(), "dd MMMM yyyy"), orderId)));
+        Assert.assertTrue(pdfList.contains(String.format("Name: Mr %s %s", firstName, lastName)));
+        Assert.assertTrue(pdfList.contains("Address: 6 LUKIN STREET, LONDON E1 0AA"));
+        Assert.assertTrue(pdfList.contains(String.format("Number: %s", subNo1)));
+        Assert.assertTrue(pdfList.contains("Tariff: £10 36Mth Smartphone Tariff 100 Mins 5000 Texts"));
+        Assert.assertTrue(pdfList.contains("Total upfront cost: £0.00"));
+        Assert.assertTrue(pdfList.contains("Monthly charges: £10.00"));
     }
 
     private void verifyServiceOrdersAreCreatedCorrectly(){
@@ -177,11 +182,11 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
         serviceOrders.clickServiceOrderByType("Sales Order");
         TasksContentPage.TaskPage.EventsGridSectionPage eventsGridSectionPage = TasksContentPage.TaskPage.EventsGridSectionPage.getInstance();
         Assert.assertEquals(TasksContentPage.TaskPage.TaskSummarySectionPage.getInstance().getStatus(), "Completed Task");
-        Assert.assertEquals(eventsGridSectionPage.getRowNumberOfEventGird(),20);
+        Assert.assertEquals(eventsGridSectionPage.getRowNumberOfEventGird(),18);
 
         TasksContentPage.TaskPage.DetailsPage detailsPage = TasksContentPage.TaskPage.DetailsPage.getInstance();
         Assert.assertEquals(detailsPage.getMasterMpn(), inactiveSubNo1 + " Mobile 1(Inactive)");
-        Assert.assertEquals(detailsPage.getSalesChannel(), "Onlines");
+        Assert.assertEquals(detailsPage.getSalesChannel(), "Care (CSA)");
         Assert.assertEquals(detailsPage.getOrderType(), "New Order");
         Assert.assertEquals(detailsPage.getRootBuid(), customerNumber);
 
@@ -214,7 +219,7 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
         Assert.assertEquals(taskSummarySectionPage.getDescription(),"Upgrade Order");
 
         detailsPage = TasksContentPage.TaskPage.DetailsPage.getInstance();
-        Assert.assertEquals(detailsPage.getSalesChannel(), "Onlines");
+        Assert.assertEquals(detailsPage.getSalesChannel(), "Care (CSA)");
         Assert.assertEquals(detailsPage.getServiceNo(), subNo1);
         Assert.assertEquals(detailsPage.getTariffProductCode(), "FC36-1000-100");
 
@@ -232,44 +237,45 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
 
     private void verifyTrustServerLog(){
         String localTime = Common.getCurrentLocalTime();
-//        String ftpFile = "/opt/payara/payara5/glassfish/domains/trusted-R2-silo/logs/";
-//        String localFile = Common.getFolderLogFilePath() + "sds.txt";
-//        List<String> allFileName= FTPHelper.getInstance().getAllFileName(ftpFile);
-//        FTPHelper.getInstance().downLoadFromDisk(ftpFile, allFileName.get(2), localFile);
-//        Log.info("Server log file:" + localFile);
+        String ftpFile = "/opt/payara/payara5/glassfish/domains/trust-R2-serv/logs/server.log";
+        String localFile = Common.getFolderLogFilePath() + customerNumber + localTime + "_TrustServerLog.txt";
+        SFTPHelper.getGlassFishInstance().downloadGlassFishFile(localFile, ftpFile);
+        Log.info("Server log file:" + localFile);
 
-        String serverLog = Common.getFolderLogFilePath() + "TrustServerLog1.txt";
-        String doReservePath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Do_Reserve.xml")
-                .replace("$orderNumber$", orderId);
-        String doReserveFile = Common.saveXmlFile(customerNumber + localTime +"_doReserve.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doReservePath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, doReserveFile));
+        //Trust Server
+        String trustServerLog = localFile;
+        String doCreateSubscriberRequestMsgPath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4997_Create_Subscriber_Request_Msg.xml")
+                .replace("$custKey$", customerNumber)
+                .replace("$acctKey1$", discountGroupCode)
+                .replace("$subIdentity$", subNo1)
+                .replace("$effectiveTime$", Parser.parseDateFormate(TimeStamp.Today(),"yyyyMMdd"));
+        String createSubscriberRequestMsgFile = Common.saveXmlFile(customerNumber + localTime +"_CreateSubscriberRequestMsg.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doCreateSubscriberRequestMsgPath)));
+        Assert.assertTrue(Common.compareTextsFile(trustServerLog, createSubscriberRequestMsgFile));
 
-        String doReserveResponsePath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Do_Reserve_Response.xml")
-                .replace("$orderNumber$", orderId)
-                .replace("$mobilePhoneNumber$", subNo1);
-        String doReserveResponseFile = Common.saveXmlFile(customerNumber + localTime +"_doReserveResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doReserveResponsePath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, doReserveResponseFile));
+        String doCreateCustomerRequestMsgPath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4997_Create_Customer_Request_Msg.xml")
+                .replace("$custKey$", customerNumber)
+                .replace("$acctKey1$", discountGroupCode)
+                .replace("$subIdentity$", subNo1)
+                .replace("$effectiveTime$", Parser.parseDateFormate(TimeStamp.Today(),"yyyyMMdd"));
+        String createCustomerRequestMsgFile = Common.saveXmlFile(customerNumber + localTime +"_CreateCustomerRequestMsg.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doCreateCustomerRequestMsgPath)));
+        Assert.assertTrue(Common.compareTextsFile(trustServerLog, createCustomerRequestMsgFile));
 
-        String createOrderResponsePath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Create_Order_Response.xml")
-                .replace("$accountNumber$", customerNumber)
-                .replace("$orderId$", orderId);
-        String createOrderResponseFile = Common.saveXmlFile(customerNumber + localTime +"_createOrderResponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(createOrderResponsePath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, createOrderResponseFile));
+        //Public Server
+        ftpFile = "/opt/payara/payara5/glassfish/domains/public-R2-serv/logs/server.log";
+        localFile = Common.getFolderLogFilePath() + customerNumber + localTime + "_PublicServerLog.txt";
+        SFTPHelper.getGlassFishInstance().downloadGlassFishFile(localFile, ftpFile);
+        Log.info("Server log file:" + localFile);
 
-        String doConfirmPath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Do_Confirm.xml")
-                .replace("$accountNumber$", customerNumber)
-                .replace("$orderNumber$", orderId)
-                .replace("$mobilePhoneNumber$", subNo1)
-                .replace("$firstName$", firstName)
-                .replace("$lastName$", lastName)
-                .replace("$secondReference$", userName);
-        String doConfirmFile = Common.saveXmlFile(customerNumber + localTime +"_doConfirm.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doConfirmPath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, doConfirmFile));
+        String publicServerLog = localFile;
+        Assert.assertTrue(Common.compareTextsFile(publicServerLog, createSubscriberRequestMsgFile));
 
-        String doConfirmResponsePath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Do_Confirm_Response.xml")
-                .replace("$orderNumber$", orderId);
-        String doConfirmResponseFile = Common.saveXmlFile(customerNumber + localTime +"_doConfirmReponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doConfirmResponsePath)));
-        Assert.assertTrue(Common.compareTextsFile(serverLog, doConfirmResponseFile));
+        String doPublicCreateCustomerRequestMsgPath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4997_Public_Create_Customer_Request_Msg.xml")
+                .replace("$custKey$", customerNumber)
+                .replace("$acctKey1$", discountGroupCode)
+                .replace("$subIdentity$", subNo1)
+                .replace("$effectiveTime$", Parser.parseDateFormate(TimeStamp.Today(),"yyyyMMdd"));
+        String publicCreateCustomerRequestMsgFile = Common.saveXmlFile(customerNumber + localTime +"_PublicCreateCustomerRequestMsg.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doPublicCreateCustomerRequestMsgPath)));
+        Assert.assertTrue(Common.compareTextsFile(publicServerLog, publicCreateCustomerRequestMsgFile));
     }
 
     private void checkCreateOcsAccountCommand(){
@@ -307,13 +313,13 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
         InvoicesContentPage.InvoiceDetailsContentPage.getInstance().savePDFFile(fileName);
 
         List<String> listInvoiceContent = InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getListInvoiceContent(fileName,1);
-        Assert.assertEquals(listInvoiceContent.get(71), String.format("User charges for %s  Upgrade Mobile (£10 Tariff 36 Month Contract)", subNo1));
-        Assert.assertEquals(listInvoiceContent.get(74), String.format("Monthly subscription %s %s 10.00", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT4), Parser.parseDateFormate(TimeStamp.getExactDate(TimeStamp.OCTOBER, TimeStamp.NOVEMBER), TimeStamp.DATE_FORMAT4)));
-        Assert.assertEquals(listInvoiceContent.get(75), String.format("Total charges for %s 10.00", subNo1));
-        Assert.assertEquals(listInvoiceContent.get(76), "Total user charges 30.00");
-        Assert.assertEquals(listInvoiceContent.get(85), "Total Adjustments, charges & credits 230.00");
-        //Assert.assertEquals(listInvoiceContent.get(88), "%s Online/Telesales -15.00", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT4));
-        Assert.assertEquals(listInvoiceContent.get(89), "Total Payments -15.00");
+        Assert.assertTrue(listInvoiceContent.contains(String.format("User charges for %s  Upgrade Mobile (£10 Tariff 36 Month Contract)", subNo1)));
+        Assert.assertTrue(listInvoiceContent.contains(String.format("Monthly subscription %s %s 10.00", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT4), Parser.parseDateFormate(TimeStamp.getExactDate(TimeStamp.OCTOBER, TimeStamp.NOVEMBER), TimeStamp.DATE_FORMAT4))));
+        Assert.assertTrue(listInvoiceContent.contains(String.format("Total charges for %s 10.00", subNo1)));
+        Assert.assertTrue(listInvoiceContent.contains("Total user charges 70.00"));
+        Assert.assertTrue(listInvoiceContent.contains("Total Adjustments, charges & credits 660.00"));
+        //Assert.assertTrue(listInvoiceContent.contains(String.format("%s Online/Telesales -15.00", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT4))));
+        Assert.assertTrue(listInvoiceContent.contains("Total Payments -30.00"));
     }
 
 }

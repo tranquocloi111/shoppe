@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 
 public class TimeStamp {
 
@@ -24,7 +25,18 @@ public class TimeStamp {
     public final static String DATE_FORMAT_XML = "yyyy-MM-dd";
     public final static String DATE_TIME_FORMAT = "dd/MM/yyyy hh:mma";
     public final static String DATE_FORMAT_XINVOICE = "dd/MMM/yyyy";
-
+    public final static int JANUARY = 1;
+    public final static int FEBRUARY = 2;
+    public final static int MARCH = 3;
+    public final static int APRIL = 4;
+    public final static int MAY = 5;
+    public final static int JUNE = 6;
+    public final static int JULY = 7;
+    public final static int AUGUST = 8;
+    public final static int SEPTEMBER = 9;
+    public final static int OCTOBER = 10;
+    public final static int NOVEMBER = 11;
+    public final static int DECEMBER = 12;
 
     public static Date Today() {
         return Date.valueOf(LocalDate.now());
@@ -379,5 +391,17 @@ public class TimeStamp {
     }
     public static Date TodayPlus2MonthMinus15Days() {
         return Date.valueOf(LocalDate.now().plusMonths(2).minusDays(15));
+    }
+
+    public static Date getExactDate(int currentMonth, int expectedMonth){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);;
+        int date = 1;
+        calendar.set(year, currentMonth - 1, date);
+        int maxCurrDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        calendar.set(year, expectedMonth - 1, date);
+        int maxExpectedDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int day = maxExpectedDay - maxCurrDay;
+        return Date.valueOf(LocalDate.now().plusMonths(expectedMonth - currentMonth).plusDays(day));
     }
 }

@@ -96,6 +96,7 @@ public class InvoicesContentPage extends BasePage {
 
         @FindBy(xpath = "//td[contains(text(),'End:')]/following-sibling::td[1]")
         WebElement end;
+
         @FindBy(xpath = "//td[contains(text(),'Net Amount:')]/following-sibling::td[1]")
         WebElement netAmount;
 
@@ -104,6 +105,9 @@ public class InvoicesContentPage extends BasePage {
 
         @FindBy(id = "plugin")
         WebElement embeddedPdfForm;
+
+        @FindBy(xpath = "//td[contains(text(),'Next Treatment Date:')]/following-sibling::td[1]")
+        WebElement lblNextTreatmentDate;
 
         public void saveFileFromWebRequest(String customerNumber) {
             String[] param = btnViewPdf.getAttribute("href").split(",");
@@ -160,6 +164,10 @@ public class InvoicesContentPage extends BasePage {
         public void clickViewPDFBtn()
         {
             click(btnViewPdf);
+        }
+
+        public String getNextTreatmentDate() {
+            return getTextOfElement(lblNextTreatmentDate);
         }
     }
 
