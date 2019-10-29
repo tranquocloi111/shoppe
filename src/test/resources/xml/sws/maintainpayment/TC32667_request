@@ -1,0 +1,16 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <sel:maintainPaymentRequest>
+            <sel:externalSystemID>MOBILEAWARE</sel:externalSystemID>
+            <sel:action>ADHOC_PAYMENT</sel:action>
+            <sel:accountNumber>$accountNumber$</sel:accountNumber>
+            <sel:ongoingPaymentMethod>CARD</sel:ongoingPaymentMethod>
+            <sel:amount>21.00</sel:amount>
+            <sel:externalReference>MP-21</sel:externalReference>
+            <sel:cardDetails>
+                <sel:useExistingCard>true</sel:useExistingCard>
+            </sel:cardDetails>
+        </sel:maintainPaymentRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
