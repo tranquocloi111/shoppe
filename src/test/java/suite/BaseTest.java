@@ -231,7 +231,7 @@ public class BaseTest {
 
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
-    public void backDateThePaymentMethodStartDateToTodayMinus1Day(String customerNumber) {
+    public static void backDateThePaymentMethodStartDateToTodayMinus1Day(String customerNumber) {
         String disableTrigger = "ALTER TABLE hmbrproperty DISABLE ALL TRIGGERS";
         String enableTrigger = "ALTER TABLE hmbrproperty ENABLE ALL TRIGGERS";
         String sql = String.format("update hmbrproperty set datestart=sysdate-1 where hmbrid IN (SELECT hmbrid FROM hierarchymbr WHERE buid IN (SELECT buid FROM businessunit WHERE buid =%s OR rootbuid=%s)) AND datestart IS NOT NULL AND propertykey IN ('PAYMT', 'CLUBNUM')", customerNumber, customerNumber);

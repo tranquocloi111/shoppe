@@ -1,0 +1,23 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <sel:maintainPaymentRequest>
+            <sel:externalSystemID>MOBILEAWARE</sel:externalSystemID>
+            <sel:action>UPDATE_CREDIT_CARD</sel:action>
+            <sel:accountNumber>$accountNumber$</sel:accountNumber>
+            <!--Optional:-->
+            <sel:cardDetails>
+                <sel:useExistingCard>false</sel:useExistingCard>
+                <!--Optional:-->
+                <sel:cardName>Mr CardHolder</sel:cardName>
+                <!--Optional:-->
+                <sel:cardNumber>5105105105105111</sel:cardNumber>
+                <!--Optional:-->
+                <sel:cardEndDate>1220</sel:cardEndDate>
+                <sel:cardType>VI</sel:cardType>
+                <!--Optional:-->
+                <sel:cvv>123</sel:cvv>
+            </sel:cardDetails>
+        </sel:maintainPaymentRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
