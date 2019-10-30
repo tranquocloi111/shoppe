@@ -112,22 +112,25 @@ public class ServiceOrdersPage extends BasePage {
             clickReturnToCustomer();
         }
 
-        public void deactivateSubscription() {
+        public void deactivateSubscription(boolean isList) {
             click(ckSubscription);
             enterValueByLabel(deactivationNotes, "Regression Automation");
             clickNextBtn();
             clickNextBtn();
             clickNextBtn();
-
             ReturnsAndEtcPage returnsAndEtcPage = new ReturnsAndEtcPage();
-            enterValueByLabel(returnsAndEtcPage.dateReturnedCtl, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT_IN_PDF));
-            selectByVisibleText(returnsAndEtcPage.assessmentGradeCtl, "Grade 1 - full credit. Phone works or has confirmed manufacture fault. No visible damage. All components included. Box reasonable wear.");
-            enterValueByLabel(returnsAndEtcPage.returnReferenceNoCtl, "1234567890");
+            if (isList){
+                enterValueByLabel(returnsAndEtcPage.dateReturnedCtl, new String[]{Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT_IN_PDF), Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT_IN_PDF)} );
+                selectByVisibleText(returnsAndEtcPage.assessmentGradeCtl, new String[]{"Grade 1 - full credit. Phone works or has confirmed manufacture fault. No visible damage. All components included. Box reasonable wear.","Grade 1 - full credit. Phone works or has confirmed manufacture fault. No visible damage. All components included. Box reasonable wear."});
+                enterValueByLabel(returnsAndEtcPage.returnReferenceNoCtl, new String[]{"1234567890", "1234567890"});
+            }else {
+                enterValueByLabel(returnsAndEtcPage.dateReturnedCtl, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT_IN_PDF));
+                selectByVisibleText(returnsAndEtcPage.assessmentGradeCtl, "Grade 1 - full credit. Phone works or has confirmed manufacture fault. No visible damage. All components included. Box reasonable wear.");
+                enterValueByLabel(returnsAndEtcPage.returnReferenceNoCtl, "1234567890");
+            }
             clickNextBtn();
-
             clickNextBtn();
-            clickReturnToCustomer();
-        }
+            clickReturnToCustomer(); }
 
         public void deactivateSubscriptionWithoutEtc() {
             click(ckSubscription);
@@ -424,24 +427,34 @@ public class ServiceOrdersPage extends BasePage {
         private static ReturnsAndEtcPage instance = new ReturnsAndEtcPage();
         @FindBy(xpath = "//td[@class='pagedesc']")
         WebElement MPN;
+
         @FindBy(xpath = "//td[@class='instuctionalTextHighLight']")
         WebElement IMEI;
+
         @FindBy(className = "PanelList")
         WebElement productTable;
+
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Date Returned:')]/following-sibling::td//input")
-        WebElement dateReturnedCtl;
+        List<WebElement> dateReturnedCtl;
+
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Assessment Grade:')]/following-sibling::td//select")
-        WebElement assessmentGradeCtl;
+        List<WebElement> assessmentGradeCtl;
+
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Non-Return Charge Amount:')]/following-sibling::td//input")
         WebElement nonReturnChargeAmountCtl;
+
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Return Reference Number:')]/following-sibling::td//input")
-        WebElement returnReferenceNoCtl;
+        List<WebElement> returnReferenceNoCtl;
+
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Agent:')]/following-sibling::td//input")
         WebElement agentCtl;
+
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'Notes:')]/following-sibling::td//textarea")
         WebElement notesCtl;
+
         @FindBy(xpath = "//tr/td[contains(@class, 'label') and contains(text(),'ETC Amount:')]/following-sibling::td//input")
         WebElement ETCAmountCtl;
+
 
 
         public static ReturnsAndEtcPage getInstance() {

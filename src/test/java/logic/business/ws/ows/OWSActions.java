@@ -677,6 +677,10 @@ public class OWSActions extends BaseWs {
                     if (!params[i].isEmpty())
                         request.setTextByXpath("//createOrder//@type", params[i]);
                     break;
+                case 4 :
+                    if (!params[i].isEmpty())
+                        request.setTextsByTagName("voucherCode", new String[]{"Clubcard" + RandomCharacter.getRandomNumericString(5), "Tradein" + RandomCharacter.getRandomNumericString(5)});
+                    break;
             }
         }
 

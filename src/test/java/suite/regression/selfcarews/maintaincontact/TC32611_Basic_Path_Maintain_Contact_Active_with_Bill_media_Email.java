@@ -40,7 +40,7 @@ public class TC32611_Basic_Path_Maintain_Contact_Active_with_Bill_media_Email ex
         test.get().info("Step 4 : Build forgotten password request ");
         path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32611_request";
         SWSActions swsActions = new SWSActions();
-//        swsActions.buildForgottenPasswordRequest(owsActions.username, path);
+        swsActions.buildContactDetailRequest(owsActions.username, path);
 
         test.get().info("Step 5:  submit the request to webservice");
         swsActions.submitTheRequest();
