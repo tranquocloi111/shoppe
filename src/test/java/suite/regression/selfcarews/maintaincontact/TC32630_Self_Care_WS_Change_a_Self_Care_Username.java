@@ -19,63 +19,53 @@ public class TC32630_Self_Care_WS_Change_a_Self_Care_Username extends BaseTest {
   String customerNumber;
 
 
-//    @Test(enabled = true, description = "TC32631 selfcare ws maintain contact only user name provided sms", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32630 selfcare ws maintain change a self care username", groups = "SelfCare")
     public void TC32630_Self_Care_WS_Change_a_Self_Care_Username() {
 
         test.get().info("Step 1 : Create a customer ");
         OWSActions owsActions = new OWSActions();
         owsActions.createACCCustomerWithOrder();
         customerNumber = owsActions.customerNo;
-        String firstUserName = owsActions.username;
 
-        test.get().info("Step 1 : Create a second customer ");
-        owsActions.createGeneralCustomerOrder("src\\test\\resources\\xml\\ows\\onlines_CC_customer_with_order.xml",firstUserName);
-        customerNumber = owsActions.customerNo;
-        String anotherUserName = owsActions.username;
-
-        test.get().info("Step 1 : Load user in the hub net");
+        test.get().info("Step 2: Load user in the hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("Step 1 :verify customer email address and username");
+        test.get().info("Step 3:verify customer email address and username");
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         Assert.assertEquals(owsActions.email, DetailsContentPage.AddressInformationPage.getInstance().getEmail());
         MenuPage.LeftMenuPage.getInstance().clickSelfCareSetting();
         Assert.assertEquals(SelfCareSettingContentPage.SelfCareSettingSection.getInstance().getUserName(),owsActions.username);
 
-        test.get().info("Step 1 :verify bill type is summary");
+        test.get().info("Step 4:verify bill type is summary");
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         Assert.assertEquals("Summary", DetailsContentPage.BillingInformationSectionPage.getInstance().getBillStyle());
 
-        test.get().info("Step 1 : Build maintain contact detail request ");
-        String path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC3526_request";
+        test.get().info("Step 5 : Build maintain contact detail request ");
+        String path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC70_request";
         SWSActions swsActions = new SWSActions();
-        swsActions.buildContactDetailRequest(firstUserName,anotherUserName,customerNumber, path);
+        String newUserName= String.format("NewName%s@hsntech.com", RandomCharacter.getRandomNumericString(9));
+        String newEmailAddress =  String.format("NewEmail%s@hsntech.com", RandomCharacter.getRandomNumericString(9));
+        swsActions.buildContactDetailRequest(owsActions.username,newUserName,newEmailAddress,customerNumber, path);
 
-        test.get().info("Step 1  submit the request to webservice");
+        test.get().info("Step 6: submit the request to webservice");
         Xml response= swsActions.submitTheRequest();
 
 
-        test.get().info("Step 1  verify selfcare ws fault response");
-        SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
-        selfCareWSTestBase.verifySelfCareWSFaultResponse(response, buildFaultResponse());
+        test.get().info("Step 7:  verify selfcare ws fault response");
+        Assert.assertEquals(customerNumber,response.getTextByTagName("accountNumber"));
+        Assert.assertEquals("0",response.getTextByTagName("responseCode"));
+        Assert.assertEquals("",response.getTextByTagName("message"));
 
+        test.get().info("Step 8: verify customer email addres and user name are updated successfully");
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+        MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
+        Assert.assertEquals(newEmailAddress,DetailsContentPage.AddressInformationPage.getInstance().getEmail());
 
-
-
+        MenuPage.LeftMenuPage.getInstance().clickSelfCareSetting();
+        Assert.assertEquals(newUserName,SelfCareSettingContentPage.SelfCareSettingSection.getInstance().getUserName());
     }
 
-    private ErrorResponseEntity buildFaultResponse(){
-        ErrorResponseEntity falseResponse = new ErrorResponseEntity();
-        falseResponse.setFaultCode("SC_040");
-        falseResponse.setFaultString("New Username already in use");
-        falseResponse.setCodeAttribute("SC_040");
-        falseResponse.setTypeAttribute("ERROR");
-        falseResponse.setDescription("New Username already in use");
-        falseResponse.setExceptionMsg("New Username already in use");
-        falseResponse.setExceptionCauseMsg("New Username already in use");
 
-        return falseResponse;
-    }
 
 
 }

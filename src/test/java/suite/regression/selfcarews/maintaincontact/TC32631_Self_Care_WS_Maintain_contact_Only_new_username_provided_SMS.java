@@ -20,7 +20,7 @@ public class TC32631_Self_Care_WS_Maintain_contact_Only_new_username_provided_SM
   String customerNumber;
 
 
-//    @Test(enabled = true, description = "TC32631 selfcare ws maintain contact only user name provided sms", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32631 selfcare ws maintain contact only user name provided sms", groups = "SelfCare")
     public void TC32631_Self_Care_WS_Miantain_contact_Only_new_username_provided_SMS() {
         //-----------------------------------------
         //Create an customer account with default values for new customer
@@ -31,7 +31,7 @@ public class TC32631_Self_Care_WS_Maintain_contact_Only_new_username_provided_SM
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         customerNumber = owsActions.customerNo;
-        String newUserName = String.format("NewName%@hsntech.com", RandomCharacter.getRandomNumericString(9));
+        String newUserName = String.format("NewName%s@hsntech.com", RandomCharacter.getRandomNumericString(9));
 
         test.get().info("Step 1 : Load user in the hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
@@ -56,16 +56,16 @@ public class TC32631_Self_Care_WS_Maintain_contact_Only_new_username_provided_SM
 
 
         test.get().info("Step 1  verify maintain contact response");
-        Assert.assertEquals(response.getTextByTagName("telco:message"),normalMaintainContactReponseData().getMessage());
-        Assert.assertEquals(response.getTextByTagName("telco:responseCode"),normalMaintainContactReponseData().getResponseCode());
-        Assert.assertEquals(response.getTextByTagName("telco:accountNumber"),normalMaintainContactReponseData().getAccountNumber());
+        Assert.assertEquals(response.getTextByTagName("message"),normalMaintainContactReponseData().getMessage());
+        Assert.assertEquals(response.getTextByTagName("responseCode"),normalMaintainContactReponseData().getResponseCode());
+        Assert.assertEquals(response.getTextByTagName("accountNumber"),normalMaintainContactReponseData().getAccountNumber());
 
         test.get().info("Step 1  verify only customer user name is updated and email address not change");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
-        Assert.assertEquals(owsActions.username, DetailsContentPage.AddressInformationPage.getInstance().getEmail());
+        Assert.assertEquals(owsActions.email, DetailsContentPage.AddressInformationPage.getInstance().getEmail());
         MenuPage.LeftMenuPage.getInstance().clickSelfCareSetting();
-        Assert.assertEquals(SelfCareSettingContentPage.SelfCareSettingSection.getInstance().getUserName(),owsActions.username);
+        Assert.assertEquals(SelfCareSettingContentPage.SelfCareSettingSection.getInstance().getUserName(),newUserName);
 
 
 

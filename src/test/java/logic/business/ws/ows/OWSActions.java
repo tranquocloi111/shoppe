@@ -658,6 +658,7 @@ public class OWSActions extends BaseWs {
         request.setTextByTagName(commonModMap);
         request.setTextByTagName("billGroupId", "906");
         request.setTextByTagName("password", "password1");
+
         for (int i = 0; i < params.length; i++) {
             switch (i) {
                 case 0:
@@ -756,27 +757,7 @@ public class OWSActions extends BaseWs {
         return Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
     }
 
-    public void createGeneralCustomerOrder(String path,String username) {
-        request = new Xml(new File(path));
-        request.setTextByTagName(commonModMap);
-        request.setTextByTagName("billGroupId", "2");
-        request.setTextByTagName("password", "password1");
-        request.setTextByTagName("username", username);
 
-        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
-        Log.info("Response: " + response.toString());
-        setCustomerNo();
-        Log.info("Account number:" + customerNo);
-        setOrderIdNo();
-        Log.info("OrderId number:" + orderIdNo);
-        setUsername();
-        setFirstName();
-        setLastName();
-        setPassword();
-        setFullName();
-        setEmail();
-        checkAsyncProcessIsCompleted(orderIdNo);
-    }
 
     //endregion
 
