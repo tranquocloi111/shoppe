@@ -47,8 +47,8 @@ public class RemoteJobHelper {
         }
 
         MiscHelper.executeFuncntion(5, () ->{
-            submitRemoteJob(command);
-            //submitRemoteJob(command, jobDescr);
+            //submitRemoteJob(command);
+            submitRemoteJob(command, jobDescr);
             return Parser.asInteger(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "numberJob")) > 0;
         }, 5);
     }
@@ -201,12 +201,12 @@ public class RemoteJobHelper {
                 } else {
                     resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
                 }
-                Thread.sleep(2000);
+                Thread.sleep(5000);
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.error(e.getMessage());
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.error(e.getMessage());
         }
 
         int billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
