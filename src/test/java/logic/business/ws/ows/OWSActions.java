@@ -658,8 +658,6 @@ public class OWSActions extends BaseWs {
         request.setTextByTagName(commonModMap);
         request.setTextByTagName("billGroupId", "906");
         request.setTextByTagName("password", "password1");
-        request.setTextByTagName();
-
         for (int i = 0; i < params.length; i++) {
             switch (i) {
                 case 0:
@@ -677,6 +675,10 @@ public class OWSActions extends BaseWs {
                 case 3:
                     if (!params[i].isEmpty())
                         request.setTextByXpath("//createOrder//@type", params[i]);
+                    break;
+                case 4 :
+                    if (!params[i].isEmpty())
+                        request.setTextsByTagName("voucherCode", new String[]{"Clubcard" + RandomCharacter.getRandomNumericString(5), "Tradein" + RandomCharacter.getRandomNumericString(5)});
                     break;
             }
         }

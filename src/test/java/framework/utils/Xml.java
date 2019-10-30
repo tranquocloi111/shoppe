@@ -222,4 +222,11 @@ public class Xml {
         return nodes.item(0).getAttributes().getNamedItem(attributeName).getNodeValue();
     }
 
+    public void setTextsByTagName(String tagName, String[] value) {
+        NodeList nodes = getElementsByTagName(tagName);
+        for (int i = 0; i < nodes.getLength(); i++) {
+            nodes.item(i).setTextContent(value[i]);
+        }
+    }
+
 }

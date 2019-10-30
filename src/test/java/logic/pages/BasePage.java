@@ -381,6 +381,21 @@ public class BasePage {
         MiscHelper.saveFileFromWebRequest(url, fileName);
         switchWindow(parent, false);
     }
+
+    protected void enterValueByLabel(List<WebElement> element, String... val) {
+        for (int i = 0; i < element.size(); i++) {
+            element.get(i).clear();
+            element.get(i).sendKeys(val[i]);
+        }
+    }
+
+    protected void selectByVisibleText(List<WebElement> element, String... value) {
+        for (int i = 0; i < element.size(); i++) {
+            Select drpCountry = new Select(element.get(i));
+            drpCountry.selectByVisibleText(value[i]);
+        }
+
+    }
     //endregion
 }
 

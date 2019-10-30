@@ -57,7 +57,7 @@ public class TC30432_Transfer_amount_to_Credit_Agreement_subscription_deactivate
 
         test.get().info("Step 7 : Deactivate subscription");
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscription();
+        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscription(false);
 
         test.get().info("Step 8 : Verify the subscription status is Inactive");
         Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo2));
