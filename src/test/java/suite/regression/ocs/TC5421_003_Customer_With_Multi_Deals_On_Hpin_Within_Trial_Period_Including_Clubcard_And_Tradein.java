@@ -1,5 +1,6 @@
 package suite.regression.ocs;
 
+import framework.utils.RandomCharacter;
 import logic.business.db.billing.CommonActions;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
@@ -22,34 +23,34 @@ import java.util.List;
 
 
 public class TC5421_003_Customer_With_Multi_Deals_On_Hpin_Within_Trial_Period_Including_Clubcard_And_Tradein extends BaseTest {
-    private String customerNumber = "47758425";
-    private String orderId = "8701636";
+    private String customerNumber = "47759532";
+    private String orderId = "8701694";
     private String subNo1 = "07647064770";
     private String subNo2 = "07647064770";
     private OWSActions owsActions;
-    private Date newStartDate;
+    private Date newStartDate = TimeStamp.TodayMinus20Days();
 
-    @Test(enabled = true, description = "TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_Hpin_Within_Trial_Period_Device_Having_Cca", groups = "OCS")
-    public void TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_Hpin_Within_Trial_Period_Device_Having_Cca() {
-        test.get().info("Step 1 : Create a Consumer customer with single deal account, subscription is on HPIN within trial period, device having CCA");
+    @Test(enabled = true, description = "TC5421_003_Customer_With_Multi_Deals_On_Hpin_Within_Trial_Period_Including_Clubcard_And_Tradein", groups = "OCS")
+    public void TC5421_003_Customer_With_Multi_Deals_On_Hpin_Within_Trial_Period_Including_Clubcard_And_Tradein() {
+        test.get().info("Step 1 : Create a Customer with multi deals on HPIN, within trial period, including clubcard and tradein");
         CommonActions.updateHubProvisionSystem("H");
         owsActions = new OWSActions();
         String path = "src\\test\\resources\\xml\\ocs\\TC5421_Multi_Deals_HPIN_Clubcard_Tradein_Residential.xml";
-        owsActions.createOcsCustomerRequestAcceptUrl(path,2, "HPIN");
+        owsActions.createOcsCustomerRequestAcceptUrl(path,2, "HPIN", "", "", "", "Voucher");
 
         test.get().info("Step 2 : Create new billing group");
         createNewBillingGroup();
 
         test.get().info("Step 3 : Update bill group payment collection date to 10 day later ");
         updateBillGroupPaymentCollectionDateTo10DaysLater();
-git 
+
         test.get().info("Step 4 : Set bill group for customer");
         customerNumber = owsActions.customerNo;
         orderId = owsActions.orderIdNo;
         setBillGroupForCustomer(customerNumber);
 
         test.get().info("Step 5 : Update start date for customer");
-        newStartDate = TimeStamp.TodayMinus1MonthMinus20Day();
+        newStartDate = TimeStamp.TodayMinus20Days();
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
 
         test.get().info("Step 6 : Verify Create Ocs Account async task is not displayed");
@@ -64,7 +65,7 @@ git
 
         test.get().info("Step 8 : Deactivate subscription");
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc();
+        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscription(true);
 
         test.get().info("Step 9 : Verify the subscription status is Inactive");
         Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo2));
@@ -77,6 +78,20 @@ git
 
         test.get().info("Step 12 : Navigate to Service Orders screen. Validate the Deactivate Subscription Service Order.");
         verifyServiceOrdersAreCreatedCorrectly();
+
+        test.get().info("Step 13 : Run Inclusive Spend Refill for Billing Capped and Network Capped. Run Discount Bundle Renewal job.");
+        submitDoRefillBCJob();
+        submitDoRefillNCJob();
+        submitDoBundleRenewJob();
+
+        test.get().info("Step 14 : Submit Bill Run Job");
+        submitDraftBillRun();
+        submitConfirmBillRun();
+
+        test.get().info("Step 15 : Verify One Invoice Generated With Issue Date Of Today");
+        CareTestBase.page().loadCustomerInHubNet(customerNumber);
+        verifyOneInvoiceGeneratedWithIssueDateOfToday();
+        verifyInvoiceDetail();
     }
 
     private void checkCreateOcsAccountCommand(){
@@ -102,7 +117,7 @@ git
         List<List<String>> lists = new ArrayList<>();
         lists.add(new ArrayList<>(Arrays.asList("The balance of the device credit agreement", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT4), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT4), "£649.00")));
         lists.add(new ArrayList<>(Arrays.asList("The balance of the device credit agreement", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT4), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT4), "£330.00")));
-        Assert.assertEquals(Common.compareLists(adjustmentsChargesAndCredits.getAllValueAdjustmentsOrders(), lists), 2);
+        Assert.assertEquals(Common.compareLists(adjustmentsChargesAndCredits.getAllValueAdjustmentsOrders(), lists), 0);
     }
 
     private void verifyOtherChargesCreditsAreCorrect(){
@@ -111,7 +126,7 @@ git
         lists.add(new ArrayList<>(Arrays.asList("Agreement Adjustment Products", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT), "AGR-ETC - The balance of the device credit agreement - £649.00")));
         lists.add(new ArrayList<>(Arrays.asList("Agreement Adjustment Products", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT), "AGR-ETC - The balance of the device credit agreement - £330.00")));
         OtherChargesCreditsContent otherChargesCreditsContent = OtherChargesCreditsContent.getInstance();
-        Assert.assertEquals(Common.compareLists(otherChargesCreditsContent.getAllValueOfOtherChargesCredits(), lists), 2);
+        Assert.assertEquals(Common.compareLists(otherChargesCreditsContent.getAllValueOfOtherChargesCredits(), lists), 0);
     }
 
     private void verifyServiceOrdersAreCreatedCorrectly(){
@@ -145,11 +160,36 @@ git
 
     private void verifyOcsKeyOfSubscription(){
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Mobile 1");
-        verifyOcsSubscriptionDetails("HPIN", "", "");
+        verifyOcsSubscriptionDetails(newStartDate, "HPIN", "", "");
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo2 + " Mobile 2");
-        verifyOcsSubscriptionDetails("HPIN", "", "");
+        verifyOcsSubscriptionDetails(newStartDate, "HPIN", "", "");
+    }
+
+    private void verifyOneInvoiceGeneratedWithIssueDateOfToday(){
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
+        MenuPage.LeftMenuPage.getInstance().clickInvoicesItem();
+
+        InvoicesContentPage.InvoiceDetailsContentPage grid = InvoicesContentPage.InvoiceDetailsContentPage.getInstance();
+        Assert.assertEquals(1, grid.getRowNumberOfInvoiceTable());
+        grid.clickInvoiceNumberByIndex(1);
+        Assert.assertEquals(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), grid.getIssued());
+    }
+
+    private void verifyInvoiceDetail(){
+        InvoicesContentPage.InvoiceDetailsContentPage.getInstance().clickViewPDFBtn();
+        String fileName = String.format("%s_%s.pdf", RandomCharacter.getRandomNumericString(9), customerNumber);
+        InvoicesContentPage.InvoiceDetailsContentPage.getInstance().savePDFFile(fileName);
+
+        List<String> listInvoiceContent = InvoicesContentPage.InvoiceDetailsContentPage.getInstance().getListInvoiceContent(fileName,1);
+        Assert.assertTrue(listInvoiceContent.contains(String.format("User charges for %s  Upgrade Mobile (£10 Tariff 36 Month Contract)", subNo2)));
+        Assert.assertTrue(listInvoiceContent.contains(String.format("Monthly subscription %s %s 10.00", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT4), Parser.parseDateFormate(TimeStamp.getExactDate(TimeStamp.OCTOBER, TimeStamp.NOVEMBER), TimeStamp.DATE_FORMAT4))));
+        Assert.assertTrue(listInvoiceContent.contains(String.format("Total charges for %s 10.00", subNo2)));
+        Assert.assertTrue(listInvoiceContent.contains("Total user charges 70.00"));
+        Assert.assertTrue(listInvoiceContent.contains("Total Adjustments, charges & credits 660.00"));
+        //Assert.assertTrue(listInvoiceContent.contains(String.format("%s Online/Telesales -15.00", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT4))));
+        Assert.assertTrue(listInvoiceContent.contains("Total Payments -30.00"));
     }
 
 }

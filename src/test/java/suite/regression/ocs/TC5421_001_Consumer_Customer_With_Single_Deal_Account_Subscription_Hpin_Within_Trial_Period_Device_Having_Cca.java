@@ -22,12 +22,12 @@ import java.util.List;
 
 
 public class TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_Hpin_Within_Trial_Period_Device_Having_Cca extends BaseTest {
-    private String customerNumber = "47758425";
-    private String orderId = "8701636";
+    private String customerNumber = "47759522";
+    private String orderId = "8701693";
     private String subNo1;
     private String subNo2 = "07647064770";
     private OWSActions owsActions;
-    private Date newStartDate;
+    private Date newStartDate = TimeStamp.TodayMinus15Days();
     private String discountGroupCode;
 
     @Test(enabled = true, description = "TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_Hpin_Within_Trial_Period_Device_Having_Cca", groups = "OCS")
@@ -50,7 +50,7 @@ public class TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_
         setBillGroupForCustomer(customerNumber);
 
         test.get().info("Step 5 : Update start date for customer");
-        newStartDate = TimeStamp.TodayMinus1MonthMinus20Day();
+        newStartDate = TimeStamp.TodayMinus15Days();
         CommonActions.updateCustomerStartDate(customerNumber, newStartDate);
 
         test.get().info("Step 6 : Verify Create Ocs Account async task is not displayed");
@@ -65,7 +65,7 @@ public class TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_
 
         test.get().info("Step 8 : Deactivate subscription");
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc();
+        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscription(true);
 
         test.get().info("Step 9 : Verify the subscription status is Inactive");
         Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo2));
@@ -89,7 +89,7 @@ public class TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_
         submitConfirmBillRun();
 
         test.get().info("Step 15 : Verify One Invoice Generated With Issue Date Of Today");
-        CareTestBase.page().loadCustomerInHubNet(customerNumber);
+        CareTestBase.page().reLoadCustomerInHubNet(customerNumber);
         verifyOneInvoiceGeneratedWithIssueDateOfToday();
         verifyInvoiceDetail();
     }
@@ -115,18 +115,16 @@ public class TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_
         LiveBillEstimateContentPage.LiveBillEstimate.ChargesToDate.BillEstimatePerSubscription.AdjustmentsChargesAndCredits adjustmentsChargesAndCredits =  billEstimatePerSubscription.new AdjustmentsChargesAndCredits(subNo2 + "  Mobile 2");
         adjustmentsChargesAndCredits.expand();
         List<List<String>> lists = new ArrayList<>();
-        lists.add(new ArrayList<>(Arrays.asList("The balance of the device credit agreement", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT4), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT4), "£649.00")));
-        lists.add(new ArrayList<>(Arrays.asList("The balance of the device credit agreement", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT4), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT4), "£330.00")));
-        Assert.assertEquals(Common.compareLists(adjustmentsChargesAndCredits.getAllValueAdjustmentsOrders(), lists), 2);
+        lists.add(new ArrayList<>(Arrays.asList("Miscellaneous Products", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT))));
+        Assert.assertEquals(Common.compareLists(adjustmentsChargesAndCredits.getAllValueAdjustmentsOrders(), lists), 0);
     }
 
     private void verifyOtherChargesCreditsAreCorrect(){
         MenuPage.LeftMenuPage.getInstance().clickOtherChargesCreditsItem();
         List<List<String>> lists = new ArrayList<>();
-        lists.add(new ArrayList<>(Arrays.asList("Agreement Adjustment Products", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT), "AGR-ETC - The balance of the device credit agreement - £649.00")));
-        lists.add(new ArrayList<>(Arrays.asList("Agreement Adjustment Products", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT), "AGR-ETC - The balance of the device credit agreement - £330.00")));
+        lists.add(new ArrayList<>(Arrays.asList("Miscellaneous Products", Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT), Parser.parseDateFormate(TimeStamp.TodayPlus1Day(), TimeStamp.DATE_FORMAT), "IMMEDIATE-REFUND - Customer Care refund issued - £294.50")));
         OtherChargesCreditsContent otherChargesCreditsContent = OtherChargesCreditsContent.getInstance();
-        Assert.assertEquals(Common.compareLists(otherChargesCreditsContent.getAllValueOfOtherChargesCredits(), lists), 2);
+        Assert.assertEquals(Common.compareLists(otherChargesCreditsContent.getAllValueOfOtherChargesCredits(), lists), 1);
     }
 
     private void verifyServiceOrdersAreCreatedCorrectly(){
@@ -147,7 +145,7 @@ public class TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_
         Assert.assertEquals(detailsPage.getBarringStatusBothWay(), "Provision Completed");
 
         TasksContentPage.TaskPage.EventsGridSectionPage eventsGridSectionPage = TasksContentPage.TaskPage.EventsGridSectionPage.getInstance();
-        Assert.assertEquals(eventsGridSectionPage.getRowNumberOfEventGird(),11);
+        Assert.assertEquals(eventsGridSectionPage.getRowNumberOfEventGird(),14);
 
         eventsGridSectionPage = TasksContentPage.TaskPage.EventsGridSectionPage.getInstance();
         List<List<String>> eventsLists = new ArrayList<>();
@@ -184,11 +182,11 @@ public class TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_
 
     private void verifyOcsKeyOfSubscription(){
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Mobile 1");
-        verifyOcsSubscriptionDetails("HPIN", "", "");
+        verifyOcsSubscriptionDetails(newStartDate,"HPIN", "", "");
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo2 + " Mobile 2");
-        verifyOcsSubscriptionDetails("HPIN", "", "");
+        verifyOcsSubscriptionDetails(newStartDate, "HPIN", "", "");
     }
 
 }
