@@ -16,7 +16,7 @@ public class TC32636_Self_Care_WS_Maintain_contact_use_update_contact_action_wit
     String serviceOrderID;
 
 
-//    @Test(enabled = true, description = "TC32636 selfcare ws maintain contact use update contact action with invalid username sc 038", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32636 selfcare ws maintain contact use update contact action with invalid username sc 038", groups = "SelfCare")
     public void TC32636_Self_Care_WS_Miantain_contact_use_update_contact_action_with_invalid_username_SC_038() {
 
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_one_bundle_and_sim_only";
@@ -25,20 +25,18 @@ public class TC32636_Self_Care_WS_Maintain_contact_use_update_contact_action_wit
         owsActions.createGeneralCustomerOrder(path);
         String customerNumber = owsActions.customerNo;
 
-        test.get().info("Step 1 : Load user in the hub net");
        String invalidUserName= String.format("NewName%s@hsntech.com", RandomCharacter.getRandomNumericString(9));
 
-
-        test.get().info("Step 1 : Build maintain contact detail request ");
+        test.get().info("Step 2: Build maintain contact detail request ");
         path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC3518_request";
         SWSActions swsActions = new SWSActions();
-        swsActions.buildForgottenPasswordRequest(invalidUserName, path);
+        swsActions.buildForgottenPasswordRequest(invalidUserName,customerNumber, path);
 
-        test.get().info("Step 1  submit the request to webservice");
+        test.get().info("Step 3:  submit the request to webservice");
         Xml response= swsActions.submitTheRequest();
 
 
-        test.get().info("Step 1  verify selfcare ws fault response");
+        test.get().info("Step 4:  verify selfcare ws fault response");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         selfCareWSTestBase.verifySelfCareWSFaultResponse(response, buildFaultResponse());
 

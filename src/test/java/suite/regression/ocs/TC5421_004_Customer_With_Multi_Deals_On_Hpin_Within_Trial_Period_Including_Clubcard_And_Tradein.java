@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class TC5421_003_Customer_With_Multi_Deals_On_Hpin_Within_Trial_Period_Including_Clubcard_And_Tradein extends BaseTest {
+public class TC5421_004_Customer_With_Multi_Deals_On_Hpin_Within_Trial_Period_Including_Clubcard_And_Tradein extends BaseTest {
     private String customerNumber = "47759405";
     private String orderId = "8701680";
     private String subNo1 = "07647064770";
@@ -31,7 +31,7 @@ public class TC5421_003_Customer_With_Multi_Deals_On_Hpin_Within_Trial_Period_In
     private Date newStartDate = TimeStamp.TodayMinus1MonthMinus20Day();;
 
     @Test(enabled = true, description = "TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_Hpin_Within_Trial_Period_Device_Having_Cca", groups = "OCS")
-    public void TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_Hpin_Within_Trial_Period_Device_Having_Cca() {
+    public void TC5421_004_Customer_With_Multi_Deals_On_Hpin_Within_Trial_Period_Including_Clubcard_And_Tradein() {
         test.get().info("Step 1 : Create a Consumer customer with single deal account, subscription is on HPIN within trial period, device having CCA");
         CommonActions.updateHubProvisionSystem("H");
         owsActions = new OWSActions();

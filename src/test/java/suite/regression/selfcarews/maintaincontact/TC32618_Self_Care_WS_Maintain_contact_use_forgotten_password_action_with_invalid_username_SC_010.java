@@ -22,39 +22,36 @@ public class TC32618_Self_Care_WS_Maintain_contact_use_forgotten_password_action
     String serviceOrderID;
     String currentPWD;
 
-//    @Test(enabled = true, description = "TC32618 Selfcare webservice maitain contact use forgotten password action with invalid userbane SC010", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32618 Selfcare webservice maitain contact use forgotten password action with invalid userbane SC010", groups = "SelfCare")
     public void TC32618_Self_Care_WS_Maintain_contact_use_forgotten_password_action_with_invalid_username_SC_010() {
 
-        String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_and_sim_only";
+        String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_one_bundle_and_sim_only";
         test.get().info("Step 1 : Create a customer ");
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         String customerNumber = owsActions.customerNo;
 
-        test.get().info("Step 1 : Load user in the hub net");
+        test.get().info("Step 2 : Load user in the hub net");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
-        test.get().info("Step 1 update bill notification to email");
+        test.get().info("Step 3: update bill notification to email");
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
         DetailsContentPage.BillingInformationSectionPage.getInstance().clickEditBtnBySection("Billing Information");
         DetailsContentPage.BillingInformationSectionPage.getInstance().changeBillNotification("Email");
-        DetailsContentPage.BillingInformationSectionPage.getInstance().clickSaveBtn();
+        DetailsContentPage.BillingInformationSectionPage.getInstance().clickApplyBtn();
 
-        test.get().info("Step 1 : Build forgotten password request ");
+        test.get().info("Step 4: Build forgotten password request ");
         path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC2329_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildMaintainContactRequest(customerNumber, path);
 
-        test.get().info("Step 1  submit the request to webservice");
+        test.get().info("Step 5:  submit the request to webservice");
         Xml response= swsActions.submitTheRequest();
 
 
-        test.get().info("Step 1  verify selfcare ws fault response");
+        test.get().info("Step 6: verify selfcare ws fault response");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         selfCareWSTestBase.verifySelfCareWSFaultResponse(response, buildFaultResponse());
-
-
-
 
     }
 

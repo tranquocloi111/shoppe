@@ -243,14 +243,15 @@ public class SWSActions extends BaseWs {
     public Xml submitGetSubscriptionAuthorityRequest(String subscriptionNumber) {
         return submitGetBySubscriptionNumberRequest(GET_SUBSCRIPTION_AUTHORITY_REQUEST, subscriptionNumber);
     }
-    public void buildForgottenPasswordRequest( String userName,String xpathFile) {
+    public void buildForgottenPasswordRequest( String userName,String customerNumber,String xpathFile) {
         request = new Xml(new File(xpathFile));
-        request.setTextByTagName("sel:UserName", userName);
+        request.setTextByTagName("AccountNumber", customerNumber);
+        request.setTextByTagName("UserName", userName);
 
     }
     public void buildMaintainContactRequest( String customerNumber,String xpathFile) {
         request = new Xml(new File(xpathFile));
-        request.setTextByTagName("sel:accountnumber", customerNumber);
+        request.setTextByTagName("sel:AccountNumber", customerNumber);
 
     }
     public void buildContactDetailRequest( String username,String xpathFile) {
@@ -262,8 +263,15 @@ public class SWSActions extends BaseWs {
         request = new Xml(new File(xpathFile));
         request.setTextByTagName("sel:UserName", username);
         request.setTextByTagName("sel:NewUserName", newUsername);
-        request.setTextByTagName("sel:accountnumber", customerNumber);
+        request.setTextByTagName("sel:AccountNumber", customerNumber);
 
+    }
+    public void buildContactDetailRequest( String username,String newUsername, String newEmail,String customerNumber,String xpathFile) {
+        request = new Xml(new File(xpathFile));
+        request.setTextByTagName("sel:UserName", username);
+        request.setTextByTagName("sel:NewUserName", newUsername);
+        request.setTextByTagName("sel:newEmailAddress", newEmail);
+        request.setTextByTagName("sel:AccountNumber", customerNumber);
     }
     public void buildPaymentDetailRequest( String cardEndDate,String customerNumber,String xpathFile) {
         request = new Xml(new File(xpathFile));
