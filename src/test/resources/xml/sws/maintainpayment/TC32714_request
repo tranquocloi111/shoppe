@@ -1,0 +1,24 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <sel:maintainPaymentRequest>
+            <sel:externalSystemID>NETCALL</sel:externalSystemID>
+            <sel:action>ADHOC_PAYMENT_NON_ACCOUNT_HOLDER</sel:action>
+            <sel:accountNumber>$accountNumber$</sel:accountNumber>
+            <sel:ongoingPaymentMethod>DIRECT_DEBIT</sel:ongoingPaymentMethod>
+            <sel:amount>22.31</sel:amount>
+            <sel:cardDetails>
+                <sel:useExistingCard>false</sel:useExistingCard>
+                <sel:cardName>David Smith</sel:cardName>
+                <sel:cardNumber>4111111111111111</sel:cardNumber>
+                <sel:cardEndDate>1220</sel:cardEndDate>
+                <sel:cardType>VI</sel:cardType>
+                <sel:cvv>555</sel:cvv>
+            </sel:cardDetails>
+            <sel:address>
+                <sel:addressLine1>13 THE CAUSEWAY</sel:addressLine1>
+                <sel:postcode>TW11 0JR</sel:postcode>
+            </sel:address>
+        </sel:maintainPaymentRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,16 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sel="http://selfcare.telco.hsntech.com">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <sel:maintainPaymentRequest>
+            <sel:externalSystemID>MOBILEAWARE</sel:externalSystemID>
+            <sel:action>UPDATE_DIRECT_DEBIT</sel:action>
+            <sel:accountNumber>$accountNumber$</sel:accountNumber>
+            <sel:ongoingPaymentMethod>DIRECT_DEBIT</sel:ongoingPaymentMethod>
+            <sel:directDebit>
+                <sel:bankName>Natewst</sel:bankName>
+                <sel:sortCode>089999</sel:sortCode>
+                <sel:accountNumber>66374958</sel:accountNumber>
+            </sel:directDebit>
+        </sel:maintainPaymentRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -3,6 +3,7 @@ package logic.business.ws.sws;
 import framework.utils.Xml;
 import logic.business.entities.ErrorResponseEntity;
 import logic.business.entities.MaintainBundleEntity;
+import logic.business.entities.selfcare.MaintainPaymentResponseData;
 import logic.business.ws.BaseWs;
 import logic.utils.Common;
 import logic.utils.Parser;
@@ -281,5 +282,24 @@ public class SelfCareWSTestBase extends BaseWs {
 
         Assert.assertEquals(1, Common.compareFile(expectedResponse, actualFile).size());
     }
+    public static  void verifyMaintainPaymentResponse(MaintainPaymentResponseData enity,Xml response)
+    {
+        Assert.assertEquals(enity.getAccountNumber(),response.getTextByXpath("accountnumber"));
+        Assert.assertEquals(enity.getAction(),response.getTextByXpath("action"));
+        Assert.assertEquals(enity.getResponseCode(),response.getTextByXpath("responsecode"));
+        if(enity.getMessage()!=null || !enity.getMessage().isEmpty())
+        {
+            Assert.assertEquals(enity.getMessage(),response.getTextByXpath("message"));
+        }
+        if(enity.getReference()!=null || !enity.getReference().isEmpty())
+        {
+            Assert.assertEquals(enity.getReference(),response.getTextByXpath("reference"));
+        }
+        if(enity.getDateTime()!=null || !enity.getDateTime().isEmpty())
+        {
+            Assert.assertEquals(enity.getDateTime(),Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        }
+    }
+
 
 }

@@ -85,6 +85,9 @@ public class DetailsContentPage extends BasePage {
         public String getCreditCardHolderName() {
             return getTextOfElement(tableControlBase.findCellByLabelText("Credit Card Holder Name:"));
         }
+        public String getBankName() {
+            return getTextOfElement(tableControlBase.findCellByLabelText("Bank Name:"));
+        }
     }
 
     public static class AddressInformationPage extends DetailsContentPage {
