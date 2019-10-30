@@ -65,30 +65,30 @@
             <deliveryMethod>INHAND</deliveryMethod>
           </discBundle>
         </orderItem>
-        <orderItem dealSKU="DEAL-INHAND" id="2">
-          <serviceRef reference="Mobile FC2"/>
-          <tariff productCode="FC30-1000-100">
-            <deliveryMethod>INHAND</deliveryMethod>
-          </tariff>
-          <device productCode="SIM-ONLY">
-            <deliveryMethod>DELIVER</deliveryMethod>
-          </device>
-          <discBundle productCode="02000-SB-A" bundleGroup="SB-GRP-A">
-            <deliveryMethod>INHAND</deliveryMethod>
-          </discBundle>
-        </orderItem>
-        <orderItem dealSKU="DEAL-INHAND" id="3">
-          <serviceRef reference="Mobile FC3"/>
-          <tariff productCode="FC30-1000-100">
-            <deliveryMethod>INHAND</deliveryMethod>
-          </tariff>
-          <device productCode="SIM-ONLY">
-            <deliveryMethod>DELIVER</deliveryMethod>
-          </device>
-          <discBundle productCode="02000-SB-A" bundleGroup="SB-GRP-A">
-            <deliveryMethod>INHAND</deliveryMethod>
-          </discBundle>
-        </orderItem>
+        <!--<orderItem dealSKU="DEAL-INHAND" id="2">-->
+          <!--<serviceRef reference="Mobile FC2"/>-->
+          <!--<tariff productCode="FC30-1000-100">-->
+            <!--<deliveryMethod>INHAND</deliveryMethod>-->
+          <!--</tariff>-->
+          <!--<device productCode="SIM-ONLY">-->
+            <!--<deliveryMethod>DELIVER</deliveryMethod>-->
+          <!--</device>-->
+          <!--<discBundle productCode="02000-SB-A" bundleGroup="SB-GRP-A">-->
+            <!--<deliveryMethod>INHAND</deliveryMethod>-->
+          <!--</discBundle>-->
+        <!--</orderItem>-->
+        <!--<orderItem dealSKU="DEAL-INHAND" id="3">-->
+          <!--<serviceRef reference="Mobile FC3"/>-->
+          <!--<tariff productCode="FC30-1000-100">-->
+            <!--<deliveryMethod>INHAND</deliveryMethod>-->
+          <!--</tariff>-->
+          <!--<device productCode="SIM-ONLY">-->
+            <!--<deliveryMethod>DELIVER</deliveryMethod>-->
+          <!--</device>-->
+          <!--<discBundle productCode="02000-SB-A" bundleGroup="SB-GRP-A">-->
+            <!--<deliveryMethod>INHAND</deliveryMethod>-->
+          <!--</discBundle>-->
+        <!--</orderItem>-->
         <paymentRequest>
           <cardName>CardName</cardName>
           <cardNumber>5105105105105100</cardNumber>

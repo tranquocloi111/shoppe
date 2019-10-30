@@ -27,8 +27,8 @@ import java.util.List;
 
 
 public class TC5422_Care_Subscription_Deactivation_On_Hpin_Via_Treatment_Process extends BaseTest {
-    private String customerNumber = "47758449";
-    private String orderId = "8701638";
+    private String customerNumber = "47759541";
+    private String orderId = "8701696";
     private String subNo1;
     private String subNo2 = "07647064770";
     private OWSActions owsActions;
@@ -36,13 +36,13 @@ public class TC5422_Care_Subscription_Deactivation_On_Hpin_Via_Treatment_Process
     private DateTime datetime;
     private String nextTreatmentDate;
 
-    @Test(enabled = true, description = "TC5422_Care_Subscription_Deactivation_On_Hpin_Via_Treatment_Process", groups = "OCS")
-    public void TC5422_Care_Subscription_Deactivation_On_Hpin_Via_Treatment_Process() {
+    @Test(enabled = true, description = "TC5422_Care_Subscription_Deactivation_On_HPIN_Via_Treatment_Process", groups = "OCS")
+    public void TC5422_Care_Subscription_Deactivation_On_HPIN_Via_Treatment_Process() {
         test.get().info("Step 1 : Create a Consumer customer with single deal account, subscription is on HPIN within trial period, device having CCA");
-        CommonActions.updateHubProvisionSystem("H");
+        //CommonActions.updateHubProvisionSystem("H");
         owsActions = new OWSActions();
-        String path = "src\\test\\resources\\xml\\ocs\\TC4996_Hpin_Request.xml";
-        owsActions.createOcsCustomerRequest(path,true, "HPIN");
+        String path = "src\\test\\resources\\xml\\ocs\\TC5422_HPIN_3_FC_SB_And_Sim_Only_Type_Request.xml";
+        owsActions.createOcsCustomerRequest(path, true, "");
 
         test.get().info("Step 2 : Create new billing group");
         createNewBillingGroup();
