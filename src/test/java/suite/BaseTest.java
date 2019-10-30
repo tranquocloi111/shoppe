@@ -394,6 +394,16 @@ public class BaseTest {
         InvoicesContentPage.getInstance().clickInvoiceNumberByIndex(1);
     }
 
+    protected void verifyOcsSubscriptionDetails(Date date, String ocsType, String ocsSubscriberKey, String ocsSubscriberAccountKey){
+        SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
+        Assert.assertEquals(generalSectionPage.getProvisioningSystem(), String.format("%s ( %s )", ocsType, Parser.parseDateFormate(date, TimeStamp.DATE_FORMAT)));
+        //Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), "TMPAYM" + ocsSubscriberKey);
+        //Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), "TMPAYM" + ocsSubscriberAccountKey);
+        Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), ocsSubscriberKey);
+        Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), ocsSubscriberAccountKey);
+    }
+    
+
     //end region
 
 }
