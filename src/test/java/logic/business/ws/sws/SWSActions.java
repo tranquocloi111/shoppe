@@ -282,7 +282,7 @@ public class SWSActions extends BaseWs {
     public void buildPaymentDetailRequestWithSubscriptionNumber( String subscriptionNumber,String customerNumber,String xpathFile) {
         request = new Xml(new File(xpathFile));
         request.setTextByTagName("sel:accountNumber", customerNumber);
-        request.setTextByTagName("sel:subscriptionumber", subscriptionNumber);
+        request.setTextByTagName("sel:subscriptionNumber", subscriptionNumber);
 
     }
     public void buildPaymentDetailRequest(String customerNumber,String xpathFile) {
@@ -290,8 +290,13 @@ public class SWSActions extends BaseWs {
         request.setTextByTagName("sel:accountNumber", customerNumber);
 
     }
+    public void buildPaymentDetailRequestByIndex(String customerNumber,String xpathFile) {
+        request = new Xml(new File(xpathFile));
+        request.setTextsByTagNameByIndex("sel:accountNumber", customerNumber,0);
+    }
 
     public Xml submitTheRequest() {
+        Log.info("Request: " + request.toString());
         response = Soap.sendSoapRequestXml(this.swsUrl, request.toSOAPMessage());
         Log.info("Response: " + response.toString());
 

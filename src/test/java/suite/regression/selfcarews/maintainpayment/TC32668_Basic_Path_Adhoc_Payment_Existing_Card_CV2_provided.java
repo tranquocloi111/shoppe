@@ -38,7 +38,7 @@ public class TC32668_Basic_Path_Adhoc_Payment_Existing_Card_CV2_provided extends
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32668_request";
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32668_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest( customerNumber, path);
 
@@ -49,11 +49,13 @@ public class TC32668_Basic_Path_Adhoc_Payment_Existing_Card_CV2_provided extends
         MaintainPaymentResponseData maintainPaymentResponseData =new MaintainPaymentResponseData();
         maintainPaymentResponseData.setAccountNumber(customerNumber);
         maintainPaymentResponseData.setAction("ADHOC_PAYMENT");
-        maintainPaymentResponseData.setResponseCode("Payment was successful");
+        maintainPaymentResponseData.setMessage("Payment was successful");
+        maintainPaymentResponseData.setResponseCode("0");
         maintainPaymentResponseData.setReference("True");
-        maintainPaymentResponseData.setReference(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        maintainPaymentResponseData.setDateTime(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
 
-        SelfCareWSTestBase.verifyMaintainPaymentResponse(maintainPaymentResponseData,response);
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
 
         test.get().info("Step 6  refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
@@ -88,8 +90,8 @@ public class TC32668_Basic_Path_Adhoc_Payment_Existing_Card_CV2_provided extends
         Assert.assertEquals("MasterCard", TasksContentPage.TaskPage.DetailsPage.getInstance().getCardType());
         Assert.assertEquals("****************5100", TasksContentPage.TaskPage.DetailsPage.getInstance().getCardNumber());
         Assert.assertEquals("2030", TasksContentPage.TaskPage.DetailsPage.getInstance().getCreditCardExpiryYear());
-        Assert.assertEquals("21", TasksContentPage.TaskPage.DetailsPage.getInstance().getAmountToBeDebited());
-        Assert.assertEquals("02", TasksContentPage.TaskPage.DetailsPage.getInstance().getCreditCardExpiryMonth());
+        Assert.assertEquals("10", TasksContentPage.TaskPage.DetailsPage.getInstance().getAmountToBeDebited());
+        Assert.assertEquals("12", TasksContentPage.TaskPage.DetailsPage.getInstance().getCreditCardExpiryMonth());
 
 
     }

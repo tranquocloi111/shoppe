@@ -124,7 +124,7 @@ public class InvoicesContentPage extends BasePage {
         public void savePDFFile(String fileName) {
             String parent = getTitle();
             switchWindow("Your Invoice", false);
-            String url = embeddedPdfForm.getAttribute("src");
+            String url =getCurrentUrl();
             MiscHelper.saveFileFromWebRequest(url, fileName);
 
             switchWindow(parent, false);

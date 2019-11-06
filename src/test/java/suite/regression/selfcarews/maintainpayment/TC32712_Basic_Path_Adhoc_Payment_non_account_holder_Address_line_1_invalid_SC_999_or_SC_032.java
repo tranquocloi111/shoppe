@@ -26,7 +26,7 @@ public class TC32712_Basic_Path_Adhoc_Payment_non_account_holder_Address_line_1_
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-         path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32712_request";
+         path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32712_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest( customerNumber, path);
 

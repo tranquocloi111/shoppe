@@ -28,13 +28,14 @@ public class TC32653_Self_Care_WS_Make_a_one_off_payment extends BaseTest {
         test.get().info("Step 1 : Create a customer ");
         OWSActions owsActions = new OWSActions();
         owsActions.createACCCustomerWithOrder();
+        customerNumber=owsActions.customerNo;
 
 
         test.get().info("Step 2 : load customer in hub net ");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-       String path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC69_request";
+       String path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC69_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest(customerNumber, path);
 
@@ -45,11 +46,12 @@ public class TC32653_Self_Care_WS_Make_a_one_off_payment extends BaseTest {
         MaintainPaymentResponseData maintainPaymentResponseData =new MaintainPaymentResponseData();
         maintainPaymentResponseData.setAccountNumber(customerNumber);
         maintainPaymentResponseData.setAction("ADHOC_PAYMENT");
-        maintainPaymentResponseData.setResponseCode("Payment was successful");
+        maintainPaymentResponseData.setResponseCode("0");
+        maintainPaymentResponseData.setMessage("Payment was successful");
         maintainPaymentResponseData.setReference("True");
-        maintainPaymentResponseData.setReference(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        maintainPaymentResponseData.setDateTime(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
 
-        SelfCareWSTestBase.verifyMaintainPaymentResponse(maintainPaymentResponseData,response);
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
 
         test.get().info("Step 6  refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();

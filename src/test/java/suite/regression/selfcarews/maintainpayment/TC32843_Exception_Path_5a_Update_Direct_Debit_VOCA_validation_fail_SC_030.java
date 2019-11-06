@@ -25,14 +25,14 @@ public class TC32843_Exception_Path_5a_Update_Direct_Debit_VOCA_validation_fail_
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-         path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32843_request";
+         path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32843_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest( customerNumber, path);
 
-        test.get().info("Step 4  submit the request to webservice");
+        test.get().info("Step 4:  submit the request to webservice");
         Xml response = swsActions.submitTheRequest();
 
-        test.get().info("Step 1  verify selfcare ws fault response");
+        test.get().info("Step 5:  verify selfcare ws fault response");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         selfCareWSTestBase.verifySelfCareWSFaultResponse(response, buildFaultResponse());
 

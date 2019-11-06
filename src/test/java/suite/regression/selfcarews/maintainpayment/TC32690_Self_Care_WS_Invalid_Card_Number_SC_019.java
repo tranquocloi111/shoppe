@@ -11,10 +11,10 @@ import suite.regression.care.CareTestBase;
 
 public class TC32690_Self_Care_WS_Invalid_Card_Number_SC_019 extends BaseTest {
     String customerNumber;
-    String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32670 basic path adhoc payment existing card existing card match", groups = "SelfCare")
-    public void TC32670_Basic_Path_Adhoc_Payment_Existing_Card_Existing_Card_Match() {
+
+    @Test(enabled = true, description = "TC32690 selfcare WS invalid card bunber SC 019", groups = "SelfCare")
+    public void TC32690_Self_Care_WS_Invalid_Card_Number_SC_019() {
         //-----------------------------------------
         test.get().info("Step 1 : Create a customer ");
         OWSActions owsActions = new OWSActions();
@@ -25,19 +25,16 @@ public class TC32690_Self_Care_WS_Invalid_Card_Number_SC_019 extends BaseTest {
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-        String path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC2875_request";
+        String path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC2875_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest( customerNumber, path);
 
-        test.get().info("Step 4  submit the request to webservice");
+        test.get().info("Step 4: submit the request to webservice");
         Xml response = swsActions.submitTheRequest();
 
-        test.get().info("Step 1  verify selfcare ws fault response");
+        test.get().info("Step 5: verify selfcare ws fault response");
         SelfCareWSTestBase selfCareWSTestBase = new SelfCareWSTestBase();
         selfCareWSTestBase.verifySelfCareWSFaultResponse(response, buildFaultResponse());
-
-
-
 
     }
 

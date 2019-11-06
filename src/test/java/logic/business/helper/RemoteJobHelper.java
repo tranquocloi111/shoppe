@@ -208,8 +208,13 @@ public class RemoteJobHelper {
         } catch (SQLException e) {
             Log.error(e.getMessage());
         }
-
-        int billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
+        int billRunInvocationId = 0;
+        try {
+             billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
+        }
+       catch (Exception ex){
+           Log.error("cannot get bill run invocation id");
+       }
         Log.info("InvocationId:" + billRunInvocationId);
 
         currentMaxJobId = getMaxRemoteJobId();

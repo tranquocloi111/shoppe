@@ -39,9 +39,9 @@ import java.util.List;
  * Date: 31/07/2019
  */
 public class TC58_Self_Care_Remove_Permitted_Bundle_At_Next_Bill_Date extends BaseTest {
-    String serviceRefOf1stSubscription="07640824740";
-    String serviceOrderID="15555";
-    String discountGroupCodeOfMobileRef1="15893";
+    String serviceRefOf1stSubscription;
+    String serviceOrderID;
+    String discountGroupCodeOfMobileRef1;
 
     @Test(enabled = true, description = "TC58 Self Care remove permitted bundle at next bill date", groups = "SelfCare")
     public void TC58_Self_Care_Remove_Permitted_Bundle_At_Next_Bill_Date() {

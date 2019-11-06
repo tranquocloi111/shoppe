@@ -229,4 +229,8 @@ public class Xml {
         }
     }
 
+    public void setTextsByTagNameByIndex(String tagName, String value,int index) {
+        NodeList nodes = getElementsByTagName(tagName);
+            nodes.item(index).setTextContent(value);
+    }
 }
