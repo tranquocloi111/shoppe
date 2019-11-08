@@ -47,8 +47,8 @@ public class RemoteJobHelper {
         }
 
         MiscHelper.executeFuncntion(5, () ->{
-            //submitRemoteJob(command);
-            submitRemoteJob(command, jobDescr);
+            submitRemoteJob(command);
+            //submitRemoteJob(command, jobDescr);
             return Parser.asInteger(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "numberJob")) > 0;
         }, 5);
     }
@@ -374,5 +374,10 @@ public class RemoteJobHelper {
         submitRemoteJobs(String.format("treatment.sh -a %s -R", date), currentMaxJobId, "Treatment Batch run");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Treatment Batch run");
         waitForRemoteJobComplete(remoteJobId, "Automatic Treatment Letters");
+    }
+    public void submitRunDirectDebitBatchJobToCreatePayment() {
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("Subdirectdebit2.sh -e $HUB_SID -S", currentMaxJobId, "Process Direct Debit - Create Payments");
+        waitForRemoteJobComplete(remoteJobId, "Process Direct Debit - Create Payments");
     }
 }
