@@ -1,6 +1,7 @@
 package logic.pages.care.find;
 
 //import javafx.util.Pair;
+
 import logic.pages.BasePage;
 import logic.pages.care.MenuPage;
 import org.openqa.selenium.By;
@@ -23,8 +24,8 @@ public class FindPage extends BasePage {
     @FindBy(xpath = "//a[@class='informationBoxRow1']")
     WebElement lblName;
 
-    public static FindPage getInstance(){
-        return  new FindPage();
+    public static FindPage getInstance() {
+        return new FindPage();
     }
 
     public void findCustomer(AbstractMap.SimpleEntry<String, String>... pairs) {
@@ -39,26 +40,34 @@ public class FindPage extends BasePage {
         click(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));
         waitForPageLoadComplete(60);
     }
+
     public boolean IsCustomerDiplayedByIndex(int index) {
         return isElementPresent(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));
     }
 
-    public void navigateToCustomerDetailPage(int index, String customerNumber){
+    public void navigateToCustomerDetailPage(int index, String customerNumber) {
         MenuPage.HeaderMenuPage.getInstance().clickCustomersTab();
         findCustomer(new AbstractMap.SimpleEntry<String, String>("Customer Number", customerNumber));
         openCustomerByIndex(index);
     }
 
-    public String getUnderGoValue(){
+    public String getUnderGoValue() {
         return lblName.getCssValue("text-decoration");
     }
 
-    public boolean isUnderGoPresent(){
+    public boolean isUnderGoPresent() {
         return isElementPresent(lblName);
     }
 
-    public String getNameOfResult(int index){
-       return getTextOfElement(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));
+    public String getNameOfResult(int index) {
+        return getTextOfElement(getCell(tblResult, index + 1, 2).findElement(By.xpath("//a[@class='informationBoxRow1']")));
     }
 
+    public int getItemInGrid() {
+        return tblResult.findElements(By.xpath("//a[@class='informationBoxRow1']")).size();
+    }
+
+    public boolean IsNoItemsFoundDisplayed() {
+        return tblResult.findElement(By.xpath("//td[normalize-space(text())='No Items Found']")).isDisplayed();
+    }
 }

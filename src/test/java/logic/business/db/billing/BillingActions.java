@@ -321,6 +321,12 @@ public class BillingActions extends OracleDB {
                 && x.getBankStatus().equalsIgnoreCase(bankStatus)
                 && x.getFraudStatus().equalsIgnoreCase(FraudStatus)).count()));
     }
+    public static int findPayemtGateWayRespondByBankStatusIsNotEmpty(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String FraudStatus) {
+        return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
+                && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus().equalsIgnoreCase(gateWayStatus)
+                && x.getBankStatus()!=""
+                && x.getFraudStatus().equalsIgnoreCase(FraudStatus)).count()));
+    }
 
     public static int findPaymentGateWayRespondByTokenStatus(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String gateWayStatus, String bankStatus, String TokenStatus) {
         return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
@@ -393,5 +399,33 @@ public class BillingActions extends OracleDB {
         String sql ="update ddbatch set collectiondate = batchdate where ddbatchid = (select max(ddbatchid) from ddbatch)";
         OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
     }
+
+    public static List<PaymentGatewayEnity> getPaymentGatewayRequestForUserNameOEDb(String userName) {
+
+        List<PaymentGatewayEnity> paymentGateWayList = new ArrayList<>();
+
+        String sql = String.format("select paymentgtwrequestid,action,paymenttype,saleschannel from PAYMENTGTWREQUEST where action='OA' and firstname='%s'", userName);
+        try {
+            ResultSet res = OracleDB.SetToOEDatabase().executeQuery(sql);
+            while (res.next()) {
+                PaymentGatewayEnity payment = new PaymentGatewayEnity();
+                payment.setPaymentGTWRequestID(res.getString(1));
+                payment.setAction(res.getString(2));
+                payment.setPaymentType(res.getString(3));
+                payment.setSaleChannel(res.getString(4));
+                System.out.println(payment.toString());
+                paymentGateWayList.add(payment);
+            }
+        } catch (Exception ex) {
+
+        }
+        return paymentGateWayList;
+    }
+    public static int findPaymentGateWayRespondByGateWayStatusIsNull(List<PaymentGatewayRespondEnity> allPaymentGateEnity, String action, String status, String bankStatus) {
+        return Integer.parseInt(String.valueOf(allPaymentGateEnity.stream().filter(x -> x.getAction().equalsIgnoreCase(action)
+                && x.getStatus().equalsIgnoreCase(status) && x.getGatewayStatus()==null
+                && x.getBankStatus().equalsIgnoreCase(bankStatus)).count()));
+    }
+
 }
 
