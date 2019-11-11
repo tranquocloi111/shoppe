@@ -35,11 +35,9 @@ public class TC32670_Basic_Path_Adhoc_Payment_Existing_Card_Existing_Card_Match 
         owsActions.createGeneralCustomerOrder(path);
         customerNumber = owsActions.customerNo;
 
-        test.get().info("Step 2 : load customer in hub net ");
-        CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32669_request";
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32670_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest( customerNumber, path);
 
@@ -50,11 +48,16 @@ public class TC32670_Basic_Path_Adhoc_Payment_Existing_Card_Existing_Card_Match 
         MaintainPaymentResponseData maintainPaymentResponseData =new MaintainPaymentResponseData();
         maintainPaymentResponseData.setAccountNumber(customerNumber);
         maintainPaymentResponseData.setAction("ADHOC_PAYMENT");
-        maintainPaymentResponseData.setResponseCode("Payment was successful");
+        maintainPaymentResponseData.setMessage("Payment was successful");
+        maintainPaymentResponseData.setResponseCode("0");
         maintainPaymentResponseData.setReference("True");
-        maintainPaymentResponseData.setReference(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        maintainPaymentResponseData.setDateTime(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
 
-        SelfCareWSTestBase.verifyMaintainPaymentResponse(maintainPaymentResponseData,response);
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
+
+
+        test.get().info("Step 2 : load customer in hub net ");
+        CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 6  refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
@@ -98,7 +101,7 @@ public class TC32670_Basic_Path_Adhoc_Payment_Existing_Card_Existing_Card_Match 
     public void verifyAdHocPaymentTransactionDetail() {
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getReceiptType(), "Ad Hoc Payment");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getReceiptStatus(), "Fully Allocated");
-        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentAmount(), "£22.51");
+        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentAmount(), "£19.00");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentCurrency(), "Great Britain Pound");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getCardType(), "MasterCard");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getCardNumber(), "************5100");

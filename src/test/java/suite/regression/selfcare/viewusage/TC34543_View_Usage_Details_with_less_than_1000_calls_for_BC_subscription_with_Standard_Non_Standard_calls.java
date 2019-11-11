@@ -27,7 +27,7 @@ import java.util.HashMap;
 
 public class TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscription_with_Standard_Non_Standard_calls extends BaseTest {
 
-    String sub ;
+    String sub;
     //only pass on MEL3
 
     @Test(enabled = true, description = "TC34543 view usage details with less than 1000 calls for BC subscription with standard non standard calls", groups = "SelfCare")
@@ -116,29 +116,29 @@ public class TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscri
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickBundleChargeExpandBtn();
         expectedEnity = UsageDetailsEnity.getBundleChargesEnity(TimeStamp.TodayPlus1Month(), TimeStamp.TodayPlus2MonthMinus1Day(), String.format("£10 safety buffer for %s Mobile BC", sub), "£10.00");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Bundle Charges", expectedEnity), 1);
-        expectedEnity = UsageDetailsEnity.getBundleChargesEnity(TimeStamp.TodayMinus20Days(), TimeStamp.TodayPlus1MonthMinus1Day(), String.format("£20 safety buffer for %s", sub), "£0.00");
+        expectedEnity = UsageDetailsEnity.getBundleChargesEnity(TimeStamp.TodayMinus20Days(), TimeStamp.TodayPlus1MonthMinus1Day(), String.format("Monthly data bundle - 1GB for %s", sub), "£7.50");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Bundle Charges", expectedEnity), 1);
 
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickUsageChargeExpandBtn();
-        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("Data", "4184", "£0.00", "£0.00");
+        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("Data", "4224", "£0.56", "£0.00");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Usage Charges", expectedEnity), 1);
 
         expectedEnity = UsageDetailsEnity.getUsageChargesEnity("Free Calls", "18", "£0.00", "£0.00");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Usage Charges", expectedEnity), 1);
 
-        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("Non-standard Calls", "725", "£413.00", "£413.00");
+        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("Non-standard Calls", "725", "£54.52", "£54.52");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Usage Charges", expectedEnity), 1);
 
-        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("Roaming in the EU", "38", "£0.00", "£0.00");
+        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("Roaming in the EU", "60", "£2.99", "£2.99");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Usage Charges", expectedEnity), 1);
 
-        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("SMS", "50", "£0.00", "£0.00");
+        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("SMS", "50", "£7.50", "£7.50");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Usage Charges", expectedEnity), 1);
 
-        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("UK Calls", "369", "£0.00", "£0.00");
+        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("UK Calls", "369", "£2.73", "£1.58");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Usage Charges", expectedEnity), 1);
 
-        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("Video Calls", "7762", "£0.00", "£0.00");
+        expectedEnity = UsageDetailsEnity.getUsageChargesEnity("Video Calls", "7762", "£193.88", "£193.88");
         Assert.assertEquals(MyUsageDetailsSinceMyLastBillPage.getInstance().getRowInDropDown("Usage Charges", expectedEnity), 1);
 
 
@@ -146,15 +146,14 @@ public class TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscri
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickSubscriptionPaymentsExpandBtn();
 
 
-
         Assert.assertEquals(Parser.parseDateFormate(TimeStamp.TodayMinusDayAndMonth(30, 0), TimeStamp.DATE_FORMAT_IN_PDF), MyUsageDetailsSinceMyLastBillPage.getInstance().getStartDate());
         Assert.assertEquals(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT_IN_PDF), MyUsageDetailsSinceMyLastBillPage.getInstance().getEndDate());
 
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickSearchButton();
-        Assert.assertEquals("50 items found, displaying 1 to 20.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
-        Assert.assertEquals("219:06", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalDurationValue());
-        Assert.assertEquals("£413.00", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCost());
-        Assert.assertEquals("£413.00", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCharge());
+        Assert.assertEquals("55 items found, displaying 1 to 20.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
+        Assert.assertEquals("220:08", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalDurationValue());
+        Assert.assertEquals("£262.18", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCost());
+        Assert.assertEquals("£260.47", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCharge());
         Assert.assertEquals(20, MyUsageDetailsSinceMyLastBillPage.getInstance().getCountRowInCallDetailTable());
         String key = "* Call or text to a favourite number\n^ Call or text outside of monthly allowance\n+ Call charged from your Family Perk\n**" +
                 " The total cost of this call is our access charge (25p a minute with a minimum charge of 25p) + the service charge (the amount the" +
@@ -163,13 +162,13 @@ public class TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscri
 
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickNextLink();
 
-        Assert.assertEquals("50 items found, displaying 21 to 40.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
+        Assert.assertEquals("55 items found, displaying 21 to 40.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
         Assert.assertEquals(20, MyUsageDetailsSinceMyLastBillPage.getInstance().getCountRowInCallDetailTable());
         Assert.assertEquals(key, MyUsageDetailsSinceMyLastBillPage.getInstance().getKey());
 
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickNextLink();
-        Assert.assertEquals("50 items found, displaying 41 to 50.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
-        Assert.assertEquals(10, MyUsageDetailsSinceMyLastBillPage.getInstance().getCountRowInCallDetailTable());
+        Assert.assertEquals("55 items found, displaying 41 to 55.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
+        Assert.assertEquals(15, MyUsageDetailsSinceMyLastBillPage.getInstance().getCountRowInCallDetailTable());
         Assert.assertEquals(key, MyUsageDetailsSinceMyLastBillPage.getInstance().getKey());
 
 
@@ -177,19 +176,29 @@ public class TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscri
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickSearchButton();
         Assert.assertEquals("5 items found, displaying all items.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
         Assert.assertEquals("12:05", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalDurationValue());
-        Assert.assertEquals("£413.00", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCost());
-        Assert.assertEquals("£413.00", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCharge());
+        Assert.assertEquals("£54.52", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCost());
+        Assert.assertEquals("£54.52", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCharge());
         Assert.assertEquals(5, MyUsageDetailsSinceMyLastBillPage.getInstance().getCountRowInCallDetailTable());
         Assert.assertEquals(key, MyUsageDetailsSinceMyLastBillPage.getInstance().getKey());
 
         MyUsageDetailsSinceMyLastBillPage.getInstance().selectUsageType("Data");
         MyUsageDetailsSinceMyLastBillPage.getInstance().clickSearchButton();
-        Assert.assertEquals("15 items found, displaying all items.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
-        Assert.assertEquals("69:44", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalDurationValue());
-        Assert.assertEquals("£0.00", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCost());
+        Assert.assertEquals("20 items found, displaying all items.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
+        Assert.assertEquals("70:24", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalDurationValue());
+        Assert.assertEquals("£0.56", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCost());
         Assert.assertEquals("£0.00", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCharge());
-        Assert.assertEquals(15, MyUsageDetailsSinceMyLastBillPage.getInstance().getCountRowInCallDetailTable());
+        Assert.assertEquals(20, MyUsageDetailsSinceMyLastBillPage.getInstance().getCountRowInCallDetailTable());
         Assert.assertEquals(key, MyUsageDetailsSinceMyLastBillPage.getInstance().getKey());
+
+
+        MyUsageDetailsSinceMyLastBillPage.getInstance().setStartDate(Parser.parseDateFormate(TimeStamp.TodayMinus4Days(), TimeStamp.DATE_FORMAT_IN_PDF));
+        MyUsageDetailsSinceMyLastBillPage.getInstance().setEndDate(Parser.parseDateFormate(TimeStamp.TodayMinus4Days(), TimeStamp.DATE_FORMAT_IN_PDF));
+        MyUsageDetailsSinceMyLastBillPage.getInstance().clickSearchButton();
+        Assert.assertEquals("5 items found, displaying all items.", MyUsageDetailsSinceMyLastBillPage.getInstance().getToTalCountText());
+        Assert.assertEquals("00:40", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalDurationValue());
+        Assert.assertEquals("£0.05", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCost());
+        Assert.assertEquals("£0.00", MyUsageDetailsSinceMyLastBillPage.getInstance().getTotalCharge());
+        Assert.assertEquals(5, MyUsageDetailsSinceMyLastBillPage.getInstance().getCountRowInCallDetailTable());
 
     }
 
@@ -201,7 +210,8 @@ public class TC34543_View_Usage_Details_with_less_than_1000_calls_for_BC_subscri
         topupsTemplate = topupsTemplate
                 .replace("201520112842", random)
                 .replace("07925796290", sub)
-                .replace("11/11/2015", Parser.parseDateFormate(TimeStamp.TodayMinusDayAndMonth(8, 0), TimeStamp.DATE_FORMAT_IN_PDF));
+                .replace("11/11/2015", Parser.parseDateFormate(TimeStamp.TodayMinusDayAndMonth(8, 0), TimeStamp.DATE_FORMAT_IN_PDF))
+                .replace("15/11/2015", Parser.parseDateFormate(TimeStamp.TodayMinusDayAndMonth(4, 0), TimeStamp.DATE_FORMAT_IN_PDF));
         String remotePath = Config.getProp("CDRSFTPFolder");
         String localPath = Common.getFolderLogFilePath() + fileName;
         Common.writeFile(topupsTemplate, localPath);

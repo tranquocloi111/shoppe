@@ -32,9 +32,8 @@ public class TC33319_Self_Care_Change_Payment_Details_DD_to_CC extends BaseTest 
         test.get().info("Step 1 :create an online DD customer");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_DD_customer_with_FC_2_bundles_and_NK2720";
         OWSActions owsActions = new OWSActions();
-        owsActions.createGeneralCustomerOrderForChangePassword(path);
+        owsActions.createGeneralCustomerOrder(path);
         customerNumber = owsActions.customerNo;
-        int hrmid = BillingActions.getHmbrid(customerNumber);
         String fullName = owsActions.fullName;
 
         test.get().info("Step 2 :Create new billing group");

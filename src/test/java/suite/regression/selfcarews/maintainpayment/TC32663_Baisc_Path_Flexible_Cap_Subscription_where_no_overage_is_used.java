@@ -35,7 +35,7 @@ public class TC32663_Baisc_Path_Flexible_Cap_Subscription_where_no_overage_is_us
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         customerNumber = owsActions.customerNo;
-        owsActions.getSubscription(owsActions.orderIdNo, "Mobile FC");
+        owsActions.getSubscription(owsActions.orderIdNo, "Mobile Ref 1");
         String sub = owsActions.serviceRef;
 
         test.get().info("Step 2 : Create the new billing group");
@@ -55,8 +55,7 @@ public class TC32663_Baisc_Path_Flexible_Cap_Subscription_where_no_overage_is_us
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-        //Here we give cvv number as 222 which means this card is not authorised.
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32663_request";
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32663_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequestWithSubscriptionNumber(sub, customerNumber, path);
 
@@ -67,11 +66,13 @@ public class TC32663_Baisc_Path_Flexible_Cap_Subscription_where_no_overage_is_us
         MaintainPaymentResponseData maintainPaymentResponseData =new MaintainPaymentResponseData();
         maintainPaymentResponseData.setAccountNumber(customerNumber);
         maintainPaymentResponseData.setAction("ADHOC_PAYMENT");
-        maintainPaymentResponseData.setResponseCode("Payment was successful");
+        maintainPaymentResponseData.setMessage("Payment was successful");
         maintainPaymentResponseData.setReference("True");
-        maintainPaymentResponseData.setReference(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        maintainPaymentResponseData.setResponseCode("0");
+        maintainPaymentResponseData.setReference("True");
+        maintainPaymentResponseData.setDateTime(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
 
-        SelfCareWSTestBase.verifyMaintainPaymentResponse(maintainPaymentResponseData,response);
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
         test.get().info("Step 6  refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
 
@@ -80,7 +81,7 @@ public class TC32663_Baisc_Path_Flexible_Cap_Subscription_where_no_overage_is_us
         MenuPage.LeftMenuPage.getInstance().clickFinancialTransactionLink();
 
         test.get().info("Step 8: verify 1 ad hoc payment generation");
-        HashMap<String, String> financialTransaction = FinancialTransactionEnity.dataFinancialTransactionForMakeAOneOffPayment("Ad Hoc Payment", "£21.00");
+        HashMap<String, String> financialTransaction = FinancialTransactionEnity.dataFinancialTransactionForMakeAOneOffPayment("Ad Hoc Payment", "£10.00");
         Assert.assertEquals(FinancialTransactionPage.FinancialTransactionGrid.getInstance().getNumberOfFinancialTransaction(financialTransaction), 1);
 
 

@@ -436,6 +436,18 @@ public class TasksContentPage extends BasePage {
             public String getBarringStatusBothWay() {
                 return getTextOfElement(lblBarringStatusBothWay);
             }
+            public String getBankName() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Bank Name:"));
+            }
+            public String getBankSortCode() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Bank Sort Code:"));
+            }
+            public String getBankAccountNumber() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Bank Account Number:"));
+            }
+            public String getBankAccountHolderName() {
+                return getTextOfElement(tableControlBase.getCellByLabel("Bank Account Holder Name:"));
+            }
         }
     }
 

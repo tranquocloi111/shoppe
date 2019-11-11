@@ -284,7 +284,7 @@ public class SelfCareWSTestBase extends BaseWs {
     }
     public static  void verifyMaintainPaymentResponse(MaintainPaymentResponseData enity,Xml response)
     {
-        Assert.assertEquals(enity.getAccountNumber(),response.getTextByXpath("accountnumber"));
+        Assert.assertEquals(enity.getAccountNumber(),response.getTextByXpath("accountNumber"));
         Assert.assertEquals(enity.getAction(),response.getTextByXpath("action"));
         Assert.assertEquals(enity.getResponseCode(),response.getTextByXpath("responsecode"));
         if(enity.getMessage()!=null || !enity.getMessage().isEmpty())
@@ -300,6 +300,23 @@ public class SelfCareWSTestBase extends BaseWs {
             Assert.assertEquals(enity.getDateTime(),Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
         }
     }
-
+    public static  void verifyMaintainPaymentResponseByTagName(MaintainPaymentResponseData enity,Xml response)
+    {
+        Assert.assertEquals(enity.getAccountNumber(),response.getTextByTagName("accountNumber"));
+        Assert.assertEquals(enity.getAction(),response.getTextByTagName("action"));
+        Assert.assertEquals(enity.getResponseCode(),response.getTextByTagName("responseCode"));
+        if(enity.getMessage()!=null || !enity.getMessage().isEmpty())
+        {
+            Assert.assertEquals(enity.getMessage(),response.getTextByTagName("message"));
+        }
+        if(enity.getReference()!=null || !enity.getReference().isEmpty())
+        {
+            Assert.assertTrue(!response.getTextByTagName("reference").isEmpty());
+        }
+        if(enity.getDateTime()!=null || !enity.getDateTime().isEmpty())
+        {
+            Assert.assertEquals(enity.getDateTime(),Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        }
+    }
 
 }

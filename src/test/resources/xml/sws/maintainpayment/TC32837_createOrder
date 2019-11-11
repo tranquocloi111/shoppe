@@ -1,0 +1,79 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <ord1:createOrder type="NEW" xsi:schemaLocation="http://order.telco.hsntech.com ShopFront.xsd" xmlns:ord1="http://order.telco.hsntech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <account type="RESIDENTIAL">
+                <contact type="BILLING" language="en_GB">
+                    <title>Mr</title>
+                    <firstName></firstName>
+                    <lastName></lastName>
+                    <telephoneNumbers defaultContact="daytime">
+                        <daytime>0398403854</daytime>
+                        <evening>0208610290</evening>
+                        <mobile>02086999990</mobile>
+                    </telephoneNumbers>
+                    <emailAddress></emailAddress>
+                    <birthDate>1984-01-01</birthDate>
+                </contact>
+                <billingAddress>
+                    <buildingIdentifier>2</buildingIdentifier>
+                    <!--<addressLine2>Tset</addressLine2>:-->
+                    <addressLine1>DALTON</addressLine1>
+                    <town>ELY</town>
+                    <country>United Kingdom</country>
+                    <postcode>CB61DS</postcode>
+                    <!--<pafId>Tset</pafId>:-->
+                    <ptc_abs_code>PTCABS11899814</ptc_abs_code>
+                    <startDate>1980-08-08</startDate>
+                </billingAddress>
+                <accountDetail>
+                    <username></username>
+                    <password>password3</password>
+                    <securityQuestion>Mothers maiden name?</securityQuestion>
+                    <securityAnswer>smith</securityAnswer>
+                </accountDetail>
+                <billingDetail>
+                    <billGroupId>3</billGroupId>
+                    <preferredNotification>SMS</preferredNotification>
+                    <paymentDetail type="DD">
+                        <directDebit>
+                            <bankName>Test Bank Name</bankName>
+                            <sortCode>089999</sortCode>
+                            <accountNumber>66374958</accountNumber>
+                            <accountName>Bank Account Name</accountName>
+                        </directDebit>
+                    </paymentDetail>
+                    <billFormat>SUMMARY</billFormat>
+                    <clubcardNumber>634004000232313926</clubcardNumber>
+                </billingDetail>
+            </account>
+            <verification runCreditCheck="true" termsAndConditionsAccepted="false" refundableDepositAccepted="false">
+                <interconnect>
+                    <param name="PAYASYOUGO">078940302030</param>
+                </interconnect>
+            </verification>
+            <orderDetail orderRef="12345" ipAddress="160.206.234.22" salesChannel="Onlines" agentId="AGENT001" externalSystemID="COCO" devicePrint="DEVICEPRINT001" paymentMethod="CARD">
+                <dateTime>2011-06-10T16:44:31.0Z</dateTime>
+                <orderItem id="1" masterSubscription="false" dealSKU="DEAL1">
+                    <serviceRef reference="Mobile Ref 1"/>
+                    <tariff productCode="BC12-1000-100">
+                        <deliveryMethod>INHAND</deliveryMethod>
+                    </tariff>
+                    <simonly productCode="SIM-ONLY">
+                        <deliveryMethod>DELIVER</deliveryMethod>
+                    </simonly>
+                </orderItem>
+                <orderEvent dateTime="2011-06-10T16:41:30.0Z" eventType="Initiated Order">Started Order</orderEvent>
+                <paymentRequest>
+                    <cardName>CardName</cardName>
+                    <cardNumber>5105105105105100</cardNumber>
+                    <cardType>MA</cardType>
+                    <cardExpiryDate>1230</cardExpiryDate>
+                    <!--CardStartDate is optional as of V8.2-->
+                    <cardStartDate>0110</cardStartDate>
+                    <cvv>123</cvv>
+                </paymentRequest>
+            </orderDetail>
+        </ord1:createOrder>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -388,5 +388,10 @@ public class BillingActions extends OracleDB {
         }
         return null;
     }
+
+    public static void updateCollectionDateOfLatestDDBatchToToday() {
+        String sql ="update ddbatch set collectiondate = batchdate where ddbatchid = (select max(ddbatchid) from ddbatch)";
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+    }
 }
 
