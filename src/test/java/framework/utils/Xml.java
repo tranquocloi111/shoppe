@@ -233,4 +233,20 @@ public class Xml {
         NodeList nodes = getElementsByTagName(tagName);
             nodes.item(index).setTextContent(value);
     }
+    public String getTextByTagNameAndIndex(String tagName,int index) {
+        NodeList nodes = getElementsByTagName(tagName);
+        return nodes.item(index).getTextContent();
+    }
+    public int countAllElementsPresenceInXml(String tagName,String attributeName, String text) {
+        NodeList nodes = getElementsByXpath(tagName);
+        int count=0;
+        for (int i = 0; i < nodes.getLength(); i++) {
+           String value= nodes.item(i).getNodeValue();
+            if(value.trim().equalsIgnoreCase(text.trim()))
+                count=count+1;
+        }
+        return count;
+    }
+
+
 }

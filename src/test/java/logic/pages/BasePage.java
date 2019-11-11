@@ -397,6 +397,15 @@ public class BasePage {
         }
 
     }
+
+    public void waitUntilSpecificTime(int second) {
+        try {
+            Thread.sleep(1000*second);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     //endregion
 }
 
