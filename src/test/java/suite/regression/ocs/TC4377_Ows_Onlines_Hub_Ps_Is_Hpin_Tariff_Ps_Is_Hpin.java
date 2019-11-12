@@ -5,6 +5,7 @@ import framework.utils.Pdf;
 import framework.utils.Xml;
 import logic.business.db.billing.CommonActions;
 import logic.business.helper.FTPHelper;
+import logic.business.helper.SFTPHelper;
 import logic.business.ws.ows.OWSActions;
 import logic.pages.care.MenuPage;
 import logic.pages.care.find.CommonContentPage;
@@ -33,12 +34,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TC4377_Ows_Onlines_Hub_Ps_Is_Hpin_Tariff_Ps_Is_Hpin extends BaseTest {
-    private String customerNumber = "47747482";
-    private String orderId = "8701041";
-    private String firstName = "first130138781";
-    private String lastName = "last854825628";
+    private String customerNumber = "47762438";
+    private String orderId = "8701887";
+    private String firstName = "first148738721";
+    private String lastName = "last419949210";
     private String subNo1 = "07406981070";
-    private String userName = "un268816268@hsntech.com";
+    private String userName = "un419002077@hsntech.com";
     private String passWord = "password1";
 
     @Test(enabled = true, description = "TC4377_Ows_Onlines_Hub_Ps_Is_Hpin_Tariff_Ps_Is_Hpin", groups = "OCS")
@@ -54,7 +55,7 @@ public class TC4377_Ows_Onlines_Hub_Ps_Is_Hpin_Tariff_Ps_Is_Hpin extends BaseTes
         orderId = owsActions.orderIdNo;
         firstName = owsActions.firstName;
         lastName = owsActions.lastName;
-        checkCreateOcsAccountCommand();
+        CareTestBase.page().checkCreateOcsAccountCommand(orderId, false);
 
         test.get().info("Step 3 : Login to Care screen");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
@@ -63,7 +64,7 @@ public class TC4377_Ows_Onlines_Hub_Ps_Is_Hpin_Tariff_Ps_Is_Hpin extends BaseTes
 
         test.get().info("Step 4 : Validate the Subscription details screen in HUB .NET");
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
-        verifyOcsSubscriptionDetails("HPIN", "", "");
+        verifyOcsSubscriptionDetails("HPIN", "", "", TimeStamp.Today());
 
         test.get().info("Step 5 : Validate Sales Order and Order Task Service Orders in HUB .NET");
         verifyServiceOrdersAreCreatedCorrectly();
@@ -73,6 +74,8 @@ public class TC4377_Ows_Onlines_Hub_Ps_Is_Hpin_Tariff_Ps_Is_Hpin extends BaseTes
         verifyGetOrderRequestAreCorrect(xml);
 
         test.get().info("Step 7 : Login to SelfCare ");
+        userName = owsActions.username;
+        passWord = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
         test.get().info("Step 8 : Validate the order confirmations screen in Self Care");
@@ -141,13 +144,12 @@ public class TC4377_Ows_Onlines_Hub_Ps_Is_Hpin_Tariff_Ps_Is_Hpin extends BaseTes
 
     private void verifyTrustServerLog(){
         String localTime = Common.getCurrentLocalTime();
-//        String ftpFile = "/opt/payara/payara5/glassfish/domains/trusted-R2-silo/logs/";
-//        String localFile = Common.getFolderLogFilePath() + "sds.txt";
-//        List<String> allFileName= FTPHelper.getInstance().getAllFileName(ftpFile);
-//        FTPHelper.getInstance().downLoadFromDisk(ftpFile, allFileName.get(2), localFile);
-//        Log.info("Server log file:" + localFile);
+        String ftpFile = "/opt/payara/payara5/glassfish/domains/trust-R2-serv/logs/server.log";
+        String localFile = Common.getFolderLogFilePath() + customerNumber + localTime + "_TrustServerLog.txt";
+        SFTPHelper.getGlassFishInstance().downloadGlassFishFile(localFile, ftpFile);
+        Log.info("Server log file:" + localFile);
 
-        String serverLog = Common.getFolderLogFilePath() + "TrustServerLog1.txt";
+        String serverLog = localFile;
         String doReservePath =  Common.readFile("src\\test\\resources\\xml\\ocs\\TC4377_Do_Reserve.xml")
                 .replace("$orderNumber$", orderId);
         String doReserveFile = Common.saveXmlFile(customerNumber + localTime +"_doReserve.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doReservePath)));
@@ -171,6 +173,7 @@ public class TC4377_Ows_Onlines_Hub_Ps_Is_Hpin_Tariff_Ps_Is_Hpin extends BaseTes
                 .replace("$mobilePhoneNumber$", subNo1)
                 .replace("$firstName$", firstName)
                 .replace("$lastName$", lastName)
+                .replace("$dateTime$", Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML))
                 .replace("$secondReference$", userName);
         String doConfirmFile = Common.saveXmlFile(customerNumber + localTime +"_doConfirm.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doConfirmPath)));
         Assert.assertTrue(Common.compareTextsFile(serverLog, doConfirmFile));
@@ -180,17 +183,4 @@ public class TC4377_Ows_Onlines_Hub_Ps_Is_Hpin_Tariff_Ps_Is_Hpin extends BaseTes
         String doConfirmResponseFile = Common.saveXmlFile(customerNumber + localTime +"_doConfirmReponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doConfirmResponsePath)));
         Assert.assertTrue(Common.compareTextsFile(serverLog, doConfirmResponseFile));
     }
-
-    private void checkCreateOcsAccountCommand(){
-        boolean isExist = false;
-        List asyncCommand =  CommonActions.getAsynccommand(orderId);
-        for (int i = 0; i < asyncCommand.size(); i++) {
-            if (((HashMap) asyncCommand.get(i)).containsValue("CREATE_OCS_ACCOUNT")) {
-                isExist = true;
-                break;
-            }
-        }
-        Assert.assertFalse(isExist);
-    }
-
 }

@@ -48,7 +48,7 @@ public class TC4976_Ows_CSA_Hub_Ps_Is_Both_Or_Mig_And_Ocs_Is_Hpin_And_Tariff_Ps_
         orderId = owsActions.orderIdNo;
         firstName = owsActions.firstName;
         lastName = owsActions.lastName;
-        checkCreateOcsAccountCommand();
+        CareTestBase.page().checkCreateOcsAccountCommand(orderId, false);
 
         test.get().info("Step 3 : Login to Care screen");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
@@ -57,7 +57,7 @@ public class TC4976_Ows_CSA_Hub_Ps_Is_Both_Or_Mig_And_Ocs_Is_Hpin_And_Tariff_Ps_
 
         test.get().info("Step 4 : Validate the Subscription details screen in HUB .NET");
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
-        verifyOcsSubscriptionDetails("HPIN", "", "");
+        verifyOcsSubscriptionDetails("HPIN", "", "", TimeStamp.Today());
 
         test.get().info("Step 5 : Validate Sales Order and Order Task Service Orders in HUB .NET");
         verifyServiceOrdersAreCreatedCorrectly();
@@ -67,6 +67,8 @@ public class TC4976_Ows_CSA_Hub_Ps_Is_Both_Or_Mig_And_Ocs_Is_Hpin_And_Tariff_Ps_
         verifyGetOrderRequestAreCorrect(xml);
 
         test.get().info("Step 7 : Login to SelfCare ");
+        userName = owsActions.username;
+        passWord = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
         test.get().info("Step 8 : Validate the order confirmations screen in Self Care");
@@ -173,18 +175,6 @@ public class TC4976_Ows_CSA_Hub_Ps_Is_Both_Or_Mig_And_Ocs_Is_Hpin_And_Tariff_Ps_
                 .replace("$orderNumber$", orderId);
         String doConfirmResponseFile = Common.saveXmlFile(customerNumber + localTime +"_doConfirmReponse.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doConfirmResponsePath)));
         Assert.assertTrue(Common.compareTextsFile(serverLog, doConfirmResponseFile));
-    }
-
-    private void checkCreateOcsAccountCommand(){
-        boolean isExist = false;
-        List asyncCommand =  CommonActions.getAsynccommand(orderId);
-        for (int i = 0; i < asyncCommand.size(); i++) {
-            if (((HashMap) asyncCommand.get(i)).containsValue("CREATE_OCS_ACCOUNT")) {
-                isExist = true;
-                break;
-            }
-        }
-        Assert.assertFalse(isExist);
     }
 
 }

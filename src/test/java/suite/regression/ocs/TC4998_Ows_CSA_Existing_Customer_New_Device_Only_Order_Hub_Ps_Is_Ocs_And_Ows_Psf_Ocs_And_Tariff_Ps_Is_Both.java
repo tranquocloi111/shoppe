@@ -76,6 +76,8 @@ public class TC4998_Ows_CSA_Existing_Customer_New_Device_Only_Order_Hub_Ps_Is_Oc
         verifyGetOrderRequestAreCorrect(xml);
 
         test.get().info("Step 7 : Login to SelfCare ");
+        userName = owsActions.username;
+        passWord = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
         test.get().info("Step 8 : Validate the order confirmations screen in Self Care");
@@ -218,19 +220,19 @@ public class TC4998_Ows_CSA_Existing_Customer_New_Device_Only_Order_Hub_Ps_Is_Oc
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Mobile 1");
         SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A" , TimeStamp.Today());
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo2 + " Mobile 2");
         generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode+ "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode+ "A", TimeStamp.Today());
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo3 + " Mobile 3");
         generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A", TimeStamp.Today());
     }
 
 }

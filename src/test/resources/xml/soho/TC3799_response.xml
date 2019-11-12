@@ -4,16 +4,17 @@
       <return>
         <account>
           <accountNumber>$accountNumber$</accountNumber>
-          <accountName>Mr $accountName$</accountName>
+          <accountName>$accountName$</accountName>
           <startDate>$accountstartDate$+10:00</startDate>
           <endDate xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </account>
         <tariff>
           <subscriptionNumber>$subscriptionNumber$</subscriptionNumber>
-          <startDate>$tariffstartDate$T00:00:00.000+10:00</startDate>
-          <endDate>$tariffendDate$T00:00:00.000+10:00</endDate>
+          <startDate>$tariffstartDate$T00:00:00.000+11:00</startDate>
+          <endDate>$tariffendDate$T00:00:00.000+11:00</endDate>
           <etc>460</etc>
           <monthlyCharge>20</monthlyCharge>
+          <contractMonths>24</contractMonths>
         </tariff>
         <devices>
           <device>
@@ -29,8 +30,8 @@
             <dealType>AUSTANDARD</dealType>
             <agreementPhases>1</agreementPhases>
             <description>Credit Agreement</description>
-            <startDate>$agreementstartDate$T00:00:00.000+10:00</startDate>
-            <endDate>$agreementendDate$T00:00:00.000+10:00</endDate>
+            <startDate>$agreementstartDate$T00:00:00.000+11:00</startDate>
+            <endDate>$agreementendDate$T00:00:00.000+11:00</endDate>
             <outstandingBalance>384</outstandingBalance>
             <agreementMonths>24</agreementMonths>
             <monthlyCharge>16</monthlyCharge>
@@ -40,6 +41,11 @@
             <otherPayments>0</otherPayments>
           </agreement>
         </agreements>
+        <contract>
+          <make>HTC</make>
+          <model>Desire HD</model>
+          <dealType>AUSTANDARD</dealType>
+        </contract>
       </return>
     </getContractSummaryResponse>
   </S:Body>

@@ -78,11 +78,18 @@ public class TC4618_Care_View_Sub_Validation_For_New_Tropicana_Bundle_In_Subscri
     }
 
     private void verifyNewTropicanaBundleInDB(){
+        boolean isFlag = false;
         List bundle = CommonActions.getBundleByCustomerId(customerNumber);
-        Assert.assertEquals(((HashMap) bundle.get(0)).get("MPN"), subscription2);
-        Assert.assertEquals(((HashMap) bundle.get(0)).get("BUNDLEGROUPCODE"), "DOUBLE_DATA");
-        Assert.assertEquals(((HashMap) bundle.get(0)).get("BUNDLECODE"), "250MB-FDATA-0-FC");
-        Assert.assertEquals(((HashMap) bundle.get(0)).get("BUNDLEDESCR"), "Family perk - 250MB per month");
-        Assert.assertEquals(((HashMap) bundle.get(0)).get("BUNDLEGROUPTYPE"), "BONUS");
+        for (int i = 0; i < bundle.size(); i++) {
+            isFlag = ((HashMap) bundle.get(i)).get("MPN").equals(subscription2)
+                    && ((HashMap) bundle.get(i)).get("BUNDLEGROUPCODE").equals("DOUBLE_DATA")
+                    && ((HashMap) bundle.get(i)).get("BUNDLECODE").equals("250MB-FDATA-0-FC")
+                    && ((HashMap) bundle.get(i)).get("BUNDLEDESCR").equals("Family perk - 250MB per month")
+                    && ((HashMap) bundle.get(i)).get("BUNDLEGROUPTYPE").equals("BONUS");
+            if (isFlag)
+                break;
+        }
+
+        Assert.assertTrue(isFlag);
     }
 }

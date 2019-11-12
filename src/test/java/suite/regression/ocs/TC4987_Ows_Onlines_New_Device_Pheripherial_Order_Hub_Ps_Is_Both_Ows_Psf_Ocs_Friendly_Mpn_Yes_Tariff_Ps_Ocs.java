@@ -54,7 +54,7 @@ public class TC4987_Ows_Onlines_New_Device_Pheripherial_Order_Hub_Ps_Is_Both_Ows
         orderId = owsActions.orderIdNo;
         firstName = owsActions.firstName;
         lastName = owsActions.lastName;
-        checkCreateOcsAccountCommand();
+        CareTestBase.page().checkCreateOcsAccountCommand(orderId, true);
 
         test.get().info("Step 3 : Login to Care screen");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
@@ -64,7 +64,7 @@ public class TC4987_Ows_Onlines_New_Device_Pheripherial_Order_Hub_Ps_Is_Both_Ows
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A", TimeStamp.Today());
 
         test.get().info("Step 5 : Validate Sales Order and Order Task Service Orders in HUB .NET");
         verifyServiceOrdersAreCreatedCorrectly();
@@ -74,6 +74,8 @@ public class TC4987_Ows_Onlines_New_Device_Pheripherial_Order_Hub_Ps_Is_Both_Ows
         verifyGetOrderRequestAreCorrect(xml);
 
         test.get().info("Step 7 : Login to SelfCare ");
+        userName = owsActions.username;
+        passWord = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
         test.get().info("Step 8 : Validate the order confirmations screen in Self Care");
@@ -189,17 +191,4 @@ public class TC4987_Ows_Onlines_New_Device_Pheripherial_Order_Hub_Ps_Is_Both_Ows
         String publicCreateCustomerRequestMsgFile = Common.saveXmlFile(customerNumber + localTime +"_PublicCreateCustomerRequestMsg.txt", XmlUtils.prettyFormat(XmlUtils.toCanonicalXml(doPublicCreateCustomerRequestMsgPath)));
         Assert.assertTrue(Common.compareTextsFile(publicServerLog, publicCreateCustomerRequestMsgFile));
     }
-
-    private void checkCreateOcsAccountCommand(){
-        boolean isExist = false;
-        List asyncCommand =  CommonActions.getAsynccommand(orderId);
-        for (int i = 0; i < asyncCommand.size(); i++) {
-            if (((HashMap) asyncCommand.get(i)).containsValue("CREATE_OCS_ACCOUNT")) {
-                isExist = true;
-                break;
-            }
-        }
-        Assert.assertTrue(isExist);
-    }
-
 }

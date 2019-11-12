@@ -392,4 +392,16 @@ public class CommonActions extends OracleDB {
         }
         return false;
     }
+
+    public static void updateCustomerEndDateWithoutProcedure(String cusId, Date newEndDate) {
+        String sql = String.format("update businessunit set dateend = '%s' where buid = '%s'", Parser.parseDateFormate(newEndDate, "dd/MMM/yyyy"), cusId);
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+        sql = String.format("update inventory set datedeactive = '%s' where rootbuid = '%s'", Parser.parseDateFormate(newEndDate, "dd/MMM/yyyy"), cusId);
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+        sql = String.format("update businessunit set dateend = '%s' where rootbuid = '%s'", Parser.parseDateFormate(newEndDate, "dd/MMM/yyyy"), cusId);
+        OracleDB.SetToNonOEDatabase().executeNonQuery(sql);
+
+    }
 }

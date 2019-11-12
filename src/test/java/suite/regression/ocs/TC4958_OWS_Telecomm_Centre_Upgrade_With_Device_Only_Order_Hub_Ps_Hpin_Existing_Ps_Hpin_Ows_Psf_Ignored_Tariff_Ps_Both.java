@@ -89,7 +89,7 @@ public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hp
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         subNo1 = CommonContentPage.SubscriptionsGridSectionPage.getInstance().getSubscriptionNumberValue("Upgrade Mobile");
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
-        verifyOcsSubscriptionDetails("HPIN", "", "");
+        verifyOcsSubscriptionDetails("HPIN", "", "", newStartDate);
 
         test.get().info("Step 11 : Validate Sales Order and Order Task Service Orders in HUB .NET");
         verifyServiceOrdersAreCreatedCorrectly();
@@ -99,6 +99,8 @@ public class TC4958_OWS_Telecomm_Centre_Upgrade_With_Device_Only_Order_Hub_Ps_Hp
         verifyGetOrderRequestAreCorrect(xml);
 
         test.get().info("Step 13 : Login to SelfCare ");
+        userName = owsActions.username;
+        passWord = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
         test.get().info("Step 14 : Validate the order confirmations screen in Self Care");

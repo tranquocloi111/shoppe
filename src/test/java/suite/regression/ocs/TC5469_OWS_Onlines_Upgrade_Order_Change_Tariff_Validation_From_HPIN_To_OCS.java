@@ -115,6 +115,8 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
         verifyInvoiceDetail();
 
         test.get().info("Step 16 : Login to SelfCare ");
+        userName = owsActions.username;
+        passWord = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
         test.get().info("Step 17 : Validate the order confirmations screen in Self Care");
@@ -288,7 +290,7 @@ public class TC5469_OWS_Onlines_Upgrade_Order_Change_Tariff_Validation_From_HPIN
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Upgrade Mobile");
         SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A", newStartDate);
     }
 
     private void verifyOneInvoiceGeneratedWithIssueDateOfToday(){

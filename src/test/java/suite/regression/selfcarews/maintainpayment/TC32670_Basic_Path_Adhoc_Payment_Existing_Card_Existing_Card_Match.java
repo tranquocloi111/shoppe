@@ -104,7 +104,7 @@ public class TC32670_Basic_Path_Adhoc_Payment_Existing_Card_Existing_Card_Match 
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getCardNumber(), "************5100");
 
         HashMap<String,String> enity= ReceiptAllocation.dataForReceiptAllocation("",TimeStamp.Today(),"£19.00");
-        Assert.assertEquals(PaymentDetailPage.receiptAllocation.getInstance().getNumberReceiptRecord(enity),1);
+        Assert.assertEquals(PaymentDetailPage.ReceiptAllocation.getInstance().getNumberReceiptRecord(enity),1);
     }
 
 }

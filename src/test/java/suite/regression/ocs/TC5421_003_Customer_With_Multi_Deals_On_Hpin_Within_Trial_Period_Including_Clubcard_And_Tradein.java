@@ -65,7 +65,7 @@ public class TC5421_003_Customer_With_Multi_Deals_On_Hpin_Within_Trial_Period_In
 
         test.get().info("Step 8 : Deactivate subscription");
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscription(true);
+        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscription(false,true);
 
         test.get().info("Step 9 : Verify the subscription status is Inactive");
         Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo2));
@@ -160,11 +160,11 @@ public class TC5421_003_Customer_With_Multi_Deals_On_Hpin_Within_Trial_Period_In
 
     private void verifyOcsKeyOfSubscription(){
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Mobile 1");
-        verifyOcsSubscriptionDetails(newStartDate, "HPIN", "", "");
+        verifyOcsSubscriptionDetails("HPIN", "", "" , newStartDate);
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo2 + " Mobile 2");
-        verifyOcsSubscriptionDetails(newStartDate, "HPIN", "", "");
+        verifyOcsSubscriptionDetails("HPIN", "", "", newStartDate);
     }
 
     private void verifyOneInvoiceGeneratedWithIssueDateOfToday(){

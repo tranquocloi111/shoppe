@@ -1,0 +1,89 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ord1:createOrder type="NEW" correlationId="" xsi:schemaLocation="http://order.telco.hsntech.com ShopFront.xsd" xmlns:ord1="http://order.telco.hsntech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         <account type="RESIDENTIAL">
+            <contact type="BILLING" language="en_GB">
+               <title>Mr</title>
+               <firstName>firssdt534992729</firstName>
+               <lastName>lastsdsd726384114</lastName>
+               <telephoneNumbers defaultContact="daytime">
+                  <daytime>0398403850</daytime>
+                  <evening>0208619999</evening>
+                  <mobile>02086999990</mobile>
+               </telephoneNumbers>
+               <emailAddress>mail9232399@hsntch.com</emailAddress>
+               <birthDate>1975-04-22</birthDate>
+            </contact>
+            <billingAddress>
+               <buildingIdentifier>6</buildingIdentifier>
+               <addressLine1>LUKIN STREET</addressLine1>
+               <!--<addressLine2>Address Line 2</addressLine2>:-->
+               <town>LONDON</town>
+               <country>United Kingdom</country>
+               <postcode>E10AA</postcode>
+               <ptc_abs_code>PTCABS3075103</ptc_abs_code>
+               <startDate>1980-08-08</startDate>
+            </billingAddress>
+            <accountDetail>
+               <username>un2@hsntech.com</username>
+               <!--<username>WinnieAutomation6</username>-->
+               <password>password1</password>
+               <securityQuestion>Mothers maiden name?</securityQuestion>
+               <securityAnswer>smith</securityAnswer>
+            </accountDetail>
+            <businessDetail>
+               <businessName>Tom Cruise</businessName>
+            </businessDetail>
+            <billingDetail>
+               <billGroupId>906</billGroupId>
+               <preferredNotification>SMS</preferredNotification>
+               <paymentDetail type="DD">
+                  <directDebit>
+                     <bankName>RGMSP8QI2</bankName>
+                     <sortCode>089999</sortCode>
+                     <accountNumber>66374958</accountNumber>
+                     <accountName>MT5J2JYZ1285FVMM</accountName>
+                  </directDebit>
+               </paymentDetail>
+               <billFormat>SUMMARY</billFormat>
+               <clubcardNumber>634143330730912784</clubcardNumber>
+            </billingDetail>
+         </account>
+         <verification runCreditCheck="false" termsAndConditionsAccepted="true" acceptAgreement="true" refundableDepositAccepted="false"/>
+         <orderDetail orderRef="12345" ipAddress="160.206.234.22" salesChannel="Onlines" externalSystemID="COCO" devicePrint="DEVICEPRINT-AA" paymentMethod="CARD">
+            <dateTime>2011-06-10T16:44:31.0Z</dateTime>
+            <!--1 or more repetitions:-->
+            <orderItem id="1" dealSKU="DEAL-INHAND" masterSubscription="true">
+               <serviceRef reference="Mobile 1"/>
+               <!--You have a CHOICE of the next 4 items at this level-->
+               <tariff productCode="FF24-0750-250-5M4M">
+                  <deliveryMethod>INHAND</deliveryMethod>
+               </tariff>
+               <device productCode="AP725SV-24-2950-180">
+                  <deliveryMethod>DELIVER</deliveryMethod>
+                  <imei>294902255729057</imei>
+                  <serialNumber>123152436457568486784684</serialNumber>
+                  <agreement provider="AGRTESCOMOBILE"/>
+               </device>
+               <peripheral productCode="LIW108IBK-00-0000-96">
+                  <deliveryMethod>DELIVER</deliveryMethod>
+                  <agreement provider="AGRTESCOMOBILE"/>
+               </peripheral>
+               <discBundle productCode="00750-SB-B" bundleGroup="SB-GRP-B" billCapNotifications="false">
+                  <deliveryMethod>INHAND</deliveryMethod>
+               </discBundle>
+            </orderItem>
+            <paymentRequest>
+               <cardName>CardName</cardName>
+               <cardNumber>5105105105105100</cardNumber>
+               <cardType>MA</cardType>
+               <cardExpiryDate>0230</cardExpiryDate>
+               <!--CardStartDate is optional as of V8.2-->
+               <cardStartDate>0110</cardStartDate>
+               <cvv>123</cvv>
+            </paymentRequest>
+         </orderDetail>
+      </ord1:createOrder>
+   </soapenv:Body>
+</soapenv:Envelope>

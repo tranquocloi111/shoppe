@@ -116,12 +116,9 @@ public class MyAccountDetailsPage extends BasePage {
     }
 
     public static class personnalDetails extends MyAccountDetailsPage {
-        private static class SingletonHelper {
-            private static final personnalDetails INSTANCE = new personnalDetails();
-        }
 
         public static personnalDetails getInstance() {
-            return personnalDetails.SingletonHelper.INSTANCE;
+            return new personnalDetails();
         }
 
         //Control

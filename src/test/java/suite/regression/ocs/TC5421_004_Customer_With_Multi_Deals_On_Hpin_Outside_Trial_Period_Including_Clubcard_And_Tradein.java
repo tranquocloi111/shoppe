@@ -22,21 +22,21 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class TC5421_002_Business_Customer_With_Single_Deal_Account_Subscription_Hpin_Within_Trial_Period_Device_Having_Cca extends BaseTest {
-    private String customerNumber = "47758425";
-    private String orderId = "8701636";
+public class TC5421_004_Customer_With_Multi_Deals_On_Hpin_Outside_Trial_Period_Including_Clubcard_And_Tradein extends BaseTest {
+    private String customerNumber = "47759405";
+    private String orderId = "8701680";
     private String subNo1 = "07647064770";
     private String subNo2 = "07647064770";
     private OWSActions owsActions;
-    private Date newStartDate;
+    private Date newStartDate = TimeStamp.TodayMinus1MonthMinus20Day();;
 
-    @Test(enabled = true, description = "TC5421_002_Business_Customer_With_Single_Deal_Account_Subscription_Hpin_Within_Trial_Period_Device_Having_Cca", groups = "OCS")
-    public void TC5421_002_Business_Customer_With_Single_Deal_Account_Subscription_Hpin_Within_Trial_Period_Device_Having_Cca() {
+    @Test(enabled = true, description = "TC5421_004_Customer_With_Multi_Deals_On_Hpin_Outside_Trial_Period_Including_Clubcard_And_Tradein", groups = "OCS")
+    public void TC5421_004_Customer_With_Multi_Deals_On_Hpin_Outside_Trial_Period_Including_Clubcard_And_Tradein() {
         test.get().info("Step 1 : Create a Consumer customer with single deal account, subscription is on HPIN within trial period, device having CCA");
         CommonActions.updateHubProvisionSystem("H");
         owsActions = new OWSActions();
-        String path = "src\\test\\resources\\xml\\ocs\\TC5421_Single_Deal_HPIN_CCA_Business.xml";
-        owsActions.createOcsCustomerRequestAcceptUrl(path,2, "HPIN");
+        String path = "src\\test\\resources\\xml\\ocs\\TC5421_Multi_Deals_HPIN_Clubcard_Tradein_Residential.xml";
+        owsActions.createOcsCustomerRequestAcceptUrl(path,2, "HPIN", "", "", "", "Voucher");
 
         test.get().info("Step 2 : Create new billing group");
         createNewBillingGroup();
@@ -65,7 +65,7 @@ public class TC5421_002_Business_Customer_With_Single_Deal_Account_Subscription_
 
         test.get().info("Step 8 : Deactivate subscription");
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc();
+        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc(false);
 
         test.get().info("Step 9 : Verify the subscription status is Inactive");
         Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo2));
@@ -155,6 +155,16 @@ public class TC5421_002_Business_Customer_With_Single_Deal_Account_Subscription_
         eventsLists.add(new ArrayList<>(Arrays.asList("PPB: DeleteSubscription: Request completed", "Completed Task")));
         eventsLists.add(new ArrayList<>(Arrays.asList("O2SOA: getAccountSummary: Request completed", "Completed Task")));
         Assert.assertEquals(Common.compareLists(eventsGridSectionPage.getAllValueOfEvents(), eventsLists), 8);
+
+    }
+
+    private void verifyOcsKeyOfSubscription(){
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Mobile 1");
+        verifyOcsSubscriptionDetails("HPIN", "", "", newStartDate);
+
+        MenuPage.BreadCrumbPage.getInstance().clickParentLink();
+        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo2 + " Mobile 2");
+        verifyOcsSubscriptionDetails("HPIN", "", "", newStartDate);
     }
 
     private void verifyOneInvoiceGeneratedWithIssueDateOfToday(){
@@ -180,15 +190,6 @@ public class TC5421_002_Business_Customer_With_Single_Deal_Account_Subscription_
         Assert.assertTrue(listInvoiceContent.contains("Total Adjustments, charges & credits 660.00"));
         //Assert.assertTrue(listInvoiceContent.contains(String.format("%s Online/Telesales -15.00", Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT4))));
         Assert.assertTrue(listInvoiceContent.contains("Total Payments -30.00"));
-    }
-
-    private void verifyOcsKeyOfSubscription(){
-        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Mobile 1");
-        verifyOcsSubscriptionDetails(newStartDate, "HPIN", "", "");
-
-        MenuPage.BreadCrumbPage.getInstance().clickParentLink();
-        CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo2 + " Mobile 2");
-        verifyOcsSubscriptionDetails(newStartDate, "HPIN", "", "");
     }
 
 }

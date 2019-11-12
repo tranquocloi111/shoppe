@@ -27,13 +27,19 @@ import java.util.concurrent.Callable;
 
 public class MiscHelper {
 
-    public static boolean executeFuncntion(int maxTryTimes, Callable<Boolean> func, int interval) {
+    public static boolean executeFunction(int maxTryTimes, Callable<Boolean> func, int interval) {
         try {
-            while (maxTryTimes > 0) {
+//            while (maxTryTimes > 0) {
+//                if (func.call()) {
+//                    return true;
+//                }
+//                maxTryTimes--;
+//                waitForSeconds(1500 * interval);
+//            }
+            for (int i = 0; i < maxTryTimes; i++) {
                 if (func.call()) {
                     return true;
                 }
-                maxTryTimes--;
                 waitForSeconds(1500 * interval);
             }
         } catch (Exception ex) {

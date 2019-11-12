@@ -99,7 +99,7 @@ public class TC4314_001_Business_Validation_SMS_For_Loss_Of_Perk_Eligibility ext
 
         test.get().info("Step 14 : Deactivate subscription 2");
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc();
+        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc(false);
 
         test.get().info("Step 15 : Verify the subscription status is Inactive");
         Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo2));
@@ -109,7 +109,7 @@ public class TC4314_001_Business_Validation_SMS_For_Loss_Of_Perk_Eligibility ext
 
         test.get().info("Step 17 : Deactivate subscription 3");
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc();
+        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc(false);
 
         test.get().info("Step 18 : Verify the subscription status is Inactive");
         Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo3));

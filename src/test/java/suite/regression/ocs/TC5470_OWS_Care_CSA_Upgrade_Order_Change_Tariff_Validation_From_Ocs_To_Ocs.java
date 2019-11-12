@@ -278,23 +278,11 @@ public class TC5470_OWS_Care_CSA_Upgrade_Order_Change_Tariff_Validation_From_Ocs
         Assert.assertTrue(Common.compareTextsFile(publicServerLog, publicCreateCustomerRequestMsgFile));
     }
 
-    private void checkCreateOcsAccountCommand(){
-        boolean isExist = false;
-        List asyncCommand =  CommonActions.getAsynccommand(orderId);
-        for (int i = 0; i < asyncCommand.size(); i++) {
-            if (((HashMap) asyncCommand.get(i)).containsValue("CREATE_OCS_ACCOUNT")) {
-                isExist = true;
-                break;
-            }
-        }
-        Assert.assertFalse(isExist);
-    }
-
     private void verifyOcsKeyOfSubscription(){
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Upgrade Mobile");
         SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A", newStartDate);
     }
 
     private void verifyOneInvoiceGeneratedWithIssueDateOfToday(){

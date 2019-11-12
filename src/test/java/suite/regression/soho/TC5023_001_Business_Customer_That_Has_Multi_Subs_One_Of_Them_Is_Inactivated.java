@@ -59,7 +59,7 @@ public class TC5023_001_Business_Customer_That_Has_Multi_Subs_One_Of_Them_Is_Ina
 
         test.get().info("Step 8 : Deactivate subscription");
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc();
+        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscriptionWithoutEtc(false);
 
         test.get().info("Step 9 : Verify the subscription status is Inactive");
         Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo2));

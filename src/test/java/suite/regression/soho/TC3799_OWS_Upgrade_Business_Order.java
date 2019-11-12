@@ -28,12 +28,12 @@ import java.util.List;
 
 
 public class TC3799_OWS_Upgrade_Business_Order extends BaseTest {
-    private String customerNumber = "10492";
-    private String subNo1 = "07372223320";
-    private String serviceOrderId = "12453";
+    private String customerNumber = "13313";
+    private String subNo1 = "07798476930";
+    private String serviceOrderId;
     OWSActions owsActions;
     String ccaNo1;
-    private Date newStartDate;
+    private Date newStartDate = TimeStamp.TodayMinus1MonthMinus20Day();
 
     //Include 4379
     @Test(enabled = true, description = "TC3796_001_OWS_Create_New_Order_For_Business_Customer ", groups = "SOHO")
@@ -176,7 +176,7 @@ public class TC3799_OWS_Upgrade_Business_Order extends BaseTest {
     private void verifyAPaymentForETCChargeWasCreated(){
         MenuPage.LeftMenuPage.getInstance().clickPaymentsLink();
         HashMap<String, String> paymentEntity = PaymentGridEntity.getPaymentEntity("Online Payment", "£99.00");
-        Assert.assertEquals(PaymentDetailPage.paymentConentGrid.getInstance().getNumberPaymentRecord(paymentEntity), 1);
+        Assert.assertEquals(PaymentDetailPage.PaymentContentGrid.getInstance().getNumberPaymentRecord(paymentEntity), 1);
     }
 
     private void verifyCreditAgreementDetailsAndPaymentInformation(){
@@ -185,9 +185,9 @@ public class TC3799_OWS_Upgrade_Business_Order extends BaseTest {
         List<String> list = new ArrayList<>();
         list.add(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
         list.add("Credit Agreement");
-        list.add("£384.000");
+        list.add("£384.00");
         list.add("Pending");
-        Assert.assertEquals(1,Common.compareList(creditAgreementsGridPage.getAllValueCreditAgreement(), list));
+        Assert.assertEquals(1, Common.compareList(creditAgreementsGridPage.getAllValueCreditAgreement(), list));
     }
 
     private void verifySubscriptionDetailsOfOtherProducts(){
@@ -314,7 +314,7 @@ public class TC3799_OWS_Upgrade_Business_Order extends BaseTest {
         list.add(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
         list.add(Parser.parseDateFormate(Date.valueOf(TimeStamp.TodayMinus1Day().toLocalDate().plusYears(2)), TimeStamp.DATE_FORMAT));
         list.add("Credit Agreement");
-        list.add("£384.000");
+        list.add("£384.00");
         list.add("Active");
         Assert.assertEquals(1, Common.compareList(creditAgreementsGridPage.getAllValueCreditAgreement(), list));
     }
@@ -348,14 +348,13 @@ public class TC3799_OWS_Upgrade_Business_Order extends BaseTest {
         LiveBillEstimateContentPage.LiveBillEstimate.ChargesToDate.BillEstimatePerSubscription.AdjustmentsChargesAndCredits adjustmentsChargesAndCredits =  billEstimatePerSubscription.new AdjustmentsChargesAndCredits(subNo1 + "  Mobile 1");
         adjustmentsChargesAndCredits.expand();
         List<String> list = new ArrayList<>();
-        list.add(Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
-        list.add(Parser.parseDateFormate(TimeStamp.TodayMinus1Day(), TimeStamp.DATE_FORMAT));
+        list.add(Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT4));
         list.add("£0.00");
         list.add("Nokia 2720");
         Assert.assertEquals(1, Common.compareList(adjustmentsChargesAndCredits.getAllValueAdjustmentsOrders(), list));
 
         list = new ArrayList<>();
-        list.add(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
+        list.add(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT4));
         list.add("HTC Desire HD");
         list.add("£99.00");
         Assert.assertEquals(1, Common.compareList(adjustmentsChargesAndCredits.getAllValueAdjustmentsOrders(), list));

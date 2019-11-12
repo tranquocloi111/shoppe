@@ -388,5 +388,15 @@ public class BillingActions extends OracleDB {
         }
         return null;
     }
+
+    public static Date updateBillRunCalendarRunDatesToRunFirstBillRun(Date firstAsAtDate) {
+        //OracleDataAccess.ExecuteNonQuery(string.Format("update billruncalendar set asatdate=trunc(SYSDATE - {0}) where asatdate=trunc(SYSDATE-1) and billinggroupid={1}", (Today - Today.AddMonths(-1).AddDays(-1)).Days, _billingGroup.Key));
+        OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update billruncalendar set rundate=trunc(SYSDATE -5) where rundate=trunc(SYSDATE) and billinggroupid <> %d", tempBillingGroupHeader.getKey()));
+        OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update billruncalendar set asatdate=trunc(SYSDATE -5) where asatdate=trunc(SYSDATE-1) and billinggroupid<> %d", tempBillingGroupHeader.getKey()));
+        OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update billruncalendar set rundate=trunc(SYSDATE + 1) where rundate=trunc(SYSDATE) and billinggroupid = %d", tempBillingGroupHeader.getKey()));
+        OracleDB.SetToNonOEDatabase().executeNonQuery(String.format("update billruncalendar set rundate=trunc(SYSDATE) where rundate=trunc(SYSDATE - %d) and billinggroupid = %d", TimeStamp.getDateBetweenMonth(TimeStamp.Today(), firstAsAtDate), tempBillingGroupHeader.getKey()));
+
+        return Date.valueOf(TimeStamp.Today().toLocalDate().minusMonths(1).minusDays(1));
+    }
 }
 

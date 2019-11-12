@@ -28,6 +28,8 @@ public class OWSActions extends BaseWs {
     public Xml requestForNextStep;
     public Xml responseForNextStep;
     public String subscriptionNumber;
+    public String clubcardPartner;
+    public String tradeIn;
 
     //region XML files
     public static final String EXAMPLE_ORDER = "src\\test\\resources\\xml\\example.xml";
@@ -576,6 +578,10 @@ public class OWSActions extends BaseWs {
                     if (!params[i].isEmpty())
                         request.setTextByXpath("//createOrder//@type", params[i]);
                     break;
+                case 4 :
+                    if (!params[i].isEmpty())
+                        request.setTextsByTagName("voucherCode", new String[]{"Clubcard" + RandomCharacter.getRandomNumericString(5), "Tradein" + RandomCharacter.getRandomNumericString(5)});
+                    break;
             }
         }
 
@@ -618,6 +624,10 @@ public class OWSActions extends BaseWs {
                 case 3:
                     if (!params[i].isEmpty())
                         request.setTextByXpath("//createOrder//@type", params[i]);
+                    break;
+                case 4 :
+                    if (!params[i].isEmpty())
+                        request.setTextsByTagName("voucherCode", new String[]{"Clubcard" + RandomCharacter.getRandomNumericString(5), "Tradein" + RandomCharacter.getRandomNumericString(5)});
                     break;
             }
         }
@@ -679,7 +689,9 @@ public class OWSActions extends BaseWs {
                     break;
                 case 4 :
                     if (!params[i].isEmpty())
-                        request.setTextsByTagName("voucherCode", new String[]{"Clubcard" + RandomCharacter.getRandomNumericString(5), "Tradein" + RandomCharacter.getRandomNumericString(5)});
+                        clubcardPartner = "Clubcard" + RandomCharacter.getRandomNumericString(5);
+                        tradeIn = "Tradein" + RandomCharacter.getRandomNumericString(5);
+                        request.setTextsByTagName("voucherCode", new String[]{clubcardPartner, tradeIn});
                     break;
             }
         }
