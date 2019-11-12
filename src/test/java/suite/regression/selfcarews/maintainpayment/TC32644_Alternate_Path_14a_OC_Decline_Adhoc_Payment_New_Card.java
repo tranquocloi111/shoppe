@@ -19,7 +19,7 @@ public class TC32644_Alternate_Path_14a_OC_Decline_Adhoc_Payment_New_Card extend
   String customerNumber;
 
 
-    @Test(enabled = true, description = "TC32644 selfcare ws maintain contact only user name provided sms", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32644 selfcare ws maintain contact only user name provided sms", groups = "SelfCareWS.Payment")
     public void TC32644_Alternate_Path_14a_OC_Decline_Adhoc_Payment_New_Card() {
         //-----------------------------------------
 

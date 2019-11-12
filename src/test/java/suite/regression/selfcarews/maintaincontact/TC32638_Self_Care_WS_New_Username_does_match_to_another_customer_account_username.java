@@ -13,7 +13,7 @@ public class TC32638_Self_Care_WS_New_Username_does_match_to_another_customer_ac
     String serviceOrderID;
 
 
-    @Test(enabled = true, description = "TC32636 selfcare ws maintain contact use update contact action with invalid username sc 038", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32636 selfcare ws maintain contact use update contact action with invalid username sc 038", groups = "SelfCareWS.MaintainContact")
     public void TC32638_Self_Care_WS_New_Username_does_match_to_another_customer_account_username() {
 
         test.get().info("Step 1 : Create a customer ");

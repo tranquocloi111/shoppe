@@ -13,7 +13,7 @@ public class TC32690_Self_Care_WS_Invalid_Card_Number_SC_019 extends BaseTest {
     String customerNumber;
 
 
-    @Test(enabled = true, description = "TC32690 selfcare WS invalid card bunber SC 019", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32690 selfcare WS invalid card bunber SC 019", groups = "SelfCareWS.Payment")
     public void TC32690_Self_Care_WS_Invalid_Card_Number_SC_019() {
         //-----------------------------------------
         test.get().info("Step 1 : Create a customer ");

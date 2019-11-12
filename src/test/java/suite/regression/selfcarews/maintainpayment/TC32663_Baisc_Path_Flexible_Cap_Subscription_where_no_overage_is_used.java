@@ -27,7 +27,7 @@ public class TC32663_Baisc_Path_Flexible_Cap_Subscription_where_no_overage_is_us
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32663 basic path flexible cap subcription where no overage is used", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32663 basic path flexible cap subcription where no overage is used", groups = "SelfCareWS.Payment")
     public void TC32663_Baisc_Path_Flexible_Cap_Subscription_where_no_overage_is_used() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only";

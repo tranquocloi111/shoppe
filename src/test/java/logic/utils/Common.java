@@ -2,6 +2,7 @@ package logic.utils;
 
 import com.opencsv.CSVReader;
 import framework.utils.Log;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.*;
@@ -325,10 +326,9 @@ public class Common {
         int count = 0;
         for (int i = 0; i < actual.size(); i++) {
             for (int k = 0; k < expected.size(); k++) {
-                if (actual.get(i).contains(expected.get(k))) {
+                if (Common.steamAnyMatchContains(actual.get(i), expected.get(k))) {
                     flg = true;
-                }
-                else {
+                } else {
                     flg = false;
                     break;
                 }
@@ -437,5 +437,9 @@ public class Common {
             return true;
 
         return false;
+    }
+
+    public static boolean steamAnyMatchContains(List<String> list, String value) {
+        return list.stream().anyMatch(x -> x.contains(value));
     }
 }

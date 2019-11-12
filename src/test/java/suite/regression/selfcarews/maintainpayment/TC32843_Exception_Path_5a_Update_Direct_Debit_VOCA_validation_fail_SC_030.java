@@ -12,7 +12,7 @@ import suite.regression.care.CareTestBase;
 public class TC32843_Exception_Path_5a_Update_Direct_Debit_VOCA_validation_fail_SC_030 extends BaseTest {
     String customerNumber;
 
-    @Test(enabled = true, description = "TC32743 exception path 5a update direct debit VOCA validation fail SC 030", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32743 exception path 5a update direct debit VOCA validation fail SC 030", groups = "SelfCareWS.Payment")
     public void TC32843_Exception_Path_5a_Update_Direct_Debit_VOCA_validation_fail_SC_030() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_DD_customer_with_FC_2_bundles_and_NK2720";

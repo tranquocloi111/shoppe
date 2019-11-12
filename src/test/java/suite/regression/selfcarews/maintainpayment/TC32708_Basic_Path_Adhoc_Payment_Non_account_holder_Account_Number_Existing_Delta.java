@@ -21,7 +21,7 @@ public class TC32708_Basic_Path_Adhoc_Payment_Non_account_holder_Account_Number_
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32708 basic path adhoc payment non account holder account number existing delta", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32708 basic path adhoc payment non account holder account number existing delta", groups = "SelfCareWS.Payment")
     public void TC32708_Basic_Path_Adhoc_Payment_Non_account_holder_Account_Number_Existing_Delta() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only";

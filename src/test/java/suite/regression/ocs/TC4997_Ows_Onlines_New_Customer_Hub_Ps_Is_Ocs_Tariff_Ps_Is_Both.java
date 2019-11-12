@@ -58,7 +58,7 @@ public class TC4997_Ows_Onlines_New_Customer_Hub_Ps_Is_Ocs_Tariff_Ps_Is_Both ext
         orderId = owsActions.orderIdNo;
         firstName = owsActions.firstName;
         lastName = owsActions.lastName;
-        checkCreateOcsAccountCommand();
+        CareTestBase.page().checkCreateOcsAccountCommand(orderId, true);
 
         test.get().info("Step 3 : Login to Care screen");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
@@ -79,6 +79,8 @@ public class TC4997_Ows_Onlines_New_Customer_Hub_Ps_Is_Ocs_Tariff_Ps_Is_Both ext
         verifyGetOrderRequestAreCorrect(xml);
 
         test.get().info("Step 7 : Login to SelfCare ");
+        userName = owsActions.username;
+        passWord = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
         test.get().info("Step 8 : Validate the order confirmations screen in Self Care");
@@ -217,41 +219,29 @@ public class TC4997_Ows_Onlines_New_Customer_Hub_Ps_Is_Ocs_Tariff_Ps_Is_Both ext
 
     }
 
-    private void checkCreateOcsAccountCommand(){
-        boolean isExist = false;
-        List asyncCommand =  CommonActions.getAsynccommand(orderId);
-        for (int i = 0; i < asyncCommand.size(); i++) {
-            if (((HashMap) asyncCommand.get(i)).containsValue("CREATE_OCS_ACCOUNT")) {
-                isExist = true;
-                break;
-            }
-        }
-        Assert.assertTrue(isExist);
-    }
-
     private void verifyOcsKeyOfSubscription(){
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Mobile 1");
         SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode1 = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode1 + "S", discountGroupCode1 + "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode1 + "S", discountGroupCode1 + "A", TimeStamp.Today());
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo2 + " Mobile 2");
         generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode2 = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode2 + "S", discountGroupCode2+ "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode2 + "S", discountGroupCode2+ "A", TimeStamp.Today());
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo3 + " Mobile 3");
         generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode3 = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode3 + "S", discountGroupCode3 + "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode3 + "S", discountGroupCode3 + "A", TimeStamp.Today());
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo4 + " Mobile 4");
         generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode4 = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode4 + "S", discountGroupCode4 + "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode4 + "S", discountGroupCode4 + "A", TimeStamp.Today());
     }
 
 }

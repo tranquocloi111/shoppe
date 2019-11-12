@@ -21,7 +21,7 @@ public class TC32657_Self_Care_WS_Adhoc_payment_new_card_failure_OA_Decline exte
     String customerNumber;
 
 
-    @Test(enabled = true, description = "TC32657 selfcare WS adhoc payment new card failure QA decline", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32657 selfcare WS adhoc payment new card failure QA decline", groups = "SelfCareWS.Payment")
     public void TC32657_Self_Care_WS_Adhoc_payment_new_card_failure_OA_Decline() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_one_bundle_and_sim_only";

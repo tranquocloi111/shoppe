@@ -19,7 +19,7 @@ public class TC32630_Self_Care_WS_Change_a_Self_Care_Username extends BaseTest {
   String customerNumber;
 
 
-    @Test(enabled = true, description = "TC32630 selfcare ws maintain change a self care username", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32630 selfcare ws maintain change a self care username", groups = "SelfCareWS.MaintainContact")
     public void TC32630_Self_Care_WS_Change_a_Self_Care_Username() {
 
         test.get().info("Step 1 : Create a customer ");

@@ -19,9 +19,9 @@ import java.util.HashMap;
 
 public class TC32714_Basic_Path_Adhoc_Payment_Non_account_holder_Postcode_valid extends BaseTest {
     String customerNumber;
-    String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32714 basic path adhoc payment non account holder post code valid", groups = "SelfCare")
+
+    @Test(enabled = true, description = "TC32714 basic path adhoc payment non account holder post code valid", groups = "SelfCareWS.Payment")
     public void TC32714_Basic_Path_Adhoc_Payment_Non_account_holder_Postcode_valid() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only";

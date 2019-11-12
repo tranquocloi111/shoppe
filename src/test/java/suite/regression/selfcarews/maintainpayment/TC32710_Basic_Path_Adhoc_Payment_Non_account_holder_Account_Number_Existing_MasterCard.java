@@ -21,7 +21,7 @@ public class TC32710_Basic_Path_Adhoc_Payment_Non_account_holder_Account_Number_
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32710 basic path adhoc payment non account holder account number existing Mastercard", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32710 basic path adhoc payment non account holder account number existing Mastercard", groups = "SelfCareWS.Payment")
     public void TC32710_Basic_Path_Adhoc_Payment_Non_account_holder_Account_Number_Existing_MasterCard() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only";

@@ -405,4 +405,10 @@ public class TimeStamp {
         int day = maxExpectedDay - maxCurrDay;
         return Date.valueOf(LocalDate.now().plusMonths(expectedMonth - currentMonth).plusDays(day));
     }
+
+    public static long getDateBetweenMonth(Date actual, Date expected) {
+        LocalDate day1 = actual.toLocalDate();
+        LocalDate day2 = expected.toLocalDate();
+        return ChronoUnit.DAYS.between(day2, day1);
+    }
 }

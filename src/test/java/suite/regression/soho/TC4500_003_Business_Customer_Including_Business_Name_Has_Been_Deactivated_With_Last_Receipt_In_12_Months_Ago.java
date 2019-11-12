@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TC4500_003_Business_Customer_Including_Business_Name_Has_Been_Deactivated_With_Last_Receipt_In_12_Months_Ago extends BaseTest {
-    private String customerNumber = "12116";
-    private Date newStartDate;
-    private String subNo1;
+    private String customerNumber = "13344";
+    private Date newStartDate = Parser.asDate(TimeStamp.Today().toLocalDate().minusYears(2));
+    private String subNo1 = "07445952930";
     private Date endDate;
     private Date firstRunDate;
     private String receiptId;
@@ -145,13 +145,14 @@ public class TC4500_003_Business_Customer_Including_Business_Name_Has_Been_Deact
     }
 
     private void verifySubscriptionNameIsAnonymised(){
+        MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         MenuPage.LeftMenuPage.getInstance().clickSubscriptionsLink();
         CommonContentPage.SubscriptionsGridSectionPage subscriptionsGrid = CommonContentPage.SubscriptionsGridSectionPage.getInstance();
         List<String> sub = new ArrayList<>();
         sub.add(subNo1 + " xxx");
-        sub.add("Safety Buffer - £20");
+        sub.add("Safety Buffer - £2.5");
         sub.add(Parser.parseDateFormate(newStartDate, TimeStamp.DATE_FORMAT));
-        sub.add(Parser.parseDateFormate(endDate, TimeStamp.DATE_FORMAT));
+        sub.add(Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT));
         sub.add("FC12-1000-500SO - £10 Tariff 12 Month Contract - £10.00");
         sub.add("Inactive");
         Assert.assertEquals(Common.compareList(subscriptionsGrid.getAllValueSubscription(), sub), 1);

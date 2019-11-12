@@ -154,7 +154,7 @@ public class BaseTest {
 
     protected static void createNewBillingGroupToMinusMonth(int month) {
         int day = Parser.asInteger(TimeStamp.minusTodayMinusMonth(month));
-        BillingActions.getInstance().createNewBillingGroup(- day, true, -1);
+        BillingActions.getInstance().createNewBillingGroup(day, true, -1);
     }
 
     protected static void verifyFCDiscountBundles(List<DiscountBundleEntity> allDiscountBundles, Date startDate, String partitionIdRef){
@@ -354,13 +354,23 @@ public class BaseTest {
         Assert.assertFalse(isFlag);
     }
 
-    protected void verifyOcsSubscriptionDetails(String ocsType, String ocsSubscriberKey, String ocsSubscriberAccountKey){
+    protected void verifyOcsSubscriptionDetails(String ocsType, String ocsSubscriberKey, String ocsSubscriberAccountKey, Date date){
+        String str = "";
         SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
-        Assert.assertEquals(generalSectionPage.getProvisioningSystem(), String.format("%s ( %s )", ocsType, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT)));
-        //Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), "TMPAYM" + ocsSubscriberKey);
-        //Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), "TMPAYM" + ocsSubscriberAccountKey);
-        Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), ocsSubscriberKey);
-        Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), ocsSubscriberAccountKey);
+        switch (ocsType){
+            case "HPIN":
+                str = "";
+                break;
+            case "OCS":
+                str = "TMPAYM";
+                break;
+            case "BOTH_OR_MIG":
+                str = "";
+                break;
+        }
+        Assert.assertEquals(generalSectionPage.getProvisioningSystem(), String.format("%s ( %s )", ocsType, Parser.parseDateFormate(date, TimeStamp.DATE_FORMAT)));
+        Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), str + ocsSubscriberKey);
+        Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), str + ocsSubscriberAccountKey);
     }
 
     protected void verifyCustomerDDIStatusChangedToInactive() {
@@ -394,13 +404,8 @@ public class BaseTest {
         InvoicesContentPage.getInstance().clickInvoiceNumberByIndex(1);
     }
 
-    protected void verifyOcsSubscriptionDetails(Date date, String ocsType, String ocsSubscriberKey, String ocsSubscriberAccountKey){
-        SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
-        Assert.assertEquals(generalSectionPage.getProvisioningSystem(), String.format("%s ( %s )", ocsType, Parser.parseDateFormate(date, TimeStamp.DATE_FORMAT)));
-        //Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), "TMPAYM" + ocsSubscriberKey);
-        //Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), "TMPAYM" + ocsSubscriberAccountKey);
-        Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), ocsSubscriberKey);
-        Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), ocsSubscriberAccountKey);
+    protected void submitPaymentAllocationBatchJob(){
+        RemoteJobHelper.getInstance().submitPaymentAllocationBatchJobRun();
     }
 
     protected void loadPageByUrl(String url)

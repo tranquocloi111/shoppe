@@ -91,7 +91,7 @@ public class TC4993_Ows_Onlines_Upgrade_Device_Peripheral_Order_Hub_Ps_Both_Or_M
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByIndex(1);
         SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage generalSectionPage = SubscriptionContentPage.SubscriptionDetailsPage.GeneralSectionPage.getInstance();
         discountGroupCode = generalSectionPage.getDiscountGroupCode();
-        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A");
+        verifyOcsSubscriptionDetails("OCS", discountGroupCode + "S", discountGroupCode + "A", newStartDate);
 
         test.get().info("Step 5 : Validate Sales Order and Order Task Service Orders in HUB .NET");
         verifyServiceOrdersAreCreatedCorrectly();
@@ -101,6 +101,8 @@ public class TC4993_Ows_Onlines_Upgrade_Device_Peripheral_Order_Hub_Ps_Both_Or_M
         verifyGetOrderRequestAreCorrect(xml);
 
         test.get().info("Step 7 : Login to SelfCare ");
+        userName = owsActions.username;
+        passWord = owsActions.password;
         SelfCareTestBase.page().LoginIntoSelfCarePage(userName, passWord, customerNumber);
 
         test.get().info("Step 8 : Validate the order confirmations screen in Self Care");

@@ -25,7 +25,7 @@ public class TC32667_Basic_Path_Adhoc_Payment_Existing_Card_Current_Payment_Meth
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32667 basic path adhoc payment existing card current payment method direct debit", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32667 basic path adhoc payment existing card current payment method direct debit", groups = "SelfCareWS.Payment")
     public void TC32667_Basic_Path_Adhoc_Payment_Existing_Card_Current_Payment_Method_Direct_Debit() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_DD_customer_with_FC_2_bundles_and_NK2720";

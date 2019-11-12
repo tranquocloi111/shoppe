@@ -65,7 +65,7 @@ public class TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_
 
         test.get().info("Step 8 : Deactivate subscription");
         MenuPage.RightMenuPage.getInstance().clickDeactivateSubscriptionLink();
-        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscription(true);
+        ServiceOrdersPage.DeactivateSubscriptionPage.getInstance().deactivateSubscription(false,true);
 
         test.get().info("Step 9 : Verify the subscription status is Inactive");
         Assert.assertEquals("Inactive", CommonContentPage.SubscriptionsGridSectionPage.getInstance().getStatusValue(subNo2));
@@ -182,11 +182,11 @@ public class TC5421_001_Consumer_Customer_With_Single_Deal_Account_Subscription_
 
     private void verifyOcsKeyOfSubscription(){
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo1 + " Mobile 1");
-        verifyOcsSubscriptionDetails(newStartDate,"HPIN", "", "");
+        verifyOcsSubscriptionDetails("HPIN", "", "", newStartDate);
 
         MenuPage.BreadCrumbPage.getInstance().clickParentLink();
         CommonContentPage.SubscriptionsGridSectionPage.getInstance().clickSubscriptionNumberLinkByCellValue(subNo2 + " Mobile 2");
-        verifyOcsSubscriptionDetails(newStartDate, "HPIN", "", "");
+        verifyOcsSubscriptionDetails("HPIN", "", "", newStartDate);
     }
 
 }

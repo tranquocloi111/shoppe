@@ -13,7 +13,7 @@ public class TC32712_Basic_Path_Adhoc_Payment_non_account_holder_Address_line_1_
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32712 basic path adhoc payment non account holder address line 1 invalid SC 999 or SC032", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32712 basic path adhoc payment non account holder address line 1 invalid SC 999 or SC032", groups = "SelfCareWS.Payment")
     public void TC32712_Basic_Path_Adhoc_Payment_non_account_holder_Address_line_1_invalid_SC_999_or_SC_032() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only";

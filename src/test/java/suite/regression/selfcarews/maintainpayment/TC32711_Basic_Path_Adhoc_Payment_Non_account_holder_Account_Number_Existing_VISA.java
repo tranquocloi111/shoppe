@@ -21,7 +21,7 @@ public class TC32711_Basic_Path_Adhoc_Payment_Non_account_holder_Account_Number_
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32711 basic path adhoc payment non account holder account number existing Visa", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32711 basic path adhoc payment non account holder account number existing Visa", groups = "SelfCareWS.Payment")
     public void TC32711_Basic_Path_Adhoc_Payment_Non_account_holder_Account_Number_Existing_VISA() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only";

@@ -20,7 +20,7 @@ public class TC32631_Self_Care_WS_Maintain_contact_Only_new_username_provided_SM
   String customerNumber;
 
 
-    @Test(enabled = true, description = "TC32631 selfcare ws maintain contact only user name provided sms", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32631 selfcare ws maintain contact only user name provided sms", groups = "SelfCareWS.MaintainContact")
     public void TC32631_Self_Care_WS_Miantain_contact_Only_new_username_provided_SMS() {
         //-----------------------------------------
         //Create an customer account with default values for new customer

@@ -21,7 +21,7 @@ public class TC32611_Basic_Path_Maintain_Contact_Active_with_Bill_media_Email ex
     String serviceOrderID;
     String currentPWD;
 
-    @Test(enabled = true, description = "TC32611 basic path maintain contact active with bill media email", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32611 basic path maintain contact active with bill media email", groups = "SelfCareWS.MaintainContact")
     public void TC32611_Basic_Path_Maintain_Contact_Active_with_Bill_media_Email() {
 
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_and_NK2720";

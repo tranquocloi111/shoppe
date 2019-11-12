@@ -31,7 +31,7 @@ public class TC32816_Basic_Path_Update_DD_details_from_DD_to_DD extends BaseTest
     String customerNumber = "15209";
     String sub = "07601929020";
 
-    @Test(enabled = true, description = "TC32816 basic path update DD details from cc to DD", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32816 basic path update DD details from cc to DD", groups = "SelfCareWS.Payment")
     public void TC32816_Basic_Path_Update_DD_details_from_DD_to_DD() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_DD_customer_with_FC_2_bundles_and_NK2720";

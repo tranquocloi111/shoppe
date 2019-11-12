@@ -26,7 +26,7 @@ public class TC32670_Basic_Path_Adhoc_Payment_Existing_Card_Existing_Card_Match 
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32670 basic path adhoc payment existing card existing card match", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32670 basic path adhoc payment existing card existing card match", groups = "SelfCareWS.Payment")
     public void TC32670_Basic_Path_Adhoc_Payment_Existing_Card_Existing_Card_Match() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only";

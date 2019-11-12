@@ -13,7 +13,7 @@ public class TC32837_Exception_Path_2b_Invalid_update_to_Ongoing_Payment_Method_
     String customerNumber;
     String financialTransactionContentRef;
 //---Block by issue with WR122296
-    //@Test(enabled = true, description = "TC32837 exceotuib oath 2b invalid update to ongoing payment method SC_022", groups = "SelfCare")
+    //@Test(enabled = true, description = "TC32837 exceotuib oath 2b invalid update to ongoing payment method SC_022", groups = "SelfCareWS.Payment")
     public void TC32837_Exception_Path_2b_Invalid_update_to_Ongoing_Payment_Method_SC_022() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32837_createOrder";

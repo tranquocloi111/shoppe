@@ -16,7 +16,7 @@ public class TC32636_Self_Care_WS_Maintain_contact_use_update_contact_action_wit
     String serviceOrderID;
 
 
-    @Test(enabled = true, description = "TC32636 selfcare ws maintain contact use update contact action with invalid username sc 038", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32636 selfcare ws maintain contact use update contact action with invalid username sc 038", groups = "SelfCareWS.MaintainContact")
     public void TC32636_Self_Care_WS_Miantain_contact_use_update_contact_action_with_invalid_username_SC_038() {
 
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_one_bundle_and_sim_only";

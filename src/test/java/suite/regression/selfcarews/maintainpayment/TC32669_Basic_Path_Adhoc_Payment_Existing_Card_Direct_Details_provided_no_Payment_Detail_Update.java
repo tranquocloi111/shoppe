@@ -25,7 +25,7 @@ public class TC32669_Basic_Path_Adhoc_Payment_Existing_Card_Direct_Details_provi
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32669 basic path adhoc payment existing card direct details provided no payment detail update", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32669 basic path adhoc payment existing card direct details provided no payment detail update", groups = "SelfCareWS.Payment")
     public void TC32669_Basic_Path_Adhoc_Payment_Existing_Card_Direct_Details_provided_no_Payment_Detail_Update() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32669";

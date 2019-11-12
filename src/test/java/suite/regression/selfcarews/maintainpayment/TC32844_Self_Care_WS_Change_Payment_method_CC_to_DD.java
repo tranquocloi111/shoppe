@@ -24,7 +24,7 @@ import java.sql.Date;
 public class TC32844_Self_Care_WS_Change_Payment_method_CC_to_DD extends BaseTest {
     String customerNumber;
 
-    @Test(enabled = true, description = "TC32744 Selfcare ws change payment method cc to DD", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32744 Selfcare ws change payment method cc to DD", groups = "SelfCareWS.Payment")
     public void TC32844_Self_Care_WS_Change_Payment_method_CC_to_DD() {
         //-----------------------------------------
         test.get().info("Step 1 : Create a customer ");

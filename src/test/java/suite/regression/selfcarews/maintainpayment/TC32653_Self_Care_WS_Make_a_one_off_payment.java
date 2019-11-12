@@ -22,7 +22,7 @@ public class TC32653_Self_Care_WS_Make_a_one_off_payment extends BaseTest {
     String financialTransactionContentRef;
 
 
-    @Test(enabled = true, description = "TC32653 selfcare WS make a one off payment", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32653 selfcare WS make a one off payment", groups = "SelfCareWS.Payment")
     public void TC32653_Self_Care_WS_Make_a_one_off_payment() {
         //-----------------------------------------
         test.get().info("Step 1 : Create a customer ");

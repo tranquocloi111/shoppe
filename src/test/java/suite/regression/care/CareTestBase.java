@@ -3,6 +3,7 @@ package suite.regression.care;
 import framework.config.Config;
 import framework.utils.Xml;
 import logic.business.db.billing.BillingActions;
+import logic.business.db.billing.CommonActions;
 import logic.business.entities.ServiceOrderEntity;
 import logic.business.helper.MiscHelper;
 import logic.business.ws.ows.OWSActions;
@@ -23,6 +24,7 @@ import org.testng.Assert;
 import java.sql.Date;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CareTestBase extends BasePage {
@@ -358,4 +360,19 @@ public class CareTestBase extends BasePage {
         Assert.assertEquals("Draft", InvoicesContentPage.getInstance().getStatusByIndex(1));
     }
 
+    public void checkCreateOcsAccountCommand(String orderId, boolean isOcs){
+        boolean isExist = false;
+        List asyncCommand =  CommonActions.getAsynccommand(orderId);
+        for (int i = 0; i < asyncCommand.size(); i++) {
+            if (((HashMap) asyncCommand.get(i)).containsValue("CREATE_OCS_ACCOUNT")) {
+                isExist = true;
+                break;
+            }
+        }
+
+        if (isOcs)
+            Assert.assertTrue(isExist);
+        else
+            Assert.assertFalse(isExist);
+    }
 }

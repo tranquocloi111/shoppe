@@ -164,11 +164,12 @@ public class TC3617_TC002_Care_Validate_Business_Customer_Invoice_When_Payment_A
         MenuPage.LeftMenuPage.getInstance().clickDetailsLink();
 
         DetailsContentPage.PaymentInformationPage paymentInfo =  DetailsContentPage.PaymentInformationPage.getInstance();
+        String timeStamp[] = Parser.parseDateFormate(Date.valueOf(TimeStamp.Today().toLocalDate().minusYears(1)), "dd/MM/yyyy").split("/");
         Assert.assertEquals(paymentInfo.getPaymentMethod(), "Credit Card ( "+Parser.parseDateFormate(TimeStamp.Today(), "dd MMM yyyy")+" )");
         Assert.assertEquals(paymentInfo.getCardType(), "MasterCard");
         Assert.assertEquals(paymentInfo.getCreditCardHolderName(), firstName + " " + lastName);
-        Assert.assertEquals(paymentInfo.getCardExpireMonth(), "10");
-        Assert.assertEquals(paymentInfo.getCardExpireYear(), "2018");
+        Assert.assertEquals(paymentInfo.getCardExpireMonth(), timeStamp[1]);
+        Assert.assertEquals(paymentInfo.getCardExpireYear(), timeStamp[2]);
     }
 
     private void verifyInvoiceDueDateIsUpdated(){

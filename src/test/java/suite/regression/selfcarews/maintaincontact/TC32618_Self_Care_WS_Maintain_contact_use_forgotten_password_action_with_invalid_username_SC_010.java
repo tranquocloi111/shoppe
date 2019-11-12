@@ -22,7 +22,7 @@ public class TC32618_Self_Care_WS_Maintain_contact_use_forgotten_password_action
     String serviceOrderID;
     String currentPWD;
 
-    @Test(enabled = true, description = "TC32618 Selfcare webservice maitain contact use forgotten password action with invalid userbane SC010", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32618 Selfcare webservice maitain contact use forgotten password action with invalid userbane SC010", groups = "SelfCareWS.MaintainContact")
     public void TC32618_Self_Care_WS_Maintain_contact_use_forgotten_password_action_with_invalid_username_SC_010() {
 
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_one_bundle_and_sim_only";

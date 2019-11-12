@@ -26,7 +26,7 @@ public class TC32647_Alternate_Path_2a_Adhoc_Payment_towards_a_subscription_Flex
     String financialTransactionContentRef;
 
 
-    @Test(enabled = true, description = "TC32647 alternate path 2a adhoc payment towards a subscription flexible cap master subscription", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32647 alternate path 2a adhoc payment towards a subscription flexible cap master subscription", groups = "SelfCareWS.Payment")
     public void TC32647_Alternate_Path_2a_Adhoc_Payment_towards_a_subscription_Flexible_Cap_Master_Subscription() {
         //-----------------------------------------
         test.get().info("Step 1 : Create a customer ");

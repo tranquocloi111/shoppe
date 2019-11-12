@@ -25,7 +25,7 @@ public class TC32668_Basic_Path_Adhoc_Payment_Existing_Card_CV2_provided extends
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32668 basic path adhoc payment existing card current payment CV2 provided", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32668 basic path adhoc payment existing card current payment CV2 provided", groups = "SelfCareWS.Payment")
     public void TC32668_Basic_Path_Adhoc_Payment_Existing_Card_CV2_provided() {
         //-----------------------------------------
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_and_NK2720";

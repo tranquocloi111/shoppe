@@ -78,13 +78,13 @@ public class TC2192_Process_Continuous_Credit_Card_Payment_Requests extends Base
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
         MenuPage.LeftMenuPage.getInstance().clickPaymentsLink();
 
-        String refNo = PaymentDetailPage.paymentConentGrid.getInstance().getRefNoByType("Credit Card Payment");
+        String refNo = PaymentDetailPage.PaymentContentGrid.getInstance().getRefNoByType("Credit Card Payment");
         HashMap<String, String> paymentEnity = PaymentGridEntity.getPaymentEntity("Credit Card Payment", "£10.00");
-        Assert.assertEquals(PaymentDetailPage.paymentConentGrid.getInstance().getNumberPaymentRecord(paymentEnity), 1);
+        Assert.assertEquals(PaymentDetailPage.PaymentContentGrid.getInstance().getNumberPaymentRecord(paymentEnity), 1);
 
 
         test.get().info("Step 10 :veriyfy detail payment enity");
-        PaymentDetailPage.paymentConentGrid.getInstance().clickPaymentByType("Credit Card Payment");
+        PaymentDetailPage.PaymentContentGrid.getInstance().clickPaymentByType("Credit Card Payment");
         verifyAdHocPaymentTransactionDetail(invoiceNumber);
 
         test.get().info("Step 11 :veriyfy 1 Credit card receipt allocation was created");
@@ -159,7 +159,7 @@ public class TC2192_Process_Continuous_Credit_Card_Payment_Requests extends Base
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentMethod(), "Credit Card");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getCardNumber(), "************5100");
         HashMap<String, String> paymentEnity = PaymentGridEntity.getRecieptEnity(invoiceNumber, "£10.00", fullName);
-        Assert.assertEquals(PaymentDetailPage.receiptAllocation.getInstance().getNumberReceiptRecord(paymentEnity), 1);
+        Assert.assertEquals(PaymentDetailPage.ReceiptAllocation.getInstance().getNumberReceiptRecord(paymentEnity), 1);
     }
 
     private void Verify1CreditCardRecepitAllocationWasCreated(String refNo, String customerNumber) {

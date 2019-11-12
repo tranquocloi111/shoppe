@@ -11,7 +11,7 @@ import suite.BaseTest;
 
 public class TC32639_Self_Care_WS_No_New_Email_address_or_New_Username_are_provided extends BaseTest {
 
-    @Test(enabled = true, description = "TC32639 selfcare ws no new email or username are provided", groups = "SelfCare")
+    @Test(enabled = true, description = "TC32639 selfcare ws no new email or username are provided", groups = "SelfCareWS.MaintainContact")
     public void TC32638_Self_Care_WS_New_Username_does_match_to_another_customer_account_username() {
 
 
