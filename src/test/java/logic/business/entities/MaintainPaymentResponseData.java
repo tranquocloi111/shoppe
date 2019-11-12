@@ -29,4 +29,14 @@ public class MaintainPaymentResponseData {
 
     public String ResponseCode ;
     public String Message ;
+
+    public String getAction() {
+        return Action;
+    }
+
+    public void setAction(String action) {
+        Action = action;
+    }
+
+    public String Action ;
 }

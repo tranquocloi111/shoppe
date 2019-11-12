@@ -179,6 +179,7 @@ public class BasePage {
     }
 
     public void clickReturnToCustomer() {
+        waitForPageLoadComplete(90);
         click(getDriver().findElement(By.xpath(".//input[@value='Return to Customer']")));
         waitForPageLoadComplete(90);
     }
@@ -396,6 +397,15 @@ public class BasePage {
         }
 
     }
+
+    public void waitUntilSpecificTime(int second) {
+        try {
+            Thread.sleep(1000*second);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     //endregion
 }
 

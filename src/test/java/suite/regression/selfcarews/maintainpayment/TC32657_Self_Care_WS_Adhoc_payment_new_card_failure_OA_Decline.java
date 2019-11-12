@@ -38,7 +38,7 @@ public class TC32657_Self_Care_WS_Adhoc_payment_new_card_failure_OA_Decline exte
 
         test.get().info("Step 3 : Build maintain payment detail request ");
         //Here we give cvv number as 222 which means this card is not authorised.
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC2849_request";
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC2849_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequestWithSubscriptionNumber(sub,customerNumber, path);
 
@@ -46,10 +46,10 @@ public class TC32657_Self_Care_WS_Adhoc_payment_new_card_failure_OA_Decline exte
         Xml response= swsActions.submitTheRequest();
 
         test.get().info("Step 5  verify maintain payment response");
-        Assert.assertEquals(response.getTextByTagName("telco:accountnumber"),customerNumber);
-        Assert.assertEquals(response.getTextByTagName("telco:action"),"ADHOC_PAYMENT");
-        Assert.assertEquals(response.getTextByTagName("telco:response"),"1");
-        Assert.assertEquals(response.getTextByTagName("telco:message"),"Red Authentication failed (status: DENY)");
+        Assert.assertEquals(response.getTextByTagName("accountNumber"),customerNumber);
+        Assert.assertEquals(response.getTextByTagName("action"),"ADHOC_PAYMENT");
+        Assert.assertEquals(response.getTextByTagName("responseCode"),"1");
+        Assert.assertEquals(response.getTextByTagName("message"),"Red Authentication failed (status: DENY)");
 
     }
 

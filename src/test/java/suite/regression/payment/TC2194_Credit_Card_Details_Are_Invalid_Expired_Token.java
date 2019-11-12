@@ -26,16 +26,16 @@ public class TC2194_Credit_Card_Details_Are_Invalid_Expired_Token extends BaseTe
      * PaymentDPage
      * RemoteJobHelper
      * */
-    String customerNumber = null;
-    String fullName = null;
-    String invoiceNumber=null;
+    String customerNumber ;
+    String fullName ;
+    String invoiceNumber;
 
     @Test(enabled = true, description = "TC2194 Credit Card detail are invalid token", groups = "Payment")
     public void TC2194_Credit_Card_Details_Are_Invalid_Expired_Token() {
         test.get().info("Step 1 : create an online cc customer with FC 1 bundle of SB and sim only");
         String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_and_NK2720";
         OWSActions owsActions = new OWSActions();
-        owsActions.createGeneralCustomerOrderForChangePassword(path);
+        owsActions.createGeneralCustomerOrder(path);
         customerNumber =owsActions.customerNo;
         fullName =owsActions.lastName+","+" "+owsActions.firstName;
 

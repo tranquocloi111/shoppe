@@ -85,6 +85,13 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
         WebElement row = table.findRowByLabel(value);
         return row.findElement(By.xpath(".//td[3]")).getText().trim();
     }
+    public String getMonthlyDataBundleByValue(String value,int index) {
+        String xpath=String.format("//p[//b[.='Monthly bundles']]/following-sibling::div[.//table][%s]",index);
+        table = new TableControlBase(getDriver().findElement(By.xpath(xpath)));
+        WebElement row = table.findRowByLabel(value);
+        return row.findElement(By.xpath(".//td[3]")).getText().trim();
+    }
+
 
     public String totalPrice() {
         return totalLabel().findElement(By.xpath(".//following-sibling::div")).getText().trim();
@@ -219,6 +226,9 @@ public class MonthlyBundlesAddChangeOrRemovePage extends BasePage {
 
     public String getTotalPrice() {
         return getDriver().findElement(By.tagName("body")).findElement(By.id("BundleGrp0_Subtotal")).getText().trim();
+    }
+    public String getSecondTotalPrice() {
+        return getDriver().findElement(By.tagName("body")).findElement(By.id("BundleGrp1_Subtotal")).getText().trim();
     }
     @FindBy(xpath = "//label[normalize-space(text())='Tariff charge']//ancestor::td[1]//following-sibling::td")
     WebElement tariffCharge;

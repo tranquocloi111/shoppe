@@ -38,11 +38,8 @@ public class TC32647_Alternate_Path_2a_Adhoc_Payment_towards_a_subscription_Flex
         String subFC = owsActions.getOrderMpnByReference(1);
         String sub = owsActions.getOrderMpnByReference(2);
 
-        test.get().info("Step 2 : load customer in hub net ");
-        CareTestBase.page().loadCustomerInHubNet(customerNumber);
-
         test.get().info("Step 3 : Build maintain payment detail request ");
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32667_request";
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32667_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequestWithSubscriptionNumber(subFC,customerNumber, path);
 
@@ -53,11 +50,17 @@ public class TC32647_Alternate_Path_2a_Adhoc_Payment_towards_a_subscription_Flex
         MaintainPaymentResponseData maintainPaymentResponseData =new MaintainPaymentResponseData();
         maintainPaymentResponseData.setAccountNumber(customerNumber);
         maintainPaymentResponseData.setAction("ADHOC_PAYMENT");
-        maintainPaymentResponseData.setResponseCode("Payment was successful");
+        maintainPaymentResponseData.setResponseCode("0");
+        maintainPaymentResponseData.setMessage("Payment was successful");
         maintainPaymentResponseData.setReference("True");
-        maintainPaymentResponseData.setReference(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        maintainPaymentResponseData.setDateTime(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
 
-        SelfCareWSTestBase.verifyMaintainPaymentResponse(maintainPaymentResponseData,response);
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
+
+
+        test.get().info("Step 2 : load customer in hub net ");
+        CareTestBase.page().loadCustomerInHubNet(customerNumber);
+
 
         test.get().info("Step 6  refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
@@ -71,18 +74,18 @@ public class TC32647_Alternate_Path_2a_Adhoc_Payment_towards_a_subscription_Flex
         Assert.assertEquals(FinancialTransactionPage.FinancialTransactionGrid.getInstance().getNumberOfFinancialTransaction(financialTransaction), 1);
 
 
-        test.get().info("Step 8: verify the adhoc payment transaction detail");
+        test.get().info("Step 9: verify the adhoc payment transaction detail");
         financialTransactionContentRef= FinancialTransactionPage.FinancialTransactionGrid.getInstance().getRefNumberByDetail("Ad Hoc Payment");
         FinancialTransactionPage.FinancialTransactionGrid.getInstance().clickFinancialTransactionByDetail("Ad Hoc Payment");
         verifyAdHocPaymentTransactionDetail();
 
-        test.get().info("Step 9 :Open the service order content for customer");
+        test.get().info("Step 10 :Open the service order content for customer");
         MenuPage.LeftMenuPage.getInstance().clickServiceOrdersLink();
 
         HashMap<String, String> serviceOrder = ServiceOrderEntity.dataServiceOrderFinancialTransaction();
         Assert.assertEquals(ServiceOrdersContentPage.getInstance().getNumberOfServiceOrders(serviceOrder), 1);
 
-        test.get().info("Step 10 :verify the service order detail content for customer");
+        test.get().info("Step 11:verify the service order detail content for customer");
         ServiceOrdersContentPage.getInstance().clickServiceOrderByType("Ad-hoc Payment");
 
         Assert.assertEquals(TasksContentPage.TaskSummarySectionPage.getInstance().getDescription(), "Ad-hoc Payment");
@@ -96,8 +99,7 @@ public class TC32647_Alternate_Path_2a_Adhoc_Payment_towards_a_subscription_Flex
 
     }
     public void verifyAdHocPaymentTransactionDetail() {
-        Assert.assertEquals(FinancialTransactionPage.FinancialTransactionGrid.getInstance(), "Ad Hoc Payment");
-        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getReceiptType(), "Ad Hoc Payment");
+         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getReceiptType(), "Ad Hoc Payment");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getReceiptStatus(), "Fully Allocated");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentAmount(), "£21.00");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentCurrency(), "Great Britain Pound");

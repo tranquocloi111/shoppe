@@ -30,20 +30,19 @@ public class TC32644_Alternate_Path_14a_OC_Decline_Adhoc_Payment_New_Card extend
         customerNumber = owsActions.customerNo;
 
         test.get().info("Step 2 : Build maintain payment detail request ");
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32644_request";
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32644_request";
         SWSActions swsActions = new SWSActions();
-        String endDate= Parser.parseDateFormate(TimeStamp.TodayPlus4Years(),TimeStamp.DATE_FORMAT7);
+        String endDate= "01"+Parser.parseDateFormate(TimeStamp.TodayPlus4Years(),TimeStamp.DATE_FORMAT7);
         swsActions.buildPaymentDetailRequest(endDate,customerNumber, path);
 
         test.get().info("Step 3:  submit the request to webservice");
         Xml response= swsActions.submitTheRequest();
 
-
         test.get().info("Step 4: verify maintain payment response");
-        Assert.assertEquals(response.getTextByTagName("telco:responseCode"),"1");
-        Assert.assertEquals(response.getTextByTagName("telco:action"),"ADHOC_PAYMENT");
-        Assert.assertEquals(response.getTextByTagName("telco:accountNumber"),customerNumber);
-        Assert.assertEquals(response.getTextByTagName("telco:message"),"ReD gateway denied payment (status: DENY)");
+        Assert.assertEquals(response.getTextByTagName("responseCode"),"1");
+        Assert.assertEquals(response.getTextByTagName("action"),"ADHOC_PAYMENT");
+        Assert.assertEquals(response.getTextByTagName("accountNumber"),customerNumber);
+        Assert.assertEquals(response.getTextByTagName("message"),"ReD gateway denied payment (status: DENY)");
 
 
 

@@ -57,12 +57,12 @@ public class CareTestBase extends BasePage {
         findPage.openCustomerByIndex(1);
     }
 
-    public void verifyCustomerIsNotExistInHubNet(String customerId) {
+    public void verifyCustomerIsNotExistInHubNet(String orderID) {
         loginPage.navigateToLoginPage();
         loginPage.login(userName, passWord);
 
-        findPage.findCustomer(new AbstractMap.SimpleEntry<String, String>("Customer Number", customerId));
-        Assert.assertFalse(findPage.IsCustomerDiplayedByIndex(1));
+        findPage.findCustomer(new AbstractMap.SimpleEntry<String, String>("Order Number", orderID));
+        Assert.assertTrue(findPage.getItemInGrid()==0&&findPage.IsNoItemsFoundDisplayed());
     }
 
 

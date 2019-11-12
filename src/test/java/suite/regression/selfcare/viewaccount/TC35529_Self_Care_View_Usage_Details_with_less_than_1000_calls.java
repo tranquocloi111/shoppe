@@ -60,13 +60,13 @@ public class TC35529_Self_Care_View_Usage_Details_with_less_than_1000_calls exte
         verifyAnImageWasDisplayedForFC1();
 
         test.get().info("Step 11: view usage for FC mobile 2");
-        MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf1stSubscription + " FC Mobile 2");
+        MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf2ndSubscription + " FC Mobile 2");
 
         test.get().info("Step 12: verify an image was displayed for FC2");
         verifyAnImageWasDisplayedForFC2();
 
         test.get().info("Step 13: view usage for FC mobile 1");
-        MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf1stSubscription + " NC Mobile 3");
+        MyUsageSinceMyLastBillPage.getInstance().setSubscriptionSelect(serviceRefOf3rdSubscription + " NC Mobile 3");
 
         test.get().info("Step 14: verify an image was displayed for NC");
         verifyAnImageWasDisplayedForNC();

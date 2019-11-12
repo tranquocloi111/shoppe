@@ -208,11 +208,9 @@ public class RemoteJobHelper {
 
             int billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
             Log.info("InvocationId : " + billRunInvocationId);
-
             currentMaxJobId = getMaxRemoteJobId();
             submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT2)), currentMaxJobId, "Bill Run");
             waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
-
         } catch (Throwable ex) {
             Assert.fail("Can not generate invoice !!!");
         }
@@ -369,5 +367,10 @@ public class RemoteJobHelper {
         submitRemoteJobs(String.format("treatment.sh -a %s -R", date), currentMaxJobId, "Treatment Batch run");
         remoteJobId = waitForRemoteJobComplete(currentMaxJobId, "Treatment Batch run");
         waitForRemoteJobComplete(remoteJobId, "Automatic Treatment Letters");
+    }
+    public void submitRunDirectDebitBatchJobToCreatePayment() {
+        currentMaxJobId = getMaxRemoteJobId();
+        submitRemoteJobs("Subdirectdebit2.sh -e $HUB_SID -S", currentMaxJobId, "Process Direct Debit - Create Payments");
+        waitForRemoteJobComplete(remoteJobId, "Process Direct Debit - Create Payments");
     }
 }

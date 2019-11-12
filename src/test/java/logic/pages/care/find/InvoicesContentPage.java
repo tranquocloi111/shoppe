@@ -21,16 +21,16 @@ public class InvoicesContentPage extends BasePage {
     private static final String amountOutstanding = "Amount Outstanding";
     private static final String dateIssued = "Date Issued";
     private static final String amount = "Amount";
-    String pdfFile;
-
+    private static final String end = "End";
     private static InvoicesContentPage instance = new InvoicesContentPage();
-    public static InvoicesContentPage getInstance() {
-        return new InvoicesContentPage();
-    }
-
+    String pdfFile;
     @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Invoices')]/../../..//following-sibling::div//table")
     WebElement invoicesGridTable;
     TableControlBase table = new TableControlBase(invoicesGridTable);
+
+    public static InvoicesContentPage getInstance() {
+        return new InvoicesContentPage();
+    }
 
     public List<WebElement> getInvoices(List<HashMap<String, String>> invoice) {
         return table.findRowsByColumns(invoice);
@@ -48,26 +48,32 @@ public class InvoicesContentPage extends BasePage {
         table.getElementByColumnNameAndRowIndex(index + 1, invoiceNumber).findElement(By.tagName("a")).click();
     }
 
-    public String getStatusByIndex(int index){
-        WebElement element = table.getElementByColumnNameAndRowIndex(index+1, status);
+    public String getStatusByIndex(int index) {
+        WebElement element = table.getElementByColumnNameAndRowIndex(index + 1, status);
         return getTextOfElement(element);
     }
 
-    public String getDateIssuedByIndex(int index){
-        WebElement element = table.getElementByColumnNameAndRowIndex(index+1, dateIssued);
+    public String getDateIssuedByIndex(int index) {
+        WebElement element = table.getElementByColumnNameAndRowIndex(index + 1, dateIssued);
         return getTextOfElement(element);
     }
 
-    public String getAmountByIndex(int index){
-        WebElement element = table.getElementByColumnNameAndRowIndex(index+1, amount);
-        return getTextOfElement(element);
-    }
-    public String getAmountOutStandingByIndex(int index){
-        WebElement element = table.getElementByColumnNameAndRowIndex(index+1, amountOutstanding);
+    public String getEndByIndex(int index) {
+        WebElement element = table.getElementByColumnNameAndRowIndex(index + 1, end);
         return getTextOfElement(element);
     }
 
-    public List<List<String>> getAllValueOfInvocie(){
+    public String getAmountByIndex(int index) {
+        WebElement element = table.getElementByColumnNameAndRowIndex(index + 1, amount);
+        return getTextOfElement(element);
+    }
+
+    public String getAmountOutStandingByIndex(int index) {
+        WebElement element = table.getElementByColumnNameAndRowIndex(index + 1, amountOutstanding);
+        return getTextOfElement(element);
+    }
+
+    public List<List<String>> getAllValueOfInvocie() {
         return table.getAllCellValue();
     }
 
@@ -75,39 +81,32 @@ public class InvoicesContentPage extends BasePage {
         return table.getElementByColumnNameAndRowIndex(index + 1, invoiceNumber).getText().split(" ")[0];
     }
 
-    public static class InvoiceDetailsContentPage extends InvoicesContentPage{
+    public static class InvoiceDetailsContentPage extends InvoicesContentPage {
 
         private static InvoiceDetailsContentPage instance;
+        @FindBy(xpath = "//td[contains(text(),'Invoice Details')]/following-sibling::td[1]//a")
+        WebElement btnViewPdf;
+        @FindBy(xpath = "//td[contains(text(),'Issued:')]/following-sibling::td[1]")
+        WebElement issued;
+        @FindBy(xpath = "//td[contains(text(),'Due Date:')]/following-sibling::td[1]")
+        WebElement dueDate;
+        @FindBy(xpath = "//td[contains(text(),'Status:')]/following-sibling::td[1]")
+        List<WebElement> status;
+        @FindBy(xpath = "//td[contains(text(),'End:')]/following-sibling::td[1]")
+        WebElement end;
+        @FindBy(xpath = "//td[contains(text(),'Net Amount:')]/following-sibling::td[1]")
+        WebElement netAmount;
+        @FindBy(xpath = "//a[contains(text(),'PDF')]")
+        WebElement PDFViewBtn;
+        @FindBy(id = "plugin")
+        WebElement embeddedPdfForm;
+        @FindBy(xpath = "//td[contains(text(),'Next Treatment Date:')]/following-sibling::td[1]")
+        WebElement lblNextTreatmentDate;
+
+
         public static InvoiceDetailsContentPage getInstance() {
             return new InvoiceDetailsContentPage();
         }
-
-        @FindBy(xpath = "//td[contains(text(),'Invoice Details')]/following-sibling::td[1]//a")
-        WebElement btnViewPdf;
-
-        @FindBy(xpath = "//td[contains(text(),'Issued:')]/following-sibling::td[1]")
-        WebElement issued;
-
-        @FindBy(xpath = "//td[contains(text(),'Due Date:')]/following-sibling::td[1]")
-        WebElement dueDate;
-
-        @FindBy(xpath = "//td[contains(text(),'Status:')]/following-sibling::td[1]")
-        List<WebElement> status;
-
-        @FindBy(xpath = "//td[contains(text(),'End:')]/following-sibling::td[1]")
-        WebElement end;
-
-        @FindBy(xpath = "//td[contains(text(),'Net Amount:')]/following-sibling::td[1]")
-        WebElement netAmount;
-
-        @FindBy(xpath = "//a[contains(text(),'PDF')]")
-        WebElement PDFViewBtn;
-
-        @FindBy(id = "plugin")
-        WebElement embeddedPdfForm;
-
-        @FindBy(xpath = "//td[contains(text(),'Next Treatment Date:')]/following-sibling::td[1]")
-        WebElement lblNextTreatmentDate;
 
         public void saveFileFromWebRequest(String customerNumber) {
             String[] param = btnViewPdf.getAttribute("href").split(",");
@@ -124,23 +123,22 @@ public class InvoicesContentPage extends BasePage {
         public void savePDFFile(String fileName) {
             String parent = getTitle();
             switchWindow("Your Invoice", false);
-            String url = embeddedPdfForm.getAttribute("src");
+            String url = getCurrentUrl();
             MiscHelper.saveFileFromWebRequest(url, fileName);
 
             switchWindow(parent, false);
         }
 
-
-        public List<String> getListInvoiceContent(String pdfFilePath, int startPage){
-            return Pdf.getInstance().getText(System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFilePath, startPage);
+        public List<String> getListInvoiceContent(String pdfFilePath, int startPage) {
+            return Pdf.getInstance().getText(System.getProperty("user.home") + "\\Desktop\\QA_Project\\" + pdfFilePath, startPage);
         }
 
-        public List<String> getListInvoiceContent(String pdfFilePath, int startPage, int endPage){
-            return Pdf.getInstance().getText(System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFilePath, startPage, endPage);
+        public List<String> getListInvoiceContent(String pdfFilePath, int startPage, int endPage) {
+            return Pdf.getInstance().getText(System.getProperty("user.home") + "\\Desktop\\QA_Project\\" + pdfFilePath, startPage, endPage);
         }
 
-        public String getPathOfPdfFile(){
-            return System.getProperty("user.home")+"\\Desktop\\QA_Project\\" + pdfFile;
+        public String getPathOfPdfFile() {
+            return System.getProperty("user.home") + "\\Desktop\\QA_Project\\" + pdfFile;
         }
 
         public String getIssued() {
@@ -158,17 +156,29 @@ public class InvoicesContentPage extends BasePage {
         public String getEnd() {
             return getTextOfElement(end);
         }
+
         public String getNetAmount() {
             return getTextOfElement(netAmount);
         }
-        public void clickViewPDFBtn()
-        {
+
+        public void clickViewPDFBtn() {
             click(btnViewPdf);
         }
 
         public String getNextTreatmentDate() {
             return getTextOfElement(lblNextTreatmentDate);
         }
+        @FindBy(xpath = "//td[contains(text(),'Allocations')]//ancestor::table[1]/following-sibling::div[1]//table")
+        WebElement allocationTable;
+        public int getToTalRowInAllocationTable(){
+            TableControlBase tableControlBase =new TableControlBase(allocationTable);
+            return tableControlBase.getRowsCountWithOutBoxRow()-1;
+        }
+        public int findRowByEnity(HashMap<String,String>enity){
+            TableControlBase tableControlBase =new TableControlBase(allocationTable);
+            return tableControlBase.findRowsByColumns(enity).size();
+        }
+
     }
 
 }

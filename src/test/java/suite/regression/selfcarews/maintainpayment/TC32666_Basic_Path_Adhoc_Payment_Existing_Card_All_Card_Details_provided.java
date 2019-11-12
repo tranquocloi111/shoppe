@@ -35,7 +35,7 @@ public class TC32666_Basic_Path_Adhoc_Payment_Existing_Card_All_Card_Details_pro
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         customerNumber = owsActions.customerNo;
-        owsActions.getSubscription(owsActions.orderIdNo, "Mobile FC");
+        owsActions.getSubscription(owsActions.orderIdNo, "Mobile Ref 1");
         String sub = owsActions.serviceRef;
 
         test.get().info("Step 2 : Create the new billing group");
@@ -56,7 +56,7 @@ public class TC32666_Basic_Path_Adhoc_Payment_Existing_Card_All_Card_Details_pro
 
         test.get().info("Step 3 : Build maintain payment detail request ");
         //Here we give cvv number as 222 which means this card is not authorised.
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32663_request";
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32663_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequestWithSubscriptionNumber(sub, customerNumber, path);
 
@@ -67,11 +67,12 @@ public class TC32666_Basic_Path_Adhoc_Payment_Existing_Card_All_Card_Details_pro
         MaintainPaymentResponseData maintainPaymentResponseData =new MaintainPaymentResponseData();
         maintainPaymentResponseData.setAccountNumber(customerNumber);
         maintainPaymentResponseData.setAction("ADHOC_PAYMENT");
-        maintainPaymentResponseData.setResponseCode("Payment was successful");
+        maintainPaymentResponseData.setMessage("Payment was successful");
+        maintainPaymentResponseData.setResponseCode("0");
         maintainPaymentResponseData.setReference("True");
-        maintainPaymentResponseData.setReference(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        maintainPaymentResponseData.setDateTime(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
 
-        SelfCareWSTestBase.verifyMaintainPaymentResponse(maintainPaymentResponseData,response);
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
 
         test.get().info("Step 6  refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
@@ -81,7 +82,7 @@ public class TC32666_Basic_Path_Adhoc_Payment_Existing_Card_All_Card_Details_pro
         MenuPage.LeftMenuPage.getInstance().clickFinancialTransactionLink();
 
         test.get().info("Step 8: verify 1 ad hoc payment generation");
-        HashMap<String, String> financialTransaction = FinancialTransactionEnity.dataFinancialTransactionForMakeAOneOffPayment("Ad Hoc Payment", "£20.00");
+        HashMap<String, String> financialTransaction = FinancialTransactionEnity.dataFinancialTransactionForMakeAOneOffPayment("Ad Hoc Payment", "£10.00");
         Assert.assertEquals(FinancialTransactionPage.FinancialTransactionGrid.getInstance().getNumberOfFinancialTransaction(financialTransaction), 1);
 
 
@@ -106,7 +107,7 @@ public class TC32666_Basic_Path_Adhoc_Payment_Existing_Card_All_Card_Details_pro
         Assert.assertEquals("MasterCard", TasksContentPage.TaskPage.DetailsPage.getInstance().getCardType());
         Assert.assertEquals("****************5100", TasksContentPage.TaskPage.DetailsPage.getInstance().getCardNumber());
         Assert.assertEquals("2030", TasksContentPage.TaskPage.DetailsPage.getInstance().getCreditCardExpiryYear());
-        Assert.assertEquals("20", TasksContentPage.TaskPage.DetailsPage.getInstance().getAmountToBeDebited());
+        Assert.assertEquals("10", TasksContentPage.TaskPage.DetailsPage.getInstance().getAmountToBeDebited());
         Assert.assertEquals("12", TasksContentPage.TaskPage.DetailsPage.getInstance().getCreditCardExpiryMonth());
 
 
@@ -115,7 +116,7 @@ public class TC32666_Basic_Path_Adhoc_Payment_Existing_Card_All_Card_Details_pro
     public void verifyAdHocPaymentTransactionDetail() {
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getReceiptType(), "Ad Hoc Payment");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getReceiptStatus(), "Fully Allocated");
-        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentAmount(), "£20.00");
+        Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentAmount(), "£10.00");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getPaymentCurrency(), "Great Britain Pound");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getCardType(), "MasterCard");
         Assert.assertEquals(PaymentDetailPage.ReceiptDetail.getInstance().getCardNumber(), "************5100");

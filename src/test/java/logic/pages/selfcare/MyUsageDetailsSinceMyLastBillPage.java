@@ -164,4 +164,10 @@ public class MyUsageDetailsSinceMyLastBillPage extends BasePage {
         String xpath = String.format("//td[contains(normalize-space(text()), '%s')]//following-sibling::td", title);
         return getTextOfElement(getDriver().findElement(By.xpath(xpath)));
     }
+    public void setStartDate(String date) {
+         enterValueByLabel(startDateTextBox,date);
+    }
+    public void setEndDate(String date) {
+        enterValueByLabel(endDateTextBox,date);
+    }
 }

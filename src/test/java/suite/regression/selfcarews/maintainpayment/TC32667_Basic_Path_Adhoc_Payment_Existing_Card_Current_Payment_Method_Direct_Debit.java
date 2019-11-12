@@ -34,15 +34,11 @@ public class TC32667_Basic_Path_Adhoc_Payment_Existing_Card_Current_Payment_Meth
         owsActions.createGeneralCustomerOrder(path);
         customerNumber = owsActions.customerNo;
 
-
-
-
         test.get().info("Step 2 : load customer in hub net ");
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-        //Here we give cvv number as 222 which means this card is not authorised.
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32667_request";
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32667_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest( customerNumber, path);
 
@@ -53,11 +49,11 @@ public class TC32667_Basic_Path_Adhoc_Payment_Existing_Card_Current_Payment_Meth
         MaintainPaymentResponseData maintainPaymentResponseData =new MaintainPaymentResponseData();
         maintainPaymentResponseData.setAccountNumber(customerNumber);
         maintainPaymentResponseData.setAction("ADHOC_PAYMENT");
-        maintainPaymentResponseData.setResponseCode("Payment was successful");
+        maintainPaymentResponseData.setMessage("Payment was successful");
+        maintainPaymentResponseData.setResponseCode("0");
         maintainPaymentResponseData.setReference("True");
-        maintainPaymentResponseData.setReference(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
-
-        SelfCareWSTestBase.verifyMaintainPaymentResponse(maintainPaymentResponseData,response);
+        maintainPaymentResponseData.setDateTime(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
 
         test.get().info("Step 6  refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
@@ -89,7 +85,7 @@ public class TC32667_Basic_Path_Adhoc_Payment_Existing_Card_Current_Payment_Meth
 
         Assert.assertEquals(TasksContentPage.TaskSummarySectionPage.getInstance().getDescription(), "Ad-hoc Payment");
         Assert.assertEquals(TasksContentPage.TaskSummarySectionPage.getInstance().getStatus(), "Completed Task");
-        Assert.assertEquals("MasterCard", TasksContentPage.TaskPage.DetailsPage.getInstance().getCardType());
+        Assert.assertEquals("Maestro", TasksContentPage.TaskPage.DetailsPage.getInstance().getCardType());
         Assert.assertEquals("****************5100", TasksContentPage.TaskPage.DetailsPage.getInstance().getCardNumber());
         Assert.assertEquals("2030", TasksContentPage.TaskPage.DetailsPage.getInstance().getCreditCardExpiryYear());
         Assert.assertEquals("21", TasksContentPage.TaskPage.DetailsPage.getInstance().getAmountToBeDebited());

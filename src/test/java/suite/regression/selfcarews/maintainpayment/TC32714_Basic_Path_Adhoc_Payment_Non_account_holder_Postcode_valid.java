@@ -34,7 +34,7 @@ public class TC32714_Basic_Path_Adhoc_Payment_Non_account_holder_Postcode_valid 
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32711_request";
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32714_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest( customerNumber, path);
 
@@ -45,11 +45,12 @@ public class TC32714_Basic_Path_Adhoc_Payment_Non_account_holder_Postcode_valid 
         MaintainPaymentResponseData maintainPaymentResponseData =new MaintainPaymentResponseData();
         maintainPaymentResponseData.setAccountNumber(customerNumber);
         maintainPaymentResponseData.setAction("ADHOC_PAYMENT_NON_ACCOUNT_HOLDER");
-        maintainPaymentResponseData.setResponseCode("Payment was successful");
+        maintainPaymentResponseData.setResponseCode("0");
+        maintainPaymentResponseData.setMessage("Payment was successful");
         maintainPaymentResponseData.setReference("True");
-        maintainPaymentResponseData.setReference(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        maintainPaymentResponseData.setDateTime(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
 
-        SelfCareWSTestBase.verifyMaintainPaymentResponse(maintainPaymentResponseData,response);
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
 
         test.get().info("Step 6  refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();

@@ -25,39 +25,38 @@ public class TC32669_Basic_Path_Adhoc_Payment_Existing_Card_Direct_Details_provi
     String customerNumber;
     String financialTransactionContentRef;
 
-    @Test(enabled = true, description = "TC32668 basic path adhoc payment existing card current payment CV2 provided", groups = "SelfCare")
-    public void TC32668_Basic_Path_Adhoc_Payment_Existing_Card_CV2_provided() {
+    @Test(enabled = true, description = "TC32669 basic path adhoc payment existing card direct details provided no payment detail update", groups = "SelfCare")
+    public void TC32669_Basic_Path_Adhoc_Payment_Existing_Card_Direct_Details_provided_no_Payment_Detail_Update() {
         //-----------------------------------------
-        String path = "src\\test\\resources\\xml\\commonrequest\\onlines_DD_customer_with_FC_2_bundles_and_NK2720";
-        test.get().info("Step 1 : Create a customer ");
+        String path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32669";
+        test.get().info("Step 1 : Create a custome ");
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
         customerNumber = owsActions.customerNo;
 
-        test.get().info("Step 2 : load customer in hub net ");
-        CareTestBase.page().loadCustomerInHubNet(customerNumber);
-
-        test.get().info("Step 3 : Build maintain payment detail request ");
-        path = "src\\test\\resources\\xml\\sws\\maintaincontact\\TC32669_request";
+        test.get().info("Step 2 : Build maintain payment detail request ");
+        path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32669_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest( customerNumber, path);
 
-        test.get().info("Step 4  submit the request to webservice");
+        test.get().info("Step 3:  submit the request to webservice");
         Xml response = swsActions.submitTheRequest();
 
-        test.get().info("Step 5  verify maintain payment response");
+        test.get().info("Step 4:  verify maintain payment response");
         MaintainPaymentResponseData maintainPaymentResponseData =new MaintainPaymentResponseData();
         maintainPaymentResponseData.setAccountNumber(customerNumber);
         maintainPaymentResponseData.setAction("ADHOC_PAYMENT");
-        maintainPaymentResponseData.setResponseCode("Payment was successful");
+        maintainPaymentResponseData.setMessage("Payment was successful");
+        maintainPaymentResponseData.setResponseCode("0");
         maintainPaymentResponseData.setReference("True");
-        maintainPaymentResponseData.setReference(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        maintainPaymentResponseData.setDateTime(Parser.parseDateFormate(TimeStamp.Today(),TimeStamp.DATE_FORMAT_XML));
+        SelfCareWSTestBase.verifyMaintainPaymentResponseByTagName(maintainPaymentResponseData,response);
 
-        SelfCareWSTestBase.verifyMaintainPaymentResponse(maintainPaymentResponseData,response);
+        test.get().info("Step 5 : load customer in hub net ");
+        CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 6  refresh current customer data in hub net");
         MenuPage.RightMenuPage.getInstance().clickRefreshLink();
-
 
         test.get().info("Step 7  access financial transaction content for customer");
         MenuPage.LeftMenuPage.getInstance().clickFinancialTransactionLink();
@@ -65,7 +64,6 @@ public class TC32669_Basic_Path_Adhoc_Payment_Existing_Card_Direct_Details_provi
         test.get().info("Step 8: verify 1 ad hoc payment generation");
         HashMap<String, String> financialTransaction = FinancialTransactionEnity.dataFinancialTransactionForMakeAOneOffPayment("Ad Hoc Payment", "£22.51");
         Assert.assertEquals(FinancialTransactionPage.FinancialTransactionGrid.getInstance().getNumberOfFinancialTransaction(financialTransaction), 1);
-
 
         test.get().info("Step 8: verify the adhoc payment transaction detail");
         financialTransactionContentRef = FinancialTransactionPage.FinancialTransactionGrid.getInstance().getRefNumberByDetail("Ad Hoc Payment");
@@ -78,12 +76,8 @@ public class TC32669_Basic_Path_Adhoc_Payment_Existing_Card_Direct_Details_provi
         HashMap<String, String> serviceOrder = ServiceOrderEntity.dataServiceOrderFinancialTransaction();
         Assert.assertEquals(ServiceOrdersContentPage.getInstance().getNumberOfServiceOrders(serviceOrder), 1);
 
-
-
         test.get().info("Step 10 :verify the service order detail content for customer");
         ServiceOrdersContentPage.getInstance().clickServiceOrderByType("Ad-hoc Payment");
-
-        Assert.assertEquals(TasksContentPage.TaskSummarySectionPage.getInstance().getDescription(), "Ad-hoc Payment");
         Assert.assertEquals(TasksContentPage.TaskSummarySectionPage.getInstance().getStatus(), "Completed Task");
         Assert.assertEquals("MasterCard", TasksContentPage.TaskPage.DetailsPage.getInstance().getCardType());
         Assert.assertEquals("****************5100", TasksContentPage.TaskPage.DetailsPage.getInstance().getCardNumber());

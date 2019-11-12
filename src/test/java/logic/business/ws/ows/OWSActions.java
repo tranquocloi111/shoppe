@@ -766,11 +766,38 @@ public class OWSActions extends BaseWs {
 
     public Xml submitRequestAndReturnRespond(String filePath) {
         request = new Xml(new File(filePath));
-        return Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        request.setTextByTagName(commonModMap);
+        firstName=request.getTextByTagName("firstName");
+        response= Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        return response;
+    }
+    public  Xml submitTheRequest() {
+        Log.info("Request: " + request.toString());
+        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+        Log.info("Response: " + response.toString());
+
+        return response;
     }
 
+    public  void buildPaymentCreateOrder( String expiryDate,String xpathFile) {
+        request = new Xml(new File(xpathFile));
+        request.setTextByTagName(commonModMap);
+        request.setTextByTagName("cardExpiryDate", expiryDate);
 
+    }
+public Xml acceptTermsAndContionsForOrder()
+{
+    request.setTextByXpath("//createOrder//@correlationId", response.getTextByXpath("//createOrderResponse//@correlationId"));
+    request.setAttributeTextByXpath("//orderDetail", "orderId", response.getTextByTagName("orderId"));
+    request.setTextByXpath("//verification//@termsAndConditionsAccepted", "true");
+    request.setTextByXpath("//verification//@acceptAgreement", "true");
 
+    Log.info("Request: " + request.toString());
+    response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
+    Log.info("Response: " + response.toString());
+
+    return response;
+}
     //endregion
 
 }

@@ -9,14 +9,14 @@ import org.testng.annotations.Test;
 import suite.BaseTest;
 import suite.regression.care.CareTestBase;
 
-public class TC32712_Basic_Path_Adhoc_Payment_non_account_holder_Address_line_1_invalid_SC_999_or_SC_032 extends BaseTest {
+public class TC32837_Exception_Path_2b_Invalid_update_to_Ongoing_Payment_Method_SC_022 extends BaseTest {
     String customerNumber;
     String financialTransactionContentRef;
-
-    @Test(enabled = true, description = "TC32712 basic path adhoc payment non account holder address line 1 invalid SC 999 or SC032", groups = "SelfCare")
-    public void TC32712_Basic_Path_Adhoc_Payment_non_account_holder_Address_line_1_invalid_SC_999_or_SC_032() {
+//---Block by issue with WR122296
+    //@Test(enabled = true, description = "TC32837 exceotuib oath 2b invalid update to ongoing payment method SC_022", groups = "SelfCare")
+    public void TC32837_Exception_Path_2b_Invalid_update_to_Ongoing_Payment_Method_SC_022() {
         //-----------------------------------------
-        String path = "src\\test\\resources\\xml\\commonrequest\\onlines_CC_customer_with_FC_1_bundle_of_SB_and_sim_only";
+        String path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32837_createOrder";
         test.get().info("Step 1 : Create a customer ");
         OWSActions owsActions = new OWSActions();
         owsActions.createGeneralCustomerOrder(path);
@@ -26,7 +26,7 @@ public class TC32712_Basic_Path_Adhoc_Payment_non_account_holder_Address_line_1_
         CareTestBase.page().loadCustomerInHubNet(customerNumber);
 
         test.get().info("Step 3 : Build maintain payment detail request ");
-         path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32712_request";
+         path = "src\\test\\resources\\xml\\sws\\maintainpayment\\TC32837_request";
         SWSActions swsActions = new SWSActions();
         swsActions.buildPaymentDetailRequest( customerNumber, path);
 
