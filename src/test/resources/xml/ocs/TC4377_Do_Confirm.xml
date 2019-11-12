@@ -1,7 +1,7 @@
 ﻿<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
     <S:Body>
         <ns2:doConfirm xmlns:ns2="http://ws.productsupplier.hub.hsntech.com/">
-            <ConfirmRequest orderType="RESIDENTIAL_NEW" dateTime="2019-10-09T10:39:45.769+11:00">
+            <ConfirmRequest orderType="RESIDENTIAL_NEW">
                 <accountDetails company="Tesco Moble" companyId="35635635" supplier="Oakwood"/>
                 <orderNumber>$orderNumber$</orderNumber>
                 <reserveReference>8701038-FGDH000</reserveReference>

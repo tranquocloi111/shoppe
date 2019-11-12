@@ -6,6 +6,7 @@ import framework.utils.SSHManager;
 import logic.business.db.OracleDB;
 import logic.business.db.billing.CommonActions;
 import logic.utils.*;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.testng.Assert;
 
 import java.sql.Date;
@@ -46,9 +47,10 @@ public class RemoteJobHelper {
             delay(10);
         }
 
-        MiscHelper.executeFuncntion(5, () ->{
+        MiscHelper.executeFunction(5, () ->{
             submitRemoteJob(command);
             //submitRemoteJob(command, jobDescr);
+            Log.info("Sumbit command : " + command);
             return Parser.asInteger(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "numberJob")) > 0;
         }, 5);
     }
@@ -112,7 +114,7 @@ public class RemoteJobHelper {
                 }
                 Thread.sleep(3000);
             }
-            Log.info(jobDescr + " job id:" + remoteJobId);
+            Log.info(jobDescr + " job id : " + remoteJobId);
             if (remoteJobId > currentMaxJobId) {
                 sql = "select exitcode,cmdstatus from REMOTEJOB where jobid=" + remoteJobId;
                 boolean jobComplete = false;
@@ -183,7 +185,7 @@ public class RemoteJobHelper {
 
     private void waitAllNewRemoteJobsComplete(int initJobId) {
         String sql = "select count(*) as ALLJOB  from REMOTEJOB where (exitcode is null or cmdstatus<>'N') and jobid > " + initJobId;
-        MiscHelper.executeFuncntion(150, () -> Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "ALLJOB"))) == 0, 2);
+        MiscHelper.executeFunction(150, () -> Integer.parseInt(String.valueOf(OracleDB.getValueOfResultSet(OracleDB.SetToNonOEDatabase().executeQuery(sql), "ALLJOB"))) == 0, 2);
     }
 
     public void submitDraftBillRun() {
@@ -201,25 +203,17 @@ public class RemoteJobHelper {
                 } else {
                     resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
                 }
-                Thread.sleep(5000);
+                Thread.sleep(3000);
             }
-        } catch (InterruptedException e) {
-            Log.error(e.getMessage());
-        } catch (SQLException e) {
-            Log.error(e.getMessage());
-        }
-        int billRunInvocationId = 0;
-        try {
-             billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
-        }
-       catch (Exception ex){
-           Log.error("cannot get bill run invocation id");
-       }
-        Log.info("InvocationId:" + billRunInvocationId);
 
-        currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT2)), currentMaxJobId, "Bill Run");
-        waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
+            int billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
+            Log.info("InvocationId : " + billRunInvocationId);
+            currentMaxJobId = getMaxRemoteJobId();
+            submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(TimeStamp.Today(), TimeStamp.DATE_FORMAT2)), currentMaxJobId, "Bill Run");
+            waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
+        } catch (Throwable ex) {
+            Assert.fail("Can not generate invoice !!!");
+        }
     }
 
     public void submitConfirmBillRun(Date date) {
@@ -231,20 +225,19 @@ public class RemoteJobHelper {
                 } else {
                     resultSet = OracleDB.SetToNonOEDatabase().executeQuery("select brinvocationid from billruninvocation where jobid=" + remoteJobId);
                 }
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            int billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
+            Log.info("InvocationId : " + billRunInvocationId);
+
+            currentMaxJobId = getMaxRemoteJobId();
+            submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(date, TimeStamp.DATE_FORMAT2)), currentMaxJobId, "Bill Run");
+            waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
+
+        } catch (Throwable ex) {
+            Assert.fail("Can not generate invoice !!!");
         }
-
-        int billRunInvocationId = Parser.asInteger(OracleDB.getValueOfResultSet(resultSet, "brinvocationid"));
-        Log.info("InvocationId:" + billRunInvocationId);
-
-        currentMaxJobId = getMaxRemoteJobId();
-        submitRemoteJobs(String.format("DoBillrun.sh -e $HUB_SID -a c -i %s -d %s -S", billRunInvocationId, Parser.parseDateFormate(date, TimeStamp.DATE_FORMAT2)), currentMaxJobId, "Bill Run");
-        waitForRemoteJobComplete(currentMaxJobId, "Bill Run");
     }
 
     public void runSMSRequestJob() {
