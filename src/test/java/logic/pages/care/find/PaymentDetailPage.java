@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class PaymentDetailPage extends BasePage {
 
@@ -41,12 +42,27 @@ public class PaymentDetailPage extends BasePage {
         public String getCardNumber() {
             return getTextOfElement(tableControlBase.getCellByLabel("Card Number"));
         }
+        public String getPaymentReference() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Payment Reference"));
+        }
+        public String getVoucherSupplier() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Voucher Supplier"));
+        }
+        public String getVoucherCode() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Voucher Code"));
+        }
+        public String getVoucherProductCode() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Voucher Product Code"));
+        }
+        public String getOrderId() {
+            return getTextOfElement(tableControlBase.getCellByLabel("Order Id"));
+        }
     }
 
-    public static class paymentConentGrid extends PaymentDetailPage {
+    public static class PaymentContentGrid extends PaymentDetailPage {
 
-        public static paymentConentGrid getInstance() {
-            return new paymentConentGrid();
+        public static PaymentContentGrid getInstance() {
+            return new PaymentContentGrid();
         }
 
         @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Payments')]//ancestor::table[1]//following-sibling::div//table")
@@ -64,18 +80,22 @@ public class PaymentDetailPage extends BasePage {
         }
     }
 
-    public static class receiptAllocation extends PaymentDetailPage {
+    public static class ReceiptAllocation extends PaymentDetailPage {
 
-        public static receiptAllocation getInstance() {
-            return new receiptAllocation();
+        public static ReceiptAllocation getInstance() {
+            return new ReceiptAllocation();
         }
 
         @FindBy(xpath = "//td[@class='informationBoxHeader' and contains(text(),'Receipt Allocations')]//ancestor::table[1]//following-sibling::div//table")
         WebElement receiptTable;
         TableControlBase table = new TableControlBase(receiptTable);
-        public int getNumberReceiptRecord(HashMap<String,String> payment)
-        {
+
+        public int getNumberReceiptRecord(HashMap<String, String> payment) {
             return table.findRowsByColumns(payment).size();
+        }
+
+        public List<List<String>> getAllValueOfReceiptAllocations(){
+            return table.getAllCellValue();
         }
 
     }

@@ -66,6 +66,10 @@ public class CommonContentPage extends BasePage {
             return arrSubscriptions[arrSubscriptions.length - 1];
         }
 
+        public String getStatusByIndex(int index) {
+            return table.getElementByColumnNameAndRowIndex(index + 1, status).getText();
+        }
+
         public void clickSubscriptionNumberLinkByIndex(int index) {
             click(table.getElementByColumnNameAndRowIndex(index + 1, subscriptionNumber).findElement(By.tagName("a")));
         }

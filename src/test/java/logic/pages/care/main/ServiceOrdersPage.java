@@ -112,8 +112,10 @@ public class ServiceOrdersPage extends BasePage {
             clickReturnToCustomer();
         }
 
-        public void deactivateSubscription(boolean isList) {
-            click(ckSubscription);
+        public void deactivateSubscription(boolean isMaster, boolean isList) {
+            if (!isMaster) {
+                click(ckSubscription);
+            }
             enterValueByLabel(deactivationNotes, "Regression Automation");
             clickNextBtn();
             clickNextBtn();
@@ -129,11 +131,15 @@ public class ServiceOrdersPage extends BasePage {
                 enterValueByLabel(returnsAndEtcPage.returnReferenceNoCtl, "1234567890");
             }
             clickNextBtn();
-            clickNextBtn();
-            clickReturnToCustomer(); }
+            if (isElementPresent(btnNext))
+                clickNextBtn();
+            clickReturnToCustomer();
+        }
 
-        public void deactivateSubscriptionWithoutEtc() {
-            click(ckSubscription);
+        public void deactivateSubscriptionWithoutEtc(boolean isMaster) {
+            if (!isMaster) {
+                click(ckSubscription);
+            }
             enterValueByLabel(deactivationNotes, "Regression Automation");
             clickNextBtn();
             clickNextBtn();

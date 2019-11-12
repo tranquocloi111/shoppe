@@ -28,6 +28,8 @@ public class OWSActions extends BaseWs {
     public Xml requestForNextStep;
     public Xml responseForNextStep;
     public String subscriptionNumber;
+    public String clubcardPartner;
+    public String tradeIn;
 
     //region XML files
     public static final String EXAMPLE_ORDER = "src\\test\\resources\\xml\\example.xml";
@@ -233,30 +235,9 @@ public class OWSActions extends BaseWs {
         checkAsyncProcessIsCompleted(orderIdNo);
     }
 
-    public void createOrderAndSignAgreementByUI() {
-        request = new Xml(new File(TC29699_CREATE_ORDER));
-        request.setTextByTagName(commonModMap);
-        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
 
-        String agreementSigningUrl = response.getTextByTagName("URL");
-        AgreementWrapperPage.getInstance().openAgreementSigningMainPage(agreementSigningUrl);
-        AgreementWrapperPage.getInstance().signAgreementViaUI(1);
 
-        request.setTextByXpath("//createOrder//@correlationId", response.getTextByXpath("//createOrderResponse//@correlationId"));
-        request.setAttributeTextByXpath("//orderDetail", "orderId", response.getTextByTagName("orderId"));
-        request.setTextByXpath("//verification//@termsAndConditionsAccepted", "true");
-        request.setTextByXpath("//verification//@acceptAgreement", "true");
-
-        Log.info("Request: " + request.toString());
-        response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
-        setCustomerNo();
-        Log.info("Account number:" + customerNo);
-        setOrderIdNo();
-        Log.info("OrderId number:" + orderIdNo);
-        checkAsyncProcessIsCompleted(orderIdNo);
-    }
-
-    public void createOrderAndSignAgreementByUI(String filePath, int agreementCount) {
+    public Xml createOrderAndSignAgreementByUI(String filePath, int agreementCount) {
         request = new Xml(new File(filePath));
         request.setTextByTagName(commonModMap);
         response = Soap.sendSoapRequestXml(this.owsUrl, request.toSOAPMessage());
@@ -279,6 +260,7 @@ public class OWSActions extends BaseWs {
         setUsername();
         setPassword();
         checkAsyncProcessIsCompleted(orderIdNo);
+        return response;
     }
 
     public void createCustomerWithFCAndDevice() {
@@ -576,6 +558,10 @@ public class OWSActions extends BaseWs {
                     if (!params[i].isEmpty())
                         request.setTextByXpath("//createOrder//@type", params[i]);
                     break;
+                case 4 :
+                    if (!params[i].isEmpty())
+                        request.setTextsByTagName("voucherCode", new String[]{"Clubcard" + RandomCharacter.getRandomNumericString(5), "Tradein" + RandomCharacter.getRandomNumericString(5)});
+                    break;
             }
         }
 
@@ -618,6 +604,10 @@ public class OWSActions extends BaseWs {
                 case 3:
                     if (!params[i].isEmpty())
                         request.setTextByXpath("//createOrder//@type", params[i]);
+                    break;
+                case 4 :
+                    if (!params[i].isEmpty())
+                        request.setTextsByTagName("voucherCode", new String[]{"Clubcard" + RandomCharacter.getRandomNumericString(5), "Tradein" + RandomCharacter.getRandomNumericString(5)});
                     break;
             }
         }
@@ -679,7 +669,9 @@ public class OWSActions extends BaseWs {
                     break;
                 case 4 :
                     if (!params[i].isEmpty())
-                        request.setTextsByTagName("voucherCode", new String[]{"Clubcard" + RandomCharacter.getRandomNumericString(5), "Tradein" + RandomCharacter.getRandomNumericString(5)});
+                        clubcardPartner = "Clubcard" + RandomCharacter.getRandomNumericString(5);
+                        tradeIn = "Tradein" + RandomCharacter.getRandomNumericString(5);
+                        request.setTextsByTagName("voucherCode", new String[]{clubcardPartner, tradeIn});
                     break;
             }
         }

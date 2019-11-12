@@ -19,8 +19,7 @@ public class Db {
     public ResultSet executeQuery(Connection connection, String sql) {
         ResultSet rs = null;
         try {
-            Connection conn = connection;
-            Statement stmt = conn.createStatement();
+            Statement stmt = connection.createStatement();
             rs = stmt.executeQuery(sql);
             //conn.close();
         } catch (Exception ex) {
@@ -29,13 +28,11 @@ public class Db {
         return rs;
     }
 
-    public int executeNonQuery(Connection connection, String sql) {
+    public int executeNonQuery(Connection conn, String sql) {
         int result = 0;
-        Connection conn = null;
         try {
-            conn = connection;
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            result = pstmt.executeUpdate();
+            Statement statement = conn.createStatement();
+            result = statement.executeUpdate(sql);
             //conn.close();
         } catch (Exception ex) {
             Log.error(ex.getMessage());
