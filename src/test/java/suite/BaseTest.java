@@ -402,6 +402,11 @@ public class BaseTest {
         Assert.assertEquals(generalSectionPage.getOCSSubscriberKey(), ocsSubscriberKey);
         Assert.assertEquals(generalSectionPage.getOCSSubscriberAccountKey(), ocsSubscriberAccountKey);
     }
+
+    protected void loadPageByUrl(String url)
+    {
+        WdManager.get().get(url);
+    }
     
 
     //end region
