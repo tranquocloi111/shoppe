@@ -1,8 +1,0 @@
-﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ord="http://order.telco.hsntech.com">
-  <soapenv:Header/>
-  <soapenv:Body>
-    <ord:getCustomer>
-      <accountNumber>12160</accountNumber>
-    </ord:getCustomer>
-  </soapenv:Body>
-</soapenv:Envelope>

@@ -1,9 +1,0 @@
-﻿<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ord="http://order.telco.hsntech.com">
-  <soapenv:Header/>
-  <soapenv:Body>
-    <ord:findCustomer maxResults="10" allCustomers="true">
-      <!--Optional:-->
-      <mpn>07746614910</mpn>
-    </ord:findCustomer>
-  </soapenv:Body>
-</soapenv:Envelope>

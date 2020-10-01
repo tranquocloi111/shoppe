@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="RegressionSuite" verbose="1">
-    <test name="test1" parallel="methods" thread-count="3">
+<suite name="RegressionSuite" verbose="2">
+    <test name="test1" parallel="methods" thread-count="2">
         <packages>
-            <package name="suite.shakeout"/>
+            <package name="suite.regression"/>
         </packages>
     </test>
 </suite>

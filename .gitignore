@@ -113,3 +113,5 @@ buildNumber.properties
 
 
 # End of https://www.gitignore.io/framework.report/java,maven,intellij
+.classpath
+.idea/encodings.xml

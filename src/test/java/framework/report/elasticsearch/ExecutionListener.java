@@ -31,9 +31,11 @@ public class ExecutionListener implements ITestListener {
     public void onTestFailedButWithinSuccessPercentage(final ITestResult iTestResult) {
     }
 
-    public void onStart(final ITestContext iTestContext) {
-        ElasticSender.setRunInfo();
+    @Override
+    public void onStart(ITestContext iTestContext) {
+
     }
+
 
     public void onFinish(final ITestContext iTestContext) {
     }

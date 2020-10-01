@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="RegressionSuite" verbose="2">
+    <test name="restAPis" parallel="methods" thread-count="2">
+        <packages>
+            <package  name="suite.regression.RestApis"/>
+        </packages>
+    </test>
+</suite>

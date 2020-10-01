@@ -12,12 +12,11 @@ import java.util.stream.Collectors;
 
 public class Config {
 
-    private static final String CONFIG_FOLDER = ".\\src\\test\\resources\\env";
-    private static final String CONFIG_FILE_EXT = "env1.properties";
+    private static final String CONFIG_FOLDER = "src//test//resources//env";
+    private static final String CONFIG_FILE_EXT = "staging.properties";
 
-    public static Queue<Properties> envQueue;
+    public static  Queue<Properties> envQueue ;
     private static ThreadLocal<Properties> propTL = new ThreadLocal<>();
-
 
     public static void loadEnvInfoToQueue() {
         envQueue = new ConcurrentLinkedQueue<>();
@@ -35,15 +34,19 @@ public class Config {
 
     private static List<File> getConfigFiles() {
         File folder = new File(CONFIG_FOLDER);
-        File[] listOfFiles = folder.listFiles();
+        File[] listOfFiles = folder.listFiles();//
         return Arrays.stream(listOfFiles).filter(e -> e.getName().contains(CONFIG_FILE_EXT)).collect(Collectors.toList());
     }
 
-    public static String getProp(String propKey) {
+    public static  String getProp(String propKey) {
         if (propTL.get() == null) {
             propTL.set(envQueue.poll());
         }
         return propTL.get().getProperty(propKey);
+    }
+    public static  void setProp() {
+            propTL.set(envQueue.poll());
+
     }
 
     public static void returnProp() {
