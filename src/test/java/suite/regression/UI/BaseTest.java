@@ -68,13 +68,13 @@ public class BaseTest {
 
     private void setUpReport() {
         //HTML
-        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("test-output//NVG_Automation_Report.html");
+        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("test-output//Shoppe_Automation_Report.html");
 //        htmlReporter.config().setTestViewChartLocation(ChartLocation.BOTTOM);
 //        htmlReporter.config().setChartVisibilityOnOpen(true);
         htmlReporter.config().setTheme(Theme.DARK);
-        htmlReporter.config().setDocumentTitle("NVG - HTML Test Report");
+        htmlReporter.config().setDocumentTitle("Shoppe_Automation_Report - HTML Test Report");
         htmlReporter.config().setEncoding("utf-8");
-        htmlReporter.config().setReportName("NVG - HTML Test Report");
+        htmlReporter.config().setReportName("Shoppe_Automation_Report - HTML Test Report");
 
         extent = new ExtentReports();
         extent.attachReporter(htmlReporter);
